@@ -61,7 +61,9 @@ const Sidebar = ({
               {/* ------------------------------------------- */}
               {/* Sidebar Items */}
               {/* ------------------------------------------- */}
-              <Box mt={3}><SidebarItems /></Box>
+              <Box mt={3}>
+                <SidebarItems />
+              </Box>
             </Box>
           </Box>
         </Drawer>
@@ -92,7 +94,7 @@ const Sidebar = ({
       {/* Sidebar For Mobile */}
       {/* ------------------------------------------- */}
       <SidebarItems />
-      <Upgrade />
+      {/* <Upgrade /> */}
     </Drawer>
   );
 };

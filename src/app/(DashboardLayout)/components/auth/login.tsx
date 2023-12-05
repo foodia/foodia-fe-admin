@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, TextField, Typography, useTheme } from "@mui/material";
 import BaseCard from "../shared/DashboardCard";
 
 import { useState } from "react";
@@ -9,6 +9,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+  const theme = useTheme();
 
   const onLogin = () => {
     axios
@@ -82,7 +83,7 @@ const Login = () => {
       />
       <Button
         onClick={() => onLogin()}
-        style={{ backgroundColor: "gray", color: "white" }}
+        style={{ backgroundColor: theme.palette.primary.main, color: "white" }}
       >
         Login
       </Button>

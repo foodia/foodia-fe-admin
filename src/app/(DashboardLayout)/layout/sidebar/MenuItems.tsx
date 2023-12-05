@@ -7,10 +7,13 @@ import {
   IconLayout,
   IconLayoutGrid,
   IconPhoto,
+  IconPictureInPicture,
   IconPoint,
   IconStar,
   IconTable,
+  IconTank,
   IconUser,
+  IconUsers,
 } from "@tabler/icons-react";
 
 import { uniqueId } from "lodash";
@@ -24,15 +27,22 @@ const Menuitems = [
   // },
   {
     id: uniqueId(),
-    title: "Detonator",
-    icon: IconUser,
-    href: "/ui-components/detonator",
-  },
-  {
-    id: uniqueId(),
-    title: "Merchant",
-    icon: IconBuildingStore,
-    href: "/ui-components/merchant",
+    title: "Users",
+    icon: IconUsers,
+    submenu: [
+      {
+        id: uniqueId(),
+        href: "/ui-components/merchant",
+        name: "Merchant Menu",
+        icon: <IconPhoto />,
+      },
+      {
+        id: uniqueId(),
+        href: "/ui-components/detonator",
+        name: "Detonator",
+        icon: <IconUser />,
+      },
+    ],
   },
   // {
   //   id: uniqueId(),

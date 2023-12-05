@@ -1,5 +1,6 @@
 "use client";
-import { Box, Container, styled } from "@mui/material";
+import { Box, Container, styled, useTheme } from "@mui/material";
+import { green } from "@mui/material/colors";
 import React, { useState } from "react";
 
 const MainWrapper = styled("div")(() => ({
@@ -17,11 +18,33 @@ export default function AuthLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const theme = useTheme();
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   return (
-    <MainWrapper className="mainwrapper">
+    <MainWrapper
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "180px",
+      }}
+      className="mainwrapper"
+    >
+      <Box
+        sx={{
+          backgroundColor: theme.palette.primary.main,
+          color: "white",
+          fontSize: "20px",
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "40px",
+        }}
+      >
+        Foodia Admin
+      </Box>
       <Container style={{ width: "100%" }}>
         {/* ------------------------------------------- */}
         {/* Page Route */}

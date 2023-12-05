@@ -8,7 +8,7 @@ import NavGroup from "./NavGroup/NavGroup";
 const SidebarItems = ({ toggleMobileSidebar }: any) => {
   const pathname = usePathname();
   const pathDirect = pathname;
-  
+
   return (
     <Box sx={{ px: 2 }}>
       <List sx={{ pt: 0 }} className="sidebarNav" component="div">
@@ -20,15 +20,14 @@ const SidebarItems = ({ toggleMobileSidebar }: any) => {
           //   // {/********If Sub Menu**********/}
           //   /* eslint no-else-return: "off" */
           // } else {
-            return (
-              <NavItem
-                item={item}
-                key={item.id}
-                pathDirect={pathDirect}
-                onClick={toggleMobileSidebar}
-              />
-            );
-          
+          return (
+            <NavItem
+              item={item}
+              key={item.id}
+              pathDirect={pathDirect}
+              onClick={toggleMobileSidebar}
+            />
+          );
         })}
       </List>
     </Box>
