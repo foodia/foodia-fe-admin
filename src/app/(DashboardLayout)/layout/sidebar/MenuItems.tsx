@@ -33,7 +33,7 @@ const Menuitems = [
       {
         id: uniqueId(),
         href: "/ui-components/merchant",
-        name: "Merchant Menu",
+        name: "Merchant",
         icon: <IconPhoto />,
       },
       {

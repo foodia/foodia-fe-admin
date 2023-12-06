@@ -22,11 +22,7 @@ import { useRouter } from "next/navigation";
 
 type Props = {
   id: number;
-  fullname: string;
-  email: string;
-  phone: number;
   status: string;
-  // pbg: string;
   oauth: { fullname: string; email: string; phone: string };
 };
 
@@ -258,7 +254,14 @@ const List = () => {
                       >
                         <IconBan size={16} /> Reject
                       </Button>
-                      <Link href="/ui-components/detonator/info">
+                      <Link
+                        href={{
+                          pathname: "/ui-components/detonator/info",
+                          query: {
+                            id: product.id,
+                          },
+                        }}
+                      >
                         <Button variant="contained" size="small" color="info">
                           <IconEye size={20} /> View
                         </Button>

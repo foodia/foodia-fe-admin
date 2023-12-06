@@ -50,20 +50,12 @@ const NavItem = ({ item, level, pathDirect, onClick }: ItemType) => {
     setOpen(!open);
   };
 
-  const ListItemStyled = styled(ListItem)(() => ({
-    padding: 0,
-    alignItems: "start",
+  const ListItemStyled = styled(ListItemButton)(() => ({
     display: "flex",
     flexDirection: "column",
-    paddingLeft: "40px",
     ".MuiButtonBase-root": {
-      whiteSpace: "nowrap",
-      marginBottom: "8px",
-      padding: "8px 10px",
-      borderRadius: "9px",
       backgroundColor: level > 1 ? "transparent !important" : "inherit",
       color: theme.palette.text.secondary,
-      paddingLeft: "10px",
       "&:hover": {
         backgroundColor: theme.palette.primary.light,
         color: theme.palette.primary.main,
@@ -115,28 +107,37 @@ const NavItem = ({ item, level, pathDirect, onClick }: ItemType) => {
           <Collapse in={open} timeout="auto" unmountOnExit>
             {/* <List sx={{ pt: 0 }}> */}
             {/* <ListSubMenuStyled> */}
-            <ListItemStyled>
-              {item.submenu.map((t: any) => (
-                <ListItemButton
-                  component={Link}
-                  key={t.id}
-                  href={t.href}
-                  selected={pathDirect === t.href}
-                  onClick={onClick}
+            {/* <ListItemStyled> */}
+            {item.submenu.map((t: any) => (
+              <ListItemButton
+                style={{
+                  display: "flex",
+                  marginBottom: "8px",
+                  marginLeft: "40px",
+                  padding: "8px 10px",
+                  borderRadius: "9px",
+                  color: theme.palette.text.secondary,
+                  paddingLeft: "10px",
+                }}
+                component={Link}
+                key={t.id}
+                href={t.href}
+                selected={pathDirect === t.href}
+                onClick={onClick}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: "36px",
+                    p: "3px 0",
+                    color: "inherit",
+                  }}
                 >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: "36px",
-                      p: "3px 0",
-                      color: "inherit",
-                    }}
-                  >
-                    {t.icon}
-                  </ListItemIcon>
-                  <ListItemText primary={t.name} />
-                </ListItemButton>
-              ))}
-            </ListItemStyled>
+                  {t.icon}
+                </ListItemIcon>
+                <ListItemText primary={t.name} />
+              </ListItemButton>
+            ))}
+            {/* </ListItemStyled> */}
             {/* </ListSubMenuStyled> */}
             {/* </List> */}
           </Collapse>

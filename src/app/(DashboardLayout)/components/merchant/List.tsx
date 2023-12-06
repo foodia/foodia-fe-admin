@@ -250,7 +250,14 @@ const List = () => {
                       >
                         <IconBan size={16} /> Reject
                       </Button>
-                      <Link href="/ui-components/merchant/info">
+                      <Link
+                        href={{
+                          pathname: "/ui-components/merchant/info",
+                          query: {
+                            id: product.id,
+                          },
+                        }}
+                      >
                         <Button variant="contained" size="small" color="info">
                           <IconEye size={20} /> View
                         </Button>
