@@ -40,7 +40,7 @@ const Menuitems = [
       },
       {
         id: uniqueId(),
-        href: "/ui-components/detonator",
+        href: "/ui-components/campaign",
         name: "Campaign",
         icon: <IconBrandCampaignmonitor />,
       },

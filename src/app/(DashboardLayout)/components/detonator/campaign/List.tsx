@@ -1,30 +1,25 @@
-import React, { useEffect, useState } from "react";
 import {
-  Typography,
-  Box,
+  Chip,
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TableRow,
-  Chip,
-  TableContainer,
-  Stack,
-  Button,
-  Modal,
-  TextField,
+  Typography,
 } from "@mui/material";
-import BaseCard from "../shared/DashboardCard";
-import { IconBan, IconCircleCheck, IconEye } from "@tabler/icons-react";
-import Link from "next/link";
 import axios from "axios";
-import moment from "moment";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import BaseCard from "../../shared/DashboardCard";
 
 type Props = {
   id: number;
+  event_name: string;
+  event_type: string;
+  description: string;
+  event_date: string;
   status: string;
-  created_at: string;
-  oauth: { fullname: string; email: string; phone: string };
 };
 
 const List = () => {
@@ -54,26 +49,31 @@ const List = () => {
     //   },
     // },
   ]);
-  // const [ids, setId] = useState<number>(0);
-  // const [status, setStatus] = useState("");
-  // const [name, setName] = useState("");
-  // const [note, setNote] = useState("");
-  // const [isOpen, setIsOpen] = useState(false);
+  const [ids, setId] = useState<number>(0);
+  const [status, setStatus] = useState("");
+  const [name, setName] = useState("");
+  const [note, setNote] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
 
-  // const handleOpen = (id: number, status: string, name: string) => {
-  //   setIsOpen(true);
-  //   setName(name);
-  //   setId(id);
-  //   setStatus(status);
-  // };
+  const handleOpen = (id: number, status: string, name: string) => {
+    setIsOpen(true);
+    setName(name);
+    setId(id);
+    setStatus(status);
+  };
 
-  // const handleClose = () => {
-  //   setIsOpen(false);
-  // };
+  const handleClose = () => {
+    setIsOpen(false);
+  };
 
-  const getMerchant = () => {
+  useEffect(() => {
+    getCampaign();
+  }, []);
+
+  const getCampaign = () => {
     axios
-      .get("https://api.foodia-dev.nuncorp.id/api/v1/merchant/filter", {
+      .get("https://api.foodia-dev.nuncorp.id/api/v1/campaign/filter", {
         headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       })
       .then((res) => {
@@ -82,16 +82,14 @@ const List = () => {
       .catch((error) => {});
   };
 
-  useEffect(() => {
-    getMerchant();
-  }, []);
+  // console.log(status);
 
   // const Approvals = (id: number, status: string) => {
   //   {
   //     status === "approved"
   //       ? axios
   //           .put(
-  //             `https://api.foodia-dev.nuncorp.id/api/v1/merchant/approval/${id}`,
+  //             `https://api.foodia-dev.nuncorp.id/api/v1/detonator/approval/${id}`,
   //             {
   //               status,
   //               note: "approved",
@@ -103,7 +101,7 @@ const List = () => {
   //             }
   //           )
   //           .then((res) => {
-  //             getMerchant();
+  //             getDetonator();
   //             setIsOpen(false);
   //           })
   //           .catch((error) => {})
@@ -111,7 +109,7 @@ const List = () => {
   //       ? console.log("Note Empty")
   //       : axios
   //           .put(
-  //             `https://api.foodia-dev.nuncorp.id/api/v1/merchant/approval/${id}`,
+  //             `https://api.foodia-dev.nuncorp.id/api/v1/detonator/approval/${id}`,
   //             {
   //               status,
   //               note,
@@ -123,7 +121,7 @@ const List = () => {
   //             }
   //           )
   //           .then((res) => {
-  //             getMerchant();
+  //             getDetonator();
   //             setIsOpen(false);
   //           })
   //           .catch((error) => {});
@@ -132,7 +130,7 @@ const List = () => {
 
   return (
     <>
-      <BaseCard title="Merchant Management">
+      <BaseCard title="Campaign Management">
         <TableContainer
           sx={{
             width: {
@@ -157,22 +155,22 @@ const List = () => {
                 </TableCell>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
-                    Fullname
+                    Event Name
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
-                    Email
+                    Event Type
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
-                    Phone number
+                    Description
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
-                    Register at
+                    Event Date
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -180,11 +178,11 @@ const List = () => {
                     Status
                   </Typography>
                 </TableCell>
-                <TableCell>
+                {/* <TableCell>
                   <Typography color="textSecondary" variant="h6">
                     Action
                   </Typography>
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -197,22 +195,22 @@ const List = () => {
                   </TableCell>
                   <TableCell>
                     <Typography fontSize="15px" fontWeight={500}>
-                      {product.oauth.fullname}
+                      {product.event_name}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography color="textSecondary" variant="h6">
-                      {product.oauth.email}
+                      {product.event_type}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography color="textSecondary" variant="h6">
-                      {product.oauth.phone}
+                      {product.description}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography color="textSecondary" variant="h6">
-                      {moment(product.created_at).format("YYYY-MM-DD")}
+                      {product.event_date}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -233,40 +231,10 @@ const List = () => {
                     ></Chip>
                   </TableCell>
                   <TableCell>
-                    <Stack spacing={1} direction="row">
-                      {/* <Button
-                        variant="contained"
-                        size="small"
-                        color="success"
-                        disabled={product.status === "approved"}
-                        onClick={() =>
-                          handleOpen(
-                            product.id,
-                            "approved",
-                            product.oauth.fullname
-                          )
-                        }
-                      >
-                        <IconCircleCheck size={18} /> Approve
-                      </Button>
-                      <Button
-                        variant="contained"
-                        size="small"
-                        color="error"
-                        disabled={product.status === "rejected"}
-                        onClick={() =>
-                          handleOpen(
-                            product.id,
-                            "rejected",
-                            product.oauth.fullname
-                          )
-                        }
-                      >
-                        <IconBan size={16} /> Reject
-                      </Button> */}
+                    {/* <Stack spacing={1} direction="row">
                       <Link
                         href={{
-                          pathname: "/ui-components/merchant/info",
+                          pathname: "/ui-components/detonator/info",
                           query: {
                             id: product.id,
                           },
@@ -276,7 +244,7 @@ const List = () => {
                           <IconEye size={20} /> View
                         </Button>
                       </Link>
-                    </Stack>
+                    </Stack> */}
                   </TableCell>
                 </TableRow>
               ))}

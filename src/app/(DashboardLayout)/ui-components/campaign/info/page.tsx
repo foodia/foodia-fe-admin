@@ -219,7 +219,6 @@ const DetonatorInfo = () => {
             ""
           ) : (
             <TextField
-              multiline
               onChange={(e) => setNote(e.target.value)}
               label="Note :"
               variant="outlined"

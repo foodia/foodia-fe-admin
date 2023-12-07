@@ -19,10 +19,12 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import BaseCard from "../shared/DashboardCard";
 import { useRouter } from "next/navigation";
+import moment from "moment";
 
 type Props = {
   id: number;
   status: string;
+  created_at: string;
   oauth: { fullname: string; email: string; phone: string };
 };
 
@@ -174,6 +176,11 @@ const List = () => {
                 </TableCell>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
+                    Register at
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
                     Status
                   </Typography>
                 </TableCell>
@@ -205,6 +212,11 @@ const List = () => {
                   <TableCell>
                     <Typography color="textSecondary" variant="h6">
                       {product.oauth.phone}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="textSecondary" variant="h6">
+                      {moment(product.created_at).format("YYYY-MM-DD")}
                     </Typography>
                   </TableCell>
                   <TableCell>
