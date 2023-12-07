@@ -52,22 +52,22 @@ const List = () => {
     //   },
     // },
   ]);
-  const [ids, setId] = useState<number>(0);
-  const [status, setStatus] = useState("");
-  const [name, setName] = useState("");
-  const [note, setNote] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
+  // const [ids, setId] = useState<number>(0);
+  // const [status, setStatus] = useState("");
+  // const [name, setName] = useState("");
+  // const [note, setNote] = useState("");
+  // const [isOpen, setIsOpen] = useState(false);
 
-  const handleOpen = (id: number, status: string, name: string) => {
-    setIsOpen(true);
-    setName(name);
-    setId(id);
-    setStatus(status);
-  };
+  // const handleOpen = (id: number, status: string, name: string) => {
+  //   setIsOpen(true);
+  //   setName(name);
+  //   setId(id);
+  //   setStatus(status);
+  // };
 
-  const handleClose = () => {
-    setIsOpen(false);
-  };
+  // const handleClose = () => {
+  //   setIsOpen(false);
+  // };
 
   const getMerchant = () => {
     axios
@@ -84,49 +84,49 @@ const List = () => {
     getMerchant();
   }, []);
 
-  const Approvals = (id: number, status: string) => {
-    {
-      status === "approved"
-        ? axios
-            .put(
-              `https://api.foodia-dev.nuncorp.id/api/v1/merchant/approval/${id}`,
-              {
-                status,
-                note: "approved",
-              },
-              {
-                headers: {
-                  authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
-                },
-              }
-            )
-            .then((res) => {
-              getMerchant();
-              setIsOpen(false);
-            })
-            .catch((error) => {})
-        : note === ""
-        ? console.log("Note Empty")
-        : axios
-            .put(
-              `https://api.foodia-dev.nuncorp.id/api/v1/merchant/approval/${id}`,
-              {
-                status,
-                note,
-              },
-              {
-                headers: {
-                  authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
-                },
-              }
-            )
-            .then((res) => {
-              getMerchant();
-              setIsOpen(false);
-            })
-            .catch((error) => {});
-    }
-  };
+  // const Approvals = (id: number, status: string) => {
+  //   {
+  //     status === "approved"
+  //       ? axios
+  //           .put(
+  //             `https://api.foodia-dev.nuncorp.id/api/v1/merchant/approval/${id}`,
+  //             {
+  //               status,
+  //               note: "approved",
+  //             },
+  //             {
+  //               headers: {
+  //                 authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
+  //               },
+  //             }
+  //           )
+  //           .then((res) => {
+  //             getMerchant();
+  //             setIsOpen(false);
+  //           })
+  //           .catch((error) => {})
+  //       : note === ""
+  //       ? console.log("Note Empty")
+  //       : axios
+  //           .put(
+  //             `https://api.foodia-dev.nuncorp.id/api/v1/merchant/approval/${id}`,
+  //             {
+  //               status,
+  //               note,
+  //             },
+  //             {
+  //               headers: {
+  //                 authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
+  //               },
+  //             }
+  //           )
+  //           .then((res) => {
+  //             getMerchant();
+  //             setIsOpen(false);
+  //           })
+  //           .catch((error) => {});
+  //   }
+  // };
 
   return (
     <>
@@ -211,7 +211,9 @@ const List = () => {
                         backgroundColor:
                           product.status === "approved"
                             ? "success.main"
-                            : "error.main",
+                            : product.status === "rejected"
+                            ? "error.main"
+                            : "warning.main",
                         color: "#fff",
                       }}
                       size="small"
@@ -220,7 +222,7 @@ const List = () => {
                   </TableCell>
                   <TableCell>
                     <Stack spacing={1} direction="row">
-                      <Button
+                      {/* <Button
                         variant="contained"
                         size="small"
                         color="success"
@@ -249,7 +251,7 @@ const List = () => {
                         }
                       >
                         <IconBan size={16} /> Reject
-                      </Button>
+                      </Button> */}
                       <Link
                         href={{
                           pathname: "/ui-components/merchant/info",
@@ -271,7 +273,7 @@ const List = () => {
         </TableContainer>
       </BaseCard>
 
-      <Modal
+      {/* <Modal
         style={{
           display: "flex",
           justifyContent: "center",
@@ -318,7 +320,7 @@ const List = () => {
             <Button onClick={handleClose}>Cancel</Button>
           </Box>
         </Box>
-      </Modal>
+      </Modal> */}
     </>
   );
 };

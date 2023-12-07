@@ -1,6 +1,8 @@
 import {
   IconBoxMultiple,
+  IconBrandCampaignmonitor,
   IconBuildingStore,
+  IconCamper,
   IconCircleDot,
   IconHome,
   IconInfoCircle,
@@ -27,20 +29,39 @@ const Menuitems = [
   // },
   {
     id: uniqueId(),
-    title: "Users",
-    icon: IconUsers,
+    title: "Detonator",
+    icon: IconTank,
     submenu: [
       {
         id: uniqueId(),
-        href: "/ui-components/merchant",
-        name: "Merchant",
-        icon: <IconPhoto />,
+        href: "/ui-components/detonator",
+        name: "List Detonator",
+        icon: <IconUser />,
       },
       {
         id: uniqueId(),
         href: "/ui-components/detonator",
-        name: "Detonator",
-        icon: <IconUser />,
+        name: "Campaign",
+        icon: <IconBrandCampaignmonitor />,
+      },
+    ],
+  },
+  {
+    id: uniqueId(),
+    title: "Merchant",
+    icon: IconCamper,
+    submenu: [
+      {
+        id: uniqueId(),
+        href: "/ui-components/merchant",
+        name: "List Merchant",
+        icon: <IconBuildingStore />,
+      },
+      {
+        id: uniqueId(),
+        href: "/ui-components/merchant",
+        name: "Product",
+        icon: <IconPhoto />,
       },
     ],
   },

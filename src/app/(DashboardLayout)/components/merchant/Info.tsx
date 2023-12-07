@@ -4,53 +4,68 @@ import BaseCard from "../shared/DashboardCard";
 import { useSearchParams } from "next/navigation";
 import axios from "axios";
 
-type Props = {
-  id: string;
-  ktp_number: string;
-  status: string;
-  no_link_aja: string;
-  province: string;
-  city: string;
-  sub_district: string;
-  postal_code: string;
-  address: string;
-  oauth: { fullname: string; email: string; phone: string };
-};
+// type Props = {
+//   id: string;
+//   ktp_number: string;
+//   status: string;
+//   no_link_aja: string;
+//   province: string;
+//   city: string;
+//   sub_district: string;
+//   postal_code: string;
+//   address: string;
+//   oauth: { fullname: string; email: string; phone: string };
+// };
 
-const Info = () => {
-  const searchParams = useSearchParams();
-  const [data, setData] = useState<Props>({
-    id: "",
-    ktp_number: "",
-    status: "",
-    no_link_aja: "",
-    province: "",
-    city: "",
-    sub_district: "",
-    postal_code: "",
-    address: "",
-    oauth: { fullname: "", email: "", phone: "" },
-  });
-
-  useEffect(() => {
-    getMerchantDetail();
-  }, []);
-
-  const getMerchantDetail = () => {
-    axios
-      .get(
-        `https://api.foodia-dev.nuncorp.id/api/v1/merchant/fetch/${searchParams.get(
-          "id"
-        )}`,
-        {
-          headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
-        }
-      )
-      .then((res) => {
-        setData(res.data.body);
-      })
-      .catch((error) => {});
+interface ChildProps {
+  data: {
+    id: number;
+    ktp_number: string;
+    status: string;
+    no_link_aja: string;
+    province: string;
+    city: string;
+    sub_district: string;
+    postal_code: string;
+    address: string;
+    oauth: { fullname: string; email: string; phone: string };
   };
+}
+
+const Info: React.FC<ChildProps> = ({ data }) => {
+  // const searchParams = useSearchParams();
+  // const [data, setData] = useState<Props>({
+  //   id: "",
+  //   ktp_number: "",
+  //   status: "",
+  //   no_link_aja: "",
+  //   province: "",
+  //   city: "",
+  //   sub_district: "",
+  //   postal_code: "",
+  //   address: "",
+  //   oauth: { fullname: "", email: "", phone: "" },
+  // });
+
+  // useEffect(() => {
+  //   getMerchantDetail();
+  // }, []);
+
+  // const getMerchantDetail = () => {
+  //   axios
+  //     .get(
+  //       `https://api.foodia-dev.nuncorp.id/api/v1/merchant/fetch/${searchParams.get(
+  //         "id"
+  //       )}`,
+  //       {
+  //         headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
+  //       }
+  //     )
+  //     .then((res) => {
+  //       setData(res.data.body);
+  //     })
+  //     .catch((error) => {});
+  // };
   return (
     <BaseCard title="Merchant Info">
       <Stack spacing={3}>

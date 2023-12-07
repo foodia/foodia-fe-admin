@@ -215,7 +215,9 @@ const List = () => {
                         backgroundColor:
                           product.status === "approved"
                             ? "success.main"
-                            : "error.main",
+                            : product.status === "rejected"
+                            ? "error.main"
+                            : "warning.main",
                         color: "#fff",
                       }}
                       size="small"
@@ -224,36 +226,6 @@ const List = () => {
                   </TableCell>
                   <TableCell>
                     <Stack spacing={1} direction="row">
-                      <Button
-                        variant="contained"
-                        size="small"
-                        color="success"
-                        disabled={product.status === "approved"}
-                        onClick={() =>
-                          handleOpen(
-                            product.id,
-                            "approved",
-                            product.oauth.fullname
-                          )
-                        }
-                      >
-                        <IconCircleCheck size={18} /> Approve
-                      </Button>
-                      <Button
-                        variant="contained"
-                        size="small"
-                        color="error"
-                        disabled={product.status === "rejected"}
-                        onClick={() =>
-                          handleOpen(
-                            product.id,
-                            "rejected",
-                            product.oauth.fullname
-                          )
-                        }
-                      >
-                        <IconBan size={16} /> Reject
-                      </Button>
                       <Link
                         href={{
                           pathname: "/ui-components/detonator/info",
