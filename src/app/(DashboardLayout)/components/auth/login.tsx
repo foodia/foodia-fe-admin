@@ -1,17 +1,27 @@
-import { Box, Button, TextField, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  TextField,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import BaseCard from "../shared/DashboardCard";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import Loading from "../../loading";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const theme = useTheme();
 
   const onLogin = () => {
+    setIsLoading(true);
     axios
       .post("https://api.foodia-dev.nuncorp.id/api/v1/auth/login", {
         email,
@@ -20,22 +30,19 @@ const Login = () => {
       .then((res) => {
         const role = res?.data?.body.role;
         const email = res?.data?.body.email;
-        const user_id = res?.data?.body.user_id;
         const token = res?.data.body.token;
-        const username = res?.data?.body.username;
-        const is_locked = res?.data?.body.is_locked;
+        const username = res?.data?.body.fullname;
         localStorage.setItem("TOKEN", token);
         localStorage.setItem("USERNAME", username);
         localStorage.setItem("ROLE", role);
         localStorage.setItem("EMAIL", email);
-        localStorage.setItem("USER_ID", user_id);
-        localStorage.setItem("IS_LOCKED", is_locked);
         if (role === "detonator") {
           router.push("/ui-components/detonator");
         } else {
           router.refresh();
           // window.location.href = "/authentication/sign-in";
         }
+        // setIsLoading(false);
       })
       .catch((error) => {
         // if (error.code === "ERR_NETWORK") {
@@ -48,6 +55,8 @@ const Login = () => {
         //     "error"
         //   );
         // }
+        console.log("error");
+        setIsLoading(false);
       });
   };
 
@@ -83,8 +92,17 @@ const Login = () => {
       />
       <Button
         onClick={() => onLogin()}
-        style={{ backgroundColor: theme.palette.primary.main, color: "white" }}
+        style={{
+          backgroundColor: theme.palette.primary.main,
+          color: "white",
+          gap: "7px",
+        }}
       >
+        {isLoading ? (
+          <CircularProgress size="20px" sx={{ color: "white" }} />
+        ) : (
+          ""
+        )}
         Login
       </Button>
     </Box>

@@ -1,8 +1,6 @@
 "use client";
 import Attachment from "@/app/(DashboardLayout)/components/detonator/Attachment";
-import Info from "@/app/(DashboardLayout)/components/detonator/Info";
-import ModalPopup from "@/app/(DashboardLayout)/components/shared/ModalPopup";
-import { Label } from "@mui/icons-material";
+import Info from "@/app/(DashboardLayout)/components/campaign/Info";
 import {
   Box,
   Button,
@@ -16,15 +14,22 @@ import { IconBan, IconCircleCheck, IconClock } from "@tabler/icons-react";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import ModalPopup from "@/app/(DashboardLayout)/components/shared/ModalPopup";
 
 type Props = {
   id: number;
-  ktp_number: string;
+  event_name: string;
+  event_date: string;
+  event_time: string;
+  description: string;
+  donation_target: string;
+  province: string;
+  city: string;
   status: string;
-  oauth: { fullname: string; email: string; phone: string };
+  detonator: { oauth: { fullname: string } };
 };
 
-const DetonatorInfo = () => {
+const CampaignInfo = () => {
   const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);
   const [ids, setId] = useState<number>(0);
@@ -33,9 +38,15 @@ const DetonatorInfo = () => {
   const [note, setNote] = useState("");
   const [data, setData] = useState<Props>({
     id: 0,
-    ktp_number: "",
+    event_name: "",
+    event_date: "",
+    event_time: "",
+    description: "",
+    donation_target: "",
+    province: "",
+    city: "",
     status: "",
-    oauth: { fullname: "", email: "", phone: "" },
+    detonator: { oauth: { fullname: "" } },
   });
 
   const handleOpen = (id: number, status: string, name: string) => {
@@ -123,75 +134,77 @@ const DetonatorInfo = () => {
         </Grid>
         <Grid item xs={6} lg={6}>
           <Attachment />
-          <Box
-            marginTop="70px"
+        </Grid>
+      </Grid>
+      <Box
+        marginTop="40px"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        gap="10px"
+      >
+        {data.status === "approved" ? (
+          <Typography
             display="flex"
-            flexDirection="column"
             alignItems="center"
             justifyContent="center"
-            gap="20px"
-            color="white"
+            color="success.main"
           >
+            <IconCircleCheck /> Approved
+          </Typography>
+        ) : data.status === "rejected" ? (
+          <Typography
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            color="error.main"
+          >
+            <IconBan /> Rejected
+          </Typography>
+        ) : (
+          data.status === "waiting" && (
             <Typography
               display="flex"
               alignItems="center"
               justifyContent="center"
-              borderRadius="15px"
-              padding="5px 15px"
-              sx={
-                data.status === "approved"
-                  ? { backgroundColor: "success.main" }
-                  : data.status === "rejected"
-                  ? { backgroundColor: "error.main" }
-                  : { backgroundColor: "warning.main" }
-              }
+              color="warning.main"
             >
-              {data.status === "approved" ? (
-                <>
-                  Approved <IconCircleCheck />
-                </>
-              ) : data.status === "rejected" ? (
-                <>
-                  Rejected <IconBan />
-                </>
-              ) : (
-                <>
-                  Waiting <IconClock />
-                </>
-              )}
+              <IconClock /> Waiting
             </Typography>
-            <Stack
-              display="flex"
-              justifyContent="center"
-              spacing={1}
-              direction="row"
-            >
-              <Button
-                variant="contained"
-                size="small"
-                disabled={data.status === "approved"}
-                onClick={() =>
-                  handleOpen(data.id, "approved", data.oauth.fullname)
-                }
-                color="success"
-              >
-                <IconCircleCheck size={18} /> Approve
-              </Button>
-              <Button
-                variant="contained"
-                size="small"
-                disabled={data.status === "rejected"}
-                onClick={() =>
-                  handleOpen(data.id, "rejected", data.oauth.fullname)
-                }
-                color="error"
-              >
-                <IconBan size={16} /> Reject
-              </Button>
-            </Stack>
-          </Box>
-        </Grid>
-      </Grid>
+          )
+        )}
+        <Stack
+          display="flex"
+          justifyContent="center"
+          spacing={1}
+          direction="row"
+        >
+          <Button
+            variant="contained"
+            size="small"
+            color="success"
+            disabled
+            onClick={() =>
+              handleOpen(data.id, "approved", data.detonator?.oauth?.fullname)
+            }
+          >
+            <IconCircleCheck size={18} /> Approve
+          </Button>
+          <Button
+            variant="contained"
+            size="small"
+            color="error"
+            disabled
+            onClick={() =>
+              handleOpen(data.id, "rejected", data.detonator?.oauth?.fullname)
+            }
+          >
+            <IconBan size={16} /> Reject
+          </Button>
+        </Stack>
+      </Box>
+
       <ModalPopup
         open={isOpen}
         handleClose={handleClose}
@@ -205,4 +218,4 @@ const DetonatorInfo = () => {
   );
 };
 
-export default DetonatorInfo;
+export default CampaignInfo;

@@ -35,6 +35,7 @@ const Profile = () => {
   };
 
   const onLogout = () => {
+    localStorage.clear();
     router.push("/ui-components/auth");
   };
 
@@ -89,14 +90,14 @@ const Profile = () => {
         }}
         onClick={handleClick2}
       >
-        <Avatar
+        {/* <Avatar
           src={"/images/users/user2.jpg"}
           alt={"ProfileImg"}
           sx={{
             width: 30,
             height: 30,
           }}
-        />
+        /> */}
         <Box
           sx={{
             display: {
@@ -121,7 +122,7 @@ const Profile = () => {
               ml: 1,
             }}
           >
-            Julia
+            {localStorage.getItem("USERNAME")}
           </Typography>
           <IconChevronDown width="20" height="20" />
         </Box>

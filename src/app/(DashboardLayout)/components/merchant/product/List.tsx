@@ -1,9 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import BaseCard from "../shared/DashboardCard";
+import BaseCard from "../../shared/DashboardCard";
 import DataTableComponent from "./DataTable";
 
-const List = () => {
+interface ChildProps {
+  merchant_id: number;
+}
+
+const List: React.FC<ChildProps> = ({ merchant_id }) => {
   const [data, setData] = useState([
     // {
     //   id: 1,
@@ -31,11 +35,16 @@ const List = () => {
     // },
   ]);
 
+  console.log("merchant === ", merchant_id);
+
   const getMerchant = () => {
     axios
-      .get("https://api.foodia-dev.nuncorp.id/api/v1/merchant/filter", {
-        headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
-      })
+      .get(
+        `https://api.foodia-dev.nuncorp.id/api/v1/merchant-product/filter?merchant_id=2`,
+        {
+          headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
+        }
+      )
       .then((res) => {
         setData(res.data.body);
       })
@@ -48,7 +57,7 @@ const List = () => {
 
   return (
     <>
-      <BaseCard title="Merchant Management">
+      <BaseCard title="Merchant Menu">
         <DataTableComponent data={data} />
       </BaseCard>
     </>

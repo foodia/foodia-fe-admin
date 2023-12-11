@@ -1,19 +1,7 @@
 import {
-  IconBoxMultiple,
-  IconBrandCampaignmonitor,
   IconBuildingStore,
-  IconCamper,
-  IconCircleDot,
-  IconHome,
-  IconInfoCircle,
-  IconLayout,
-  IconLayoutGrid,
-  IconPhoto,
-  IconPictureInPicture,
-  IconPoint,
-  IconStar,
-  IconTable,
-  IconTank,
+  IconBurger,
+  IconSpeakerphone,
   IconUser,
   IconUsers,
 } from "@tabler/icons-react";
@@ -21,16 +9,10 @@ import {
 import { uniqueId } from "lodash";
 
 const Menuitems = [
-  // {
-  //   id: uniqueId(),
-  //   title: "Dashboard",
-  //   icon: IconHome,
-  //   href: "/dashboard",
-  // },
   {
     id: uniqueId(),
     title: "Detonator",
-    icon: IconTank,
+    icon: IconUsers,
     submenu: [
       {
         id: uniqueId(),
@@ -41,72 +23,30 @@ const Menuitems = [
       {
         id: uniqueId(),
         href: "/ui-components/campaign",
-        name: "Campaign",
-        icon: <IconBrandCampaignmonitor />,
+        name: "List Campaign",
+        icon: <IconSpeakerphone />,
       },
     ],
   },
   {
     id: uniqueId(),
     title: "Merchant",
-    icon: IconCamper,
+    icon: IconBuildingStore,
     submenu: [
       {
         id: uniqueId(),
         href: "/ui-components/merchant",
         name: "List Merchant",
-        icon: <IconBuildingStore />,
+        icon: <IconUser />,
       },
       {
         id: uniqueId(),
-        href: "/ui-components/merchant",
-        name: "Product",
-        icon: <IconPhoto />,
+        href: "/ui-components/product",
+        name: "List Product",
+        icon: <IconBurger />,
       },
     ],
   },
-  // {
-  //   id: uniqueId(),
-  //   title: "Buttons",
-  //   icon: IconCircleDot,
-  //   href: "/ui-components/buttons",
-  // },
-  // {
-  //   id: uniqueId(),
-  //   title: "Forms",
-  //   icon: IconTable,
-  //   href: "/ui-components/forms",
-  // },
-  // {
-  //   id: uniqueId(),
-  //   title: "Alerts",
-  //   icon: IconInfoCircle,
-  //   href: "/ui-components/alerts",
-  // },
-  // {
-  //   id: uniqueId(),
-  //   title: "Ratings",
-  //   icon: IconStar,
-  //   href: "/ui-components/ratings",
-  // },
-  // {
-  //   id: uniqueId(),
-  //   title: "Images",
-  //   icon: IconPhoto,
-  //   href: "/ui-components/images",
-  // },
-  // {
-  //   id: uniqueId(),
-  //   title: "Pagination",
-  //   icon: IconUser,
-  //   href: "/ui-components/pagination",
-  // },
-  // {
-  //   id: uniqueId(),
-  //   title: "Tables",
-  //   icon: IconLayoutGrid,
-  //   href: "/ui-components/table",
-  // },
 ];
 
 export default Menuitems;

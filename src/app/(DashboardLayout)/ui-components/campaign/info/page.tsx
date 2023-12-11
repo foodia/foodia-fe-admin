@@ -1,6 +1,6 @@
 "use client";
 import Attachment from "@/app/(DashboardLayout)/components/detonator/Attachment";
-import Info from "@/app/(DashboardLayout)/components/detonator/Info";
+import Info from "@/app/(DashboardLayout)/components/campaign/Info";
 import {
   Box,
   Button,
@@ -14,15 +14,22 @@ import { IconBan, IconCircleCheck, IconClock } from "@tabler/icons-react";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import ModalPopup from "@/app/(DashboardLayout)/components/shared/ModalPopup";
 
 type Props = {
   id: number;
-  ktp_number: string;
+  event_name: string;
+  event_date: string;
+  event_time: string;
+  description: string;
+  donation_target: string;
+  province: string;
+  city: string;
   status: string;
-  oauth: { fullname: string; email: string; phone: string };
+  detonator: { oauth: { fullname: string } };
 };
 
-const DetonatorInfo = () => {
+const CampaignInfo = () => {
   const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);
   const [ids, setId] = useState<number>(0);
@@ -31,9 +38,15 @@ const DetonatorInfo = () => {
   const [note, setNote] = useState("");
   const [data, setData] = useState<Props>({
     id: 0,
-    ktp_number: "",
+    event_name: "",
+    event_date: "",
+    event_time: "",
+    description: "",
+    donation_target: "",
+    province: "",
+    city: "",
     status: "",
-    oauth: { fullname: "", email: "", phone: "" },
+    detonator: { oauth: { fullname: "" } },
   });
 
   const handleOpen = (id: number, status: string, name: string) => {
@@ -48,13 +61,13 @@ const DetonatorInfo = () => {
   };
 
   useEffect(() => {
-    getDetonatorDetail();
+    getCampaignDetail();
   }, []);
 
-  const getDetonatorDetail = () => {
+  const getCampaignDetail = () => {
     axios
       .get(
-        `https://api.foodia-dev.nuncorp.id/api/v1/detonator/fetch/${searchParams.get(
+        `https://api.foodia-dev.nuncorp.id/api/v1/campaign/fetch/${searchParams.get(
           "id"
         )}`,
         {
@@ -74,7 +87,7 @@ const DetonatorInfo = () => {
       status === "approved"
         ? axios
             .put(
-              `https://api.foodia-dev.nuncorp.id/api/v1/detonator/approval/${id}`,
+              `https://api.foodia-dev.nuncorp.id/api/v1/campaign/approval/${id}`,
               {
                 status,
                 note: "approved",
@@ -86,7 +99,7 @@ const DetonatorInfo = () => {
               }
             )
             .then((res) => {
-              getDetonatorDetail();
+              getCampaignDetail();
               setIsOpen(false);
             })
             .catch((error) => {})
@@ -94,7 +107,7 @@ const DetonatorInfo = () => {
         ? console.log("Note Empty")
         : axios
             .put(
-              `https://api.foodia-dev.nuncorp.id/api/v1/detonator/approval/${id}`,
+              `https://api.foodia-dev.nuncorp.id/api/v1/campaign/approval/${id}`,
               {
                 status,
                 note,
@@ -106,7 +119,7 @@ const DetonatorInfo = () => {
               }
             )
             .then((res) => {
-              getDetonatorDetail();
+              getCampaignDetail();
               setIsOpen(false);
             })
             .catch((error) => {});
@@ -150,14 +163,16 @@ const DetonatorInfo = () => {
             <IconBan /> Rejected
           </Typography>
         ) : (
-          <Typography
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            color="warning.main"
-          >
-            <IconClock /> Waiting
-          </Typography>
+          data.status === "waiting" && (
+            <Typography
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              color="warning.main"
+            >
+              <IconClock /> Waiting
+            </Typography>
+          )
         )}
         <Stack
           display="flex"
@@ -169,8 +184,10 @@ const DetonatorInfo = () => {
             variant="contained"
             size="small"
             color="success"
-            disabled={data.status === "approved"}
-            onClick={() => handleOpen(data.id, "approved", data.oauth.fullname)}
+            disabled={status === "approved"}
+            onClick={() =>
+              handleOpen(data.id, "approved", data.detonator?.oauth?.fullname)
+            }
           >
             <IconCircleCheck size={18} /> Approve
           </Button>
@@ -178,64 +195,27 @@ const DetonatorInfo = () => {
             variant="contained"
             size="small"
             color="error"
-            disabled={data.status === "rejected"}
-            onClick={() => handleOpen(data.id, "rejected", data.oauth.fullname)}
+            disabled={status === "rejected"}
+            onClick={() =>
+              handleOpen(data.id, "rejected", data.detonator?.oauth?.fullname)
+            }
           >
             <IconBan size={16} /> Reject
           </Button>
         </Stack>
       </Box>
 
-      <Modal
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+      <ModalPopup
         open={isOpen}
-        onClose={handleClose}
-        aria-labelledby="child-modal-title"
-        aria-describedby="child-modal-description"
-      >
-        <Box
-          sx={{
-            display: "flex",
-            borderRadius: "10px",
-            flexDirection: "column",
-            alignItems: "center",
-            width: "auto",
-            backgroundColor: "white",
-            padding: "35px",
-            gap: "30px",
-          }}
-        >
-          <Typography
-            style={{ display: "flex", flexDirection: "row", gap: "5px" }}
-          >
-            {status === "approved" ? "Approve" : "Reject"}{" "}
-            <Typography style={{ fontWeight: "bold" }}>{name}</Typography> ?
-          </Typography>
-          {status === "approved" ? (
-            ""
-          ) : (
-            <TextField
-              onChange={(e) => setNote(e.target.value)}
-              label="Note :"
-              variant="outlined"
-              type="text"
-              helperText="*This Field Must be Filled"
-            />
-          )}
-          <Box sx={{ display: "flex", flexDirection: "row" }}>
-            <Button onClick={() => Approvals(ids, status)}>
-              {status === "approved" ? "Approve" : "Reject"}{" "}
-            </Button>
-            <Button onClick={handleClose}>Cancel</Button>
-          </Box>
-        </Box>
-      </Modal>
+        handleClose={handleClose}
+        status={status}
+        name={name}
+        note={note}
+        onChange={(e: any) => setNote(e.target.value)}
+        handleSubmit={() => Approvals(ids, status)}
+      />
     </>
   );
 };
 
-export default DetonatorInfo;
+export default CampaignInfo;

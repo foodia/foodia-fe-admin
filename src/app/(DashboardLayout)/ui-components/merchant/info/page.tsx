@@ -14,6 +14,8 @@ import Attachment from "@/app/(DashboardLayout)/components/merchant/Attachment";
 import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import { IconBan, IconCircleCheck, IconClock } from "@tabler/icons-react";
+import List from "@/app/(DashboardLayout)/components/merchant/product/List";
+import ModalPopup from "@/app/(DashboardLayout)/components/shared/ModalPopup";
 
 type Props = {
   id: number;
@@ -132,6 +134,9 @@ const MerchantInfo = () => {
         <Grid item xs={6} lg={6}>
           <Attachment />
         </Grid>
+        {/* <Grid item xs={12} lg={12}>
+          <List merchant_id={data.id} />
+        </Grid> */}
       </Grid>
       <Box
         marginTop="40px"
@@ -191,54 +196,15 @@ const MerchantInfo = () => {
         </Stack>
       </Box>
 
-      <Modal
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+      <ModalPopup
         open={isOpen}
-        onClose={handleClose}
-        aria-labelledby="child-modal-title"
-        aria-describedby="child-modal-description"
-      >
-        <Box
-          sx={{
-            display: "flex",
-            borderRadius: "10px",
-            flexDirection: "column",
-            alignItems: "center",
-            width: "auto",
-            backgroundColor: "white",
-            padding: "35px",
-            gap: "30px",
-          }}
-        >
-          <Typography
-            style={{ display: "flex", flexDirection: "row", gap: "5px" }}
-          >
-            {status === "approved" ? "Approve" : "Reject"}{" "}
-            <Typography style={{ fontWeight: "bold" }}>{name}</Typography> ?
-          </Typography>
-          {status === "approved" ? (
-            ""
-          ) : (
-            <TextField
-              onChange={(e) => setNote(e.target.value)}
-              label="Note :"
-              variant="outlined"
-              type="text"
-              helperText="*This Field Must be Filled"
-            />
-          )}
-          <Box sx={{ display: "flex", flexDirection: "row" }}>
-            <Button onClick={() => Approvals(ids, status)}>
-              {status === "approved" ? "Approve" : "Reject"}{" "}
-            </Button>
-            <Button onClick={handleClose}>Cancel</Button>
-          </Box>
-        </Box>
-      </Modal>
+        handleClose={handleClose}
+        status={status}
+        name={name}
+        note={note}
+        onChange={(e: any) => setNote(e.target.value)}
+        handleSubmit={() => Approvals(ids, status)}
+      />
     </>
   );
 };

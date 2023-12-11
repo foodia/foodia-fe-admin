@@ -31,9 +31,9 @@ const List = () => {
     // },
   ]);
 
-  const getMerchant = () => {
+  const getProduct = () => {
     axios
-      .get("https://api.foodia-dev.nuncorp.id/api/v1/merchant/filter", {
+      .get("https://api.foodia-dev.nuncorp.id/api/v1/detonator/filter", {
         headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       })
       .then((res) => {
@@ -43,12 +43,12 @@ const List = () => {
   };
 
   useEffect(() => {
-    getMerchant();
+    getProduct();
   }, []);
 
   return (
     <>
-      <BaseCard title="Merchant Management">
+      <BaseCard title="Product Management">
         <DataTableComponent data={data} />
       </BaseCard>
     </>

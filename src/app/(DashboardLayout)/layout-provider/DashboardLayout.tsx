@@ -3,7 +3,6 @@ import { styled, Container, Box } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import Header from "@/app/(DashboardLayout)/layout/header/Header";
 import Sidebar from "@/app/(DashboardLayout)/layout/sidebar/Sidebar";
-import { useRouter } from "next/navigation";
 import Footer from "../layout/footer/page";
 
 const MainWrapper = styled("div")(() => ({
@@ -32,6 +31,7 @@ export default function DashboardLayout({
 }) {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <MainWrapper className="mainwrapper">

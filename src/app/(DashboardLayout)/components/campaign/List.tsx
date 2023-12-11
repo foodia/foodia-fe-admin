@@ -31,9 +31,13 @@ const List = () => {
     // },
   ]);
 
-  const getMerchant = () => {
+  useEffect(() => {
+    getCampaign();
+  }, []);
+
+  const getCampaign = () => {
     axios
-      .get("https://api.foodia-dev.nuncorp.id/api/v1/merchant/filter", {
+      .get("https://api.foodia-dev.nuncorp.id/api/v1/campaign/filter", {
         headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       })
       .then((res) => {
@@ -42,13 +46,9 @@ const List = () => {
       .catch((error) => {});
   };
 
-  useEffect(() => {
-    getMerchant();
-  }, []);
-
   return (
     <>
-      <BaseCard title="Merchant Management">
+      <BaseCard title="List Campaign">
         <DataTableComponent data={data} />
       </BaseCard>
     </>

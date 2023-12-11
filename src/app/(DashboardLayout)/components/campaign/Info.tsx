@@ -4,16 +4,22 @@ import BaseCard from "../shared/DashboardCard";
 interface ChildProps {
   data: {
     id: number;
-    ktp_number: string;
+    event_name: string;
+    event_date: string;
+    event_time: string;
+    description: string;
+    donation_target: string;
+    province: string;
+    city: string;
     status: string;
-    oauth: { fullname: string; email: string; phone: string };
+    detonator: { oauth: { fullname: string } };
   };
 }
 
 const Info: React.FC<ChildProps> = ({ data }) => {
   return (
     <>
-      <BaseCard title="Detonator Info">
+      <BaseCard title="Campaign Info">
         <Stack spacing={3}>
           <Box
             sx={{
@@ -22,12 +28,12 @@ const Info: React.FC<ChildProps> = ({ data }) => {
               alignItems: "start",
             }}
           >
-            <Typography>Fullname : </Typography>
+            <Typography>Detonator : </Typography>
             <TextField
               fullWidth
               id="name-basic"
               variant="outlined"
-              defaultValue={data.oauth.fullname}
+              defaultValue={data.detonator?.oauth?.fullname}
               disabled
             />
           </Box>
@@ -38,12 +44,12 @@ const Info: React.FC<ChildProps> = ({ data }) => {
               alignItems: "start",
             }}
           >
-            <Typography>Phone Number : </Typography>
+            <Typography>Event Name : </Typography>
             <TextField
               fullWidth
               id="name-basic"
               variant="outlined"
-              defaultValue={data.oauth.phone}
+              defaultValue={data.event_name}
               disabled
             />
           </Box>
@@ -54,12 +60,12 @@ const Info: React.FC<ChildProps> = ({ data }) => {
               alignItems: "start",
             }}
           >
-            <Typography>Email : </Typography>
+            <Typography>Event Date : </Typography>
             <TextField
               fullWidth
               id="name-basic"
               variant="outlined"
-              defaultValue={data.oauth.email}
+              defaultValue={data.event_date}
               disabled
             />
           </Box>
@@ -70,12 +76,44 @@ const Info: React.FC<ChildProps> = ({ data }) => {
               alignItems: "start",
             }}
           >
-            <Typography>Nomor KTP : </Typography>
+            <Typography>Event Time : </Typography>
             <TextField
               fullWidth
               id="name-basic"
               variant="outlined"
-              defaultValue={data.ktp_number}
+              defaultValue={data.event_time}
+              disabled
+            />
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "start",
+            }}
+          >
+            <Typography>Description : </Typography>
+            <TextField
+              fullWidth
+              id="name-basic"
+              variant="outlined"
+              defaultValue={data.description}
+              disabled
+            />
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "start",
+            }}
+          >
+            <Typography>Donation Target : </Typography>
+            <TextField
+              fullWidth
+              id="name-basic"
+              variant="outlined"
+              defaultValue={data.donation_target}
               disabled
             />
           </Box>
