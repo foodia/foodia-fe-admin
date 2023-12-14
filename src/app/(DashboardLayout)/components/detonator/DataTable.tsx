@@ -93,7 +93,12 @@ const columns: TableColumn<Data>[] = [
 
 const DataTableComponent: React.FC<Props> = ({ data }) => {
   const [filterText, setFilterText] = useState<string>("unapproved");
+  const [searchBy, setSearchBy] = useState<string>("fullname");
   const [searchText, setSearchText] = useState<string>("");
+
+  const handleChangeSearchBy = (event: SelectChangeEvent) => {
+    setSearchBy(event.target.value);
+  };
 
   const handleChange = (event: SelectChangeEvent) => {
     setFilterText(event.target.value);
@@ -108,7 +113,11 @@ const DataTableComponent: React.FC<Props> = ({ data }) => {
     filteredItems = data.filter(
       (data) =>
         data.status.toLowerCase() !== "approved" &&
-        data.oauth.fullname.toLowerCase().includes(searchText.toLowerCase())
+        (searchBy === "fullname"
+          ? data.oauth.fullname.toLowerCase().includes(searchText.toLowerCase())
+          : searchBy === "email"
+          ? data.oauth.email.toLowerCase().includes(searchText.toLowerCase())
+          : data.oauth.phone.toLowerCase().includes(searchText.toLowerCase()))
     );
   } else {
     filteredItems = data.filter(
@@ -117,12 +126,31 @@ const DataTableComponent: React.FC<Props> = ({ data }) => {
         data.oauth.fullname.toLowerCase().includes(searchText.toLowerCase())
     );
   }
+
+  const searchOption = [
+    {
+      value: "fullname",
+      label: "FullName",
+    },
+    {
+      value: "email",
+      label: "Email",
+    },
+    {
+      value: "phone",
+      label: "Phone Number",
+    },
+  ];
+
   return (
     <>
       <DataTables
         value={filterText}
+        searchOption={searchOption}
+        valueSearchBy={searchBy}
         onChange={handleChange}
         onChangeSearch={handleChangeSearch}
+        onChangeSearchBy={handleChangeSearchBy}
         columns={columns}
         data={filteredItems}
       />

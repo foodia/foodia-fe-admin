@@ -1,5 +1,6 @@
 import { Box, Stack, TextField, Typography } from "@mui/material";
 import BaseCard from "../shared/DashboardCard";
+import LeafLet from "../shared/LeafLet";
 
 interface ChildProps {
   data: {
@@ -12,6 +13,8 @@ interface ChildProps {
     province: string;
     city: string;
     status: string;
+    latitude: string;
+    longitude: string;
     detonator: { oauth: { fullname: string } };
   };
 }
@@ -19,7 +22,7 @@ interface ChildProps {
 const Info: React.FC<ChildProps> = ({ data }) => {
   return (
     <>
-      <BaseCard title="Campaign Info">
+      <BaseCard title="Campaign Info" status={data.status}>
         <Stack spacing={3}>
           <Box
             sx={{
@@ -113,7 +116,10 @@ const Info: React.FC<ChildProps> = ({ data }) => {
               fullWidth
               id="name-basic"
               variant="outlined"
-              defaultValue={data.donation_target}
+              value={
+                "Rp." +
+                data.donation_target.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+              }
               disabled
             />
           </Box>

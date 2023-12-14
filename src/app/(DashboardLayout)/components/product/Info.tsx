@@ -13,7 +13,7 @@ interface ChildProps {
 const Info: React.FC<ChildProps> = ({ data }) => {
   return (
     <>
-      <BaseCard title="Detonator Info">
+      <BaseCard title="Product Info">
         <Stack spacing={3}>
           <Box
             sx={{

@@ -18,7 +18,7 @@ interface ChildProps {
 
 const Info: React.FC<ChildProps> = ({ data }) => {
   return (
-    <BaseCard title="Merchant Info">
+    <BaseCard title="Merchant Info" status={data.status}>
       <Stack spacing={3}>
         <Box
           sx={{

@@ -8,7 +8,7 @@ const CustomStylesTable = {
   cells: {
     style: {
       paddingLeft: "20px", // override the cell padding for data cells
-      justifyContent: "left",
+      justifyContent: "center",
       fontWeight: "bold",
     },
   },
@@ -41,7 +41,7 @@ const CustomStylesTable = {
     style: {
       paddingLeft: "20px", // override the cell padding for head cells
       paddingRight: "10px",
-      justifyContent: "left",
+      justifyContent: "center",
       color: "rgb(243 241 241)",
     },
   },

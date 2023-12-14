@@ -1,20 +1,13 @@
 "use client";
-import Attachment from "@/app/(DashboardLayout)/components/detonator/Attachment";
 import Info from "@/app/(DashboardLayout)/components/campaign/Info";
-import {
-  Box,
-  Button,
-  Grid,
-  Modal,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { IconBan, IconCircleCheck, IconClock } from "@tabler/icons-react";
+import Attachment from "@/app/(DashboardLayout)/components/detonator/Attachment";
+import LeafLet from "@/app/(DashboardLayout)/components/shared/LeafLet";
+import ModalPopup from "@/app/(DashboardLayout)/components/shared/ModalPopup";
+import { Box, Button, Grid, Stack, Typography } from "@mui/material";
+import { IconBan, IconCircleCheck } from "@tabler/icons-react";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import ModalPopup from "@/app/(DashboardLayout)/components/shared/ModalPopup";
 
 type Props = {
   id: number;
@@ -26,6 +19,8 @@ type Props = {
   province: string;
   city: string;
   status: string;
+  latitude: string;
+  longitude: string;
   detonator: { oauth: { fullname: string } };
 };
 
@@ -46,6 +41,8 @@ const CampaignInfo = () => {
     province: "",
     city: "",
     status: "",
+    latitude: "",
+    longitude: "",
     detonator: { oauth: { fullname: "" } },
   });
 
@@ -131,79 +128,58 @@ const CampaignInfo = () => {
       <Grid container spacing={3}>
         <Grid item xs={6} lg={6}>
           <Info data={data} />
+          <Box
+            marginTop="30px"
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            gap="10px"
+          >
+            <Stack
+              display="flex"
+              justifyContent="center"
+              spacing={1}
+              direction="row"
+            >
+              <Button
+                variant="contained"
+                size="large"
+                color="success"
+                disabled={status === "approved"}
+                onClick={() =>
+                  handleOpen(
+                    data.id,
+                    "approved",
+                    data.detonator?.oauth?.fullname
+                  )
+                }
+              >
+                <IconCircleCheck size={18} /> Approve
+              </Button>
+              <Button
+                variant="contained"
+                size="large"
+                color="error"
+                disabled={status === "rejected"}
+                onClick={() =>
+                  handleOpen(
+                    data.id,
+                    "rejected",
+                    data.detonator?.oauth?.fullname
+                  )
+                }
+              >
+                <IconBan size={16} /> Reject
+              </Button>
+            </Stack>
+          </Box>
         </Grid>
         <Grid item xs={6} lg={6}>
           <Attachment />
+          <LeafLet lat={data.latitude} long={data.longitude} />
         </Grid>
       </Grid>
-      <Box
-        marginTop="40px"
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        gap="10px"
-      >
-        {data.status === "approved" ? (
-          <Typography
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            color="success.main"
-          >
-            <IconCircleCheck /> Approved
-          </Typography>
-        ) : data.status === "rejected" ? (
-          <Typography
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            color="error.main"
-          >
-            <IconBan /> Rejected
-          </Typography>
-        ) : (
-          data.status === "waiting" && (
-            <Typography
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              color="warning.main"
-            >
-              <IconClock /> Waiting
-            </Typography>
-          )
-        )}
-        <Stack
-          display="flex"
-          justifyContent="center"
-          spacing={1}
-          direction="row"
-        >
-          <Button
-            variant="contained"
-            size="small"
-            color="success"
-            disabled={status === "approved"}
-            onClick={() =>
-              handleOpen(data.id, "approved", data.detonator?.oauth?.fullname)
-            }
-          >
-            <IconCircleCheck size={18} /> Approve
-          </Button>
-          <Button
-            variant="contained"
-            size="small"
-            color="error"
-            disabled={status === "rejected"}
-            onClick={() =>
-              handleOpen(data.id, "rejected", data.detonator?.oauth?.fullname)
-            }
-          >
-            <IconBan size={16} /> Reject
-          </Button>
-        </Stack>
-      </Box>
 
       <ModalPopup
         open={isOpen}

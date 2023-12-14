@@ -1,7 +1,7 @@
+import { Search } from "@mui/icons-material";
 import {
   Box,
   FormControl,
-  Input,
   InputAdornment,
   InputLabel,
   MenuItem,
@@ -12,22 +12,27 @@ import {
 import React from "react";
 import DataTable from "react-data-table-component";
 import CustomStylesTable from "./CustomStylesTable";
-import { AccountCircle, Search } from "@mui/icons-material";
 
 interface Data {
   value?: any;
+  valueSearchBy?: any;
   onChange?: any;
   columns?: any;
   data?: any;
   onChangeSearch?: any;
+  onChangeSearchBy?: any;
+  searchOption?: { value?: string; label?: string }[];
 }
 
 const DataTables: React.FC<Data> = ({
   value,
+  valueSearchBy,
   onChange,
   columns,
   data,
   onChangeSearch,
+  onChangeSearchBy,
+  searchOption,
 }) => {
   return (
     <>
@@ -40,13 +45,38 @@ const DataTables: React.FC<Data> = ({
           gap: "10px",
         }}
       >
-        <Box>
+        <Box sx={{ display: "flex", flexDirection: "row" }}>
           <TextField
             size="small"
-            id="outlined-basic"
-            label="Search"
-            variant="outlined"
+            placeholder="Search..."
+            label="Search By"
             InputProps={{
+              sx: {
+                paddingLeft: 0,
+                // Add other styling as needed
+              },
+              startAdornment: (
+                <FormControl
+                  sx={{ minWidth: 138, marginRight: "10px" }}
+                  size="small"
+                >
+                  <Select
+                    labelId="demo"
+                    id="demo"
+                    value={valueSearchBy}
+                    label="Search By"
+                    onChange={onChangeSearchBy}
+                    sx={{
+                      borderEndEndRadius: "0px",
+                      borderTopRightRadius: "0px",
+                    }}
+                  >
+                    {searchOption?.map((data) => (
+                      <MenuItem value={data.value}>{data.label}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              ),
               endAdornment: (
                 <InputAdornment position="end">
                   <Search />

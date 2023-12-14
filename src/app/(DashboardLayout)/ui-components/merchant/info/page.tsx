@@ -130,72 +130,44 @@ const MerchantInfo = () => {
       <Grid container spacing={3}>
         <Grid item xs={6} lg={6}>
           <Info data={data} />
+          <Box
+            marginTop="30px"
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            gap="10px"
+          >
+            <Stack spacing={1} direction="row">
+              <Button
+                variant="contained"
+                size="large"
+                color="success"
+                disabled={data.status === "approved"}
+                onClick={() =>
+                  handleOpen(data.id, "approved", data.oauth.fullname)
+                }
+              >
+                <IconCircleCheck size={18} /> Approve
+              </Button>
+              <Button
+                variant="contained"
+                size="large"
+                color="error"
+                disabled={data.status === "rejected"}
+                onClick={() =>
+                  handleOpen(data.id, "rejected", data.oauth.fullname)
+                }
+              >
+                <IconBan size={16} /> Reject
+              </Button>
+            </Stack>
+          </Box>
         </Grid>
         <Grid item xs={6} lg={6}>
           <Attachment />
         </Grid>
-        {/* <Grid item xs={12} lg={12}>
-          <List merchant_id={data.id} />
-        </Grid> */}
       </Grid>
-      <Box
-        marginTop="40px"
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        gap="10px"
-      >
-        {data.status === "approved" ? (
-          <Typography
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            color="green"
-          >
-            <IconCircleCheck /> Approved
-          </Typography>
-        ) : data.status === "rejected" ? (
-          <Typography
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            color="red"
-          >
-            <IconBan /> Rejected
-          </Typography>
-        ) : (
-          <Typography
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            color="orange"
-          >
-            <IconClock /> Waiting
-          </Typography>
-        )}
-        <Stack spacing={1} direction="row">
-          <Button
-            variant="contained"
-            size="small"
-            color="success"
-            disabled={data.status === "approved"}
-            onClick={() => handleOpen(data.id, "approved", data.oauth.fullname)}
-          >
-            <IconCircleCheck size={18} /> Approve
-          </Button>
-          <Button
-            variant="contained"
-            size="small"
-            color="error"
-            disabled={data.status === "rejected"}
-            onClick={() => handleOpen(data.id, "rejected", data.oauth.fullname)}
-          >
-            <IconBan size={16} /> Reject
-          </Button>
-        </Stack>
-      </Box>
-
       <ModalPopup
         open={isOpen}
         handleClose={handleClose}

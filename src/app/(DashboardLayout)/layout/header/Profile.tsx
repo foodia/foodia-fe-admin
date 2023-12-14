@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import Link from "next/link";
 import {
@@ -26,6 +26,7 @@ import { useRouter } from "next/navigation";
 
 const Profile = () => {
   const [anchorEl2, setAnchorEl2] = useState(null);
+  const [username, setUsername] = useState<any>("");
   const router = useRouter();
   const handleClick2 = (event: any) => {
     setAnchorEl2(event.currentTarget);
@@ -33,6 +34,10 @@ const Profile = () => {
   const handleClose2 = () => {
     setAnchorEl2(null);
   };
+
+  useEffect(() => {
+    setUsername(localStorage.getItem("USERNAME"));
+  }, []);
 
   const onLogout = () => {
     localStorage.clear();
@@ -122,7 +127,7 @@ const Profile = () => {
               ml: 1,
             }}
           >
-            {localStorage.getItem("USERNAME")}
+            {username}
           </Typography>
           <IconChevronDown width="20" height="20" />
         </Box>

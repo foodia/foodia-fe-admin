@@ -120,11 +120,8 @@ const DetonatorInfo = () => {
       <Grid container spacing={3}>
         <Grid item xs={6} lg={6}>
           <Info data={data} />
-        </Grid>
-        <Grid item xs={6} lg={6}>
-          <Attachment />
           <Box
-            marginTop="70px"
+            marginTop="20px"
             display="flex"
             flexDirection="column"
             alignItems="center"
@@ -132,34 +129,6 @@ const DetonatorInfo = () => {
             gap="20px"
             color="white"
           >
-            <Typography
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              borderRadius="15px"
-              padding="5px 15px"
-              sx={
-                data.status === "approved"
-                  ? { backgroundColor: "success.main" }
-                  : data.status === "rejected"
-                  ? { backgroundColor: "error.main" }
-                  : { backgroundColor: "warning.main" }
-              }
-            >
-              {data.status === "approved" ? (
-                <>
-                  Approved <IconCircleCheck />
-                </>
-              ) : data.status === "rejected" ? (
-                <>
-                  Rejected <IconBan />
-                </>
-              ) : (
-                <>
-                  Waiting <IconClock />
-                </>
-              )}
-            </Typography>
             <Stack
               display="flex"
               justifyContent="center"
@@ -168,7 +137,7 @@ const DetonatorInfo = () => {
             >
               <Button
                 variant="contained"
-                size="small"
+                size="large"
                 disabled={data.status === "approved"}
                 onClick={() =>
                   handleOpen(data.id, "approved", data.oauth.fullname)
@@ -179,7 +148,7 @@ const DetonatorInfo = () => {
               </Button>
               <Button
                 variant="contained"
-                size="small"
+                size="large"
                 disabled={data.status === "rejected"}
                 onClick={() =>
                   handleOpen(data.id, "rejected", data.oauth.fullname)
@@ -190,6 +159,9 @@ const DetonatorInfo = () => {
               </Button>
             </Stack>
           </Box>
+        </Grid>
+        <Grid item xs={6} lg={6}>
+          <Attachment />
         </Grid>
       </Grid>
       <ModalPopup

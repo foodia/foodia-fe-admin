@@ -1,5 +1,6 @@
 import React from "react";
 import { Card, CardContent, Typography, Stack, Box } from "@mui/material";
+import { IconBan, IconCircleCheck, IconClock } from "@tabler/icons-react";
 
 type Props = {
   title?: string;
@@ -11,6 +12,7 @@ type Props = {
   headsubtitle?: string | JSX.Element;
   children?: JSX.Element;
   middlecontent?: string | JSX.Element;
+  status?: string;
 };
 
 const DashboardCard = ({
@@ -23,6 +25,7 @@ const DashboardCard = ({
   headtitle,
   headsubtitle,
   middlecontent,
+  status,
 }: Props) => {
   return (
     <Card sx={{ padding: 0 }} elevation={9} variant={undefined}>
@@ -37,14 +40,59 @@ const DashboardCard = ({
         <CardContent sx={{ p: "30px" }}>
           {title ? (
             <Stack
-              direction="row"
-              spacing={2}
-              justifyContent="space-between"
-              alignItems={"center"}
+              // direction="row"
+              // spacing={2}
+              // justifyContent="space-between"
+              // alignItems={"center"}
               mb={3}
             >
               <Box>
-                {title ? <Typography variant="h3">{title}</Typography> : ""}
+                {title ? (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography variant="h3">{title}</Typography>
+                    {status ? (
+                      <Typography
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        borderRadius="15px"
+                        padding="5px 15px"
+                        color="white"
+                        sx={
+                          status === "approved"
+                            ? { backgroundColor: "success.main" }
+                            : status === "rejected"
+                            ? { backgroundColor: "error.main" }
+                            : { backgroundColor: "warning.main" }
+                        }
+                      >
+                        {status === "approved" ? (
+                          <>
+                            Approved <IconCircleCheck />
+                          </>
+                        ) : status === "rejected" ? (
+                          <>
+                            Rejected <IconBan />
+                          </>
+                        ) : (
+                          <>
+                            Waiting <IconClock />
+                          </>
+                        )}
+                      </Typography>
+                    ) : (
+                      ""
+                    )}
+                  </Box>
+                ) : (
+                  ""
+                )}
 
                 {subtitle ? (
                   <Typography variant="subtitle2" color="textSecondary">

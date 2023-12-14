@@ -106,7 +106,12 @@ const columns: TableColumn<Data>[] = [
 
 const DataTableComponent: React.FC<Props> = ({ data }) => {
   const [filterText, setFilterText] = useState<string>("unapproved");
+  const [searchBy, setSearchBy] = useState<string>("detonator");
   const [searchText, setSearchText] = useState<string>("");
+
+  const handleChangeSearchBy = (event: SelectChangeEvent) => {
+    setSearchBy(event.target.value);
+  };
 
   const handleChange = (event: SelectChangeEvent) => {
     setFilterText(event.target.value);
@@ -121,9 +126,13 @@ const DataTableComponent: React.FC<Props> = ({ data }) => {
     filteredItems = data.filter(
       (data) =>
         data.status.toLowerCase() !== "approved" &&
-        data.detonator.oauth.fullname
-          .toLowerCase()
-          .includes(searchText.toLowerCase())
+        (searchBy === "detonator"
+          ? data.detonator.oauth.fullname
+              .toLowerCase()
+              .includes(searchText.toLowerCase())
+          : searchBy === "name"
+          ? data.event_name.toLowerCase().includes(searchText.toLowerCase())
+          : data.event_type.toLowerCase().includes(searchText.toLowerCase()))
     );
   } else {
     filteredItems = data.filter(
@@ -135,13 +144,30 @@ const DataTableComponent: React.FC<Props> = ({ data }) => {
     );
   }
 
-  console.log(searchText);
+  const searchOption = [
+    {
+      value: "detonator",
+      label: "Detonator",
+    },
+    {
+      value: "name",
+      label: "Event Name",
+    },
+    {
+      value: "type",
+      label: "Event Type",
+    },
+  ];
+
   return (
     <>
       <DataTables
         value={filterText}
+        searchOption={searchOption}
+        valueSearchBy={searchBy}
         onChange={handleChange}
         onChangeSearch={handleChangeSearch}
+        onChangeSearchBy={handleChangeSearchBy}
         columns={columns}
         data={filteredItems}
       />
