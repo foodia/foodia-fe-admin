@@ -13,8 +13,6 @@ interface ChildProps {
     province: string;
     city: string;
     status: string;
-    latitude: string;
-    longitude: string;
     detonator: { oauth: { fullname: string } };
   };
 }
@@ -99,6 +97,7 @@ const Info: React.FC<ChildProps> = ({ data }) => {
             <TextField
               fullWidth
               id="name-basic"
+              multiline
               variant="outlined"
               defaultValue={data.description}
               disabled

@@ -1,6 +1,7 @@
 "use client";
 import Info from "@/app/(DashboardLayout)/components/campaign/Info";
-import Attachment from "@/app/(DashboardLayout)/components/detonator/Attachment";
+import Maps from "@/app/(DashboardLayout)/components/campaign/Maps";
+import Attachment from "@/app/(DashboardLayout)/components/campaign/Attachment";
 import LeafLet from "@/app/(DashboardLayout)/components/shared/LeafLet";
 import ModalPopup from "@/app/(DashboardLayout)/components/shared/ModalPopup";
 import { Box, Button, Grid, Stack, Typography } from "@mui/material";
@@ -21,7 +22,8 @@ type Props = {
   status: string;
   latitude: string;
   longitude: string;
-  detonator: { oauth: { fullname: string } };
+  image_url: string;
+  detonator: { oauth: { fullname: string; email: string } };
 };
 
 const CampaignInfo = () => {
@@ -43,7 +45,8 @@ const CampaignInfo = () => {
     status: "",
     latitude: "",
     longitude: "",
-    detonator: { oauth: { fullname: "" } },
+    image_url: "",
+    detonator: { oauth: { fullname: "", email: "" } },
   });
 
   const handleOpen = (id: number, status: string, name: string) => {
@@ -64,9 +67,8 @@ const CampaignInfo = () => {
   const getCampaignDetail = () => {
     axios
       .get(
-        `https://api.foodia-dev.nuncorp.id/api/v1/campaign/fetch/${searchParams.get(
-          "id"
-        )}`,
+        process.env.NEXT_PUBLIC_BASE +
+          `/campaign/fetch/${searchParams.get("id")}`,
         {
           headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
         }
@@ -84,7 +86,7 @@ const CampaignInfo = () => {
       status === "approved"
         ? axios
             .put(
-              `https://api.foodia-dev.nuncorp.id/api/v1/campaign/approval/${id}`,
+              process.env.NEXT_PUBLIC_BASE + `/campaign/approval/${id}`,
               {
                 status,
                 note: "approved",
@@ -104,7 +106,7 @@ const CampaignInfo = () => {
         ? console.log("Note Empty")
         : axios
             .put(
-              `https://api.foodia-dev.nuncorp.id/api/v1/campaign/approval/${id}`,
+              process.env.NEXT_PUBLIC_BASE + `/campaign/approval/${id}`,
               {
                 status,
                 note,
@@ -175,9 +177,14 @@ const CampaignInfo = () => {
             </Stack>
           </Box>
         </Grid>
-        <Grid item xs={6} lg={6}>
-          <Attachment />
-          <LeafLet lat={data.latitude} long={data.longitude} />
+        <Grid
+          item
+          xs={6}
+          lg={6}
+          sx={{ display: "flex", flexDirection: "column", gap: "20px" }}
+        >
+          <Attachment data={data} />
+          <Maps data={data} />
         </Grid>
       </Grid>
 

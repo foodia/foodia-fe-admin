@@ -1,12 +1,9 @@
 "use client";
-import { styled, Container, Box } from "@mui/material";
-import React, { useState, useEffect } from "react";
-import Header from "@/app/(DashboardLayout)/layout/header/Header";
-import Sidebar from "@/app/(DashboardLayout)/layout/sidebar/Sidebar";
-import Footer from "./layout/footer/page";
-import DashboardLayout from "./layout-provider/DashboardLayout";
+import { styled } from "@mui/material";
+import { usePathname } from "next/navigation";
+import React, { useState } from "react";
 import AuthLayout from "./layout-provider/AuthLayout";
-import { usePathname, useRouter } from "next/navigation";
+import DashboardLayout from "./layout-provider/DashboardLayout";
 
 const MainWrapper = styled("div")(() => ({
   display: "flex",

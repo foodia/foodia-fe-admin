@@ -59,7 +59,7 @@ const Info: React.FC<ChildProps> = ({ data }) => {
             alignItems: "start",
           }}
         >
-          <Typography>Number Link Aja : </Typography>
+          <Typography>Gopay Number : </Typography>
           <TextField
             fullWidth
             id="name-basic"

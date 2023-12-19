@@ -33,7 +33,7 @@ const List = () => {
 
   const getMerchant = () => {
     axios
-      .get("https://api.foodia-dev.nuncorp.id/api/v1/merchant/filter", {
+      .get(process.env.NEXT_PUBLIC_BASE + "/merchant/filter", {
         headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       })
       .then((res) => {

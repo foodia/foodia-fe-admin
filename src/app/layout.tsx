@@ -11,6 +11,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <title>Foodia Admin</title>
       <body>
         <ThemeProvider theme={baselightTheme}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}

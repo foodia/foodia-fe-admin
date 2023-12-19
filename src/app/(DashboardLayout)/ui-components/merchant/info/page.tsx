@@ -68,9 +68,8 @@ const MerchantInfo = () => {
   const getMerchantDetail = () => {
     axios
       .get(
-        `https://api.foodia-dev.nuncorp.id/api/v1/merchant/fetch/${searchParams.get(
-          "id"
-        )}`,
+        process.env.NEXT_PUBLIC_BASE +
+          `/merchant/fetch/${searchParams.get("id")}`,
         {
           headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
         }
@@ -86,7 +85,7 @@ const MerchantInfo = () => {
       status === "approved"
         ? axios
             .put(
-              `https://api.foodia-dev.nuncorp.id/api/v1/merchant/approval/${id}`,
+              process.env.NEXT_PUBLIC_BASE + `/merchant/approval/${id}`,
               {
                 status,
                 note: "approved",
@@ -106,7 +105,7 @@ const MerchantInfo = () => {
         ? console.log("Note Empty")
         : axios
             .put(
-              `https://api.foodia-dev.nuncorp.id/api/v1/merchant/approval/${id}`,
+              process.env.NEXT_PUBLIC_BASE + `/merchant/approval/${id}`,
               {
                 status,
                 note,

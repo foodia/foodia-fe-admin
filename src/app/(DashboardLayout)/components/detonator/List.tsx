@@ -33,7 +33,7 @@ const List = () => {
 
   const getDetonator = () => {
     axios
-      .get("https://api.foodia-dev.nuncorp.id/api/v1/detonator/filter", {
+      .get(process.env.NEXT_PUBLIC_BASE + "/detonator/filter", {
         headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       })
       .then((res) => {

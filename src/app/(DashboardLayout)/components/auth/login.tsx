@@ -23,7 +23,7 @@ const Login = () => {
   const onLogin = () => {
     setIsLoading(true);
     axios
-      .post("https://api.foodia-dev.nuncorp.id/api/v1/auth/login", {
+      .post(process.env.NEXT_PUBLIC_BASE + "/auth/login", {
         email,
         password,
       })

@@ -67,9 +67,8 @@ const CampaignInfo = () => {
   const getDetonatorDetail = () => {
     axios
       .get(
-        `https://api.foodia-dev.nuncorp.id/api/v1/detonator/fetch/${searchParams.get(
-          "id"
-        )}`,
+        process.env.NEXT_PUBLIC_BASE +
+          `/detonator/fetch/${searchParams.get("id")}`,
         {
           headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
         }
@@ -87,7 +86,7 @@ const CampaignInfo = () => {
       status === "approved"
         ? axios
             .put(
-              `https://api.foodia-dev.nuncorp.id/api/v1/detonator/approval/${id}`,
+              process.env.NEXT_PUBLIC_BASE + `/detonator/approval/${id}`,
               {
                 status,
                 note: "approved",
@@ -107,7 +106,7 @@ const CampaignInfo = () => {
         ? console.log("Note Empty")
         : axios
             .put(
-              `https://api.foodia-dev.nuncorp.id/api/v1/detonator/approval/${id}`,
+              process.env.NEXT_PUBLIC_BASE + `/detonator/approval/${id}`,
               {
                 status,
                 note,

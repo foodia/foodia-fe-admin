@@ -21,6 +21,8 @@ type Props = {
   id: number;
   ktp_number: string;
   status: string;
+  self_photo: string;
+  ktp_photo: string;
   oauth: { fullname: string; email: string; phone: string };
 };
 
@@ -35,6 +37,8 @@ const DetonatorInfo = () => {
     id: 0,
     ktp_number: "",
     status: "",
+    self_photo: "",
+    ktp_photo: "",
     oauth: { fullname: "", email: "", phone: "" },
   });
 
@@ -56,9 +60,8 @@ const DetonatorInfo = () => {
   const getDetonatorDetail = () => {
     axios
       .get(
-        `https://api.foodia-dev.nuncorp.id/api/v1/detonator/fetch/${searchParams.get(
-          "id"
-        )}`,
+        process.env.NEXT_PUBLIC_BASE +
+          `/detonator/fetch/${searchParams.get("id")}`,
         {
           headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
         }
@@ -76,7 +79,7 @@ const DetonatorInfo = () => {
       status === "approved"
         ? axios
             .put(
-              `https://api.foodia-dev.nuncorp.id/api/v1/detonator/approval/${id}`,
+              process.env.NEXT_PUBLIC_BASE + `/detonator/approval/${id}`,
               {
                 status,
                 note: "approved",
@@ -96,7 +99,7 @@ const DetonatorInfo = () => {
         ? console.log("Note Empty")
         : axios
             .put(
-              `https://api.foodia-dev.nuncorp.id/api/v1/detonator/approval/${id}`,
+              process.env.NEXT_PUBLIC_BASE + `/detonator/approval/${id}`,
               {
                 status,
                 note,
@@ -161,7 +164,7 @@ const DetonatorInfo = () => {
           </Box>
         </Grid>
         <Grid item xs={6} lg={6}>
-          <Attachment />
+          <Attachment data={data} />
         </Grid>
       </Grid>
       <ModalPopup
