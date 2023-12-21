@@ -27,6 +27,8 @@ type Props = {
   sub_district: string;
   postal_code: string;
   address: string;
+  self_photo: string;
+  ktp_photo: string;
   oauth: { fullname: string; email: string; phone: string };
 };
 
@@ -42,8 +44,11 @@ const MerchantInfo = () => {
     sub_district: "",
     postal_code: "",
     address: "",
+    self_photo: "",
+    ktp_photo: "",
     oauth: { fullname: "", email: "", phone: "" },
   });
+
   const [ids, setId] = useState<number>(0);
   const [status, setStatus] = useState("");
   const [name, setName] = useState("");
@@ -164,7 +169,7 @@ const MerchantInfo = () => {
           </Box>
         </Grid>
         <Grid item xs={6} lg={6}>
-          <Attachment />
+          <Attachment data={data} />
         </Grid>
       </Grid>
       <ModalPopup

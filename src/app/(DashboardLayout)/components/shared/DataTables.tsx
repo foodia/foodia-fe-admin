@@ -21,7 +21,7 @@ interface Data {
   data?: any;
   onChangeSearch?: any;
   onChangeSearchBy?: any;
-  searchOption?: { value?: string; label?: string }[];
+  searchOption?: { id?: number; value?: string; label?: string }[];
 }
 
 const DataTables: React.FC<Data> = ({
@@ -72,7 +72,9 @@ const DataTables: React.FC<Data> = ({
                     }}
                   >
                     {searchOption?.map((data) => (
-                      <MenuItem value={data.value}>{data.label}</MenuItem>
+                      <MenuItem key={data.id} value={data.value}>
+                        {data.label}
+                      </MenuItem>
                     ))}
                   </Select>
                 </FormControl>

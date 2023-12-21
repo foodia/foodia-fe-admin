@@ -11,13 +11,14 @@ import {
 } from "@mui/material";
 
 type Props = {
-  open: any;
-  handleClose: any;
-  status: string;
-  name: string;
-  note: string;
-  onChange: any;
-  handleSubmit: any;
+  open?: any;
+  handleClose?: any;
+  status?: string;
+  name?: string;
+  note?: string;
+  onChange?: any;
+  handleSubmit?: any;
+  image_url?: any;
 };
 
 const ModalPopup = ({
@@ -85,6 +86,51 @@ const ModalPopup = ({
             {status === "approved" ? "Approve" : "Reject"}{" "}
           </Button>
           <Button onClick={handleClose}>Cancel</Button>
+        </Box>
+      </Box>
+    </Modal>
+  );
+};
+
+export const ModalPopupFilesDetail = ({
+  open,
+  handleClose,
+  image_url,
+}: Props) => {
+  return (
+    <Modal
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="child-modal-title"
+      aria-describedby="child-modal-description"
+    >
+      <Box
+        sx={{
+          display: "flex",
+          borderRadius: "10px",
+          flexDirection: "column",
+          alignItems: "center",
+          width: "auto",
+          backgroundColor: "white",
+          padding: "35px",
+          gap: "30px",
+        }}
+      >
+        <img
+          src={process.env.NEXT_PUBLIC_FILE + image_url}
+          style={{
+            width: "400px",
+            height: "300px",
+            borderRadius: "5px",
+          }}
+        />
+        <Box sx={{ display: "flex", flexDirection: "row" }}>
+          <Button onClick={handleClose}>Close</Button>
         </Box>
       </Box>
     </Modal>

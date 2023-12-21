@@ -146,14 +146,17 @@ const DataTableComponent: React.FC<Props> = ({ data }) => {
 
   const searchOption = [
     {
+      id: 1,
       value: "detonator",
       label: "Detonator",
     },
     {
+      id: 2,
       value: "name",
       label: "Event Name",
     },
     {
+      id: 3,
       value: "type",
       label: "Event Type",
     },

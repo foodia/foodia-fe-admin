@@ -17,6 +17,7 @@ import img1 from "public/images/backgrounds/u1.jpg";
 import img2 from "public/images/backgrounds/u3.jpg";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { ModalPopupFilesDetail } from "../shared/ModalPopup";
 
 interface ChildProps {
   data: {
@@ -49,60 +50,83 @@ interface ChildProps {
 // ];
 
 const Attachment: React.FC<ChildProps> = ({ data }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const onView = () => {
+    setIsOpen(true);
+  };
+
+  const onCloseView = () => {
+    setIsOpen(false);
+  };
+
   return (
-    <BaseCard title="Attachment">
-      <TableContainer
-        sx={{
-          width: {
-            xs: "274px",
-            sm: "100%",
-          },
-        }}
-      >
-        <Table
-          aria-label="simple table"
+    <>
+      <BaseCard title="Attachment">
+        <TableContainer
           sx={{
-            whiteSpace: "nowrap",
+            width: {
+              xs: "274px",
+              sm: "100%",
+            },
           }}
         >
-          <TableBody>
-            {/* {products.map((product) => ( */}
-            <TableRow>
-              <TableCell>
-                <img
-                  src={process.env.NEXT_PUBLIC_FILE + data.image_url}
-                  style={{
-                    width: "100px",
-                    height: "50px",
-                    borderRadius: "5px",
-                  }}
-                />
-              </TableCell>
-              <TableCell>
-                <Box display="flex" alignItems="center">
-                  <Box>
-                    <Typography variant="h6" fontWeight={500}>
-                      {data.detonator.oauth.fullname}
-                    </Typography>
-                    <Typography color="textSecondary" fontSize="13px">
-                      {data.detonator.oauth.email}
-                    </Typography>
+          <Table
+            aria-label="simple table"
+            sx={{
+              whiteSpace: "nowrap",
+            }}
+          >
+            <TableBody>
+              {/* {products.map((product) => ( */}
+              <TableRow>
+                <TableCell>
+                  <img
+                    src={process.env.NEXT_PUBLIC_FILE + data.image_url}
+                    alt="notFound"
+                    style={{
+                      width: "100px",
+                      height: "50px",
+                      borderRadius: "5px",
+                    }}
+                  />
+                </TableCell>
+                <TableCell>
+                  <Box display="flex" alignItems="center">
+                    <Box>
+                      <Typography variant="h6" fontWeight={500}>
+                        {data.detonator.oauth.fullname}
+                      </Typography>
+                      <Typography color="textSecondary" fontSize="13px">
+                        {data.detonator.oauth.email}
+                      </Typography>
+                    </Box>
                   </Box>
-                </Box>
-              </TableCell>
-              <TableCell>
-                <Stack spacing={1} direction="row">
-                  <Button variant="contained" size="small" color="info">
-                    <IconEye size={20} /> View
-                  </Button>
-                </Stack>
-              </TableCell>
-            </TableRow>
-            {/* ))} */}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </BaseCard>
+                </TableCell>
+                <TableCell>
+                  <Stack spacing={1} direction="row">
+                    <Button
+                      onClick={() => onView()}
+                      variant="contained"
+                      size="small"
+                      color="info"
+                    >
+                      <IconEye size={20} /> View
+                    </Button>
+                  </Stack>
+                </TableCell>
+              </TableRow>
+              {/* ))} */}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </BaseCard>
+      <ModalPopupFilesDetail
+        open={isOpen}
+        image_url={data.image_url}
+        handleClose={onCloseView}
+      />
+    </>
   );
 };
 

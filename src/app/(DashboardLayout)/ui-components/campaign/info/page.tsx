@@ -79,8 +79,6 @@ const CampaignInfo = () => {
       .catch((error) => {});
   };
 
-  console.log(status);
-
   const Approvals = (id: number, status: string) => {
     {
       status === "approved"
