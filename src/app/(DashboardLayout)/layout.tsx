@@ -27,9 +27,9 @@ export default function RootLayout({
   return (
     <MainWrapper className="mainwrapper">
       {pathname.includes("auth") ? (
-        <AuthLayout children={children} />
+        <AuthLayout>{children}</AuthLayout>
       ) : (
-        <DashboardLayout children={children} />
+        <DashboardLayout>{children}</DashboardLayout>
       )}
     </MainWrapper>
   );

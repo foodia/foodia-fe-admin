@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 
 module.exports = {
+  images: {
+    domains: ["api.foodia-dev.nuncorp.id"],
+  },
   devIndicators: {
     buildActivity: false,
   },

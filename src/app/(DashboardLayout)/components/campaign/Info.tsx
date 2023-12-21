@@ -13,6 +13,8 @@ interface ChildProps {
     province: string;
     city: string;
     status: string;
+    food_required: number;
+    food_total: number;
     detonator: { oauth: { fullname: string } };
   };
 }
@@ -119,6 +121,38 @@ const Info: React.FC<ChildProps> = ({ data }) => {
                 "Rp." +
                 data.donation_target.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
               }
+              disabled
+            />
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "start",
+            }}
+          >
+            <Typography>Food Required : </Typography>
+            <TextField
+              fullWidth
+              id="name-basic"
+              variant="outlined"
+              value={data.food_required}
+              disabled
+            />
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "start",
+            }}
+          >
+            <Typography>Food Total : </Typography>
+            <TextField
+              fullWidth
+              id="name-basic"
+              variant="outlined"
+              value={data.food_total}
               disabled
             />
           </Box>

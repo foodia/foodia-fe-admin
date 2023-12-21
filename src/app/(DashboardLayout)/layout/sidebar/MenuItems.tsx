@@ -1,3 +1,4 @@
+"use client";
 import {
   IconBuildingStore,
   IconBurger,
@@ -19,12 +20,14 @@ const Menuitems = [
         href: "/ui-components/detonator",
         name: "List Detonator",
         icon: <IconUser />,
+        // isUnapproved: true,
       },
       {
         id: uniqueId(),
         href: "/ui-components/campaign",
         name: "List Campaign",
         icon: <IconSpeakerphone />,
+        // isUnapproved: true,
       },
     ],
   },
@@ -38,12 +41,14 @@ const Menuitems = [
         href: "/ui-components/merchant",
         name: "List Merchant",
         icon: <IconUser />,
+        // isUnapproved: true,
       },
       {
         id: uniqueId(),
         href: "/ui-components/product",
         name: "List Product",
         icon: <IconBurger />,
+        // isUnapproved: true,
       },
     ],
   },

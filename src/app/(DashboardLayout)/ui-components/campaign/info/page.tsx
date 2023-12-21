@@ -20,9 +20,12 @@ type Props = {
   province: string;
   city: string;
   status: string;
+  order_status: string;
   latitude: string;
   longitude: string;
   image_url: string;
+  food_required: number;
+  food_total: number;
   detonator: { oauth: { fullname: string; email: string } };
 };
 
@@ -43,9 +46,12 @@ const CampaignInfo = () => {
     province: "",
     city: "",
     status: "",
+    order_status: "",
     latitude: "",
     longitude: "",
     image_url: "",
+    food_required: 0,
+    food_total: 0,
     detonator: { oauth: { fullname: "", email: "" } },
   });
 
@@ -129,12 +135,13 @@ const CampaignInfo = () => {
         <Grid item xs={6} lg={6}>
           <Info data={data} />
           <Box
-            marginTop="30px"
+            marginTop="20px"
             display="flex"
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
-            gap="10px"
+            gap="20px"
+            color="white"
           >
             <Stack
               display="flex"
@@ -145,30 +152,18 @@ const CampaignInfo = () => {
               <Button
                 variant="contained"
                 size="large"
+                disabled={data.status === "approved"}
+                onClick={() => handleOpen(data.id, "approved", data.event_name)}
                 color="success"
-                disabled={status === "approved"}
-                onClick={() =>
-                  handleOpen(
-                    data.id,
-                    "approved",
-                    data.detonator?.oauth?.fullname
-                  )
-                }
               >
                 <IconCircleCheck size={18} /> Approve
               </Button>
               <Button
                 variant="contained"
                 size="large"
+                disabled={data.status === "rejected"}
+                onClick={() => handleOpen(data.id, "rejected", data.event_name)}
                 color="error"
-                disabled={status === "rejected"}
-                onClick={() =>
-                  handleOpen(
-                    data.id,
-                    "rejected",
-                    data.detonator?.oauth?.fullname
-                  )
-                }
               >
                 <IconBan size={16} /> Reject
               </Button>

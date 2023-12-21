@@ -1,6 +1,6 @@
 "use client";
 import Attachment from "@/app/(DashboardLayout)/components/detonator/Attachment";
-import Info from "@/app/(DashboardLayout)/components/campaign/Info";
+import Info from "@/app/(DashboardLayout)/components/product/Info";
 import {
   Box,
   Button,
@@ -46,6 +46,7 @@ const CampaignInfo = () => {
     province: "",
     city: "",
     status: "",
+
     detonator: { oauth: { fullname: "" } },
   });
 
@@ -62,7 +63,7 @@ const CampaignInfo = () => {
 
   useEffect(() => {
     getDetonatorDetail();
-  }, []);
+  });
 
   const getDetonatorDetail = () => {
     axios
@@ -129,10 +130,10 @@ const CampaignInfo = () => {
     <>
       <Grid container spacing={3}>
         <Grid item xs={6} lg={6}>
-          <Info data={data} />
+          {/* <Info data={data} /> */}
         </Grid>
         <Grid item xs={6} lg={6}>
-          <Attachment />
+          {/* <Attachment data={data} /> */}
         </Grid>
       </Grid>
       <Box

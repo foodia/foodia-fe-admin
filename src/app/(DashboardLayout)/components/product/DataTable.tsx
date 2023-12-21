@@ -9,9 +9,11 @@ import DataTables from "../shared/DataTables";
 
 interface Data {
   id: number;
+  name: string;
+  description: string;
+  price: string;
+  qty: number;
   status: string;
-  created_at: string;
-  oauth: { fullname: string; email: string; phone: string };
 }
 
 interface Props {
@@ -26,28 +28,33 @@ const columns: TableColumn<Data>[] = [
     width: "70px",
   },
   {
-    name: "Fullname",
-    cell: (row: Data) => <div>{row.oauth.fullname}</div>,
+    name: "Name",
+    cell: (row: Data) => <div>{row.name}</div>,
     // sortable: true,
   },
   {
-    name: "Email",
-    cell: (row: Data) => <div>{row.oauth.email}</div>,
+    name: "Description",
+    cell: (row: Data) => <div>{row.description}</div>,
     // sortable: true,
     width: "270px",
   },
   {
-    name: "Phone number",
-    cell: (row: Data) => <div>{row.oauth.phone}</div>,
+    name: "Quantity",
+    cell: (row: Data) => <div>{row.qty}</div>,
     // sortable: true,
   },
   {
-    name: "Registered at",
-    cell: (row: Data) => (
-      <div>{moment(row.created_at).format("DD/MM/YYYY")}</div>
-    ),
+    name: "Price",
+    cell: (row: Data) => <div>{row.price}</div>,
     // sortable: true,
   },
+  // {
+  //   name: "Registered at",
+  //   cell: (row: Data) => (
+  //     <div>{moment(row.created_at).format("DD/MM/YYYY")}</div>
+  //   ),
+  //   // sortable: true,
+  // },
   {
     name: "Status",
     cell: (row: Data) => (
@@ -94,7 +101,7 @@ const columns: TableColumn<Data>[] = [
 
 const DataTableComponent: React.FC<Props> = ({ data }) => {
   const [filterText, setFilterText] = useState<string>("unapproved");
-  const [searchBy, setSearchBy] = useState<string>("fullname");
+  const [searchBy, setSearchBy] = useState<string>("name");
   const [searchText, setSearchText] = useState<string>("");
 
   const handleChangeSearchBy = (event: SelectChangeEvent) => {
@@ -114,34 +121,34 @@ const DataTableComponent: React.FC<Props> = ({ data }) => {
     filteredItems = data.filter(
       (data) =>
         data.status.toLowerCase() !== "approved" &&
-        (searchBy === "fullname"
-          ? data.oauth.fullname.toLowerCase().includes(searchText.toLowerCase())
-          : searchBy === "email"
-          ? data.oauth.email.toLowerCase().includes(searchText.toLowerCase())
-          : data.oauth.phone.toLowerCase().includes(searchText.toLowerCase()))
+        (searchBy === "name"
+          ? data.name.toLowerCase().includes(searchText.toLowerCase())
+          : searchBy === "price"
+          ? data.price.toLowerCase().includes(searchText.toLowerCase())
+          : data.description.toLowerCase().includes(searchText.toLowerCase()))
     );
   } else {
     filteredItems = data.filter(
       (data) =>
         data.status.toLowerCase() === "approved" &&
-        data.oauth.fullname.toLowerCase().includes(searchText.toLowerCase())
+        data.name.toLowerCase().includes(searchText.toLowerCase())
     );
   }
   const searchOption = [
     {
       id: 1,
-      value: "fullname",
-      label: "FullName",
+      value: "name",
+      label: "Name",
     },
     {
       id: 2,
-      value: "email",
-      label: "Email",
+      value: "price",
+      label: "Price",
     },
     {
       id: 3,
-      value: "phone",
-      label: "Phone Number",
+      value: "description",
+      label: "Description",
     },
   ];
 

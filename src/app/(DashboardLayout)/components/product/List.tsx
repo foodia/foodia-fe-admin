@@ -33,7 +33,7 @@ const List = () => {
 
   const getProduct = () => {
     axios
-      .get(process.env.NEXT_PUBLIC_BASE + "/detonator/filter", {
+      .get(process.env.NEXT_PUBLIC_BASE + "/merchant-product/filter", {
         headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       })
       .then((res) => {

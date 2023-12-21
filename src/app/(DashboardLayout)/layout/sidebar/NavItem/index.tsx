@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 // mui imports
 import {
   ListItemIcon,
@@ -12,7 +12,12 @@ import {
   Button,
 } from "@mui/material";
 import Link from "next/link";
-import { IconChevronDown, IconChevronUp, IconUser } from "@tabler/icons-react";
+import {
+  IconChevronDown,
+  IconChevronUp,
+  IconCircle,
+  IconUser,
+} from "@tabler/icons-react";
 
 type NavGroup = {
   [x: string]: any;
@@ -135,6 +140,13 @@ const NavItem = ({ item, level, pathDirect, onClick }: ItemType) => {
                   {t.icon}
                 </ListItemIcon>
                 <ListItemText primary={t.name} />
+                {t.isUnapproved ? (
+                  <ListItemText>
+                    <IconCircle color="red" fill="red" size={20} />
+                  </ListItemText>
+                ) : (
+                  ""
+                )}
               </ListItemButton>
             ))}
             {/* </ListItemStyled> */}

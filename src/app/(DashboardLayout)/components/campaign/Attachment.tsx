@@ -9,7 +9,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { IconEye } from "@tabler/icons-react";
+import { IconCircleCheck, IconClock, IconEye } from "@tabler/icons-react";
 import Image from "next/image";
 import BaseCard from "../shared/DashboardCard";
 
@@ -18,10 +18,23 @@ import img2 from "public/images/backgrounds/u3.jpg";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { ModalPopupFilesDetail } from "../shared/ModalPopup";
+import { IconBan } from "@tabler/icons-react";
 
 interface ChildProps {
   data: {
     image_url: string;
+    orders: [
+      {
+        id: number;
+        order_status: string;
+        merchant: { oauth: { fullname: string } };
+        merchant_product: {
+          name: string;
+          price: string;
+          images: [{ image_url: string }];
+        };
+      }
+    ];
     detonator: { oauth: { fullname: string; email: string } };
   };
 }
@@ -62,6 +75,72 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
 
   return (
     <>
+      <BaseCard title="Orders">
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            gap: "10px",
+          }}
+        >
+          {data?.orders?.map((orders) => (
+            <Box
+              key={orders.id}
+              sx={{
+                display: "flex",
+                gap: "10px",
+                justifyContent: "space-between",
+                border: "0.4px solid grey",
+                borderRadius: "10px",
+                padding: "10px",
+              }}
+            >
+              <Image
+                src={`${process.env.NEXT_PUBLIC_FILE}${orders.merchant_product.images[0].image_url}`}
+                alt="NotFound"
+                width={150} // Set the desired width
+                height={60} // Set the desired height
+              />
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  width: "100%",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Box>
+                  <Typography>{orders.merchant_product.name}</Typography>
+                  <Typography sx={{ fontSize: "12px" }}>
+                    {orders.merchant.oauth.fullname}
+                  </Typography>
+                  <Typography sx={{ fontSize: "12px" }}>
+                    Rp. {orders.merchant_product.price}
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    borderRadius="30px"
+                    height="25px"
+                    padding="5px 15px"
+                    color="white"
+                    sx={{
+                      backgroundColor: "success.main",
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    {orders.order_status}
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+          ))}
+        </Box>
+      </BaseCard>
       <BaseCard title="Attachment">
         <TableContainer
           sx={{
@@ -81,15 +160,12 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
               {/* {products.map((product) => ( */}
               <TableRow>
                 <TableCell>
-                  <img
-                    src={process.env.NEXT_PUBLIC_FILE + data.image_url}
-                    alt="notFound"
-                    style={{
-                      width: "100px",
-                      height: "50px",
-                      borderRadius: "5px",
-                    }}
-                  />
+                  {/* <Image
+                    src={`${process.env.NEXT_PUBLIC_FILE}${data.image_url}`}
+                    alt="NotFound"
+                    width={100} // Set the desired width
+                    height={60} // Set the desired height
+                  /> */}
                 </TableCell>
                 <TableCell>
                   <Box display="flex" alignItems="center">
