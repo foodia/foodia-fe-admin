@@ -160,12 +160,12 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
               {/* {products.map((product) => ( */}
               <TableRow>
                 <TableCell>
-                  {/* <Image
+                  <Image
                     src={`${process.env.NEXT_PUBLIC_FILE}${data.image_url}`}
                     alt="NotFound"
                     width={100} // Set the desired width
                     height={60} // Set the desired height
-                  /> */}
+                  />
                 </TableCell>
                 <TableCell>
                   <Box display="flex" alignItems="center">

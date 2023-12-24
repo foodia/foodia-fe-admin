@@ -6,6 +6,7 @@ interface ChildProps {
   data: {
     id: number;
     event_name: string;
+    event_type: string;
     event_date: string;
     event_time: string;
     description: string;
@@ -47,7 +48,7 @@ const Info: React.FC<ChildProps> = ({ data }) => {
               alignItems: "start",
             }}
           >
-            <Typography>Event Name : </Typography>
+            <Typography>Name : </Typography>
             <TextField
               fullWidth
               id="name-basic"
@@ -63,12 +64,12 @@ const Info: React.FC<ChildProps> = ({ data }) => {
               alignItems: "start",
             }}
           >
-            <Typography>Event Date : </Typography>
+            <Typography>Type : </Typography>
             <TextField
               fullWidth
               id="name-basic"
               variant="outlined"
-              defaultValue={data.event_date}
+              defaultValue={data.event_type}
               disabled
             />
           </Box>
@@ -79,7 +80,23 @@ const Info: React.FC<ChildProps> = ({ data }) => {
               alignItems: "start",
             }}
           >
-            <Typography>Event Time : </Typography>
+            <Typography>Date & Time : </Typography>
+            <TextField
+              fullWidth
+              id="name-basic"
+              variant="outlined"
+              defaultValue={data.event_date + "  " + data.event_time}
+              disabled
+            />
+          </Box>
+          {/* <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "start",
+            }}
+          >
+            <Typography>Time : </Typography>
             <TextField
               fullWidth
               id="name-basic"
@@ -87,7 +104,7 @@ const Info: React.FC<ChildProps> = ({ data }) => {
               defaultValue={data.event_time}
               disabled
             />
-          </Box>
+          </Box> */}
           <Box
             sx={{
               display: "flex",

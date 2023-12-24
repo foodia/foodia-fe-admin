@@ -1,12 +1,17 @@
-import BaseCard from "../shared/DashboardCard";
-import React from "react";
-import LeafLet from "../shared/LeafLet";
+import { Typography } from "@mui/material";
 import dynamic from "next/dynamic";
+import React from "react";
+import BaseCard from "../shared/DashboardCard";
 
 interface ChildProps {
   data: {
     latitude: any;
     longitude: any;
+    address: string;
+    sub_district: string;
+    city: string;
+    province: string;
+    postal_code: string;
   };
 }
 
@@ -18,7 +23,13 @@ const Maps: React.FC<ChildProps> = ({ data }) => {
 
   return (
     <BaseCard title="Location">
-      <Map lat={data.latitude} long={data.longitude} />
+      <>
+        <Typography sx={{ fontWeight: "bold", marginBottom: "10px" }}>
+          {data.address}, Kecamatan {data.sub_district}, Kota {data.city},{" "}
+          {data.province}, {data.postal_code}
+        </Typography>
+        <Map lat={data.latitude} long={data.longitude} />
+      </>
     </BaseCard>
   );
 };
