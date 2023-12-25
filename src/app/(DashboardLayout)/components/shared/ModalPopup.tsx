@@ -9,6 +9,7 @@ import {
   TextField,
   Button,
 } from "@mui/material";
+import Image from "next/image";
 
 type Props = {
   open?: any;
@@ -121,14 +122,20 @@ export const ModalPopupFilesDetail = ({
           gap: "30px",
         }}
       >
-        <img
+        <Image
+          src={`${process.env.NEXT_PUBLIC_FILE}${image_url}`}
+          alt="NotFound"
+          width={400} // Set the desired width
+          height={300} // Set the desired height
+        />
+        {/* <img
           src={process.env.NEXT_PUBLIC_FILE + image_url}
           style={{
             width: "400px",
             height: "300px",
             borderRadius: "5px",
           }}
-        />
+        /> */}
         <Box sx={{ display: "flex", flexDirection: "row" }}>
           <Button onClick={handleClose}>Close</Button>
         </Box>

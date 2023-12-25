@@ -43,6 +43,22 @@ const Info: React.FC<ChildProps> = ({ data }) => {
             alignItems: "start",
           }}
         >
+          <Typography>Nomor KTP : </Typography>
+          <TextField
+            fullWidth
+            id="name-basic"
+            variant="outlined"
+            defaultValue={data.ktp_number}
+            disabled
+          />
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "start",
+          }}
+        >
           <Typography>Phone Number : </Typography>
           <TextField
             fullWidth
@@ -59,7 +75,7 @@ const Info: React.FC<ChildProps> = ({ data }) => {
             alignItems: "start",
           }}
         >
-          <Typography>Gopay Number : </Typography>
+          <Typography>Link Aja Number : </Typography>
           <TextField
             fullWidth
             id="name-basic"
@@ -91,92 +107,12 @@ const Info: React.FC<ChildProps> = ({ data }) => {
             alignItems: "start",
           }}
         >
-          <Typography>Provinsi : </Typography>
+          <Typography>Address : </Typography>
           <TextField
             fullWidth
             id="name-basic"
             variant="outlined"
-            defaultValue={data.province}
-            disabled
-          />
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "start",
-          }}
-        >
-          <Typography>Kota : </Typography>
-          <TextField
-            fullWidth
-            id="name-basic"
-            variant="outlined"
-            defaultValue={data.city}
-            disabled
-          />
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "start",
-          }}
-        >
-          <Typography>Kecamatan : </Typography>
-          <TextField
-            fullWidth
-            id="name-basic"
-            variant="outlined"
-            defaultValue={data.sub_district}
-            disabled
-          />
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "start",
-          }}
-        >
-          <Typography>Kode Pos : </Typography>
-          <TextField
-            fullWidth
-            id="name-basic"
-            variant="outlined"
-            defaultValue={data.postal_code}
-            disabled
-          />
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "start",
-          }}
-        >
-          <Typography>Alamat Lengkap : </Typography>
-          <TextField
-            fullWidth
-            id="name-basic"
-            variant="outlined"
-            defaultValue={data.address}
-            disabled
-          />
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "start",
-          }}
-        >
-          <Typography>Nomor KTP : </Typography>
-          <TextField
-            fullWidth
-            id="name-basic"
-            variant="outlined"
-            defaultValue={data.ktp_number}
+            value={`${data.address}, ${data.sub_district}, ${data.city}, ${data.province}, ${data.postal_code}`}
             disabled
           />
         </Box>

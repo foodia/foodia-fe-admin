@@ -14,6 +14,7 @@ import BaseCard from "../shared/DashboardCard";
 
 import { useState } from "react";
 import { ModalPopupFilesDetail } from "../shared/ModalPopup";
+import Image from "next/image";
 
 interface ChildProps {
   data: {
@@ -80,7 +81,13 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
               {/* {products.map((product) => ( */}
               <TableRow>
                 <TableCell>
-                  <img
+                  <Image
+                    src={`${process.env.NEXT_PUBLIC_FILE}${data.self_photo}`}
+                    alt="NotFound"
+                    width={150} // Set the desired width
+                    height={60} // Set the desired height
+                  />
+                  {/* <img
                     src={process.env.NEXT_PUBLIC_FILE + data.self_photo}
                     alt="notFound"
                     style={{
@@ -88,7 +95,7 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
                       height: "50px",
                       borderRadius: "5px",
                     }}
-                  />
+                  /> */}
                 </TableCell>
                 <TableCell>
                   <Box display="flex" alignItems="center">
@@ -121,7 +128,13 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
               {/* {products.map((product) => ( */}
               <TableRow>
                 <TableCell>
-                  <img
+                  <Image
+                    src={`${process.env.NEXT_PUBLIC_FILE}${data.self_photo}`}
+                    alt="NotFound"
+                    width={150} // Set the desired width
+                    height={60} // Set the desired height
+                  />
+                  {/* <img
                     src={process.env.NEXT_PUBLIC_FILE + data.ktp_photo}
                     alt="notFound"
                     style={{
@@ -129,7 +142,7 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
                       height: "50px",
                       borderRadius: "5px",
                     }}
-                  />
+                  /> */}
                 </TableCell>
                 <TableCell>
                   <Box display="flex" alignItems="center">

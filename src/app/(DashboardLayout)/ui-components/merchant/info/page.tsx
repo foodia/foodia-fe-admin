@@ -68,7 +68,7 @@ const MerchantInfo = () => {
 
   useEffect(() => {
     getMerchantDetail();
-  });
+  }, []);
 
   const getMerchantDetail = () => {
     axios

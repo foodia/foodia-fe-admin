@@ -25,8 +25,8 @@ const Maps: React.FC<ChildProps> = ({ data }) => {
     <BaseCard title="Location">
       <>
         <Typography sx={{ fontWeight: "bold", marginBottom: "10px" }}>
-          {data.address}, Kecamatan {data.sub_district}, Kota {data.city},{" "}
-          {data.province}, {data.postal_code}
+          {data.address}, {data.sub_district}, {data.city}, {data.province},{" "}
+          {data.postal_code}
         </Typography>
         <Map lat={data.latitude} long={data.longitude} />
       </>

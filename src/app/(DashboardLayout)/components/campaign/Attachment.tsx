@@ -9,16 +9,12 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { IconCircleCheck, IconClock, IconEye } from "@tabler/icons-react";
+import { IconEye } from "@tabler/icons-react";
 import Image from "next/image";
 import BaseCard from "../shared/DashboardCard";
 
-import img1 from "public/images/backgrounds/u1.jpg";
-import img2 from "public/images/backgrounds/u3.jpg";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import { ModalPopupFilesDetail } from "../shared/ModalPopup";
-import { IconBan } from "@tabler/icons-react";
 
 interface ChildProps {
   data: {
@@ -27,6 +23,7 @@ interface ChildProps {
       {
         id: number;
         order_status: string;
+        qty: string;
         merchant: { oauth: { fullname: string } };
         merchant_product: {
           name: string;
@@ -64,9 +61,12 @@ interface ChildProps {
 
 const Attachment: React.FC<ChildProps> = ({ data }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [file, setFile] = useState("");
 
-  const onView = () => {
+  const onView = (file: string) => {
     setIsOpen(true);
+    setFile(file);
+    console.log(file);
   };
 
   const onCloseView = () => {
@@ -118,8 +118,18 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
                   <Typography sx={{ fontSize: "12px" }}>
                     Rp. {orders.merchant_product.price}
                   </Typography>
+                  <Typography sx={{ fontSize: "12px" }}>
+                    Quantity: {orders.qty}
+                  </Typography>
                 </Box>
-                <Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "end",
+                    justifyContent: "space-between",
+                  }}
+                >
                   <Typography
                     display="flex"
                     alignItems="center"
@@ -135,6 +145,17 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
                   >
                     {orders.order_status}
                   </Typography>
+                  <Button
+                    sx={{ width: "20px" }}
+                    onClick={() =>
+                      onView(orders.merchant_product.images[0].image_url)
+                    }
+                    variant="contained"
+                    size="small"
+                    color="info"
+                  >
+                    <IconEye size={20} /> View
+                  </Button>
                 </Box>
               </Box>
             </Box>
@@ -182,7 +203,7 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
                 <TableCell>
                   <Stack spacing={1} direction="row">
                     <Button
-                      onClick={() => onView()}
+                      onClick={() => onView(data.image_url)}
                       variant="contained"
                       size="small"
                       color="info"
@@ -199,7 +220,7 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
       </BaseCard>
       <ModalPopupFilesDetail
         open={isOpen}
-        image_url={data.image_url}
+        image_url={file}
         handleClose={onCloseView}
       />
     </>

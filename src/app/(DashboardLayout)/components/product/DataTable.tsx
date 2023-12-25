@@ -82,7 +82,7 @@ const columns: TableColumn<Data>[] = [
       <Stack spacing={1} direction="row">
         <Link
           href={{
-            pathname: "/ui-components/detonator/info",
+            pathname: "/ui-components/product/info",
             query: {
               id: row.id,
             },
@@ -131,7 +131,11 @@ const DataTableComponent: React.FC<Props> = ({ data }) => {
     filteredItems = data.filter(
       (data) =>
         data.status.toLowerCase() === "approved" &&
-        data.name.toLowerCase().includes(searchText.toLowerCase())
+        (searchBy === "name"
+          ? data.name.toLowerCase().includes(searchText.toLowerCase())
+          : searchBy === "price"
+          ? data.price.toLowerCase().includes(searchText.toLowerCase())
+          : data.description.toLowerCase().includes(searchText.toLowerCase()))
     );
   }
   const searchOption = [

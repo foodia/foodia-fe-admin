@@ -1,5 +1,5 @@
 "use client";
-import Attachment from "@/app/(DashboardLayout)/components/detonator/Attachment";
+import Attachment from "@/app/(DashboardLayout)/components/product/Attachment";
 import Info from "@/app/(DashboardLayout)/components/product/Info";
 import {
   Box,
@@ -18,15 +18,13 @@ import ModalPopup from "@/app/(DashboardLayout)/components/shared/ModalPopup";
 
 type Props = {
   id: number;
-  event_name: string;
-  event_date: string;
-  event_time: string;
-  description: string;
-  donation_target: string;
-  province: string;
-  city: string;
+  name: string;
+  price: string;
   status: string;
-  detonator: { oauth: { fullname: string } };
+  qty: string;
+  note: string;
+  description: string;
+  images: [{ id: number; image_url: string }];
 };
 
 const CampaignInfo = () => {
@@ -38,16 +36,13 @@ const CampaignInfo = () => {
   const [note, setNote] = useState("");
   const [data, setData] = useState<Props>({
     id: 0,
-    event_name: "",
-    event_date: "",
-    event_time: "",
-    description: "",
-    donation_target: "",
-    province: "",
-    city: "",
+    name: "",
+    price: "",
     status: "",
-
-    detonator: { oauth: { fullname: "" } },
+    qty: "",
+    note: "",
+    description: "",
+    images: [{ id: 0, image_url: "" }],
   });
 
   const handleOpen = (id: number, status: string, name: string) => {
@@ -63,13 +58,13 @@ const CampaignInfo = () => {
 
   useEffect(() => {
     getDetonatorDetail();
-  });
+  }, []);
 
   const getDetonatorDetail = () => {
     axios
       .get(
         process.env.NEXT_PUBLIC_BASE +
-          `/detonator/fetch/${searchParams.get("id")}`,
+          `/merchant-product/fetch/${searchParams.get("id")}`,
         {
           headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
         }
@@ -87,7 +82,7 @@ const CampaignInfo = () => {
       status === "approved"
         ? axios
             .put(
-              process.env.NEXT_PUBLIC_BASE + `/detonator/approval/${id}`,
+              process.env.NEXT_PUBLIC_BASE + `/merchant-product/approval/${id}`,
               {
                 status,
                 note: "approved",
@@ -107,7 +102,7 @@ const CampaignInfo = () => {
         ? console.log("Note Empty")
         : axios
             .put(
-              process.env.NEXT_PUBLIC_BASE + `/detonator/approval/${id}`,
+              process.env.NEXT_PUBLIC_BASE + `/merchant-product/approval/${id}`,
               {
                 status,
                 note,
@@ -130,80 +125,47 @@ const CampaignInfo = () => {
     <>
       <Grid container spacing={3}>
         <Grid item xs={6} lg={6}>
-          {/* <Info data={data} /> */}
+          <Info data={data} />
+          <Box
+            marginTop="20px"
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            gap="20px"
+            color="white"
+          >
+            <Stack
+              display="flex"
+              justifyContent="center"
+              spacing={1}
+              direction="row"
+            >
+              <Button
+                variant="contained"
+                size="large"
+                disabled={data.status === "approved"}
+                onClick={() => handleOpen(data.id, "approved", data.name)}
+                color="success"
+              >
+                <IconCircleCheck size={18} /> Approve
+              </Button>
+              <Button
+                variant="contained"
+                size="large"
+                disabled={data.status === "rejected"}
+                onClick={() => handleOpen(data.id, "rejected", data.name)}
+                color="error"
+              >
+                <IconBan size={16} /> Reject
+              </Button>
+            </Stack>
+          </Box>
         </Grid>
         <Grid item xs={6} lg={6}>
-          {/* <Attachment data={data} /> */}
+          <Attachment data={data} />
         </Grid>
       </Grid>
-      <Box
-        marginTop="40px"
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        gap="10px"
-      >
-        {data.status === "approved" ? (
-          <Typography
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            color="success.main"
-          >
-            <IconCircleCheck /> Approved
-          </Typography>
-        ) : data.status === "rejected" ? (
-          <Typography
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            color="error.main"
-          >
-            <IconBan /> Rejected
-          </Typography>
-        ) : (
-          data.status === "waiting" && (
-            <Typography
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              color="warning.main"
-            >
-              <IconClock /> Waiting
-            </Typography>
-          )
-        )}
-        <Stack
-          display="flex"
-          justifyContent="center"
-          spacing={1}
-          direction="row"
-        >
-          <Button
-            variant="contained"
-            size="small"
-            color="success"
-            disabled
-            onClick={() =>
-              handleOpen(data.id, "approved", data.detonator?.oauth?.fullname)
-            }
-          >
-            <IconCircleCheck size={18} /> Approve
-          </Button>
-          <Button
-            variant="contained"
-            size="small"
-            color="error"
-            disabled
-            onClick={() =>
-              handleOpen(data.id, "rejected", data.detonator?.oauth?.fullname)
-            }
-          >
-            <IconBan size={16} /> Reject
-          </Button>
-        </Stack>
-      </Box>
 
       <ModalPopup
         open={isOpen}

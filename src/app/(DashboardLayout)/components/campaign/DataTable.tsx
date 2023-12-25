@@ -138,9 +138,13 @@ const DataTableComponent: React.FC<Props> = ({ data }) => {
     filteredItems = data.filter(
       (data) =>
         data.status.toLowerCase() === "approved" &&
-        data.detonator.oauth.fullname
-          .toLowerCase()
-          .includes(searchText.toLowerCase())
+        (searchBy === "detonator"
+          ? data.detonator.oauth.fullname
+              .toLowerCase()
+              .includes(searchText.toLowerCase())
+          : searchBy === "name"
+          ? data.event_name.toLowerCase().includes(searchText.toLowerCase())
+          : data.event_type.toLowerCase().includes(searchText.toLowerCase()))
     );
   }
 

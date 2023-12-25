@@ -69,7 +69,9 @@ const Info: React.FC<ChildProps> = ({ data }) => {
               fullWidth
               id="name-basic"
               variant="outlined"
-              defaultValue={data.event_type}
+              defaultValue={
+                data.event_type === "one_time" ? "One Time" : "Regular"
+              }
               disabled
             />
           </Box>
@@ -85,7 +87,7 @@ const Info: React.FC<ChildProps> = ({ data }) => {
               fullWidth
               id="name-basic"
               variant="outlined"
-              defaultValue={data.event_date + "  " + data.event_time}
+              value={data.event_date + "  " + data.event_time}
               disabled
             />
           </Box>

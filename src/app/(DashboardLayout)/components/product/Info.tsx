@@ -1,19 +1,23 @@
 import { Box, Stack, TextField, Typography } from "@mui/material";
 import BaseCard from "../shared/DashboardCard";
 
-interface ChildProps {
+type ChildProps = {
   data: {
     id: number;
-    ktp_number: string;
+    name: string;
+    price: string;
     status: string;
-    oauth: { fullname: string; email: string; phone: string };
+    qty: string;
+    note: string;
+    description: string;
+    images: [{ id: number; image_url: string }];
   };
-}
+};
 
 const Info: React.FC<ChildProps> = ({ data }) => {
   return (
     <>
-      <BaseCard title="Product Info">
+      <BaseCard title="Product Info" status={data.status}>
         <Stack spacing={3}>
           <Box
             sx={{
@@ -22,12 +26,12 @@ const Info: React.FC<ChildProps> = ({ data }) => {
               alignItems: "start",
             }}
           >
-            <Typography>Fullname : </Typography>
+            <Typography>Name : </Typography>
             <TextField
               fullWidth
               id="name-basic"
               variant="outlined"
-              defaultValue={data.oauth.fullname}
+              defaultValue={data.name}
               disabled
             />
           </Box>
@@ -38,12 +42,12 @@ const Info: React.FC<ChildProps> = ({ data }) => {
               alignItems: "start",
             }}
           >
-            <Typography>Phone Number : </Typography>
+            <Typography>Price : </Typography>
             <TextField
               fullWidth
               id="name-basic"
               variant="outlined"
-              defaultValue={data.oauth.phone}
+              defaultValue={data.price}
               disabled
             />
           </Box>
@@ -54,12 +58,12 @@ const Info: React.FC<ChildProps> = ({ data }) => {
               alignItems: "start",
             }}
           >
-            <Typography>Email : </Typography>
+            <Typography>Quantity : </Typography>
             <TextField
               fullWidth
               id="name-basic"
               variant="outlined"
-              defaultValue={data.oauth.email}
+              defaultValue={data.qty}
               disabled
             />
           </Box>
@@ -70,12 +74,28 @@ const Info: React.FC<ChildProps> = ({ data }) => {
               alignItems: "start",
             }}
           >
-            <Typography>Nomor KTP : </Typography>
+            <Typography>Description : </Typography>
             <TextField
               fullWidth
               id="name-basic"
               variant="outlined"
-              defaultValue={data.ktp_number}
+              defaultValue={data.description}
+              disabled
+            />
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "start",
+            }}
+          >
+            <Typography>Note : </Typography>
+            <TextField
+              fullWidth
+              id="name-basic"
+              variant="outlined"
+              defaultValue={data.note}
               disabled
             />
           </Box>

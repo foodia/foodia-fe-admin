@@ -123,7 +123,11 @@ const DataTableComponent: React.FC<Props> = ({ data }) => {
     filteredItems = data.filter(
       (data) =>
         data.status.toLowerCase() === "approved" &&
-        data.oauth.fullname.toLowerCase().includes(searchText.toLowerCase())
+        (searchBy === "fullname"
+          ? data.oauth.fullname.toLowerCase().includes(searchText.toLowerCase())
+          : searchBy === "email"
+          ? data.oauth.email.toLowerCase().includes(searchText.toLowerCase())
+          : data.oauth.phone.toLowerCase().includes(searchText.toLowerCase()))
     );
   }
 
