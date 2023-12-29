@@ -11,6 +11,7 @@ import BaseCard from "../shared/DashboardCard";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import Cookies from "js-cookie";
 import Loading from "../../loading";
 
 const Login = () => {
@@ -32,6 +33,7 @@ const Login = () => {
         const email = res?.data?.body.email;
         const token = res?.data.body.token;
         const username = res?.data?.body.fullname;
+        Cookies.set("role", role);
         localStorage.setItem("TOKEN", token);
         localStorage.setItem("USERNAME", username);
         localStorage.setItem("ROLE", role);
