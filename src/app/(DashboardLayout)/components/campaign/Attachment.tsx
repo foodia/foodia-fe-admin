@@ -139,7 +139,13 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
                     padding="5px 15px"
                     color="white"
                     sx={{
-                      backgroundColor: "success.main",
+                      backgroundColor: `${
+                        orders.order_status === "incoming"
+                          ? "warning.main"
+                          : orders.order_status === "canceled"
+                          ? "error.main"
+                          : "success.main"
+                      }`,
                       textTransform: "capitalize",
                     }}
                   >
