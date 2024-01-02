@@ -14,6 +14,7 @@ interface Data {
   price: string;
   qty: number;
   status: string;
+  merchant: { oauth: { fullname: string } };
 }
 
 interface Props {
@@ -28,6 +29,11 @@ const columns: TableColumn<Data>[] = [
     width: "70px",
   },
   {
+    name: "Merchant",
+    cell: (row: Data) => <div>{row.merchant.oauth.fullname}</div>,
+    // sortable: true,
+  },
+  {
     name: "Name",
     cell: (row: Data) => <div>{row.name}</div>,
     // sortable: true,
@@ -36,12 +42,13 @@ const columns: TableColumn<Data>[] = [
     name: "Description",
     cell: (row: Data) => <div>{row.description}</div>,
     // sortable: true,
-    width: "270px",
+    width: "260px",
   },
   {
     name: "Quantity",
     cell: (row: Data) => <div>{row.qty}</div>,
     // sortable: true,
+    width: "100px",
   },
   {
     name: "Price",
