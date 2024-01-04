@@ -15,6 +15,7 @@ import BaseCard from "../shared/DashboardCard";
 
 import { useState } from "react";
 import { ModalPopupFilesDetail } from "../shared/ModalPopup";
+import Link from "next/link";
 
 interface ChildProps {
   data: {
@@ -26,13 +27,19 @@ interface ChildProps {
         qty: string;
         merchant: { oauth: { fullname: string } };
         merchant_product: {
+          id: number;
           name: string;
           price: string;
           images: [{ image_url: string }];
         };
       }
     ];
-    detonator: { oauth: { fullname: string; email: string } };
+    detonator: {
+      id: number;
+      status: string;
+      self_photo: string;
+      oauth: { fullname: string; email: string; phone: string };
+    };
   };
 }
 
@@ -63,7 +70,7 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [file, setFile] = useState("");
 
-  const onView = (file: string) => {
+  const onViewImage = (file: string) => {
     setIsOpen(true);
     setFile(file);
     console.log(file);
@@ -90,18 +97,28 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
               sx={{
                 display: "flex",
                 gap: "10px",
-                justifyContent: "space-between",
+                // justifyContent: "space-between",
                 border: "0.4px solid grey",
                 borderRadius: "10px",
                 padding: "10px",
               }}
             >
-              <Image
-                src={`${process.env.NEXT_PUBLIC_FILE}${orders.merchant_product.images[0].image_url}`}
-                alt="NotFound"
-                width={150} // Set the desired width
-                height={60} // Set the desired height
-              />
+              <Button
+                // sx={{ width: "20px" }}
+                onClick={() =>
+                  onViewImage(orders.merchant_product.images[0].image_url)
+                }
+                variant="contained"
+                size="small"
+                color="primary"
+              >
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_FILE}${orders.merchant_product.images[0].image_url}`}
+                  alt="NotFound"
+                  width={150} // Set the desired width
+                  height={60} // Set the desired height
+                />
+              </Button>
               <Box
                 sx={{
                   display: "flex",
@@ -116,7 +133,11 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
                     {orders.merchant.oauth.fullname}
                   </Typography>
                   <Typography sx={{ fontSize: "12px" }}>
-                    Rp. {orders.merchant_product.price}
+                    Rp.{" "}
+                    {orders.merchant_product.price.replace(
+                      /\B(?=(\d{3})+(?!\d))/g,
+                      "."
+                    )}
                   </Typography>
                   <Typography sx={{ fontSize: "12px" }}>
                     Quantity: {orders.qty}
@@ -151,17 +172,18 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
                   >
                     {orders.order_status}
                   </Typography>
-                  <Button
-                    sx={{ width: "20px" }}
-                    onClick={() =>
-                      onView(orders.merchant_product.images[0].image_url)
-                    }
-                    variant="contained"
-                    size="small"
-                    color="info"
+                  <Link
+                    href={{
+                      pathname: "/ui-components/product/info",
+                      query: {
+                        id: orders.merchant_product.id,
+                      },
+                    }}
                   >
-                    <IconEye size={20} /> View
-                  </Button>
+                    <Button variant="contained" size="small" color="info">
+                      <IconEye size={20} /> View
+                    </Button>
+                  </Link>
                 </Box>
               </Box>
             </Box>
@@ -169,60 +191,108 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
         </Box>
       </BaseCard>
       <BaseCard title="Attachment">
-        <TableContainer
-          sx={{
-            width: {
-              xs: "274px",
-              sm: "100%",
-            },
-          }}
-        >
-          <Table
-            aria-label="simple table"
+        <Box sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          <Typography>Event Photo :</Typography>
+          <Button
+            onClick={() => onViewImage(data.image_url)}
+            variant="contained"
+            size="small"
+            sx={{ backgroundColor: "transparent", border: "0.4px solid grey" }}
+          >
+            <Image
+              src={`${process.env.NEXT_PUBLIC_FILE}${data.image_url}`}
+              alt="NotFound"
+              width={200} // Set the desired width
+              height={120} // Set the desired height
+            />
+          </Button>
+          <Typography>Detonator :</Typography>
+          <Box
             sx={{
-              whiteSpace: "nowrap",
+              display: "flex",
+              gap: "10px",
+              border: "0.4px solid grey",
+              borderRadius: "10px",
+              padding: "10px",
             }}
           >
-            <TableBody>
-              {/* {products.map((product) => ( */}
-              <TableRow>
-                <TableCell>
-                  <Image
-                    src={`${process.env.NEXT_PUBLIC_FILE}${data.image_url}`}
-                    alt="NotFound"
-                    width={100} // Set the desired width
-                    height={60} // Set the desired height
-                  />
-                </TableCell>
-                <TableCell>
-                  <Box display="flex" alignItems="center">
-                    <Box>
-                      <Typography variant="h6" fontWeight={500}>
-                        {data.detonator.oauth.fullname}
-                      </Typography>
-                      <Typography color="textSecondary" fontSize="13px">
-                        {data.detonator.oauth.email}
-                      </Typography>
-                    </Box>
-                  </Box>
-                </TableCell>
-                <TableCell>
-                  <Stack spacing={1} direction="row">
-                    <Button
-                      onClick={() => onView(data.image_url)}
-                      variant="contained"
-                      size="small"
-                      color="info"
-                    >
-                      <IconEye size={20} /> View
-                    </Button>
-                  </Stack>
-                </TableCell>
-              </TableRow>
-              {/* ))} */}
-            </TableBody>
-          </Table>
-        </TableContainer>
+            <Button
+              onClick={() => onViewImage(data.detonator.self_photo)}
+              variant="contained"
+              size="small"
+              color="primary"
+            >
+              <Image
+                src={`${process.env.NEXT_PUBLIC_FILE}${data.detonator.self_photo}`}
+                alt="NotFound"
+                width={100} // Set the desired width
+                height={60} // Set the desired height
+              />
+            </Button>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                width: "100%",
+                justifyContent: "space-between",
+              }}
+            >
+              <Box>
+                <Typography variant="h6" fontWeight={500}>
+                  {data.detonator.oauth.fullname}
+                </Typography>
+                <Typography color="textSecondary" fontSize="13px">
+                  {data.detonator.oauth.phone}
+                </Typography>
+                <Typography color="textSecondary" fontSize="13px">
+                  {data.detonator.oauth.email}
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "end",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Typography
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  borderRadius="30px"
+                  height="25px"
+                  padding="5px 15px"
+                  color="white"
+                  sx={{
+                    backgroundColor: `${
+                      data.detonator.status === "waiting"
+                        ? "warning.main"
+                        : data.detonator.status === "rejected"
+                        ? "error.main"
+                        : "success.main"
+                    }`,
+                    textTransform: "capitalize",
+                  }}
+                >
+                  {data.detonator.status}
+                </Typography>
+                <Link
+                  href={{
+                    pathname: "/ui-components/detonator/info",
+                    query: {
+                      id: data.detonator.id,
+                    },
+                  }}
+                >
+                  <Button variant="contained" size="small" color="info">
+                    <IconEye size={20} /> View
+                  </Button>
+                </Link>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
       </BaseCard>
       <ModalPopupFilesDetail
         open={isOpen}

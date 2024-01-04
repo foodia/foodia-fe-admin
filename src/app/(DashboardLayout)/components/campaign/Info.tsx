@@ -25,7 +25,7 @@ const Info: React.FC<ChildProps> = ({ data }) => {
     <>
       <BaseCard title="Campaign Info" status={data.status}>
         <Stack spacing={3}>
-          <Box
+          {/* <Box
             sx={{
               display: "flex",
               flexDirection: "column",
@@ -40,7 +40,7 @@ const Info: React.FC<ChildProps> = ({ data }) => {
               defaultValue={data.detonator?.oauth?.fullname}
               disabled
             />
-          </Box>
+          </Box> */}
           <Box
             sx={{
               display: "flex",

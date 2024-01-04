@@ -84,23 +84,29 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
             <TableBody>
               {data.images.map((product) => (
                 <TableRow key={product.id}>
-                  <TableCell>
+                  {/* <TableCell>
                     <Image
                       src={`${process.env.NEXT_PUBLIC_FILE}${product.image_url}`}
                       alt="NotFound"
                       width={150} // Set the desired width
                       height={60} // Set the desired height
                     />
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell>
                     <Stack spacing={1} direction="row">
                       <Button
                         onClick={() => onView(product.image_url)}
+                        sx={{ padding: 0 }}
                         variant="contained"
-                        size="small"
-                        color="info"
+                        size="medium"
+                        color="primary"
                       >
-                        <IconEye size={20} /> View
+                        <Image
+                          src={`${process.env.NEXT_PUBLIC_FILE}${product.image_url}`}
+                          alt="NotFound"
+                          width={200} // Set the desired width
+                          height={120} // Set the desired height
+                        />
                       </Button>
                     </Stack>
                   </TableCell>

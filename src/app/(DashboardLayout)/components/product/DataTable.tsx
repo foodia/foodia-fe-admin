@@ -52,7 +52,9 @@ const columns: TableColumn<Data>[] = [
   },
   {
     name: "Price",
-    cell: (row: Data) => <div>{row.price}</div>,
+    cell: (row: Data) => (
+      <div>Rp.{row.price.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</div>
+    ),
     // sortable: true,
   },
   // {
