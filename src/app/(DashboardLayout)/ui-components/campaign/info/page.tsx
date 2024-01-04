@@ -14,19 +14,42 @@ type Props = {
   id: number;
   event_name: string;
   event_date: string;
+  event_type: string;
   event_time: string;
   description: string;
   donation_target: string;
-  province: string;
-  city: string;
   status: string;
   order_status: string;
-  latitude: string;
-  longitude: string;
   image_url: string;
   food_required: number;
   food_total: number;
-  detonator: { oauth: { fullname: string; email: string } };
+  latitude: any;
+  longitude: any;
+  address: string;
+  sub_district: string;
+  city: string;
+  province: string;
+  postal_code: string;
+  detonator: {
+    id: number;
+    status: string;
+    self_photo: string;
+    oauth: { fullname: string; email: string; phone: string };
+  };
+  orders: [
+    {
+      id: number;
+      order_status: string;
+      qty: string;
+      merchant: { oauth: { fullname: string } };
+      merchant_product: {
+        id: number;
+        name: string;
+        price: string;
+        images: [{ image_url: string }];
+      };
+    }
+  ];
 };
 
 const CampaignInfo = () => {
@@ -40,19 +63,42 @@ const CampaignInfo = () => {
     id: 0,
     event_name: "",
     event_date: "",
+    event_type: "",
     event_time: "",
     description: "",
     donation_target: "",
-    province: "",
-    city: "",
     status: "",
     order_status: "",
-    latitude: "",
-    longitude: "",
     image_url: "",
     food_required: 0,
     food_total: 0,
-    detonator: { oauth: { fullname: "", email: "" } },
+    latitude: "",
+    longitude: "",
+    address: "",
+    sub_district: "",
+    city: "",
+    province: "",
+    postal_code: "",
+    detonator: {
+      id: 0,
+      status: "",
+      self_photo: "",
+      oauth: { fullname: "", email: "", phone: "" },
+    },
+    orders: [
+      {
+        id: 0,
+        order_status: "",
+        qty: "",
+        merchant: { oauth: { fullname: "" } },
+        merchant_product: {
+          id: 0,
+          name: "",
+          price: "",
+          images: [{ image_url: "" }],
+        },
+      },
+    ],
   });
 
   const handleOpen = (id: number, status: string, name: string) => {

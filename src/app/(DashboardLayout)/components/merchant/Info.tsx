@@ -110,10 +110,12 @@ const Info: React.FC<ChildProps> = ({ data }) => {
           <Typography>Address : </Typography>
           <TextField
             fullWidth
+            multiline
             id="name-basic"
             variant="outlined"
             value={`${data.address}, ${data.sub_district}, ${data.city}, ${data.province}, ${data.postal_code}`}
             disabled
+            type="text"
           />
         </Box>
       </Stack>

@@ -120,7 +120,7 @@ const Info: React.FC<ChildProps> = ({ data }) => {
               id="name-basic"
               multiline
               variant="outlined"
-              defaultValue={data.description}
+              value={data.description}
               disabled
             />
           </Box>

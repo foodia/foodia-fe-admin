@@ -47,7 +47,7 @@ const Info: React.FC<ChildProps> = ({ data }) => {
               fullWidth
               id="name-basic"
               variant="outlined"
-              defaultValue={data.price}
+              value={`Rp. ${data.price.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`}
               disabled
             />
           </Box>
