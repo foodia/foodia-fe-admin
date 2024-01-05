@@ -2,17 +2,8 @@
 import Attachment from "@/app/(DashboardLayout)/components/detonator/Attachment";
 import Info from "@/app/(DashboardLayout)/components/detonator/Info";
 import ModalPopup from "@/app/(DashboardLayout)/components/shared/ModalPopup";
-import { Label } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  Grid,
-  Modal,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { IconBan, IconCircleCheck, IconClock } from "@tabler/icons-react";
+import { Box, Button, Grid, Stack } from "@mui/material";
+import { IconBan, IconCircleCheck } from "@tabler/icons-react";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -91,7 +82,8 @@ const DetonatorInfo = () => {
               }
             )
             .then((res) => {
-              getDetonatorDetail();
+              // getDetonatorDetail();
+              location.reload();
               setIsOpen(false);
             })
             .catch((error) => {})
@@ -111,7 +103,8 @@ const DetonatorInfo = () => {
               }
             )
             .then((res) => {
-              getDetonatorDetail();
+              // getDetonatorDetail();
+              location.reload();
               setIsOpen(false);
             })
             .catch((error) => {});

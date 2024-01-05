@@ -18,6 +18,7 @@ import {
   IconCircle,
   IconUser,
 } from "@tabler/icons-react";
+import { useAppContext } from "@/app/(DashboardLayout)/components/shared/Context";
 
 type NavGroup = {
   [x: string]: any;
@@ -49,7 +50,7 @@ const NavItem = ({ item, level, pathDirect, onClick }: ItemType) => {
   const Icon = item.icon;
   const theme = useTheme();
   const itemIcon = <Icon stroke={1.5} size="1.3rem" />;
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
   const handleClick = () => {
     setOpen(!open);

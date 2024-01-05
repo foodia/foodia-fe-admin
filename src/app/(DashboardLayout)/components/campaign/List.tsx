@@ -2,54 +2,37 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import BaseCard from "../shared/DashboardCard";
 import DataTableComponent from "./DataTable";
+import { useAppContext } from "../shared/Context";
 
 const List = () => {
-  const [data, setData] = useState([
-    // {
-    //   id: 1,
-    //   fullname: "mmak",
-    //   email: "mmak@gmail",
-    //   phone: 8221122,
-    //   status: "approved",
-    //   oauth: {
-    //     fullname: "dsddsdsd",
-    //     email: "dsadadd@gmail.com",
-    //     phone: "082299229922",
-    //   },
-    // },
-    // {
-    //   id: 2,
-    //   fullname: "mmak",
-    //   email: "mmak@gmail",
-    //   phone: 8221122,
-    //   status: "approved",
-    //   oauth: {
-    //     fullname: "dsddsdsd",
-    //     email: "dsadadd@gmail.com",
-    //     phone: "082299229922",
-    //   },
-    // },
-  ]);
+  const { campaignData } = useAppContext();
+  // const [data, setData] = useState([]);
+  // const { setIsUnapprovedCampaign } = useAppContext();
 
-  useEffect(() => {
-    getCampaign();
-  }, []);
+  // useEffect(() => {
+  //   getCampaign();
+  // }, []);
 
-  const getCampaign = () => {
-    axios
-      .get(process.env.NEXT_PUBLIC_BASE + "/campaign/filter", {
-        headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
-      })
-      .then((res) => {
-        setData(res.data.body);
-      })
-      .catch((error) => {});
-  };
+  // const getCampaign = () => {
+  //   axios
+  //     .get(process.env.NEXT_PUBLIC_BASE + "/campaign/filter", {
+  //       headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
+  //     })
+  //     .then((res) => {
+  //       setData(res.data.body);
+  //       const isRejectedPresent: boolean = res.data.body.some(
+  //         (obj: any) => obj.status === "rejected"
+  //       );
+  //       // console.log(isRejectedPresent);
+  //       setIsUnapprovedCampaign(isRejectedPresent);
+  //     })
+  //     .catch((error) => {});
+  // };
 
   return (
     <>
       <BaseCard title="List Campaign">
-        <DataTableComponent data={data} />
+        <DataTableComponent data={campaignData} />
       </BaseCard>
     </>
   );

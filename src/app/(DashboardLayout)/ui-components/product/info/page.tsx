@@ -94,7 +94,7 @@ const CampaignInfo = () => {
               }
             )
             .then((res) => {
-              getDetonatorDetail();
+              location.reload();
               setIsOpen(false);
             })
             .catch((error) => {})
@@ -114,7 +114,7 @@ const CampaignInfo = () => {
               }
             )
             .then((res) => {
-              getDetonatorDetail();
+              location.reload();
               setIsOpen(false);
             })
             .catch((error) => {});

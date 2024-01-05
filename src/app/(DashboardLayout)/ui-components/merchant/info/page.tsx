@@ -102,7 +102,7 @@ const MerchantInfo = () => {
               }
             )
             .then((res) => {
-              getMerchantDetail();
+              location.reload();
               setIsOpen(false);
             })
             .catch((error) => {})
@@ -122,7 +122,7 @@ const MerchantInfo = () => {
               }
             )
             .then((res) => {
-              getMerchantDetail();
+              location.reload();
               setIsOpen(false);
             })
             .catch((error) => {});

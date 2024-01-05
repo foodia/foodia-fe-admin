@@ -148,7 +148,8 @@ const CampaignInfo = () => {
               }
             )
             .then((res) => {
-              getCampaignDetail();
+              // getCampaignDetail();
+              location.reload();
               setIsOpen(false);
             })
             .catch((error) => {})
@@ -168,7 +169,8 @@ const CampaignInfo = () => {
               }
             )
             .then((res) => {
-              getCampaignDetail();
+              // getCampaignDetail();
+              location.reload();
               setIsOpen(false);
             })
             .catch((error) => {});
