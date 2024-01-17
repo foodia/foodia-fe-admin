@@ -2,7 +2,6 @@ const CustomStylesTable = {
   table: {
     style: {
       maxWidth: "auto", // set the width of the table wrapper
-      backgroundColor: "#FCFDFF",
       border: "1px solid #CCD1D9",
       borderRadius: "6px 6px 0px 0px",
     },
@@ -34,7 +33,7 @@ const CustomStylesTable = {
       backgroundColor: "#FCFDFF",
       color: "black",
       minHeight: "52px",
-      // borderRadius: "10px",
+      borderRadius: "6px 6px 0px 0px",
     },
     denseStyle: {
       minHeight: "32px",
@@ -50,13 +49,13 @@ const CustomStylesTable = {
   },
   pagination: {
     style: {
-      backgroundColor: "#FCFDFF",
+      // backgroundColor: "#FCFDFF",
       // borderTop: "none",
       // padding: "10px",
-      border: "1px solid #CCD1D9",
-      borderTop: "0px",
-      justifyContent: "center",
-      borderRadius: "0px 0px 6px 6px",
+      // border: "1px solid #CCD1D9",
+      // borderTop: "0px",
+      // justifyContent: "center",
+      // borderRadius: "40px",
     },
     pageButtonsStyle: {
       borderRadius: "100%",

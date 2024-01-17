@@ -16,11 +16,11 @@ const List = () => {
       })
       .then((res) => {
         setData(res.data.body);
-        const isRejectedPresent: boolean = res.data.body.some(
-          (obj: any) => obj.status === "rejected" || obj.status === "waiting"
-        );
-        // console.log(isRejectedPresent);
-        setIsUnapprovedProduct(isRejectedPresent);
+        // const isRejectedPresent: boolean = res.data.body.some(
+        //   (obj: any) => obj.status === "rejected" || obj.status === "waiting"
+        // );
+        // // console.log(isRejectedPresent);
+        // setIsUnapprovedProduct(isRejectedPresent);
       })
       .catch((error) => {});
   };

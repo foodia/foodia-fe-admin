@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { styled, Typography } from "@mui/material";
 import Image from "next/image";
+import logo from "@/utils/logo.png";
 
 const LinkStyled = styled(Link)(() => ({
   height: "40px",
@@ -11,7 +12,12 @@ const LinkStyled = styled(Link)(() => ({
 
 const Logo = () => {
   return (
-    <Typography variant="h1" style={{ color: "#3FB648", fontSize: "35px", fontWeight: "650" }}>Foodia</Typography>
+    <Image
+      src={logo}
+      alt="NotFound"
+      width={150} // Set the desired width
+      height={32.927} // Set the desired height
+    />
   );
 };
 

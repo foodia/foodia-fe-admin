@@ -27,7 +27,7 @@ type Props = {
   images: [{ id: number; image_url: string }];
 };
 
-const CampaignInfo = () => {
+const ProductInfo = () => {
   const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);
   const [ids, setId] = useState<number>(0);
@@ -57,10 +57,10 @@ const CampaignInfo = () => {
   };
 
   useEffect(() => {
-    getDetonatorDetail();
+    getProductDetail();
   }, []);
 
-  const getDetonatorDetail = () => {
+  const getProductDetail = () => {
     axios
       .get(
         process.env.NEXT_PUBLIC_BASE +
@@ -180,4 +180,4 @@ const CampaignInfo = () => {
   );
 };
 
-export default CampaignInfo;
+export default ProductInfo;

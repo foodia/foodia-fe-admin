@@ -131,7 +131,7 @@ const NavItem = ({ item, level, pathDirect, onClick }: ItemType) => {
                 selected={pathDirect === t.href}
                 onClick={onClick}
               >
-                <ListItemIcon
+                {/* <ListItemIcon
                   sx={{
                     minWidth: "36px",
                     p: "3px 0",
@@ -139,7 +139,7 @@ const NavItem = ({ item, level, pathDirect, onClick }: ItemType) => {
                   }}
                 >
                   {t.icon}
-                </ListItemIcon>
+                </ListItemIcon> */}
                 <ListItemText primary={t.name} />
                 {t.isUnapproved ? (
                   <ListItemText>

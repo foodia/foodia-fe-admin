@@ -11,16 +11,18 @@ const List = () => {
 
   const getDetonator = () => {
     axios
-      .get(process.env.NEXT_PUBLIC_BASE + "/detonator/filter", {
-        headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
-      })
+      .get(
+        process.env.NEXT_PUBLIC_BASE + "/detonator/filter?page=1&per_page=10",
+        {
+          headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
+        }
+      )
       .then((res) => {
         setData(res.data.body);
-        const isRejectedPresent: boolean = res.data.body.some(
-          (obj: any) => obj.status === "waiting" || obj.status === "rejected"
-        );
-        // console.log(isRejectedPresent);
-        setIsUnapprovedDetonator(isRejectedPresent);
+        // const isRejectedPresent: boolean = res.data.body.some(
+        //   (obj: any) => obj.status === "waiting" || obj.status === "rejected"
+        // );
+        // setIsUnapprovedDetonator(isRejectedPresent);
       })
       .catch((error) => {});
   };
@@ -28,8 +30,6 @@ const List = () => {
   useEffect(() => {
     getDetonator();
   }, []);
-
-  // console.log(isUnapprovedDetonator);
 
   return (
     <>

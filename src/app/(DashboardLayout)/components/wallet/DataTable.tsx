@@ -30,10 +30,13 @@ interface Props {
 
 const columns: TableColumn<Data>[] = [
   {
-    name: "ID",
-    selector: (row: Data) => row.id,
+    name: "No",
+    selector: (_row, i: any) => i + 1,
     // sortable: true,
-    width: "50px",
+    width: "70px",
+    // style: {
+    //   paddingLeft: "30px",
+    // },
   },
   {
     name: "Merchant",
