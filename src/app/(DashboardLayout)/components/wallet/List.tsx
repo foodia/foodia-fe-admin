@@ -5,35 +5,33 @@ import DataTableComponent from "./DataTable";
 import { useAppContext } from "../shared/Context";
 
 const List = () => {
-  // const { detonatorData } = useAppContext();
+  const { productData } = useAppContext();
   const [data, setData] = useState([]);
-  const { setIsUnapprovedDetonator } = useAppContext();
+  const { setIsUnapprovedProduct } = useAppContext();
 
-  const getDetonator = () => {
+  const getProduct = () => {
     axios
-      .get(process.env.NEXT_PUBLIC_BASE + "/detonator/filter", {
+      .get(process.env.NEXT_PUBLIC_BASE + "/merchant-product/filter", {
         headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       })
       .then((res) => {
         setData(res.data.body);
         const isRejectedPresent: boolean = res.data.body.some(
-          (obj: any) => obj.status === "waiting" || obj.status === "rejected"
+          (obj: any) => obj.status === "rejected" || obj.status === "waiting"
         );
         // console.log(isRejectedPresent);
-        setIsUnapprovedDetonator(isRejectedPresent);
+        setIsUnapprovedProduct(isRejectedPresent);
       })
       .catch((error) => {});
   };
 
   useEffect(() => {
-    getDetonator();
+    getProduct();
   }, []);
-
-  // console.log(isUnapprovedDetonator);
 
   return (
     <>
-      <BaseCard title="Detonator Management">
+      <BaseCard title="CSR Wallet" currentBalance={9500000}>
         <DataTableComponent data={data} />
       </BaseCard>
     </>

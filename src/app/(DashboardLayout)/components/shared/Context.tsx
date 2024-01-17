@@ -68,67 +68,64 @@ const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   useEffect(() => {
     // Get Campaign
-    axios
-      .get(process.env.NEXT_PUBLIC_BASE + "/campaign/filter", {
-        headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
-      })
-      .then((res) => {
-        setCampaignData(res.data.body);
-        const isRejectedPresent: boolean = res.data.body.some(
-          (obj: any) => obj.status === "rejected" || obj.status === "waiting"
-        );
-        // console.log(isRejectedPresent);
-        setIsUnapprovedCampaign(isRejectedPresent);
-      })
-      .catch((error) => {});
+    // axios
+    //   .get(process.env.NEXT_PUBLIC_BASE + "/campaign/filter", {
+    //     headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
+    //   })
+    //   .then((res) => {
+    //     setCampaignData(res.data.body);
+    //     const isRejectedPresent: boolean = res.data.body.some(
+    //       (obj: any) => obj.status === "rejected" || obj.status === "waiting"
+    //     );
+    //     // console.log(isRejectedPresent);
+    //     setIsUnapprovedCampaign(isRejectedPresent);
+    //   })
+    //   .catch((error) => {});
     //----------------------------------------------------------------------------
-
     // Get Detonator
-    axios
-      .get(process.env.NEXT_PUBLIC_BASE + "/detonator/filter", {
-        headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
-      })
-      .then((res) => {
-        setDetonatorData(res.data.body);
-        const isRejectedPresent: boolean = res.data.body.some(
-          (obj: any) => obj.status === "rejected" || obj.status === "waiting"
-        );
-        // console.log(isRejectedPresent);
-        setIsUnapprovedDetonator(isRejectedPresent);
-      })
-      .catch((error) => {});
+    // axios
+    //   .get(process.env.NEXT_PUBLIC_BASE + "/detonator/filter", {
+    //     headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
+    //   })
+    //   .then((res) => {
+    //     setDetonatorData(res.data.body);
+    //     const isRejectedPresent: boolean = res.data.body.some(
+    //       (obj: any) => obj.status === "rejected" || obj.status === "waiting"
+    //     );
+    //     // console.log(isRejectedPresent);
+    //     setIsUnapprovedDetonator(isRejectedPresent);
+    //   })
+    //   .catch((error) => {});
     //----------------------------------------------------------------------------
-
     // Get Merchant
-    axios
-      .get(process.env.NEXT_PUBLIC_BASE + "/merchant/filter", {
-        headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
-      })
-      .then((res) => {
-        setMerchantdata(res.data.body);
-        const isRejectedPresent: boolean = res.data.body.some(
-          (obj: any) => obj.status === "rejected" || obj.status === "waiting"
-        );
-        // console.log(isRejectedPresent);
-        setIsUnapprovedMerchant(isRejectedPresent);
-      })
-      .catch((error) => {});
+    // axios
+    //   .get(process.env.NEXT_PUBLIC_BASE + "/merchant/filter", {
+    //     headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
+    //   })
+    //   .then((res) => {
+    //     setMerchantdata(res.data.body);
+    //     const isRejectedPresent: boolean = res.data.body.some(
+    //       (obj: any) => obj.status === "rejected" || obj.status === "waiting"
+    //     );
+    //     // console.log(isRejectedPresent);
+    //     setIsUnapprovedMerchant(isRejectedPresent);
+    //   })
+    //   .catch((error) => {});
     //----------------------------------------------------------------------------
-
     // Get Product
-    axios
-      .get(process.env.NEXT_PUBLIC_BASE + "/merchant-product/filter", {
-        headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
-      })
-      .then((res) => {
-        setProductdata(res.data.body);
-        const isRejectedPresent: boolean = res.data.body.some(
-          (obj: any) => obj.status === "rejected" || obj.status === "waiting"
-        );
-        // console.log(isRejectedPresent);
-        setIsUnapprovedProduct(isRejectedPresent);
-      })
-      .catch((error) => {});
+    // axios
+    //   .get(process.env.NEXT_PUBLIC_BASE + "/merchant-product/filter", {
+    //     headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
+    //   })
+    //   .then((res) => {
+    //     setProductdata(res.data.body);
+    //     const isRejectedPresent: boolean = res.data.body.some(
+    //       (obj: any) => obj.status === "rejected" || obj.status === "waiting"
+    //     );
+    //     // console.log(isRejectedPresent);
+    //     setIsUnapprovedProduct(isRejectedPresent);
+    //   })
+    //   .catch((error) => {});
     //----------------------------------------------------------------------------
   }, []);
 

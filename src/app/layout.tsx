@@ -4,6 +4,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ProgressLoader } from "nextjs-progressloader";
 import AppProvider from "./(DashboardLayout)/components/shared/Context";
+import "@/app/global.css";
 
 export default function RootLayout({
   children,

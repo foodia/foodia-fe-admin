@@ -6,52 +6,33 @@ import { useAppContext } from "../shared/Context";
 
 const List = () => {
   const { productData } = useAppContext();
-  // const [data, setData] = useState([
-  //   // {
-  //   //   id: 1,
-  //   //   fullname: "mmak",
-  //   //   email: "mmak@gmail",
-  //   //   phone: 8221122,
-  //   //   status: "approved",
-  //   //   oauth: {
-  //   //     fullname: "dsddsdsd",
-  //   //     email: "dsadadd@gmail.com",
-  //   //     phone: "082299229922",
-  //   //   },
-  //   // },
-  //   // {
-  //   //   id: 2,
-  //   //   fullname: "mmak",
-  //   //   email: "mmak@gmail",
-  //   //   phone: 8221122,
-  //   //   status: "approved",
-  //   //   oauth: {
-  //   //     fullname: "dsddsdsd",
-  //   //     email: "dsadadd@gmail.com",
-  //   //     phone: "082299229922",
-  //   //   },
-  //   // },
-  // ]);
+  const [data, setData] = useState([]);
+  const { setIsUnapprovedProduct } = useAppContext();
 
-  // const getProduct = () => {
-  //   axios
-  //     .get(process.env.NEXT_PUBLIC_BASE + "/merchant-product/filter", {
-  //       headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
-  //     })
-  //     .then((res) => {
-  //       setData(res.data.body);
-  //     })
-  //     .catch((error) => {});
-  // };
+  const getProduct = () => {
+    axios
+      .get(process.env.NEXT_PUBLIC_BASE + "/merchant-product/filter", {
+        headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
+      })
+      .then((res) => {
+        setData(res.data.body);
+        const isRejectedPresent: boolean = res.data.body.some(
+          (obj: any) => obj.status === "rejected" || obj.status === "waiting"
+        );
+        // console.log(isRejectedPresent);
+        setIsUnapprovedProduct(isRejectedPresent);
+      })
+      .catch((error) => {});
+  };
 
-  // useEffect(() => {
-  //   getProduct();
-  // }, []);
+  useEffect(() => {
+    getProduct();
+  }, []);
 
   return (
     <>
       <BaseCard title="Product Management">
-        <DataTableComponent data={productData} />
+        <DataTableComponent data={data} />
       </BaseCard>
     </>
   );

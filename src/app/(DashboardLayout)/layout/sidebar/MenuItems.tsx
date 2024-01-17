@@ -2,12 +2,17 @@
 import {
   IconBuildingStore,
   IconBurger,
+  IconBusinessplan,
+  IconGift,
+  IconHandMove,
   IconSpeakerphone,
   IconUser,
   IconUsers,
+  IconWallet,
 } from "@tabler/icons-react";
 import { uniqueId } from "lodash";
 import { useAppContext } from "../../components/shared/Context";
+import { IconWalletOff } from "@tabler/icons-react";
 
 const Menuitems = () => {
   const {
@@ -18,6 +23,48 @@ const Menuitems = () => {
   } = useAppContext();
 
   return [
+    {
+      id: uniqueId(),
+      title: "Wallet",
+      icon: IconWallet,
+      submenu: [
+        {
+          id: uniqueId(),
+          href: "/ui-components/wallet",
+          name: "CSR Wallet",
+          icon: <IconWallet />,
+          // isUnapproved: isUnapprovedMerchant,
+        },
+        {
+          id: uniqueId(),
+          href: "/ui-components/wallet/agnostic",
+          name: "Agnostic Wallet",
+          icon: <IconWallet />,
+          // isUnapproved: isUnapprovedProduct,
+        },
+      ],
+    },
+    {
+      id: uniqueId(),
+      title: "Donator",
+      icon: IconHandMove,
+      submenu: [
+        {
+          id: uniqueId(),
+          href: "/ui-components/mercnt",
+          name: "Individuals",
+          icon: <IconUser />,
+          // isUnapproved: isUnapprovedMerchant,
+        },
+        {
+          id: uniqueId(),
+          href: "/ui-components/prodct",
+          name: "Corporations",
+          icon: <IconBusinessplan />,
+          // isUnapproved: isUnapprovedProduct,
+        },
+      ],
+    },
     {
       id: uniqueId(),
       title: "Detonator",

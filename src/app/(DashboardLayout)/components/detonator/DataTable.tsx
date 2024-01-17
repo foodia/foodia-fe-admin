@@ -11,6 +11,12 @@ interface Data {
   status: string;
   created_at: string;
   oauth: { fullname: string; email: string; phone: string };
+  meta: {
+    page: number;
+    per_page: number;
+    page_count: number;
+    total: number;
+  };
 }
 
 interface Props {
@@ -149,6 +155,8 @@ const DataTableComponent: React.FC<Props> = ({ data }) => {
     },
   ];
 
+  console.log(filteredItems.length);
+
   return (
     <>
       <DataTables
@@ -158,6 +166,8 @@ const DataTableComponent: React.FC<Props> = ({ data }) => {
         onChange={handleChange}
         onChangeSearch={handleChangeSearch}
         onChangeSearchBy={handleChangeSearchBy}
+        pageItems={filteredItems.length}
+        totalItems={data.length}
         columns={columns}
         data={filteredItems}
       />

@@ -40,6 +40,7 @@ type Props = {
   children?: JSX.Element;
   middlecontent?: string | JSX.Element;
   status?: string;
+  currentBalance?: any;
 };
 
 interface CustomStepIconProps extends StepIconProps {
@@ -57,6 +58,7 @@ const DashboardCard = ({
   headsubtitle,
   middlecontent,
   status,
+  currentBalance,
 }: Props) => {
   const steps = ["Waiting", "Rejected", "Approved"];
 
@@ -180,7 +182,51 @@ const DashboardCard = ({
                       flexDirection: "column",
                     }}
                   >
-                    <Typography variant="h3">{title}</Typography>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "end",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Typography variant="h3">{title}</Typography>
+                      {currentBalance ? (
+                        <>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "end",
+                            }}
+                          >
+                            <Typography
+                              sx={{
+                                fontSize: "12px",
+                                fontWeight: 900,
+                              }}
+                            >
+                              Current Balance
+                            </Typography>
+                            <Typography
+                              sx={{
+                                fontSize: "32px",
+                                color: "primary.main",
+                                fontWeight: 800,
+                              }}
+                            >
+                              {new Intl.NumberFormat("id-ID", {
+                                style: "currency",
+                                currency: "IDR",
+                                minimumFractionDigits: 0,
+                              }).format(currentBalance)}
+                            </Typography>
+                          </Box>
+                        </>
+                      ) : (
+                        ""
+                      )}
+                    </Box>
                     {status ? (
                       <Stepper
                         sx={{ padding: "15px" }}
@@ -203,35 +249,6 @@ const DashboardCard = ({
                         ))}
                       </Stepper>
                     ) : (
-                      // <Typography
-                      //   display="flex"
-                      //   alignItems="center"
-                      //   justifyContent="center"
-                      //   borderRadius="15px"
-                      //   padding="5px 15px"
-                      //   color="white"
-                      //   sx={
-                      //     status === "approved"
-                      //       ? { backgroundColor: "success.main" }
-                      //       : status === "rejected"
-                      //       ? { backgroundColor: "error.main" }
-                      //       : { backgroundColor: "warning.main" }
-                      //   }
-                      // >
-                      //   {status === "approved" ? (
-                      //     <>
-                      //       Approved <IconCircleCheck />
-                      //     </>
-                      //   ) : status === "rejected" ? (
-                      //     <>
-                      //       Rejected <IconBan />
-                      //     </>
-                      //   ) : (
-                      //     <>
-                      //       Waiting <IconClock />
-                      //     </>
-                      //   )}
-                      // </Typography>
                       ""
                     )}
                   </Box>

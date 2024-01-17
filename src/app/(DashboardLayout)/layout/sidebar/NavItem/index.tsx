@@ -143,7 +143,7 @@ const NavItem = ({ item, level, pathDirect, onClick }: ItemType) => {
                 <ListItemText primary={t.name} />
                 {t.isUnapproved ? (
                   <ListItemText>
-                    <IconCircle color="red" fill="red" size={20} />
+                    <IconCircle color="red" fill="red" size={10} />
                   </ListItemText>
                 ) : (
                   ""

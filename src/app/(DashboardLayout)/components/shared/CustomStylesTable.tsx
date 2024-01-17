@@ -1,26 +1,28 @@
 const CustomStylesTable = {
   table: {
     style: {
-      width: "auto", // set the width of the table wrapper
-      backgroundColor: "transparent",
+      maxWidth: "auto", // set the width of the table wrapper
+      backgroundColor: "#FCFDFF",
+      border: "1px solid #CCD1D9",
+      borderRadius: "6px 6px 0px 0px",
     },
   },
   cells: {
     style: {
       paddingLeft: "20px", // override the cell padding for data cells
-      justifyContent: "center",
+      justifyContent: "left",
       fontWeight: "bold",
     },
   },
   rows: {
     style: {
-      backgroundColor: "#D5D5D540",
-      marginTop: "10px",
-      borderRadius: "10px",
-      border: "0px",
+      backgroundColor: "#FCFDFF",
+      // marginTop: "10px",
+      // borderRadius: "10px",
+      // border: "0px",
       minHeight: "72px", // override the row height
       "&:not(:last-of-type)": {
-        border: "0px",
+        // border: "0px",
       },
     },
   },
@@ -29,9 +31,10 @@ const CustomStylesTable = {
   },
   headRow: {
     style: {
-      backgroundColor: "green",
+      backgroundColor: "#FCFDFF",
+      color: "black",
       minHeight: "52px",
-      borderRadius: "10px",
+      // borderRadius: "10px",
     },
     denseStyle: {
       minHeight: "32px",
@@ -41,19 +44,23 @@ const CustomStylesTable = {
     style: {
       paddingLeft: "20px", // override the cell padding for head cells
       paddingRight: "10px",
-      justifyContent: "center",
-      color: "rgb(243 241 241)",
+      justifyContent: "left",
+      color: "black",
     },
   },
   pagination: {
     style: {
-      backgroundColor: "transparent",
-      borderTop: "none",
-      padding: "10px",
+      backgroundColor: "#FCFDFF",
+      // borderTop: "none",
+      // padding: "10px",
+      border: "1px solid #CCD1D9",
+      borderTop: "0px",
+      justifyContent: "center",
+      borderRadius: "0px 0px 6px 6px",
     },
     pageButtonsStyle: {
-      borderRadius: "5px",
-      border: "1px solid #ccc",
+      borderRadius: "100%",
+      border: "1px solid #CCD1D9",
       margin: "2px",
       color: "#007BFF",
       backgroundColor: "white",

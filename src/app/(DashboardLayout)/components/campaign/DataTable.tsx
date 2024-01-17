@@ -175,6 +175,8 @@ const DataTableComponent: React.FC<Props> = ({ data }) => {
         onChange={handleChange}
         onChangeSearch={handleChangeSearch}
         onChangeSearchBy={handleChangeSearchBy}
+        pageItems={filteredItems.length}
+        totalItems={data.length}
         columns={columns}
         data={filteredItems}
       />
