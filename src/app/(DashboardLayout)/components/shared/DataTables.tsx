@@ -225,6 +225,7 @@ const DataTables: React.FC<Data> = ({
                   background: "rgba(63, 182, 72, 0.10)",
                   color: "#333",
                   ":focus": {
+                    borderRadius: "12px 0px 0px 12px",
                     background: "rgba(63, 182, 72, 0.10)",
                   },
                 },
