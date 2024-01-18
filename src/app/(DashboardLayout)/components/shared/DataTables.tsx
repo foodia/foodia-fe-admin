@@ -114,14 +114,73 @@ const DataTables: React.FC<Data> = ({
         sx={{
           display: "flex",
           justifyContent: "space-between",
+          alignItems: "center",
           paddingY: "10px",
           height: "60px",
           // alignItems: "center",
           gap: "10px",
         }}
       >
-        {/* {searchOption ? ( */}
-        <Box sx={{ display: "flex", flexDirection: "row" }}>
+        {searchOption ? (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "rgba(63, 182, 72, 0.10)",
+              borderRadius: "12px",
+              paddingRight: "10px",
+            }}
+          >
+            <Select
+              variant="standard"
+              size="small"
+              disableUnderline
+              sx={{
+                ".MuiSelect-select": {
+                  padding: "10px",
+                  width: "140px",
+                  // paddingX: "50px",
+                  background: "rgba(63, 182, 72, 0.10)",
+                  borderRadius: "12px 0px 0px 12px",
+                  ":focus": {
+                    borderRadius: "12px 0px 0px 12px",
+                    background: "rgba(63, 182, 72, 0.10)",
+                  },
+                },
+              }}
+              value={valueSearchBy}
+              onChange={onChangeSearchBy}
+            >
+              {searchOption?.map((data) => (
+                <MenuItem key={data.id} value={data.value}>
+                  {data.label}
+                </MenuItem>
+              ))}
+            </Select>
+            <TextField
+              variant="standard"
+              size="small"
+              placeholder="Search..."
+              // label="Search By"
+              InputProps={{
+                sx: {
+                  ".MuiInput-input": {
+                    padding: "10px",
+                    // borderRadius: "12px 0px 0px 12px",
+                  },
+                },
+                disableUnderline: true,
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Search />
+                  </InputAdornment>
+                ),
+              }}
+              onChange={onChangeSearch}
+            />
+          </Box>
+        ) : (
           <Input
             disableUnderline
             size="small"
@@ -141,10 +200,7 @@ const DataTables: React.FC<Data> = ({
             }
             onChange={onChangeSearch}
           />
-        </Box>
-        {/* ) : (
-          ""
-        )} */}
+        )}
         {value ? (
           <Box
             sx={{
@@ -163,21 +219,19 @@ const DataTables: React.FC<Data> = ({
               sx={{
                 width: "180px",
                 ".MuiSelect-select": {
+                  padding: "9px",
                   border: 0,
                   borderRadius: "12px",
                   background: "rgba(63, 182, 72, 0.10)",
-                  borderTopColor: "red",
-                  padding: "12px",
                   color: "#333",
-                  height: "5px",
+                  ":focus": {
+                    background: "rgba(63, 182, 72, 0.10)",
+                  },
                 },
               }}
               value={value}
-              // size="small"
-              // label="Status Filter"
               onChange={onChange}
             >
-              {/* <MenuItem value="waiting">Waiting</MenuItem> */}
               <MenuItem value="approved">Approved</MenuItem>
               <MenuItem value="unapproved">Unapproved</MenuItem>
             </Select>
