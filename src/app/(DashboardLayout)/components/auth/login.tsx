@@ -38,7 +38,7 @@ const Login = () => {
         localStorage.setItem("USERNAME", username);
         localStorage.setItem("ROLE", role);
         localStorage.setItem("EMAIL", email);
-        if (role === "detonator") {
+        if (role === "superadmin") {
           router.push("/ui-components/detonator");
         } else {
           router.refresh();
