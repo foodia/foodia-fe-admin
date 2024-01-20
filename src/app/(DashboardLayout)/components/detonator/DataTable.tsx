@@ -6,6 +6,13 @@ import React, { useEffect, useState } from "react";
 import { TableColumn } from "react-data-table-component";
 import DataTables from "../shared/DataTables";
 
+interface Meta {
+  page: number;
+  per_page: number;
+  page_count: number;
+  total: number;
+}
+
 interface Data {
   id: number;
   status: string;
@@ -21,6 +28,7 @@ interface Data {
 
 interface Props {
   data: Data[];
+  meta: Meta;
 }
 
 const columns: TableColumn<Data>[] = [
@@ -100,7 +108,7 @@ const columns: TableColumn<Data>[] = [
   // Add more columns as needed
 ];
 
-const DataTableComponent: React.FC<Props> = ({ data }) => {
+const DataTableComponent: React.FC<Props> = ({ data, meta }) => {
   const [filterText, setFilterText] = useState<string>("unapproved");
   const [searchBy, setSearchBy] = useState<string>("fullname");
   const [searchText, setSearchText] = useState<string>("");
@@ -168,9 +176,10 @@ const DataTableComponent: React.FC<Props> = ({ data }) => {
         onChangeSearch={handleChangeSearch}
         onChangeSearchBy={handleChangeSearchBy}
         pageItems={filteredItems.length}
-        totalItems={data.length}
+        meta={meta}
         columns={columns}
         data={filteredItems}
+        pagination={true}
       />
     </>
   );

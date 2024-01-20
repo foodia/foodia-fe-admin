@@ -7,16 +7,22 @@ import { getMerchant } from "../api/Merchant";
 
 const List = () => {
   const [data, setData] = useState([]);
+  const [meta, setMeta] = useState({
+    page: 0,
+    per_page: 0,
+    page_count: 0,
+    total: 0,
+  });
   const { setIsUnapprovedMerchant } = useAppContext();
 
   useEffect(() => {
-    getMerchant(setData);
+    getMerchant(setData, setMeta);
   }, []);
 
   return (
     <>
       <BaseCard title="Merchant Management">
-        <DataTableComponent data={data} />
+        <DataTableComponent data={data} meta={meta} />
       </BaseCard>
     </>
   );

@@ -38,6 +38,9 @@ interface Data {
   pageItems?: any;
   totalItems?: any;
   searchOption?: { id?: number; value?: string; label?: string }[];
+  meta?: any;
+  pagination?: any;
+  page?: any;
 }
 
 const DataTables: React.FC<Data> = ({
@@ -49,65 +52,12 @@ const DataTables: React.FC<Data> = ({
   onChangeSearch,
   onChangeSearchBy,
   searchOption,
+  meta,
   pageItems,
   totalItems,
+  pagination,
+  page,
 }) => {
-  //   rowsPerPageText: "Rows per page:",
-  //   rangeSeparatorText: "of",
-  //   selectAllRowsItem: true,
-  //   selectAllRowsItemText: "All",
-  // };
-
-  // const styles = `
-  //       .pagination {
-  //         display: flex;
-  //         list-style: none;
-  //         background-color: gray;
-  //       }
-  //       .pagination li {
-  //         // display: inline-block;
-  //         // margin-right: 5px;
-  //         border-radius: 15px;
-  //         background-color: transparent;
-  //         // width: 20px;
-  //         // text-align: center;
-  //       }
-  //       .pagination li.active {
-  //           background-color: #8F0D1E;
-  //       }
-  //       .pagination li.disabled {
-  //           opacity: 0.5;
-  //           cursor: default;
-  //       }
-  //       .pagination li a {
-  //         padding: 5px;
-  //         cursor: pointer;
-  //         color: black;
-  //       }
-  //       .pagination li.active a {
-  //           cursor: pointer;
-  //           color: #fff;
-  //       }
-  //       .pagination li.disabled a {
-  //           cursor: not-allowed;
-  //           color: grey;
-  //       }
-  //       // .pagination li:hover{
-  //       //     background-color: #8F0D1E;
-  //       // }
-  //       // .pagination li:hover a{
-  //       //     background-color: #8F0D1E;
-  //       //     color: #fff;
-  //       // }
-  //       // .pagination li.disabled:hover{
-  //       //     background-color: transparent;
-  //       // }
-  //       // .pagination li.disabled:hover a{
-  //       //     background-color: transparent;
-  //       //     color: grey;
-  //       // }
-  //       `;
-
   return (
     <>
       <Box
@@ -312,74 +262,78 @@ const DataTables: React.FC<Data> = ({
         // paginationPerPage={1}
         // paginationRowsPerPageOptions={}
       />
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          // backgroundColor: "red",
-          borderRadius: "0px 0px 6px 6px",
-          border: "1px solid #CCD1D9",
-          padding: "10px",
-        }}
-      >
+      {pagination ? (
         <Box
           sx={{
-            fontSize: "13px",
             display: "flex",
+            flexDirection: "row",
             alignItems: "center",
-            gap: "3px",
+            justifyContent: "space-between",
+            // backgroundColor: "red",
+            borderRadius: "0px 0px 6px 6px",
+            border: "1px solid #CCD1D9",
+            padding: "10px",
           }}
         >
-          Show <Typography fontWeight={700}>1</Typography> to{" "}
-          <Typography fontWeight={700}>{pageItems ? pageItems : 0}</Typography>{" "}
-          of{" "}
-          <Typography fontWeight={700}>
-            {totalItems ? totalItems : 0}
-          </Typography>{" "}
-          results
-        </Box>
-        <Box>
-          <Pagination
-            style={{
-              backgroundColor: "gray",
-              borderRadius: "40px",
-              padding: "4px",
-              // width: "20px",
-              background: "var(--UI-Neutral-Neutral-30, #F5F6FA)",
-            }}
-            count={100}
-            defaultPage={1}
-            siblingCount={0}
-            boundaryCount={1}
-            variant="outlined"
-            shape="rounded"
-            renderItem={(item) => (
-              <PaginationItem
-                slots={{ previous: IconArrowLeft, next: IconArrowRight }}
-                {...item}
-              />
-            )}
+          <Box
             sx={{
-              "& .MuiPaginationItem-previousNext": {
-                color: "white",
-                backgroundColor: "primary.main", // Customize the background color of the ul element
-                // padding: "8px", // Add padding to the ul element for spacing
-                borderRadius: "100%", // Optional: Customize the border radius of the ul element
-              },
-              "& .MuiPaginationItem-root": {
-                borderRadius: "40px",
-                "&.Mui-selected": {
-                  borderColor: "primary.main",
-                  backgroundColor: "transparent", // Customize the background color of the selected pagination item
-                  color: "primary.main", // Customize the text color of the selected pagination item
-                },
-              },
+              fontSize: "13px",
+              display: "flex",
+              alignItems: "center",
+              gap: "3px",
             }}
-          />
+          >
+            Show <Typography fontWeight={700}>1</Typography> to{" "}
+            <Typography fontWeight={700}>
+              {pageItems ? pageItems : 0}
+            </Typography>{" "}
+            of <Typography fontWeight={700}>{meta?.total}</Typography> results
+          </Box>
+          <Box>
+            <Pagination
+              style={{
+                backgroundColor: "gray",
+                borderRadius: "40px",
+                padding: "4px",
+                // width: "20px",
+                background: "var(--UI-Neutral-Neutral-30, #F5F6FA)",
+              }}
+              // onChange={onChange}
+              page={page}
+              count={meta?.page_count}
+              defaultPage={1}
+              siblingCount={0}
+              boundaryCount={1}
+              variant="outlined"
+              shape="rounded"
+              renderItem={(item) => (
+                <PaginationItem
+                  slots={{ previous: IconArrowLeft, next: IconArrowRight }}
+                  {...item}
+                />
+              )}
+              sx={{
+                "& .MuiPaginationItem-previousNext": {
+                  color: "white",
+                  backgroundColor: "primary.main", // Customize the background color of the ul element
+                  // padding: "8px", // Add padding to the ul element for spacing
+                  borderRadius: "100%", // Optional: Customize the border radius of the ul element
+                },
+                "& .MuiPaginationItem-root": {
+                  borderRadius: "40px",
+                  "&.Mui-selected": {
+                    borderColor: "primary.main",
+                    backgroundColor: "transparent", // Customize the background color of the selected pagination item
+                    color: "primary.main", // Customize the text color of the selected pagination item
+                  },
+                },
+              }}
+            />
+          </Box>
         </Box>
-      </Box>
+      ) : (
+        ""
+      )}
     </>
   );
 };

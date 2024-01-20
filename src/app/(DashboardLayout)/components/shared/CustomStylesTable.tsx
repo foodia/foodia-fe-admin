@@ -10,7 +10,6 @@ const CustomStylesTable = {
     style: {
       paddingLeft: "20px", // override the cell padding for data cells
       justifyContent: "left",
-      fontWeight: "bold",
     },
   },
   rows: {
@@ -45,6 +44,7 @@ const CustomStylesTable = {
       paddingRight: "10px",
       justifyContent: "left",
       color: "black",
+      fontWeight: "bold",
     },
   },
   pagination: {

@@ -7,16 +7,22 @@ import { getCampaign } from "../api/Campaign";
 
 const List = () => {
   const [data, setData] = useState([]);
+  const [meta, setMeta] = useState({
+    page: 0,
+    per_page: 0,
+    page_count: 0,
+    total: 0,
+  });
   const { setIsUnapprovedCampaign } = useAppContext();
 
   useEffect(() => {
-    getCampaign(setData);
+    getCampaign(setData, setMeta);
   }, []);
 
   return (
     <>
       <BaseCard title="List Campaign">
-        <DataTableComponent data={data} />
+        <DataTableComponent data={data} meta={meta} />
       </BaseCard>
     </>
   );

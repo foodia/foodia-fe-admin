@@ -14,21 +14,58 @@ import DataTable, { TableColumn } from "react-data-table-component";
 import CustomStylesTable from "../shared/CustomStylesTable";
 import DataTables from "../shared/DataTables";
 
-interface Data {
+interface Meta {
+  page: number;
+  per_page: number;
+  page_count: number;
+  total: number;
+}
+
+interface CurrentWalletData {
   id: number;
-  name: string;
-  description: string;
-  price: string;
-  qty: number;
-  status: string;
-  merchant: { oauth: { fullname: string } };
+  donator_name: any;
+  donation_total: any;
+  donation_left: any;
+}
+
+interface TransactionListData {
+  id: number;
+  donator_name: any;
+  donation_total: any;
+  transaction_date: any;
+}
+
+interface CampaignListData {
+  id: number;
+  campaign_name: any;
+  donation_total: any;
+  donator_list: { id: any; donator: any }[];
+  donations: { id: any; donations_detail: any }[];
+}
+
+interface MerchantPaymentListData {
+  id: number;
+  campaign_name: any;
+  merchants: { id: any; name: any }[];
+  payments: { id: any; amount: any }[];
+  payment_date: any;
 }
 
 interface Props {
-  data: Data[];
+  currentWalletData: CurrentWalletData[];
+  currentWalletMeta: Meta;
+
+  transactionListData: TransactionListData[];
+  transactionListMeta: Meta;
+
+  campaignListData: CampaignListData[];
+  campaignListMeta: Meta;
+
+  merchantPaymentListData: MerchantPaymentListData[];
+  merchantPaymentListMeta: Meta;
 }
 
-const columns: TableColumn<Data>[] = [
+const currentWalletColumns: TableColumn<CurrentWalletData>[] = [
   {
     name: "No",
     selector: (_row, i: any) => i + 1,
@@ -39,86 +76,216 @@ const columns: TableColumn<Data>[] = [
     // },
   },
   {
-    name: "Merchant",
-    cell: (row: Data) => <div>{row.merchant.oauth.fullname}</div>,
+    name: "Nama Donator",
+    cell: (row: CurrentWalletData) => <div>{row.donator_name}</div>,
     // sortable: true,
   },
   {
-    name: "Name",
-    cell: (row: Data) => <div>{row.name}</div>,
+    name: "Total Donasi",
+    cell: (row: CurrentWalletData) => (
+      <div>
+        {new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          minimumFractionDigits: 0,
+        }).format(row.donation_total)}
+      </div>
+    ),
     // sortable: true,
   },
   {
-    name: "Description",
-    cell: (row: Data) => <div>{row.description}</div>,
+    name: "Sisa Donasi",
+    cell: (row: CurrentWalletData) => (
+      <div>
+        {new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          minimumFractionDigits: 0,
+        }).format(row.donation_left)}
+      </div>
+    ),
     // sortable: true,
     // width: "",
   },
-  // {
-  //   name: "Quantity",
-  //   cell: (row: Data) => <div>{row.qty}</div>,
-  //   // sortable: true,
-  //   // width: "100px",
-  // },
-  // {
-  //   name: "Price",
-  //   cell: (row: Data) => (
-  //     <div>Rp.{row.price.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</div>
-  //   ),
-  //   // sortable: true,
-  // },
-  // // {
-  // //   name: "Registered at",
-  // //   cell: (row: Data) => (
-  // //     <div>{moment(row.created_at).format("DD/MM/YYYY")}</div>
-  // //   ),
-  // //   // sortable: true,
-  // // },
-  // {
-  //   name: "Status",
-  //   cell: (row: Data) => (
-  //     <Chip
-  //       sx={{
-  //         pl: "4px",
-  //         pr: "4px",
-  //         backgroundColor:
-  //           row.status === "approved"
-  //             ? "success.main"
-  //             : row.status === "rejected"
-  //             ? "error.main"
-  //             : "warning.main",
-  //         color: "#fff",
-  //       }}
-  //       size="small"
-  //       label={row.status}
-  //     />
-  //   ),
-  //   // sortable: true,
-  // },
-  // {
-  //   name: "Action",
-  //   cell: (row: Data) => (
-  //     <Stack spacing={1} direction="row">
-  //       <Link
-  //         href={{
-  //           pathname: "/ui-components/product/info",
-  //           query: {
-  //             id: row.id,
-  //           },
-  //         }}
-  //       >
-  //         <Button variant="contained" size="small" color="info">
-  //           <IconEye size={20} /> View
-  //         </Button>
-  //       </Link>
-  //     </Stack>
-  //   ),
-  //   // sortable: true,
-  // },
-  // Add more columns as needed
 ];
 
-const DataTableComponent: React.FC<Props> = ({ data }) => {
+const transactionListColumns: TableColumn<TransactionListData>[] = [
+  {
+    name: "No",
+    selector: (_row, i: any) => i + 1,
+    // sortable: true,
+    width: "70px",
+    // style: {
+    //   paddingLeft: "30px",
+    // },
+  },
+  {
+    name: "Nama Donator",
+    cell: (row: TransactionListData) => <div>{row.donator_name}</div>,
+    // sortable: true,
+  },
+  {
+    name: "Jumlah Donasi",
+    cell: (row: TransactionListData) => (
+      <div>
+        {new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          minimumFractionDigits: 0,
+        }).format(row.donation_total)}
+      </div>
+    ),
+    // sortable: true,
+  },
+  {
+    name: "Tanggal Transaksi",
+    cell: (row: TransactionListData) => <div>{row.transaction_date}</div>,
+    // sortable: true,
+    // width: "",
+  },
+];
+
+const campaignListColumns: TableColumn<CampaignListData>[] = [
+  {
+    name: "No",
+    selector: (_row, i: any) => i + 1,
+    // sortable: true,
+    width: "70px",
+    // style: {
+    //   paddingLeft: "30px",
+    // },
+  },
+  {
+    name: "Nama Campaign",
+    cell: (row: CampaignListData) => <div>{row.campaign_name}</div>,
+    // sortable: true,
+  },
+  {
+    name: "Jumlah Donasi",
+    cell: (row: CampaignListData) => (
+      <div>
+        {new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          minimumFractionDigits: 0,
+        }).format(row.donation_total)}
+      </div>
+    ),
+    // sortable: true,
+  },
+  {
+    name: "Donasi Oleh",
+    cell: (row: CampaignListData) => (
+      <>
+        {row.donator_list.map((value: any, i) => (
+          <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
+            {value.donator}
+            {i + 1 !== row.donator_list.length && (
+              <div style={{ marginRight: "5px" }}>,</div>
+            )}
+          </div>
+        ))}
+      </>
+    ),
+    // sortable: true,
+    // width: "",
+  },
+  {
+    name: "Detail Donasi",
+    cell: (row: CampaignListData) => (
+      <>
+        {row.donations.map((value: any, i) => (
+          <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
+            {new Intl.NumberFormat("id-ID", {
+              style: "currency",
+              currency: "IDR",
+              minimumFractionDigits: 0,
+            }).format(value.donations_detail)}
+            {i + 1 !== row.donations.length && (
+              <div style={{ marginRight: "5px" }}>,</div>
+            )}
+          </div>
+        ))}
+      </>
+    ),
+    // sortable: true,
+    // width: "",
+  },
+];
+
+const merchantPaymentListColumns: TableColumn<MerchantPaymentListData>[] = [
+  {
+    name: "No",
+    selector: (_row, i: any) => i + 1,
+    // sortable: true,
+    width: "70px",
+    // style: {
+    //   paddingLeft: "30px",
+    // },
+  },
+  {
+    name: "Nama Campaign",
+    cell: (row: MerchantPaymentListData) => <div>{row.campaign_name}</div>,
+    // sortable: true,
+  },
+  {
+    name: "Nama Merchant",
+    cell: (row: MerchantPaymentListData) => (
+      <>
+        {row.merchants.map((value: any, i) => (
+          <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
+            {value.name}
+            {i + 1 !== row.merchants.length && (
+              <div style={{ marginRight: "5px" }}>,</div>
+            )}
+          </div>
+        ))}
+      </>
+    ),
+    // sortable: true,
+  },
+  {
+    name: "Jumlah Pembayaran",
+    cell: (row: MerchantPaymentListData) => (
+      <>
+        {row.payments.map((value: any, i) => (
+          <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
+            {new Intl.NumberFormat("id-ID", {
+              style: "currency",
+              currency: "IDR",
+              minimumFractionDigits: 0,
+            }).format(value.amount)}
+            {i + 1 !== row.payments.length && (
+              <div style={{ marginRight: "5px" }}>,</div>
+            )}
+          </div>
+        ))}
+      </>
+    ),
+    // sortable: true,
+    // width: "",
+  },
+  {
+    name: "Tgl Pembayaran",
+    cell: (row: MerchantPaymentListData) => <div>{row.payment_date}</div>,
+    // sortable: true,
+    // width: "",
+  },
+];
+
+const DataTableComponent: React.FC<Props> = ({
+  currentWalletData,
+  currentWalletMeta,
+
+  transactionListData,
+  transactionListMeta,
+
+  campaignListData,
+  campaignListMeta,
+
+  merchantPaymentListData,
+  merchantPaymentListMeta,
+}) => {
   const [filterText, setFilterText] = useState<string>("unapproved");
   const [searchBy, setSearchBy] = useState<string>("name");
   const [searchText, setSearchText] = useState<string>("");
@@ -135,45 +302,45 @@ const DataTableComponent: React.FC<Props> = ({ data }) => {
     setSearchText(event.target.value);
   };
 
-  let filteredItems: any;
-  if (filterText === "unapproved") {
-    filteredItems = data.filter(
-      (data) =>
-        data.status.toLowerCase() !== "approved" &&
-        (searchBy === "name"
-          ? data.name.toLowerCase().includes(searchText.toLowerCase())
-          : searchBy === "price"
-          ? data.price.toLowerCase().includes(searchText.toLowerCase())
-          : data.description.toLowerCase().includes(searchText.toLowerCase()))
-    );
-  } else {
-    filteredItems = data.filter(
-      (data) =>
-        data.status.toLowerCase() === "approved" &&
-        (searchBy === "name"
-          ? data.name.toLowerCase().includes(searchText.toLowerCase())
-          : searchBy === "price"
-          ? data.price.toLowerCase().includes(searchText.toLowerCase())
-          : data.description.toLowerCase().includes(searchText.toLowerCase()))
-    );
-  }
-  const searchOption = [
-    {
-      id: 1,
-      value: "name",
-      label: "Name",
-    },
-    {
-      id: 2,
-      value: "price",
-      label: "Price",
-    },
-    {
-      id: 3,
-      value: "description",
-      label: "Description",
-    },
-  ];
+  // let filteredItems: any;
+  // if (filterText === "unapproved") {
+  //   filteredItems = data.filter(
+  //     (data) =>
+  //       data.status.toLowerCase() !== "approved" &&
+  //       (searchBy === "name"
+  //         ? data.name.toLowerCase().includes(searchText.toLowerCase())
+  //         : searchBy === "price"
+  //         ? data.price.toLowerCase().includes(searchText.toLowerCase())
+  //         : data.description.toLowerCase().includes(searchText.toLowerCase()))
+  //   );
+  // } else {
+  //   filteredItems = data.filter(
+  //     (data) =>
+  //       data.status.toLowerCase() === "approved" &&
+  //       (searchBy === "name"
+  //         ? data.name.toLowerCase().includes(searchText.toLowerCase())
+  //         : searchBy === "price"
+  //         ? data.price.toLowerCase().includes(searchText.toLowerCase())
+  //         : data.description.toLowerCase().includes(searchText.toLowerCase()))
+  //   );
+  // }
+  // const searchOption = [
+  //   {
+  //     id: 1,
+  //     value: "name",
+  //     label: "Name",
+  //   },
+  //   {
+  //     id: 2,
+  //     value: "price",
+  //     label: "Price",
+  //   },
+  //   {
+  //     id: 3,
+  //     value: "description",
+  //     label: "Description",
+  //   },
+  // ];
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
@@ -194,8 +361,11 @@ const DataTableComponent: React.FC<Props> = ({ data }) => {
             // onChange={handleChange}
             // onChangeSearch={handleChangeSearch}
             // onChangeSearchBy={handleChangeSearchBy}
-            columns={columns}
-            data={filteredItems}
+            pagination={true}
+            meta={currentWalletMeta}
+            pageItems={currentWalletData.length}
+            columns={currentWalletColumns}
+            data={currentWalletData}
           />
         </Box>
         <Box sx={{ width: "50%" }}>
@@ -207,8 +377,11 @@ const DataTableComponent: React.FC<Props> = ({ data }) => {
             // onChange={handleChange}
             // onChangeSearch={handleChangeSearch}
             // onChangeSearchBy={handleChangeSearchBy}
-            columns={columns}
-            data={filteredItems}
+            pagination={true}
+            meta={transactionListMeta}
+            pageItems={transactionListData.length}
+            columns={transactionListColumns}
+            data={transactionListData}
           />
         </Box>
       </Box>
@@ -221,8 +394,11 @@ const DataTableComponent: React.FC<Props> = ({ data }) => {
           // onChange={handleChange}
           // onChangeSearch={handleChangeSearch}
           // onChangeSearchBy={handleChangeSearchBy}
-          columns={columns}
-          data={filteredItems}
+          pagination={true}
+          meta={campaignListMeta}
+          pageItems={campaignListData.length}
+          columns={campaignListColumns}
+          data={campaignListData}
         />
       </Box>
       <Box>
@@ -236,8 +412,11 @@ const DataTableComponent: React.FC<Props> = ({ data }) => {
           // onChange={handleChange}
           // onChangeSearch={handleChangeSearch}
           // onChangeSearchBy={handleChangeSearchBy}
-          columns={columns}
-          data={filteredItems}
+          pagination={true}
+          meta={merchantPaymentListMeta}
+          pageItems={merchantPaymentListData.length}
+          columns={merchantPaymentListColumns}
+          data={merchantPaymentListData}
         />
       </Box>
     </Box>

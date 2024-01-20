@@ -5,19 +5,32 @@ import DataTableComponent from "./DataTable";
 import { useAppContext } from "../shared/Context";
 import { getDetonator } from "../api/Detonator";
 
+interface Meta {
+  page: number;
+  per_page: number;
+  page_count: number;
+  total: number;
+}
+
 const List = () => {
   // const { detonatorData } = useAppContext();
   const [data, setData] = useState([]);
+  const [meta, setMeta] = useState({
+    page: 0,
+    per_page: 0,
+    page_count: 0,
+    total: 0,
+  });
   const { setIsUnapprovedDetonator } = useAppContext();
 
   useEffect(() => {
-    getDetonator(setData);
+    getDetonator(setData, setMeta);
   }, []);
 
   return (
     <>
       <BaseCard title="Detonator Management">
-        <DataTableComponent data={data} />
+        <DataTableComponent data={data} meta={meta} />
       </BaseCard>
     </>
   );

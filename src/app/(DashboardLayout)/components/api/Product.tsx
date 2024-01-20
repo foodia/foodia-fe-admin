@@ -1,12 +1,13 @@
 import axios from "axios";
 
-export const getProduct = (setData: any) => {
+export const getProduct = (setData: any, setMeta: any) => {
   axios
     .get(process.env.NEXT_PUBLIC_BASE + "/merchant-product/filter", {
       headers: { authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` },
     })
     .then((res) => {
       setData(res.data.body);
+      setMeta(res.data.meta);
       // const isRejectedPresent: boolean = res.data.body.some(
       //   (obj: any) => obj.status === "rejected" || obj.status === "waiting"
       // );

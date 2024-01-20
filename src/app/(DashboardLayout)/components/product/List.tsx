@@ -7,16 +7,22 @@ import { getProduct } from "../api/Product";
 
 const List = () => {
   const [data, setData] = useState([]);
+  const [meta, setMeta] = useState({
+    page: 0,
+    per_page: 0,
+    page_count: 0,
+    total: 0,
+  });
   const { setIsUnapprovedProduct } = useAppContext();
 
   useEffect(() => {
-    getProduct(setData);
+    getProduct(setData, setMeta);
   }, []);
 
   return (
     <>
       <BaseCard title="Product Management">
-        <DataTableComponent data={data} />
+        <DataTableComponent data={data} meta={meta} />
       </BaseCard>
     </>
   );
