@@ -16,6 +16,8 @@ import axios from "axios";
 import { IconBan, IconCircleCheck, IconClock } from "@tabler/icons-react";
 import List from "@/app/(DashboardLayout)/components/merchant/product/List";
 import ModalPopup from "@/app/(DashboardLayout)/components/shared/ModalPopup";
+import { getMerchantDetail } from "@/app/(DashboardLayout)/components/api/Merchant";
+import { Approvals } from "@/app/(DashboardLayout)/components/api/Approvals";
 
 type Props = {
   id: number;
@@ -67,67 +69,8 @@ const MerchantInfo = () => {
   };
 
   useEffect(() => {
-    getMerchantDetail();
+    getMerchantDetail(searchParams.get("id"), setData);
   }, []);
-
-  const getMerchantDetail = () => {
-    axios
-      .get(
-        process.env.NEXT_PUBLIC_BASE +
-          `/merchant/fetch/${searchParams.get("id")}`,
-        {
-          headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
-        }
-      )
-      .then((res) => {
-        setData(res.data.body);
-      })
-      .catch((error) => {});
-  };
-
-  const Approvals = (id: number, status: string) => {
-    {
-      status === "approved"
-        ? axios
-            .put(
-              process.env.NEXT_PUBLIC_BASE + `/merchant/approval/${id}`,
-              {
-                status,
-                note: "approved",
-              },
-              {
-                headers: {
-                  authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
-                },
-              }
-            )
-            .then((res) => {
-              location.reload();
-              setIsOpen(false);
-            })
-            .catch((error) => {})
-        : note === ""
-        ? console.log("Note Empty")
-        : axios
-            .put(
-              process.env.NEXT_PUBLIC_BASE + `/merchant/approval/${id}`,
-              {
-                status,
-                note,
-              },
-              {
-                headers: {
-                  authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
-                },
-              }
-            )
-            .then((res) => {
-              location.reload();
-              setIsOpen(false);
-            })
-            .catch((error) => {});
-    }
-  };
 
   return (
     <>
@@ -179,7 +122,7 @@ const MerchantInfo = () => {
         name={name}
         note={note}
         onChange={(e: any) => setNote(e.target.value)}
-        handleSubmit={() => Approvals(ids, status)}
+        handleSubmit={() => Approvals(ids, status, note, setIsOpen, "merchant")}
       />
     </>
   );

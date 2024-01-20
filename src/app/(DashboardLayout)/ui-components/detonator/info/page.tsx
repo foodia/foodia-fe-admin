@@ -1,4 +1,6 @@
 "use client";
+import { Approvals } from "@/app/(DashboardLayout)/components/api/Approvals";
+import { getDetonatorDetail } from "@/app/(DashboardLayout)/components/api/Detonator";
 import Attachment from "@/app/(DashboardLayout)/components/detonator/Attachment";
 import Info from "@/app/(DashboardLayout)/components/detonator/Info";
 import ModalPopup from "@/app/(DashboardLayout)/components/shared/ModalPopup";
@@ -45,71 +47,10 @@ const DetonatorInfo = () => {
   };
 
   useEffect(() => {
-    getDetonatorDetail();
+    getDetonatorDetail(searchParams.get("id"), setData);
   }, []);
 
-  const getDetonatorDetail = () => {
-    axios
-      .get(
-        process.env.NEXT_PUBLIC_BASE +
-          `/detonator/fetch/${searchParams.get("id")}`,
-        {
-          headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
-        }
-      )
-      .then((res) => {
-        setData(res.data.body);
-      })
-      .catch((error) => {});
-  };
-
   console.log(status);
-
-  const Approvals = (id: number, status: string) => {
-    {
-      status === "approved"
-        ? axios
-            .put(
-              process.env.NEXT_PUBLIC_BASE + `/detonator/approval/${id}`,
-              {
-                status,
-                note: "approved",
-              },
-              {
-                headers: {
-                  authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
-                },
-              }
-            )
-            .then((res) => {
-              // getDetonatorDetail();
-              location.reload();
-              setIsOpen(false);
-            })
-            .catch((error) => {})
-        : note === ""
-        ? console.log("Note Empty")
-        : axios
-            .put(
-              process.env.NEXT_PUBLIC_BASE + `/detonator/approval/${id}`,
-              {
-                status,
-                note,
-              },
-              {
-                headers: {
-                  authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
-                },
-              }
-            )
-            .then((res) => {
-              // getDetonatorDetail();
-              location.reload();
-              setIsOpen(false);
-            })
-            .catch((error) => {});
-    }
-  };
 
   return (
     <>
@@ -167,7 +108,9 @@ const DetonatorInfo = () => {
         name={name}
         note={note}
         onChange={(e: any) => setNote(e.target.value)}
-        handleSubmit={() => Approvals(ids, status)}
+        handleSubmit={() =>
+          Approvals(ids, status, note, setIsOpen, "detonator")
+        }
       />
     </>
   );

@@ -136,11 +136,12 @@ const DataTables: React.FC<Data> = ({
               variant="standard"
               size="small"
               disableUnderline
+              label="dd"
               sx={{
                 ".MuiSelect-select": {
                   padding: "10px",
                   width: "140px",
-                  // paddingX: "50px",
+                  paddingLeft: "20px",
                   background: "rgba(63, 182, 72, 0.10)",
                   borderRadius: "12px 0px 0px 12px",
                   ":focus": {

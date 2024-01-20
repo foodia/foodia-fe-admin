@@ -1,12 +1,12 @@
 "use client";
+import { Approvals } from "@/app/(DashboardLayout)/components/api/Approvals";
+import { getCampaignDetail } from "@/app/(DashboardLayout)/components/api/Campaign";
+import Attachment from "@/app/(DashboardLayout)/components/campaign/Attachment";
 import Info from "@/app/(DashboardLayout)/components/campaign/Info";
 import Maps from "@/app/(DashboardLayout)/components/campaign/Maps";
-import Attachment from "@/app/(DashboardLayout)/components/campaign/Attachment";
-import LeafLet from "@/app/(DashboardLayout)/components/shared/LeafLet";
 import ModalPopup from "@/app/(DashboardLayout)/components/shared/ModalPopup";
-import { Box, Button, Grid, Stack, Typography } from "@mui/material";
+import { Box, Button, Grid, Stack } from "@mui/material";
 import { IconBan, IconCircleCheck } from "@tabler/icons-react";
-import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -113,69 +113,8 @@ const CampaignInfo = () => {
   };
 
   useEffect(() => {
-    getCampaignDetail();
+    getCampaignDetail(searchParams.get("id"), setData);
   }, []);
-
-  const getCampaignDetail = () => {
-    axios
-      .get(
-        process.env.NEXT_PUBLIC_BASE +
-          `/campaign/fetch/${searchParams.get("id")}`,
-        {
-          headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
-        }
-      )
-      .then((res) => {
-        setData(res.data.body);
-      })
-      .catch((error) => {});
-  };
-
-  const Approvals = (id: number, status: string) => {
-    {
-      status === "approved"
-        ? axios
-            .put(
-              process.env.NEXT_PUBLIC_BASE + `/campaign/approval/${id}`,
-              {
-                status,
-                note: "approved",
-              },
-              {
-                headers: {
-                  authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
-                },
-              }
-            )
-            .then((res) => {
-              // getCampaignDetail();
-              location.reload();
-              setIsOpen(false);
-            })
-            .catch((error) => {})
-        : note === ""
-        ? console.log("Note Empty")
-        : axios
-            .put(
-              process.env.NEXT_PUBLIC_BASE + `/campaign/approval/${id}`,
-              {
-                status,
-                note,
-              },
-              {
-                headers: {
-                  authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
-                },
-              }
-            )
-            .then((res) => {
-              // getCampaignDetail();
-              location.reload();
-              setIsOpen(false);
-            })
-            .catch((error) => {});
-    }
-  };
 
   return (
     <>
@@ -236,7 +175,7 @@ const CampaignInfo = () => {
         name={name}
         note={note}
         onChange={(e: any) => setNote(e.target.value)}
-        handleSubmit={() => Approvals(ids, status)}
+        handleSubmit={() => Approvals(ids, status, note, setIsOpen, "campaign")}
       />
     </>
   );
