@@ -11,7 +11,7 @@ const List = () => {
   const { setIsUnapprovedProduct } = useAppContext();
 
   useEffect(() => {
-    getProduct(setData);
+    // getProduct(setData, );
   }, []);
 
   return (
