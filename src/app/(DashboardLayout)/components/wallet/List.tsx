@@ -8,6 +8,7 @@ import { getMerchant } from "../api/Merchant";
 
 const List = () => {
   const { productData } = useAppContext();
+  const { setIsUnapprovedProduct } = useAppContext();
   const [currentWalletData, setCurrentWalletData] = useState([
     {
       id: 1,
@@ -154,7 +155,6 @@ const List = () => {
     page_count: 2,
     total: 10,
   });
-  const { setIsUnapprovedProduct } = useAppContext();
 
   useEffect(() => {
     // getMerchant(setData);

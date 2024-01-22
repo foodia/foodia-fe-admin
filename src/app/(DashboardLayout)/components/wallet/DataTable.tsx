@@ -1,17 +1,6 @@
-import {
-  Button,
-  Stack,
-  Chip,
-  SelectChangeEvent,
-  Box,
-  Typography,
-} from "@mui/material";
-import { IconEye } from "@tabler/icons-react";
-import moment from "moment";
-import Link from "next/link";
+import { Box, SelectChangeEvent, Typography } from "@mui/material";
 import React, { useState } from "react";
-import DataTable, { TableColumn } from "react-data-table-component";
-import CustomStylesTable from "../shared/CustomStylesTable";
+import { TableColumn } from "react-data-table-component";
 import DataTables from "../shared/DataTables";
 
 interface Meta {
@@ -179,7 +168,10 @@ const campaignListColumns: TableColumn<CampaignListData>[] = [
       <>
         {row.donator_list.map((value: any, i) => (
           <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
-            {value.donator}
+            {/* {value.donator} */}
+            {i === 1 && value.donator.length > 10
+              ? `${value.donator.slice(0, 10)}...`
+              : value.donator}
             {i + 1 !== row.donator_list.length && (
               <div style={{ marginRight: "5px" }}>,</div>
             )}
