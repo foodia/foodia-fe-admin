@@ -174,7 +174,7 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
                   </Typography>
                   <Link
                     href={{
-                      pathname: "/ui-components/product/info",
+                      pathname: "/ui-components/pages/product/info",
                       query: {
                         id: orders.merchant_product.id,
                       },
@@ -279,7 +279,7 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
                 </Typography>
                 <Link
                   href={{
-                    pathname: "/ui-components/detonator/info",
+                    pathname: "/ui-components/pages/detonator/info",
                     query: {
                       id: data.detonator.id,
                     },

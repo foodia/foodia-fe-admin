@@ -100,7 +100,7 @@ const columns: TableColumn<Data>[] = [
       <Stack spacing={1} direction="row">
         <Link
           href={{
-            pathname: "/ui-components/product/info",
+            pathname: "/ui-components/pages/product/info",
             query: {
               id: row.id,
             },

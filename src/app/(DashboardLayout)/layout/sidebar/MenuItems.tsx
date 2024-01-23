@@ -30,14 +30,14 @@ const Menuitems = () => {
       submenu: [
         {
           id: uniqueId(),
-          href: "/ui-components/wallet",
+          href: "/ui-components/pages/wallet",
           name: "CSR Wallet",
           icon: <IconWallet />,
           // isUnapproved: isUnapprovedMerchant,
         },
         {
           id: uniqueId(),
-          href: "/ui-components/wallet/agnostic",
+          href: "/ui-components/pages/wallet/agnostic",
           name: "Agnostic Wallet",
           icon: <IconWallet />,
           // isUnapproved: isUnapprovedProduct,
@@ -51,17 +51,17 @@ const Menuitems = () => {
       submenu: [
         {
           id: uniqueId(),
-          href: "/ui-components/mercnt",
-          name: "Individuals",
-          icon: <IconUser />,
-          // isUnapproved: isUnapprovedMerchant,
-        },
-        {
-          id: uniqueId(),
-          href: "/ui-components/prodct",
+          href: "/ui-components/pages/donator",
           name: "Corporations",
           icon: <IconBusinessplan />,
           // isUnapproved: isUnapprovedProduct,
+        },
+        {
+          id: uniqueId(),
+          href: "/ui-components/pages/donator/individuals",
+          name: "Individuals",
+          icon: <IconUser />,
+          // isUnapproved: isUnapprovedMerchant,
         },
       ],
     },
@@ -72,14 +72,14 @@ const Menuitems = () => {
       submenu: [
         {
           id: uniqueId(),
-          href: "/ui-components/detonator",
+          href: "/ui-components/pages/detonator",
           name: "List Detonator",
           icon: <IconUser />,
           isUnapproved: isUnapprovedDetonator,
         },
         {
           id: uniqueId(),
-          href: "/ui-components/campaign",
+          href: "/ui-components/pages/campaign",
           name: "List Campaign",
           icon: <IconSpeakerphone />,
           isUnapproved: isUnapprovedCampaign,
@@ -93,14 +93,14 @@ const Menuitems = () => {
       submenu: [
         {
           id: uniqueId(),
-          href: "/ui-components/merchant",
+          href: "/ui-components/pages/merchant",
           name: "List Merchant",
           icon: <IconUser />,
           isUnapproved: isUnapprovedMerchant,
         },
         {
           id: uniqueId(),
-          href: "/ui-components/product",
+          href: "/ui-components/pages/product",
           name: "List Product",
           icon: <IconBurger />,
           isUnapproved: isUnapprovedProduct,

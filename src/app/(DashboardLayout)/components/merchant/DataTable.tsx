@@ -85,7 +85,7 @@ const columns: TableColumn<Data>[] = [
       <Stack spacing={1} direction="row">
         <Link
           href={{
-            pathname: "/ui-components/merchant/info",
+            pathname: "/ui-components/pages/merchant/info",
             query: {
               id: row.id,
             },

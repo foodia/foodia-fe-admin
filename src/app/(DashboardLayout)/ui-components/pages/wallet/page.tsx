@@ -1,7 +1,7 @@
 "use client";
 import { Grid, Paper } from "@mui/material";
 import CampaignData from "@/app/(DashboardLayout)/components/wallet/List";
-import PageContainer from "../../components/container/PageContainer";
+import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
 
 const CampaignManagement = () => {
   return (

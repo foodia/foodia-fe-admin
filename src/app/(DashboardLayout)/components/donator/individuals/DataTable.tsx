@@ -2,9 +2,9 @@ import { Button, Chip, SelectChangeEvent, Stack } from "@mui/material";
 import { IconEye } from "@tabler/icons-react";
 import moment from "moment";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TableColumn } from "react-data-table-component";
-import DataTables from "../shared/DataTables";
+import DataTables from "../../shared/DataTables";
 
 interface Meta {
   page: number;
@@ -15,12 +15,15 @@ interface Meta {
 
 interface Data {
   id: number;
-  event_name: string;
-  event_type: string;
-  description: string;
-  created_at: string;
   status: string;
-  detonator: { id: number; oauth: { fullname: string } };
+  created_at: string;
+  oauth: { fullname: string; email: string; phone: string };
+  meta: {
+    page: number;
+    per_page: number;
+    page_count: number;
+    total: number;
+  };
 }
 
 interface Props {
@@ -39,30 +42,23 @@ const columns: TableColumn<Data>[] = [
     // },
   },
   {
-    name: "Detonator",
-    cell: (row: Data) => <div>{row.detonator?.oauth?.fullname}</div>,
-    // sortable: true,
-    width: "auto",
-  },
-  {
-    name: "Event Name",
-    cell: (row: Data) => <div>{row.event_name}</div>,
+    name: "Fullname",
+    cell: (row: Data) => <div>{row.oauth.fullname}</div>,
     // sortable: true,
   },
   {
-    name: "Event Type",
-    cell: (row: Data) => <div>{row.event_type}</div>,
+    name: "Email",
+    cell: (row: Data) => <div>{row.oauth.email}</div>,
     // sortable: true,
-    width: "auto",
+    width: "270px",
   },
-  // {
-  //   name: "Description",
-  //   cell: (row: Data) => <div>{row.description}</div>,
-  //   // sortable: true,
-  //   width: "200px",
-  // },
   {
-    name: "Submitted at",
+    name: "Phone number",
+    cell: (row: Data) => <div>{row.oauth.phone}</div>,
+    // sortable: true,
+  },
+  {
+    name: "Registered at",
     cell: (row: Data) => (
       <div>{moment(row.created_at).format("DD/MM/YYYY")}</div>
     ),
@@ -87,17 +83,15 @@ const columns: TableColumn<Data>[] = [
         label={row.status}
       />
     ),
-    width: "auto",
     // sortable: true,
   },
   {
     name: "Action",
-    // selector: (row: Data) => row.age,
     cell: (row: Data) => (
       <Stack spacing={1} direction="row">
         <Link
           href={{
-            pathname: "/ui-components/pages/campaign/info",
+            pathname: "/ui-components/detonator/info",
             query: {
               id: row.id,
             },
@@ -109,15 +103,14 @@ const columns: TableColumn<Data>[] = [
         </Link>
       </Stack>
     ),
-    // width: "auto",
-    sortable: true,
+    // sortable: true,
   },
   // Add more columns as needed
 ];
 
 const DataTableComponent: React.FC<Props> = ({ data, meta }) => {
   const [filterText, setFilterText] = useState<string>("unapproved");
-  const [searchBy, setSearchBy] = useState<string>("detonator");
+  const [searchBy, setSearchBy] = useState<string>("fullname");
   const [searchText, setSearchText] = useState<string>("");
 
   const handleChangeSearchBy = (event: SelectChangeEvent) => {
@@ -137,43 +130,39 @@ const DataTableComponent: React.FC<Props> = ({ data, meta }) => {
     filteredItems = data.filter(
       (data) =>
         data.status.toLowerCase() !== "approved" &&
-        (searchBy === "detonator"
-          ? data.detonator.oauth.fullname
-              .toLowerCase()
-              .includes(searchText.toLowerCase())
-          : searchBy === "name"
-          ? data.event_name.toLowerCase().includes(searchText.toLowerCase())
-          : data.event_type.toLowerCase().includes(searchText.toLowerCase()))
+        (searchBy === "fullname"
+          ? data.oauth.fullname.toLowerCase().includes(searchText.toLowerCase())
+          : searchBy === "email"
+          ? data.oauth.email.toLowerCase().includes(searchText.toLowerCase())
+          : data.oauth.phone.toLowerCase().includes(searchText.toLowerCase()))
     );
   } else {
     filteredItems = data.filter(
       (data) =>
         data.status.toLowerCase() === "approved" &&
-        (searchBy === "detonator"
-          ? data.detonator.oauth.fullname
-              .toLowerCase()
-              .includes(searchText.toLowerCase())
-          : searchBy === "name"
-          ? data.event_name.toLowerCase().includes(searchText.toLowerCase())
-          : data.event_type.toLowerCase().includes(searchText.toLowerCase()))
+        (searchBy === "fullname"
+          ? data.oauth.fullname.toLowerCase().includes(searchText.toLowerCase())
+          : searchBy === "email"
+          ? data.oauth.email.toLowerCase().includes(searchText.toLowerCase())
+          : data.oauth.phone.toLowerCase().includes(searchText.toLowerCase()))
     );
   }
 
   const searchOption = [
     {
       id: 1,
-      value: "detonator",
-      label: "Detonator",
+      value: "fullname",
+      label: "FullName",
     },
     {
       id: 2,
-      value: "name",
-      label: "Event Name",
+      value: "email",
+      label: "Email",
     },
     {
       id: 3,
-      value: "type",
-      label: "Event Type",
+      value: "phone",
+      label: "Phone Number",
     },
   ];
 

@@ -11,7 +11,7 @@ module.exports = {
     return [
       {
         source: "/",
-        destination: "/ui-components/detonator",
+        destination: "/ui-components/auth",
       },
     ];
   },
@@ -19,7 +19,7 @@ module.exports = {
     return [
       {
         source: "/",
-        destination: "/ui-components/detonator",
+        destination: "/ui-components/auth",
         statusCode: 301,
       },
     ];

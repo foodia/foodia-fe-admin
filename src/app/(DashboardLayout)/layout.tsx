@@ -26,11 +26,11 @@ export default function RootLayout({
 
   return (
     <MainWrapper className="mainwrapper">
-      {/* {pathname.includes("auth") ? (
+      {pathname.includes("auth") ? (
         <AuthLayout>{children}</AuthLayout>
-      ) : ( */}
-      <DashboardLayout>{children}</DashboardLayout>
-      {/* )} */}
+      ) : (
+        <DashboardLayout>{children}</DashboardLayout>
+      )}
     </MainWrapper>
   );
 }

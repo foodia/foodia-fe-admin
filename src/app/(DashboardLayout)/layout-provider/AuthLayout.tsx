@@ -2,6 +2,7 @@
 import { Box, Container, styled, useTheme } from "@mui/material";
 import { green } from "@mui/material/colors";
 import React, { useState } from "react";
+import Login from "../components/auth/login";
 
 const MainWrapper = styled("div")(() => ({
   display: "flex",
@@ -23,14 +24,7 @@ export default function AuthLayout({
   const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   return (
-    <MainWrapper
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "180px",
-      }}
-      className="mainwrapper"
-    >
+    <MainWrapper className="mainwrapper">
       <Box
         sx={{
           backgroundColor: theme.palette.primary.main,
@@ -40,24 +34,11 @@ export default function AuthLayout({
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          height: "40px",
+          height: "100%",
         }}
       >
-        Foodia Admin
+        <Login />
       </Box>
-      <Container style={{ width: "100%" }}>
-        {/* ------------------------------------------- */}
-        {/* Page Route */}
-        {/* ------------------------------------------- */}
-        <Box>{children}</Box>
-        {/* ------------------------------------------- */}
-        {/* End Page */}
-        {/* ------------------------------------------- */}
-
-        {/* ------------------------------------------- */}
-        {/* Footer */}
-        {/* ------------------------------------------- */}
-      </Container>
     </MainWrapper>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 import { Grid, Paper } from "@mui/material";
 import DetonatorData from "@/app/(DashboardLayout)/components/detonator/List";
-import PageContainer from "../../components/container/PageContainer";
+import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
 
 const DetonatorManagement = () => {
   return (
