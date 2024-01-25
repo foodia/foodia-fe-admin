@@ -14,7 +14,6 @@ import Attachment from "@/app/(DashboardLayout)/components/merchant/Attachment";
 import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import { IconBan, IconCircleCheck, IconClock } from "@tabler/icons-react";
-import List from "@/app/(DashboardLayout)/components/merchant/product/List";
 import ModalPopup from "@/app/(DashboardLayout)/components/shared/ModalPopup";
 import { getMerchantDetail } from "@/app/(DashboardLayout)/components/api/Merchant";
 import { Approvals } from "@/app/(DashboardLayout)/components/api/Approvals";

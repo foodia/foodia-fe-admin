@@ -147,6 +147,7 @@ const NavItem = ({ item, index, level, pathDirect, onClick }: ItemType) => {
 
           {item.submenu.map((t: any) => (
             <Collapse
+              key={index}
               in={index === Index && open ? true : false}
               timeout="auto"
             >

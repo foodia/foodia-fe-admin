@@ -20,6 +20,12 @@ interface ChildProps {
   };
 }
 
+const breadcrumbs = [
+  <Typography fontSize="13px" key="3" color="#999" fontWeight={400}>
+    Products
+  </Typography>,
+];
+
 const Info: React.FC<ChildProps> = ({ data }) => {
   return (
     <>
