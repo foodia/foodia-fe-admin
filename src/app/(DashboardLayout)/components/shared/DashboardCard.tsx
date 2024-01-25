@@ -15,6 +15,7 @@ import {
   stepConnectorClasses,
   StepIconProps,
   StepIcon,
+  Breadcrumbs,
 } from "@mui/material";
 import {
   IconBan,
@@ -28,6 +29,7 @@ import {
   IconError404,
   IconX,
 } from "@tabler/icons-react";
+import { KeyboardArrowRight } from "@mui/icons-material";
 
 type Props = {
   title?: string;
@@ -41,6 +43,7 @@ type Props = {
   middlecontent?: string | JSX.Element;
   status?: string;
   currentBalance?: any;
+  breadcrumb?: any;
 };
 
 interface CustomStepIconProps extends StepIconProps {
@@ -59,6 +62,7 @@ const DashboardCard = ({
   middlecontent,
   status,
   currentBalance,
+  breadcrumb,
 }: Props) => {
   const steps = ["Waiting", "Rejected", "Approved"];
 
@@ -157,121 +161,123 @@ const DashboardCard = ({
 
   return (
     <Card sx={{ padding: 0 }} elevation={9} variant={undefined}>
-      {cardheading ? (
-        <CardContent>
-          <Typography variant="h3">{headtitle}</Typography>
-          <Typography variant="subtitle2" color="textSecondary">
-            {headsubtitle}
-          </Typography>
-        </CardContent>
-      ) : (
-        <CardContent sx={{ p: "30px" }}>
-          {title ? (
-            <Stack
-              // direction="row"
-              // spacing={2}
-              // justifyContent="space-between"
-              // alignItems={"center"}
-              mb={1}
-            >
-              <Box>
-                {title ? (
+      <CardContent sx={{ p: "30px" }}>
+        {title ? (
+          <Stack
+            // direction="row"
+            // spacing={2}
+            // justifyContent="space-between"
+            // alignItems={"center"}
+            mb={1}
+          >
+            <Box>
+              {title ? (
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
                   <Box
                     sx={{
                       display: "flex",
-                      flexDirection: "column",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "space-between",
                     }}
                   >
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "end",
-                        justifyContent: "space-between",
-                      }}
-                    >
+                    <Box sx={{ display: "flex", flexDirection: "column" }}>
                       <Typography variant="h3">{title}</Typography>
-                      {currentBalance ? (
-                        <>
-                          <Box
-                            sx={{
-                              display: "flex",
-                              flexDirection: "column",
-                              alignItems: "end",
-                            }}
-                          >
-                            <Typography
-                              sx={{
-                                fontSize: "12px",
-                                fontWeight: 900,
-                              }}
-                            >
-                              Current Balance
-                            </Typography>
-                            <Typography
-                              sx={{
-                                fontSize: "32px",
-                                color: "primary.main",
-                                fontWeight: 800,
-                              }}
-                            >
-                              {new Intl.NumberFormat("id-ID", {
-                                style: "currency",
-                                currency: "IDR",
-                                minimumFractionDigits: 0,
-                              }).format(currentBalance)}
-                            </Typography>
-                          </Box>
-                        </>
+                      {breadcrumb ? (
+                        <Breadcrumbs
+                          separator={<KeyboardArrowRight fontSize="small" />}
+                          aria-label="breadcrumb"
+                        >
+                          {breadcrumb}
+                        </Breadcrumbs>
                       ) : (
                         ""
                       )}
                     </Box>
-                    {status ? (
-                      <Stepper
-                        sx={{ padding: "15px" }}
-                        activeStep={activeStep()}
-                        alternativeLabel
-                      >
-                        {steps.map((label, index) => (
-                          <Step key={label}>
-                            <StepLabel
-                              StepIconComponent={(props) => (
-                                <CustomStepIcon
-                                  stepNumber={index + 1}
-                                  {...props}
-                                />
-                              )}
-                            >
-                              {/* {label} */}
-                            </StepLabel>
-                          </Step>
-                        ))}
-                      </Stepper>
+                    {currentBalance ? (
+                      <>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "end",
+                          }}
+                        >
+                          <Typography
+                            sx={{
+                              fontSize: "12px",
+                              fontWeight: 900,
+                            }}
+                          >
+                            Current Balance
+                          </Typography>
+                          <Typography
+                            sx={{
+                              fontSize: "32px",
+                              color: "primary.main",
+                              fontWeight: 800,
+                            }}
+                          >
+                            {new Intl.NumberFormat("id-ID", {
+                              style: "currency",
+                              currency: "IDR",
+                              minimumFractionDigits: 0,
+                            }).format(currentBalance)}
+                          </Typography>
+                        </Box>
+                      </>
                     ) : (
                       ""
                     )}
                   </Box>
-                ) : (
-                  ""
-                )}
-
-                {subtitle ? (
+                  {status ? (
+                    <Stepper
+                      sx={{ padding: "15px" }}
+                      activeStep={activeStep()}
+                      alternativeLabel
+                    >
+                      {steps.map((label, index) => (
+                        <Step key={label}>
+                          <StepLabel
+                            StepIconComponent={(props) => (
+                              <CustomStepIcon
+                                stepNumber={index + 1}
+                                {...props}
+                              />
+                            )}
+                          >
+                            {/* {label} */}
+                          </StepLabel>
+                        </Step>
+                      ))}
+                    </Stepper>
+                  ) : (
+                    ""
+                  )}
+                </Box>
+              ) : (
+                ""
+              )}
+              {/* {subtitle ? (
                   <Typography variant="subtitle2" color="textSecondary">
                     {subtitle}
                   </Typography>
                 ) : (
                   ""
-                )}
-              </Box>
-              {action}
-            </Stack>
-          ) : null}
-          <hr />
-          <br />
-          {children}
-        </CardContent>
-      )}
+                )} */}
+            </Box>
+            {action}
+          </Stack>
+        ) : null}
+        <hr />
+        <br />
+        {children}
+      </CardContent>
 
       {middlecontent}
       {footer}

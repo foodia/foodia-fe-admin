@@ -136,10 +136,7 @@ const Info: React.FC<ChildProps> = ({ data }) => {
               fullWidth
               id="name-basic"
               variant="outlined"
-              value={
-                "Rp." +
-                data.donation_target.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-              }
+              value={"Rp." + data.donation_target}
               disabled
             />
           </Box>

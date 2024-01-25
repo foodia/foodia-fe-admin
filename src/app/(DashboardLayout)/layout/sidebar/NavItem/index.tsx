@@ -175,7 +175,7 @@ const NavItem = ({ item, index, level, pathDirect, onClick }: ItemType) => {
                 key={t.id}
                 href={t.href}
                 selected={pathDirect === t.href}
-                // onClick={() => handleClick()}
+                onClick={() => handleClick(index)}
               >
                 {/* <ListItemIcon
                   sx={{

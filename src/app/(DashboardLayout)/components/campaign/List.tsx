@@ -4,6 +4,7 @@ import BaseCard from "../shared/DashboardCard";
 import DataTableComponent from "./DataTable";
 import { useAppContext } from "../shared/Context";
 import { getCampaign } from "../api/Campaign";
+import { Typography } from "@mui/material";
 
 const List = () => {
   const [data, setData] = useState([]);
@@ -19,9 +20,15 @@ const List = () => {
     getCampaign(setData, setMeta);
   }, []);
 
+  const breadcrumbs = [
+    <Typography fontSize="13px" key="3" color="#999" fontWeight={400}>
+      Products
+    </Typography>,
+  ];
+
   return (
     <>
-      <BaseCard title="List Campaign">
+      <BaseCard title="List Campaign" breadcrumb={breadcrumbs}>
         <DataTableComponent data={data} meta={meta} />
       </BaseCard>
     </>

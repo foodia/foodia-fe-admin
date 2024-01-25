@@ -4,6 +4,7 @@ import BaseCard from "../shared/DashboardCard";
 import DataTableComponent from "./DataTable";
 import { useAppContext } from "../shared/Context";
 import { getMerchant } from "../api/Merchant";
+import { Typography } from "@mui/material";
 
 const List = () => {
   const [data, setData] = useState([]);
@@ -19,9 +20,15 @@ const List = () => {
     getMerchant(setData, setMeta);
   }, []);
 
+  const breadcrumbs = [
+    <Typography fontSize="13px" key="3" color="#999" fontWeight={400}>
+      Products
+    </Typography>,
+  ];
+
   return (
     <>
-      <BaseCard title="Merchant Management">
+      <BaseCard title="Merchant Management" breadcrumb={breadcrumbs}>
         <DataTableComponent data={data} meta={meta} />
       </BaseCard>
     </>

@@ -1,10 +1,8 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
+import { useAppContext } from "../shared/Context";
 import BaseCard from "../shared/DashboardCard";
 import DataTableComponent from "./DataTable";
-import { useAppContext } from "../shared/Context";
-import { getProduct } from "../api/Product";
-import { getMerchant } from "../api/Merchant";
+import { Typography } from "@mui/material";
 
 const List = () => {
   const { productData } = useAppContext();
@@ -160,9 +158,19 @@ const List = () => {
     // getMerchant(setData);
   }, []);
 
+  const breadcrumbs = [
+    <Typography fontSize="13px" key="3" color="#999" fontWeight={400}>
+      CSR Wallet
+    </Typography>,
+  ];
+
   return (
     <>
-      <BaseCard title="CSR Wallet" currentBalance={9500000}>
+      <BaseCard
+        title="CSR Wallet"
+        breadcrumb={breadcrumbs}
+        currentBalance={9500000}
+      >
         <DataTableComponent
           currentWalletMeta={currentWalletMeta}
           currentWalletData={currentWalletData}

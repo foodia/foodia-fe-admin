@@ -5,6 +5,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { TableColumn } from "react-data-table-component";
 import DataTables from "../shared/DataTables";
+import { ButtonAction, Status } from "../shared/Buttons";
 
 interface Meta {
   page: number;
@@ -60,23 +61,7 @@ const columns: TableColumn<Data>[] = [
   },
   {
     name: "Status",
-    cell: (row: Data) => (
-      <Chip
-        sx={{
-          pl: "4px",
-          pr: "4px",
-          backgroundColor:
-            row.status === "approved"
-              ? "success.main"
-              : row.status === "rejected"
-              ? "error.main"
-              : "warning.main",
-          color: "#fff",
-        }}
-        size="small"
-        label={row.status}
-      />
-    ),
+    cell: (row: Data) => <Status row={row} />,
     // sortable: true,
   },
   {
@@ -91,9 +76,7 @@ const columns: TableColumn<Data>[] = [
             },
           }}
         >
-          <Button variant="contained" size="small" color="info">
-            <IconEye size={20} /> View
-          </Button>
+          <ButtonAction />
         </Link>
       </Stack>
     ),

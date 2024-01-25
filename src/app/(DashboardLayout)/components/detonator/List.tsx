@@ -4,6 +4,7 @@ import BaseCard from "../shared/DashboardCard";
 import DataTableComponent from "./DataTable";
 import { useAppContext } from "../shared/Context";
 import { getDetonator } from "../api/Detonator";
+import { Typography } from "@mui/material";
 
 interface Meta {
   page: number;
@@ -27,9 +28,15 @@ const List = () => {
     getDetonator(setData, setMeta);
   }, []);
 
+  const breadcrumbs = [
+    <Typography fontSize="13px" key="3" color="#999" fontWeight={400}>
+      Products
+    </Typography>,
+  ];
+
   return (
     <>
-      <BaseCard title="Detonator Management">
+      <BaseCard title="Detonator Management" breadcrumb={breadcrumbs}>
         <DataTableComponent data={data} meta={meta} />
       </BaseCard>
     </>

@@ -133,11 +133,7 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
                     {orders.merchant.oauth.fullname}
                   </Typography>
                   <Typography sx={{ fontSize: "12px" }}>
-                    Rp.{" "}
-                    {orders.merchant_product.price.replace(
-                      /\B(?=(\d{3})+(?!\d))/g,
-                      "."
-                    )}
+                    Rp. {orders.merchant_product.price}
                   </Typography>
                   <Typography sx={{ fontSize: "12px" }}>
                     Quantity: {orders.qty}
