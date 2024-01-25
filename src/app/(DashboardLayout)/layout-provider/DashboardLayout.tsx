@@ -71,7 +71,7 @@ export default function DashboardLayout({
           {/* ------------------------------------------- */}
           {/* Footer */}
           {/* ------------------------------------------- */}
-          <Footer />
+          {/* <Footer /> */}
         </Container>
       </PageWrapper>
     </MainWrapper>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { TableColumn } from "react-data-table-component";
 import DataTables from "../shared/DataTables";
+import { ButtonAction } from "../shared/Buttons";
 
 interface Meta {
   page: number;
@@ -69,15 +70,24 @@ const columns: TableColumn<Data>[] = [
     cell: (row: Data) => (
       <Chip
         sx={{
-          pl: "4px",
-          pr: "4px",
+          textTransform: "capitalize",
+          width: "115px",
+          fontSize: "14px",
+          fontWeight: 600,
+          borderRadius: "8px",
+          height: "32px",
           backgroundColor:
             row.status === "approved"
-              ? "success.main"
+              ? "#E9FBF0"
               : row.status === "rejected"
-              ? "error.main"
-              : "warning.main",
-          color: "#fff",
+              ? "#FFF0F1"
+              : "#FFF9EB",
+          color:
+            row.status === "approved"
+              ? "#178D46"
+              : row.status === "rejected"
+              ? "#94000D"
+              : "#AB6800",
         }}
         size="small"
         label={row.status}
@@ -88,20 +98,16 @@ const columns: TableColumn<Data>[] = [
   {
     name: "Action",
     cell: (row: Data) => (
-      <Stack spacing={1} direction="row">
-        <Link
-          href={{
-            pathname: "/ui-components/pages/detonator/info",
-            query: {
-              id: row.id,
-            },
-          }}
-        >
-          <Button variant="contained" size="small" color="info">
-            <IconEye size={20} /> View
-          </Button>
-        </Link>
-      </Stack>
+      <Link
+        href={{
+          pathname: "/ui-components/pages/detonator/info",
+          query: {
+            id: row.id,
+          },
+        }}
+      >
+        <ButtonAction />
+      </Link>
     ),
     // sortable: true,
   },

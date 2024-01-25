@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 // mui imports
 import {
   ListItemIcon,
@@ -10,6 +10,7 @@ import {
   ListItemButton,
   Collapse,
   Button,
+  Box,
 } from "@mui/material";
 import Link from "next/link";
 import {
@@ -22,7 +23,7 @@ import { useAppContext } from "@/app/(DashboardLayout)/components/shared/Context
 
 type NavGroup = {
   [x: string]: any;
-  id?: string;
+  id?: any;
   navlabel?: boolean;
   subheader?: string;
   // submenu?: [
@@ -44,16 +45,32 @@ interface ItemType {
   hideMenu?: any;
   level?: number | any;
   pathDirect: string;
+  index?: any;
 }
 
-const NavItem = ({ item, level, pathDirect, onClick }: ItemType) => {
+const NavItem = ({ item, index, level, pathDirect, onClick }: ItemType) => {
   const Icon = item.icon;
   const theme = useTheme();
   const itemIcon = <Icon stroke={1.5} size="1.3rem" />;
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = useState(true);
+  const [Index, setIndex] = useState(
+    parseInt(`${localStorage.getItem("Index")}`, 10)
+  );
 
-  const handleClick = () => {
-    setOpen(!open);
+  // useEffect(() => {
+  //   const storedValue = localStorage.getItem("Index");
+
+  //   // If a value is found in localStorage, update the state
+  //   if (storedValue) {
+  //     setIndex(parseInt(storedValue, 10));
+  //   }
+  // }, []);
+
+  console.log(Index);
+
+  const handleClick = (index: any) => {
+    setIndex(index);
+    localStorage.setItem("Index", index);
   };
 
   const ListItemStyled = styled(ListItemButton)(() => ({
@@ -61,17 +78,17 @@ const NavItem = ({ item, level, pathDirect, onClick }: ItemType) => {
     flexDirection: "column",
     ".MuiButtonBase-root": {
       backgroundColor: level > 1 ? "transparent !important" : "inherit",
-      color: theme.palette.text.secondary,
+      color: "black",
       "&:hover": {
-        backgroundColor: theme.palette.primary.light,
-        color: theme.palette.primary.main,
+        backgroundColor: "black",
+        color: "black",
       },
       "&.Mui-selected": {
         color: "white",
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: "black",
         "&:hover": {
-          backgroundColor: theme.palette.primary.main,
-          color: "white",
+          backgroundColor: "black",
+          color: "black",
         },
       },
     },
@@ -81,55 +98,84 @@ const NavItem = ({ item, level, pathDirect, onClick }: ItemType) => {
     <List component="div" disablePadding key={item.id}>
       {item.submenu ? (
         <>
-          <List
-            component="div"
-            key={item.id}
-            style={{
-              padding: "8px 10px",
+          <Button
+            sx={{
               display: "flex",
               flexDirection: "row",
-              alignItems: "center",
-              // justifyContent: "center" ,
-              // backgroundColor: "gray",
+              justifyContent: "left",
+              width: "100%",
+              color: "white",
               marginBottom: "5px",
             }}
+            onClick={() => handleClick(index)}
           >
-            <ListItemIcon
+            <Box
               sx={{
-                minWidth: "36px",
-                // p: "3px 0",
-                color: "inherit",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: "100%", // Added width to take up the full width
               }}
             >
-              {itemIcon}
-            </ListItemIcon>
-            <ListItemText>
-              <>{item.title}</>
-            </ListItemText>
-            <Button onClick={handleClick}>
-              {open ? <IconChevronUp /> : <IconChevronDown />}
-            </Button>
-          </List>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            {/* <List sx={{ pt: 0 }}> */}
-            {/* <ListSubMenuStyled> */}
-            {/* <ListItemStyled> */}
-            {item.submenu.map((t: any) => (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    color: "white",
+                    minWidth: 0,
+                  }}
+                >
+                  {itemIcon}
+                </ListItemIcon>
+                <ListItemText sx={{ marginLeft: "20px" }}>
+                  {item.title}
+                </ListItemText>
+              </Box>
+              {index === Index && open ? (
+                <IconChevronUp />
+              ) : (
+                <IconChevronDown />
+              )}
+            </Box>
+          </Button>
+
+          {item.submenu.map((t: any) => (
+            <Collapse
+              in={index === Index && open ? true : false}
+              timeout="auto"
+            >
               <ListItemButton
-                style={{
+                sx={{
                   display: "flex",
                   marginBottom: "8px",
                   marginLeft: "40px",
                   padding: "8px 10px",
                   borderRadius: "9px",
-                  color: theme.palette.text.secondary,
+                  // color: theme.palette.text.secondary,
                   paddingLeft: "10px",
+                  ":hover": {
+                    color: "black",
+                    backgroundColor: "#E9FBF0",
+                  },
+                  "&.Mui-selected": {
+                    backgroundColor: "#E9FBF0",
+                    color: "black",
+                    ":hover": {
+                      backgroundColor: "#E9FBF0",
+                    },
+                  },
                 }}
                 component={Link}
                 key={t.id}
                 href={t.href}
                 selected={pathDirect === t.href}
-                onClick={onClick}
+                // onClick={() => handleClick()}
               >
                 {/* <ListItemIcon
                   sx={{
@@ -137,7 +183,7 @@ const NavItem = ({ item, level, pathDirect, onClick }: ItemType) => {
                     p: "3px 0",
                     color: "inherit",
                   }}
-                >
+                  >
                   {t.icon}
                 </ListItemIcon> */}
                 <ListItemText primary={t.name} />
@@ -149,11 +195,8 @@ const NavItem = ({ item, level, pathDirect, onClick }: ItemType) => {
                   ""
                 )}
               </ListItemButton>
-            ))}
-            {/* </ListItemStyled> */}
-            {/* </ListSubMenuStyled> */}
-            {/* </List> */}
-          </Collapse>
+            </Collapse>
+          ))}
         </>
       ) : (
         <ListItemStyled>

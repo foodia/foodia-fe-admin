@@ -1,7 +1,8 @@
-import { useMediaQuery, Box, Drawer } from "@mui/material";
+import { useMediaQuery, Box, Drawer, Typography } from "@mui/material";
 import Logo from "../shared/logo/Logo";
 import SidebarItems from "./SidebarItems";
 import Upgrade from "./Updrade";
+import { IconCopyright } from "@tabler/icons-react";
 
 interface ItemType {
   isMobileSidebarOpen: boolean;
@@ -35,6 +36,10 @@ const Sidebar = ({
           variant="permanent"
           PaperProps={{
             sx: {
+              display: "flex",
+              justifyContent: "space-between",
+              color: "white",
+              backgroundColor: "#168140",
               width: sidebarWidth,
               boxSizing: "border-box",
               border: "0",
@@ -45,27 +50,33 @@ const Sidebar = ({
           {/* ------------------------------------------- */}
           {/* Sidebar Box */}
           {/* ------------------------------------------- */}
-          <Box
-            sx={{
-              height: "100%",
-            }}
-            // py={1}
-          >
+          <Box>
             {/* ------------------------------------------- */}
             {/* Logo */}
             {/* ------------------------------------------- */}
-            <Box py={5} justifyContent={"center"} display={"flex"}>
+            <Box py={7.5} justifyContent={"center"} display={"flex"}>
               <Logo />
             </Box>
+            {/* ------------------------------------------- */}
+            {/* Sidebar Items */}
+            {/* ------------------------------------------- */}
             <Box>
-              {/* ------------------------------------------- */}
-              {/* Sidebar Items */}
-              {/* ------------------------------------------- */}
-              <Box>
-                <SidebarItems />
-              </Box>
+              <SidebarItems />
             </Box>
           </Box>
+          <Typography
+            sx={{
+              fontSize: "14px",
+              fontWeight: 400,
+              display: "flex",
+              alignItems: "center",
+              gap: "5px",
+              justifyContent: "center",
+              paddingBottom: "20px",
+            }}
+          >
+            <IconCopyright /> 2024, Foodia by Telkomsel
+          </Typography>
         </Drawer>
       </Box>
     );
