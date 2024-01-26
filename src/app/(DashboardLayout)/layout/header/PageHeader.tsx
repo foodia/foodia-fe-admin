@@ -35,17 +35,18 @@ const PageHeader: React.FC<ItemType> = ({
 
   const AppBarStyled = styled(AppBar)(({ theme }) => ({
     background: "#FFF",
-    boxShadow: "none",
+    boxShadow: "0px 0px 12px 0px rgba(0, 38, 96, 0.08)",
     justifyContent: "center",
     backdropFilter: "blur(4px)",
+    marginBottom: "20px",
     zIndex: 0,
-    // [theme.breakpoints.up("lg")]: {
-    //   minHeight: "70px",
-    // },
+    [theme.breakpoints.up("lg")]: {
+      minHeight: "70px",
+    },
   }));
   const ToolbarStyled = styled(Toolbar)(({ theme }) => ({
     width: "100%",
-    height: "120px",
+    height: "100px",
     color: theme.palette.text.secondary,
   }));
 

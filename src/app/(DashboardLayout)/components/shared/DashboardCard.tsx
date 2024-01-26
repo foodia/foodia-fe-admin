@@ -23,8 +23,6 @@ interface CustomStepIconProps extends StepIconProps {
 }
 
 const DashboardCard = ({
-  title,
-  children,
   subtitle,
   action,
   footer,
@@ -32,12 +30,13 @@ const DashboardCard = ({
   headtitle,
   headsubtitle,
   middlecontent,
+  title,
+  children,
   status,
   currentBalance,
   breadcrumb,
 }: Props) => {
   const steps = ["Waiting", "Rejected", "Approved"];
-
   const activeStep = () => {
     if (status === "warning") {
       return 0;
@@ -47,7 +46,6 @@ const DashboardCard = ({
       return 2;
     }
   };
-
   const CustomStepIcon: React.FC<CustomStepIconProps> = ({
     active,
     stepNumber,
@@ -132,13 +130,21 @@ const DashboardCard = ({
   };
 
   return (
-    <Card sx={{ padding: "0px", borderRadius: 0 }}>
+    <Card
+      sx={{
+        padding: "0px",
+        borderRadius: 0,
+        height: "100%",
+        backgroundColor: "#FFF",
+        boxShadow: "none",
+      }}
+    >
       <PageHeader
         title={title}
         breadcrumb={breadcrumb}
         currentBalance={currentBalance}
       />
-      <Box sx={{ padding: "30px" }}>{children}</Box>
+      <Box sx={{ padding: "0px" }}>{children}</Box>
     </Card>
   );
 };

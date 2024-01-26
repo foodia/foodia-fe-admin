@@ -60,54 +60,12 @@ const DetonatorInfo = () => {
   return (
     <>
       <DashboardCard title="Detonator Detail" breadcrumb={breadcrumbs}>
-        <Grid container spacing={3}>
-          <Grid item xs={6} lg={6}>
-            <Info data={data} />
-            <Box
-              marginTop="20px"
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-              justifyContent="center"
-              gap="20px"
-              color="white"
-            >
-              <Stack
-                display="flex"
-                justifyContent="center"
-                spacing={1}
-                direction="row"
-              >
-                <Button
-                  variant="contained"
-                  size="large"
-                  disabled={data.status === "approved"}
-                  onClick={() =>
-                    handleOpen(data.id, "approved", data.oauth.fullname)
-                  }
-                  color="success"
-                >
-                  <IconCircleCheck size={18} /> Approve
-                </Button>
-                <Button
-                  variant="contained"
-                  size="large"
-                  disabled={data.status === "rejected"}
-                  onClick={() =>
-                    handleOpen(data.id, "rejected", data.oauth.fullname)
-                  }
-                  color="error"
-                >
-                  <IconBan size={16} /> Reject
-                </Button>
-              </Stack>
-            </Box>
-          </Grid>
-          <Grid item xs={6} lg={6}>
-            <Attachment data={data} />
-          </Grid>
-        </Grid>
+        <>
+          <Info data={data} />
+          <Attachment data={data} />
+        </>
       </DashboardCard>
+
       <ModalPopup
         open={isOpen}
         handleClose={handleClose}

@@ -15,9 +15,8 @@ const MainWrapper = styled("div")(() => ({
 const PageWrapper = styled("div")(() => ({
   display: "flex",
   flexGrow: 1,
-  paddingBottom: "20px",
   flexDirection: "column",
-  backgroundColor: "transparent",
+  background: "#FFF",
 }));
 
 interface Props {
@@ -46,7 +45,7 @@ export default function DashboardLayout({
       {/* ------------------------------------------- */}
       {/* Main Wrapper */}
       {/* ------------------------------------------- */}
-      <PageWrapper className="page-wrapper">
+      <PageWrapper>
         {/* ------------------------------------------- */}
         {/* Header */}
         {/* ------------------------------------------- */}
@@ -57,7 +56,7 @@ export default function DashboardLayout({
         {/* ------------------------------------------- */}
         {/* Page Route */}
         {/* ------------------------------------------- */}
-        {children}
+        <Box sx={{ height: "100%" }}>{children}</Box>
         {/* ------------------------------------------- */}
         {/* End Page */}
         {/* ------------------------------------------- */}

@@ -15,6 +15,7 @@ import BaseCard from "../shared/DashboardCard";
 import { useState } from "react";
 import { ModalPopupFilesDetail } from "../shared/ModalPopup";
 import Image from "next/image";
+import DetailCard from "../shared/DetailCard";
 
 interface ChildProps {
   data: {
@@ -39,38 +40,61 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
   };
   return (
     <>
-      <BaseCard title="Attachment">
-        <Box sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-          <Typography>Self Photo :</Typography>
-          <Button
-            onClick={() => onViewImage(data.self_photo)}
-            variant="contained"
-            size="small"
-            sx={{ backgroundColor: "transparent", border: "0.4px solid grey" }}
+      <DetailCard title="Detonator Documents">
+        <Box sx={{ display: "flex", flexDirection: "row", gap: "10px" }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
           >
-            <Image
-              src={`${process.env.NEXT_PUBLIC_FILE}${data.self_photo}`}
-              alt="NotFound"
-              width={200} // Set the desired width
-              height={120} // Set the desired height
-            />
-          </Button>
-          <Typography>KTP Photo :</Typography>
-          <Button
-            onClick={() => onViewImage(data.ktp_photo)}
-            variant="contained"
-            size="small"
-            sx={{ backgroundColor: "transparent", border: "0.4px solid grey" }}
+            <Button
+              onClick={() => onViewImage(data.self_photo)}
+              variant="contained"
+              size="small"
+              sx={{
+                backgroundColor: "transparent",
+                border: "0.4px solid grey",
+              }}
+            >
+              <Image
+                src={`${process.env.NEXT_PUBLIC_FILE}${data.self_photo}`}
+                alt="NotFound"
+                width={200} // Set the desired width
+                height={120} // Set the desired height
+              />
+            </Button>
+            <Typography>Self Photo</Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
           >
-            <Image
-              src={`${process.env.NEXT_PUBLIC_FILE}${data.ktp_photo}`}
-              alt="NotFound"
-              width={200} // Set the desired width
-              height={120} // Set the desired height
-            />
-          </Button>
+            <Button
+              onClick={() => onViewImage(data.self_photo)}
+              variant="contained"
+              size="small"
+              sx={{
+                backgroundColor: "transparent",
+                border: "0.4px solid grey",
+              }}
+            >
+              <Image
+                src={`${process.env.NEXT_PUBLIC_FILE}${data.ktp_photo}`}
+                alt="NotFound"
+                width={200} // Set the desired width
+                height={120} // Set the desired height
+              />
+            </Button>
+            <Typography>KTP Photo</Typography>
+          </Box>
         </Box>
-      </BaseCard>
+      </DetailCard>
+
       <ModalPopupFilesDetail
         open={isOpen}
         image_url={file}
