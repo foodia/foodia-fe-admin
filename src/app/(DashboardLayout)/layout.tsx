@@ -25,7 +25,7 @@ export default function RootLayout({
   const pathname = usePathname();
 
   return (
-    <MainWrapper className="mainwrapper">
+    <MainWrapper>
       {pathname.includes("auth") ? (
         <AuthLayout>{children}</AuthLayout>
       ) : (

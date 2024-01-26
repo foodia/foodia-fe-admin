@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Header from "@/app/(DashboardLayout)/layout/header/Header";
 import Sidebar from "@/app/(DashboardLayout)/layout/sidebar/Sidebar";
 import Footer from "../layout/footer/page";
+import PageHeader from "../layout/header/PageHeader";
 
 const MainWrapper = styled("div")(() => ({
   display: "flex",
@@ -16,7 +17,6 @@ const PageWrapper = styled("div")(() => ({
   flexGrow: 1,
   paddingBottom: "20px",
   flexDirection: "column",
-  zIndex: 1,
   backgroundColor: "transparent",
 }));
 
@@ -54,25 +54,18 @@ export default function DashboardLayout({
         {/* ------------------------------------------- */}
         {/* PageContent */}
         {/* ------------------------------------------- */}
-        <Container
-          sx={{
-            paddingTop: "20px",
-            maxWidth: "1200px",
-          }}
-        >
-          {/* ------------------------------------------- */}
-          {/* Page Route */}
-          {/* ------------------------------------------- */}
-          <Box sx={{ minHeight: "calc(100vh - 170px)" }}>{children}</Box>
-          {/* ------------------------------------------- */}
-          {/* End Page */}
-          {/* ------------------------------------------- */}
+        {/* ------------------------------------------- */}
+        {/* Page Route */}
+        {/* ------------------------------------------- */}
+        {children}
+        {/* ------------------------------------------- */}
+        {/* End Page */}
+        {/* ------------------------------------------- */}
 
-          {/* ------------------------------------------- */}
-          {/* Footer */}
-          {/* ------------------------------------------- */}
-          {/* <Footer /> */}
-        </Container>
+        {/* ------------------------------------------- */}
+        {/* Footer */}
+        {/* ------------------------------------------- */}
+        {/* <Footer /> */}
       </PageWrapper>
     </MainWrapper>
   );

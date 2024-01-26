@@ -72,6 +72,7 @@ const DataTables: React.FC<Data> = ({
         }}
       >
         {searchOption ? (
+          //-- Filter Columns --//
           <Box
             sx={{
               display: "flex",
@@ -153,6 +154,7 @@ const DataTables: React.FC<Data> = ({
           />
         )}
         {value ? (
+          //-- Filter Status Approval --//
           <Box
             sx={{
               display: "flex",
@@ -189,6 +191,7 @@ const DataTables: React.FC<Data> = ({
             </Select>
           </Box>
         ) : (
+          //-- Button Download --//
           <Button
             sx={{
               display: "flex",
