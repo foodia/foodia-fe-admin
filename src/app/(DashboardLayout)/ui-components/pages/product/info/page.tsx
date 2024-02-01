@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import ModalPopup from "@/app/(DashboardLayout)/components/shared/ModalPopup";
 import { getProductDetail } from "@/app/(DashboardLayout)/components/api/Product";
 import { Approvals } from "@/app/(DashboardLayout)/components/api/Approvals";
+import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
 
 type Props = {
   id: number;
@@ -66,11 +67,13 @@ const ProductInfo = () => {
 
   return (
     <>
-      <Grid container spacing={3}>
-        <Grid item xs={6} lg={6}>
+      <DashboardCard title="Product Detail">
+        <>
           <Info data={data} />
+          <Attachment data={data} />
           <Box
-            marginTop="20px"
+            paddingBottom="70px"
+            paddingTop="20px"
             display="flex"
             flexDirection="column"
             alignItems="center"
@@ -104,11 +107,8 @@ const ProductInfo = () => {
               </Button>
             </Stack>
           </Box>
-        </Grid>
-        <Grid item xs={6} lg={6}>
-          <Attachment data={data} />
-        </Grid>
-      </Grid>
+        </>
+      </DashboardCard>
 
       <ModalPopup
         open={isOpen}

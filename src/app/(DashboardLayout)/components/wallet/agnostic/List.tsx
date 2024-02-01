@@ -4,7 +4,8 @@ import BaseCard from "../../shared/DashboardCard";
 import DataTableComponent from "./DataTable";
 import { useAppContext } from "../../shared/Context";
 import { getProduct } from "../../api/Product";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import DashboardCard from "../../shared/DashboardCard";
 
 const List = () => {
   const { productData } = useAppContext();
@@ -164,22 +165,24 @@ const List = () => {
 
   return (
     <>
-      <BaseCard
+      <DashboardCard
         title="Agnostic Wallet"
         currentBalance={9500000}
         breadcrumb={breadcrumbs}
       >
-        <DataTableComponent
-          currentWalletMeta={currentWalletMeta}
-          currentWalletData={currentWalletData}
-          merchantPaymentListData={merchantPaymentListData}
-          merchantPaymentListMeta={merchantPaymentListMeta}
-          campaignListData={campaignListData}
-          campaignListMeta={campaignListMeta}
-          transactionListData={transactionListData}
-          transactionListMeta={transactionListMeta}
-        />
-      </BaseCard>
+        <Box sx={{ paddingX: "40px" }}>
+          <DataTableComponent
+            currentWalletMeta={currentWalletMeta}
+            currentWalletData={currentWalletData}
+            merchantPaymentListData={merchantPaymentListData}
+            merchantPaymentListMeta={merchantPaymentListMeta}
+            campaignListData={campaignListData}
+            campaignListMeta={campaignListMeta}
+            transactionListData={transactionListData}
+            transactionListMeta={transactionListMeta}
+          />
+        </Box>
+      </DashboardCard>
     </>
   );
 };

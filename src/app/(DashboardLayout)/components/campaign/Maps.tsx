@@ -1,7 +1,8 @@
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import dynamic from "next/dynamic";
 import React from "react";
 import BaseCard from "../shared/DashboardCard";
+import DetailCard from "../shared/DetailCard";
 
 interface ChildProps {
   data: {
@@ -22,15 +23,15 @@ const Maps: React.FC<ChildProps> = ({ data }) => {
   );
 
   return (
-    <BaseCard title="Location">
-      <>
+    <DetailCard title="Location">
+      <Box sx={{ width: "100%", paddingRight: "40px" }}>
         <Typography sx={{ fontWeight: "bold", marginBottom: "10px" }}>
           {data.address}, {data.sub_district}, {data.city}, {data.province},{" "}
           {data.postal_code}
         </Typography>
         <Map lat={data.latitude} long={data.longitude} />
-      </>
-    </BaseCard>
+      </Box>
+    </DetailCard>
   );
 };
 

@@ -4,7 +4,7 @@ import DataTableComponent from "./DataTable";
 import { useAppContext } from "../../shared/Context";
 import { getDetonator } from "../../api/Detonator";
 import DashboardCard from "../../shared/DashboardCard";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 interface Meta {
   page: number;
@@ -40,7 +40,9 @@ const List = () => {
         title="Individuals Donator Management"
         breadcrumb={breadcrumbs}
       >
-        <DataTableComponent data={data} meta={meta} />
+        <Box sx={{ paddingX: "40px" }}>
+          <DataTableComponent data={data} meta={meta} />
+        </Box>
       </DashboardCard>
     </>
   );

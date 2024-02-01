@@ -17,6 +17,8 @@ import { IconBan, IconCircleCheck, IconClock } from "@tabler/icons-react";
 import ModalPopup from "@/app/(DashboardLayout)/components/shared/ModalPopup";
 import { getMerchantDetail } from "@/app/(DashboardLayout)/components/api/Merchant";
 import { Approvals } from "@/app/(DashboardLayout)/components/api/Approvals";
+import DetailCard from "@/app/(DashboardLayout)/components/shared/DetailCard";
+import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
 
 type Props = {
   id: number;
@@ -73,11 +75,13 @@ const MerchantInfo = () => {
 
   return (
     <>
-      <Grid container spacing={3}>
-        <Grid item xs={6} lg={6}>
+      <DashboardCard title="Merchant Details">
+        <>
           <Info data={data} />
+          <Attachment data={data} />
           <Box
-            marginTop="30px"
+            paddingBottom="70px"
+            paddingTop="20px"
             display="flex"
             flexDirection="column"
             alignItems="center"
@@ -109,11 +113,9 @@ const MerchantInfo = () => {
               </Button>
             </Stack>
           </Box>
-        </Grid>
-        <Grid item xs={6} lg={6}>
-          <Attachment data={data} />
-        </Grid>
-      </Grid>
+        </>
+      </DashboardCard>
+
       <ModalPopup
         open={isOpen}
         handleClose={handleClose}

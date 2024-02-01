@@ -1,5 +1,16 @@
-import { Box, Stack, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Stack,
+  Step,
+  StepIconProps,
+  StepLabel,
+  Stepper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import BaseCard from "../shared/DashboardCard";
+import DetailCard from "../shared/DetailCard";
+import { IconBan, IconCircleCheck, IconClock } from "@tabler/icons-react";
 
 interface ChildProps {
   data: {
@@ -16,110 +27,182 @@ interface ChildProps {
   };
 }
 
-const Info: React.FC<ChildProps> = ({ data }) => {
+interface CustomStepIconProps extends StepIconProps {
+  stepNumber: number;
+}
+
+export const Field = ({ value, label }: any) => {
   return (
-    <BaseCard title="Merchant Info" status={data.status}>
-      <Stack spacing={3}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        width: "100%",
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          gap: "10px",
+          width: "25%",
+          color: "#999",
+        }}
+      >
+        <Typography>{label}</Typography>
+        <Typography>:</Typography>
+      </Box>
+      <Box sx={{ paddingX: "10px" }}>{value}</Box>
+    </Box>
+  );
+};
+
+const Info: React.FC<ChildProps> = ({ data }) => {
+  const steps = ["Waiting", "Rejected", "Approved"];
+
+  const activeStep = () => {
+    if (data.status === "warning") {
+      return 0;
+    } else if (data.status === "rejected") {
+      return 1;
+    } else if (data.status === "approved") {
+      return 2;
+    }
+  };
+
+  const CustomStepIcon: React.FC<CustomStepIconProps> = ({
+    active,
+    stepNumber,
+  }) => {
+    // Customize each step's icon individually
+    return (
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        paddingX="20px"
+        color="white"
+        zIndex={1}
+      >
+        {stepNumber === 1 ? (
+          <Typography
+            display="flex"
+            flexDirection="row"
+            sx={
+              active
+                ? {
+                    borderRadius: "15px",
+                    paddingX: "10px",
+                    backgroundColor: "warning.main",
+                  }
+                : {
+                    borderRadius: "15px",
+                    paddingX: "10px",
+                    backgroundColor: "grey",
+                  }
+            }
+          >
+            Waiting <IconClock />
+          </Typography>
+        ) : stepNumber === 2 ? (
+          <Typography
+            display="flex"
+            flexDirection="row"
+            sx={
+              active
+                ? {
+                    borderRadius: "15px",
+                    paddingX: "10px",
+                    backgroundColor: "error.main",
+                  }
+                : {
+                    borderRadius: "15px",
+                    paddingX: "10px",
+                    backgroundColor: "grey",
+                  }
+            }
+          >
+            Rejected <IconBan />
+          </Typography>
+        ) : (
+          stepNumber === 3 && (
+            <Typography
+              display="flex"
+              flexDirection="row"
+              sx={
+                active
+                  ? {
+                      borderRadius: "15px",
+                      paddingX: "10px",
+                      backgroundColor: "success.main",
+                    }
+                  : {
+                      borderRadius: "15px",
+                      paddingX: "10px",
+                      backgroundColor: "grey",
+                    }
+              }
+            >
+              Approved <IconCircleCheck />
+            </Typography>
+          )
+        )}
+      </Box>
+    );
+  };
+
+  const status = [
+    <Stepper activeStep={activeStep()} alternativeLabel>
+      {steps.map((label, index) => (
+        <Step key={label}>
+          <StepLabel
+            StepIconComponent={(props) => (
+              <CustomStepIcon stepNumber={index + 1} {...props} />
+            )}
+          >
+            {/* {label} */}
+          </StepLabel>
+        </Step>
+      ))}
+    </Stepper>,
+  ];
+
+  return (
+    <>
+      <DetailCard title="Merchant Information">
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
             alignItems: "start",
+            gap: "10px",
+            width: "100%",
           }}
         >
-          <Typography>Fullname : </Typography>
-          <TextField
-            fullWidth
-            id="name-basic"
-            variant="outlined"
-            defaultValue={data.oauth.fullname}
-            disabled
-          />
+          <Field label="Fullname" value={data.oauth.fullname} />
+          <Field label="Nomor KTP" value={data.ktp_number} />
+          <Field label="Phone Number" value={data.oauth.phone} />
+          <Field label="Link Aja Number" value={data.no_link_aja} />
+          <Field label="Email" value={data.oauth.email} />
+          <Field label="Status" value={status} />
         </Box>
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
             alignItems: "start",
+            gap: "10px",
+            width: "100%",
           }}
         >
-          <Typography>Nomor KTP : </Typography>
-          <TextField
-            fullWidth
-            id="name-basic"
-            variant="outlined"
-            defaultValue={data.ktp_number}
-            disabled
-          />
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "start",
-          }}
-        >
-          <Typography>Phone Number : </Typography>
-          <TextField
-            fullWidth
-            id="name-basic"
-            variant="outlined"
-            defaultValue={data.oauth.phone}
-            disabled
-          />
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "start",
-          }}
-        >
-          <Typography>Link Aja Number : </Typography>
-          <TextField
-            fullWidth
-            id="name-basic"
-            variant="outlined"
-            defaultValue={data.no_link_aja}
-            disabled
-          />
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "start",
-          }}
-        >
-          <Typography>Email : </Typography>
-          <TextField
-            fullWidth
-            id="name-basic"
-            variant="outlined"
-            defaultValue={data.oauth.email}
-            disabled
-          />
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "start",
-          }}
-        >
-          <Typography>Address : </Typography>
-          <TextField
-            fullWidth
-            multiline
-            id="name-basic"
-            variant="outlined"
+          <Field
+            label="Address"
             value={`${data.address}, ${data.sub_district}, ${data.city}, ${data.province}, ${data.postal_code}`}
-            disabled
-            type="text"
           />
         </Box>
-      </Stack>
-    </BaseCard>
+      </DetailCard>
+    </>
   );
 };
 

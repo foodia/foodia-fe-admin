@@ -4,7 +4,8 @@ import BaseCard from "../shared/DashboardCard";
 import DataTableComponent from "./DataTable";
 import { useAppContext } from "../shared/Context";
 import { getDetonator } from "../api/Detonator";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import DashboardCard from "../shared/DashboardCard";
 
 interface Meta {
   page: number;
@@ -36,13 +37,14 @@ const List = () => {
 
   return (
     <>
-      <BaseCard
-        cardheading="d"
+      <DashboardCard
         title="Corporation Donators Management"
         breadcrumb={breadcrumbs}
       >
-        <DataTableComponent data={data} meta={meta} />
-      </BaseCard>
+        <Box sx={{ paddingX: "40px" }}>
+          <DataTableComponent data={data} meta={meta} />
+        </Box>
+      </DashboardCard>
     </>
   );
 };

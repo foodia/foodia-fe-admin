@@ -17,6 +17,8 @@ import img1 from "public/images/backgrounds/u1.jpg";
 import img2 from "public/images/backgrounds/u3.jpg";
 import { ModalPopupFilesDetail } from "../shared/ModalPopup";
 import { useState } from "react";
+import DashboardCard from "../shared/DashboardCard";
+import DetailCard from "../shared/DetailCard";
 
 // const products = [
 //   {
@@ -66,7 +68,7 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
   };
   return (
     <>
-      <BaseCard title="Attachment">
+      <DetailCard title="Product Documents">
         <Box
           sx={{
             display: "flex",
@@ -81,21 +83,18 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
               onClick={() => onViewImage(orders.image_url)}
               variant="contained"
               size="small"
-              sx={{
-                backgroundColor: "transparent",
-                border: "0.4px solid grey",
-              }}
+              sx={{ width: "210px", height: "125px", borderRadius: "10px" }}
             >
               <Image
+                style={{ borderRadius: "10px" }}
                 src={`${process.env.NEXT_PUBLIC_FILE}${orders.image_url}`}
                 alt="NotFound"
-                width={200} // Set the desired width
-                height={120} // Set the desired height
+                layout="fill"
               />
             </Button>
           ))}
         </Box>
-      </BaseCard>
+      </DetailCard>
       <ModalPopupFilesDetail
         open={isOpen}
         image_url={file}

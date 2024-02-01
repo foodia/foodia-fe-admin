@@ -63,6 +63,40 @@ const DetonatorInfo = () => {
         <>
           <Info data={data} />
           <Attachment data={data} />
+          <Box
+            paddingBottom="70px"
+            paddingTop="20px"
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            gap="10px"
+          >
+            <Stack spacing={1} direction="row">
+              <Button
+                variant="contained"
+                size="large"
+                color="success"
+                disabled={data.status === "approved"}
+                onClick={() =>
+                  handleOpen(data.id, "approved", data.oauth.fullname)
+                }
+              >
+                <IconCircleCheck size={18} /> Approve
+              </Button>
+              <Button
+                variant="contained"
+                size="large"
+                color="error"
+                disabled={data.status === "rejected"}
+                onClick={() =>
+                  handleOpen(data.id, "rejected", data.oauth.fullname)
+                }
+              >
+                <IconBan size={16} /> Reject
+              </Button>
+            </Stack>
+          </Box>
         </>
       </DashboardCard>
 

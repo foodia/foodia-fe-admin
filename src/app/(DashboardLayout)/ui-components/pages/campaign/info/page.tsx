@@ -4,8 +4,9 @@ import { getCampaignDetail } from "@/app/(DashboardLayout)/components/api/Campai
 import Attachment from "@/app/(DashboardLayout)/components/campaign/Attachment";
 import Info from "@/app/(DashboardLayout)/components/campaign/Info";
 import Maps from "@/app/(DashboardLayout)/components/campaign/Maps";
+import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
 import ModalPopup from "@/app/(DashboardLayout)/components/shared/ModalPopup";
-import { Box, Button, Grid, Stack } from "@mui/material";
+import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import { IconBan, IconCircleCheck } from "@tabler/icons-react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -116,57 +117,51 @@ const CampaignInfo = () => {
     getCampaignDetail(searchParams.get("id"), setData);
   }, []);
 
+  const breadcrumbs = [
+    <Typography fontSize="13px" key="3" color="#999" fontWeight={400}>
+      Corporation Donators
+    </Typography>,
+  ];
+
   return (
     <>
-      <Grid container spacing={3}>
-        <Grid item xs={6} lg={6}>
+      <DashboardCard title="Campaign Detail" breadcrumb={breadcrumbs}>
+        <>
           <Info data={data} />
+          <Attachment data={data} />
+          <Maps data={data} />
           <Box
-            marginTop="20px"
+            paddingBottom="70px"
+            paddingTop="20px"
             display="flex"
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
-            gap="20px"
-            color="white"
+            gap="10px"
           >
-            <Stack
-              display="flex"
-              justifyContent="center"
-              spacing={1}
-              direction="row"
-            >
+            <Stack spacing={1} direction="row">
               <Button
                 variant="contained"
                 size="large"
+                color="success"
                 disabled={data.status === "approved"}
                 onClick={() => handleOpen(data.id, "approved", data.event_name)}
-                color="success"
               >
                 <IconCircleCheck size={18} /> Approve
               </Button>
               <Button
                 variant="contained"
                 size="large"
+                color="error"
                 disabled={data.status === "rejected"}
                 onClick={() => handleOpen(data.id, "rejected", data.event_name)}
-                color="error"
               >
                 <IconBan size={16} /> Reject
               </Button>
             </Stack>
           </Box>
-        </Grid>
-        <Grid
-          item
-          xs={6}
-          lg={6}
-          sx={{ display: "flex", flexDirection: "column", gap: "20px" }}
-        >
-          <Attachment data={data} />
-          <Maps data={data} />
-        </Grid>
-      </Grid>
+        </>
+      </DashboardCard>
 
       <ModalPopup
         open={isOpen}

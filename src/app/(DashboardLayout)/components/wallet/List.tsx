@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useAppContext } from "../shared/Context";
 import BaseCard from "../shared/DashboardCard";
 import DataTableComponent from "./DataTable";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import DashboardCard from "../shared/DashboardCard";
 
 const List = () => {
   const { productData } = useAppContext();
@@ -162,22 +163,24 @@ const List = () => {
 
   return (
     <>
-      <BaseCard
+      <DashboardCard
         title="CSR Wallet"
         breadcrumb={breadcrumbs}
         currentBalance={9500000}
       >
-        <DataTableComponent
-          currentWalletMeta={currentWalletMeta}
-          currentWalletData={currentWalletData}
-          merchantPaymentListData={merchantPaymentListData}
-          merchantPaymentListMeta={merchantPaymentListMeta}
-          campaignListData={campaignListData}
-          campaignListMeta={campaignListMeta}
-          transactionListData={transactionListData}
-          transactionListMeta={transactionListMeta}
-        />
-      </BaseCard>
+        <Box sx={{ paddingX: "40px" }}>
+          <DataTableComponent
+            currentWalletMeta={currentWalletMeta}
+            currentWalletData={currentWalletData}
+            merchantPaymentListData={merchantPaymentListData}
+            merchantPaymentListMeta={merchantPaymentListMeta}
+            campaignListData={campaignListData}
+            campaignListMeta={campaignListMeta}
+            transactionListData={transactionListData}
+            transactionListMeta={transactionListMeta}
+          />
+        </Box>
+      </DashboardCard>
     </>
   );
 };

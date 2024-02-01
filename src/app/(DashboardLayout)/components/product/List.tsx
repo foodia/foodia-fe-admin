@@ -4,7 +4,7 @@ import BaseCard from "../shared/DashboardCard";
 import DataTableComponent from "./DataTable";
 import { useAppContext } from "../shared/Context";
 import { getProduct } from "../api/Product";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 const List = () => {
   const [data, setData] = useState([]);
@@ -29,7 +29,9 @@ const List = () => {
   return (
     <>
       <BaseCard title="Product Management" breadcrumb={breadcrumbs}>
-        <DataTableComponent data={data} meta={meta} />
+        <Box sx={{ paddingX: "30px" }}>
+          <DataTableComponent data={data} meta={meta} />
+        </Box>
       </BaseCard>
     </>
   );
