@@ -1,15 +1,18 @@
 "use client";
 import { Approvals } from "@/app/(DashboardLayout)/components/api/Approvals";
 import { getCampaignDetail } from "@/app/(DashboardLayout)/components/api/Campaign";
-import Attachment from "@/app/(DashboardLayout)/components/campaign/Attachment";
+import Attachment from "@/app/(DashboardLayout)/components/campaign/EventDocuments";
+import Detonator from "@/app/(DashboardLayout)/components/campaign/Detonator";
 import Info from "@/app/(DashboardLayout)/components/campaign/Info";
 import Maps from "@/app/(DashboardLayout)/components/campaign/Maps";
+import Orders from "@/app/(DashboardLayout)/components/campaign/Orders";
 import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
 import ModalPopup from "@/app/(DashboardLayout)/components/shared/ModalPopup";
 import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import { IconBan, IconCircleCheck } from "@tabler/icons-react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import DetailCard from "@/app/(DashboardLayout)/components/shared/DetailCard";
 
 type Props = {
   id: number;
@@ -127,9 +130,17 @@ const CampaignInfo = () => {
     <>
       <DashboardCard title="Campaign Detail" breadcrumb={breadcrumbs}>
         <>
-          <Info data={data} />
-          <Attachment data={data} />
-          <Maps data={data} />
+          <Grid container spacing={3}>
+            <Grid item xs={6} lg={6}>
+              <Info data={data} />
+              <Maps data={data} />
+            </Grid>
+            <Grid item xs={6} lg={6}>
+              <Orders data={data} />
+              <Detonator data={data} />
+              <Attachment data={data} />
+            </Grid>
+          </Grid>
           <Box
             paddingBottom="70px"
             paddingTop="20px"

@@ -61,14 +61,8 @@ const DetonatorInfo = () => {
     <>
       <DashboardCard title="Detonator Detail" breadcrumb={breadcrumbs}>
         <>
-          <Grid container spacing={3}>
-            <Grid item xs={6} lg={6}>
-              <Info data={data} />
-            </Grid>
-            <Grid item xs={6} lg={6}>
-              <Attachment data={data} />
-            </Grid>
-          </Grid>
+          <Info data={data} />
+          <Attachment data={data} />
           <Box
             marginTop="20px"
             display="flex"

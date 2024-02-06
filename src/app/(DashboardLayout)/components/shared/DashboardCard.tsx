@@ -144,7 +144,7 @@ const DashboardCard = ({
         breadcrumb={breadcrumb}
         currentBalance={currentBalance}
       />
-      <Box sx={{ paddingX: "24px" }}>{children}</Box>
+      <Box sx={{ paddingX: "24px", paddingY: "12px" }}>{children}</Box>
     </Card>
   );
 };

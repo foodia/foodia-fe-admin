@@ -198,18 +198,8 @@ const Info: React.FC<ChildProps> = ({ data }) => {
           <Field label="Food Required" value={data.food_required} />
           <Field label="Food Total" value={data.food_total} />
           <Field label="Donation Target" value={"Rp." + data.donation_target} />
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "start",
-            gap: "10px",
-            width: "100%",
-          }}
-        >
-          <Field label="Status" value={status} />
           <Field label="Description" value={data.description} />
+          <Box sx={{ paddingY: "20px" }}>{status}</Box>
         </Box>
       </DetailCard>
     </>

@@ -9,6 +9,7 @@ import {
 import { IconBan, IconCircleCheck, IconClock } from "@tabler/icons-react";
 import DetailCard from "../shared/DetailCard";
 import { uniqueId } from "lodash";
+import { Padding } from "@mui/icons-material";
 
 interface ChildProps {
   data: {
@@ -175,8 +176,8 @@ const Info: React.FC<ChildProps> = ({ data }) => {
         <Field label="Email" value={data.oauth.email} />
         <Field label="KTP Number" value={data.ktp_number} />
         <Field label="Phone Number" value={data.oauth.phone} />
-        <Field label="Status" value={status} />
       </Box>
+      <Box>{status}</Box>
     </DetailCard>
   );
 };

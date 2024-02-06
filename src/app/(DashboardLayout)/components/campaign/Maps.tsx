@@ -24,7 +24,7 @@ const Maps: React.FC<ChildProps> = ({ data }) => {
 
   return (
     <DetailCard title="Location">
-      <Box sx={{ width: "100%", paddingRight: "40px" }}>
+      <Box sx={{ width: "100%" }}>
         <Typography sx={{ fontWeight: "bold", marginBottom: "10px" }}>
           {data.address}, {data.sub_district}, {data.city}, {data.province},{" "}
           {data.postal_code}
