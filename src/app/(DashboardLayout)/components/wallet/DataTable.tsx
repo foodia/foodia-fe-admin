@@ -2,6 +2,7 @@ import { Box, SelectChangeEvent, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { TableColumn } from "react-data-table-component";
 import DataTables from "../shared/DataTables";
+import Link from "next/link";
 
 interface Meta {
   page: number;
@@ -13,31 +14,30 @@ interface Meta {
 interface CurrentWalletData {
   id: number;
   donator_name: any;
-  donation_total: any;
-  donation_left: any;
+  total_donation: any;
+  remaining_balance: any;
 }
 
 interface TransactionListData {
   id: number;
   donator_name: any;
-  donation_total: any;
+  total_donation: any;
   transaction_date: any;
 }
 
 interface CampaignListData {
   id: number;
   campaign_name: any;
-  donation_total: any;
-  donator_list: { id: any; donator: any }[];
-  donations: { id: any; donations_detail: any }[];
+  total_donation: any;
+  details: { donation_by: any; amount: number }[];
+  // donator_list: { id: any; donator: any }[];
+  // donations: { id: any; donations_detail: any }[];
 }
 
 interface MerchantPaymentListData {
   id: number;
   campaign_name: any;
-  merchants: { id: any; name: any }[];
-  payments: { id: any; amount: any }[];
-  payment_date: any;
+  details: { merchant_name: any; total_amount: number; payment_date: string }[];
 }
 
 interface Props {
@@ -66,7 +66,7 @@ const currentWalletColumns: TableColumn<CurrentWalletData>[] = [
   },
   {
     name: "Nama Donator",
-    cell: (row: CurrentWalletData) => <div>{row.donator_name}</div>,
+    cell: (row: CurrentWalletData) => <Link href="">{row.donator_name}</Link>,
     // sortable: true,
   },
   {
@@ -77,7 +77,7 @@ const currentWalletColumns: TableColumn<CurrentWalletData>[] = [
           style: "currency",
           currency: "IDR",
           minimumFractionDigits: 0,
-        }).format(row.donation_total)}
+        }).format(row.total_donation)}
       </div>
     ),
     // sortable: true,
@@ -90,7 +90,7 @@ const currentWalletColumns: TableColumn<CurrentWalletData>[] = [
           style: "currency",
           currency: "IDR",
           minimumFractionDigits: 0,
-        }).format(row.donation_left)}
+        }).format(row.remaining_balance)}
       </div>
     ),
     // sortable: true,
@@ -110,7 +110,7 @@ const transactionListColumns: TableColumn<TransactionListData>[] = [
   },
   {
     name: "Nama Donator",
-    cell: (row: TransactionListData) => <div>{row.donator_name}</div>,
+    cell: (row: TransactionListData) => <Link href="">{row.donator_name}</Link>,
     // sortable: true,
   },
   {
@@ -121,7 +121,7 @@ const transactionListColumns: TableColumn<TransactionListData>[] = [
           style: "currency",
           currency: "IDR",
           minimumFractionDigits: 0,
-        }).format(row.donation_total)}
+        }).format(row.total_donation)}
       </div>
     ),
     // sortable: true,
@@ -146,7 +146,7 @@ const campaignListColumns: TableColumn<CampaignListData>[] = [
   },
   {
     name: "Nama Campaign",
-    cell: (row: CampaignListData) => <div>{row.campaign_name}</div>,
+    cell: (row: CampaignListData) => <Link href="">{row.campaign_name}</Link>,
     // sortable: true,
   },
   {
@@ -157,7 +157,7 @@ const campaignListColumns: TableColumn<CampaignListData>[] = [
           style: "currency",
           currency: "IDR",
           minimumFractionDigits: 0,
-        }).format(row.donation_total)}
+        }).format(row.total_donation)}
       </div>
     ),
     // sortable: true,
@@ -166,16 +166,20 @@ const campaignListColumns: TableColumn<CampaignListData>[] = [
     name: "Donasi Oleh",
     cell: (row: CampaignListData) => (
       <>
-        {row.donator_list.map((value: any, i) => (
-          <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
+        {row.details?.map((value: any, i) => (
+          <Link
+            href=""
+            key={value.id}
+            style={{ display: "flex", flexDirection: "row" }}
+          >
             {/* {value.donator} */}
-            {i === 1 && value.donator.length > 10
-              ? `${value.donator.slice(0, 10)}...`
+            {i === 1 && value.donation_by.length > 10
+              ? `${value.donation_by.slice(0, 10)}...`
               : value.donator}
-            {i + 1 !== row.donator_list.length && (
+            {i + 1 !== row.details.length && (
               <div style={{ marginRight: "5px" }}>,</div>
             )}
-          </div>
+          </Link>
         ))}
       </>
     ),
@@ -186,14 +190,14 @@ const campaignListColumns: TableColumn<CampaignListData>[] = [
     name: "Detail Donasi",
     cell: (row: CampaignListData) => (
       <>
-        {row.donations.map((value: any, i) => (
+        {row.details?.map((value: any, i) => (
           <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
             {new Intl.NumberFormat("id-ID", {
               style: "currency",
               currency: "IDR",
               minimumFractionDigits: 0,
-            }).format(value.donations_detail)}
-            {i + 1 !== row.donations.length && (
+            }).format(value.amount)}
+            {i + 1 !== row.details.length && (
               <div style={{ marginRight: "5px" }}>,</div>
             )}
           </div>
@@ -217,20 +221,29 @@ const merchantPaymentListColumns: TableColumn<MerchantPaymentListData>[] = [
   },
   {
     name: "Nama Campaign",
-    cell: (row: MerchantPaymentListData) => <div>{row.campaign_name}</div>,
+    cell: (row: MerchantPaymentListData) => (
+      <Link href="">{row.campaign_name}</Link>
+    ),
     // sortable: true,
   },
   {
     name: "Nama Merchant",
     cell: (row: MerchantPaymentListData) => (
       <>
-        {row.merchants.map((value: any, i) => (
-          <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
-            {value.name}
-            {i + 1 !== row.merchants.length && (
+        {row.details?.map((value: any, i) => (
+          <Link
+            href=""
+            key={value.id}
+            style={{ display: "flex", flexDirection: "row" }}
+          >
+            {/* {value.merchant_name} */}
+            {i === 1 && value.donation_by.length > 10
+              ? `${value.donation_by.slice(0, 10)}...`
+              : value.merchant_name}
+            {i + 1 !== row.details.length && (
               <div style={{ marginRight: "5px" }}>,</div>
             )}
-          </div>
+          </Link>
         ))}
       </>
     ),
@@ -240,14 +253,14 @@ const merchantPaymentListColumns: TableColumn<MerchantPaymentListData>[] = [
     name: "Jumlah Pembayaran",
     cell: (row: MerchantPaymentListData) => (
       <>
-        {row.payments.map((value: any, i) => (
+        {row.details?.map((value: any, i) => (
           <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
             {new Intl.NumberFormat("id-ID", {
               style: "currency",
               currency: "IDR",
               minimumFractionDigits: 0,
-            }).format(value.amount)}
-            {i + 1 !== row.payments.length && (
+            }).format(value.total_amount)}
+            {i + 1 !== row.details.length && (
               <div style={{ marginRight: "5px" }}>,</div>
             )}
           </div>
@@ -259,7 +272,21 @@ const merchantPaymentListColumns: TableColumn<MerchantPaymentListData>[] = [
   },
   {
     name: "Tgl Pembayaran",
-    cell: (row: MerchantPaymentListData) => <div>{row.payment_date}</div>,
+    cell: (row: MerchantPaymentListData) => (
+      <>
+        {row.details?.map((value: any, i) => (
+          <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
+            {/* {value.payment_date} */}
+            {i === 1 && value.donation_by.length > 10
+              ? `${value.donation_by.slice(0, 10)}...`
+              : value.payment_date}
+            {i + 1 !== row.details.length && (
+              <div style={{ marginRight: "5px" }}>,</div>
+            )}
+          </div>
+        ))}
+      </>
+    ),
     // sortable: true,
     // width: "",
   },

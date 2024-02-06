@@ -181,7 +181,7 @@ const Info: React.FC<ChildProps> = ({ data }) => {
           <Field label="Name" value={data.name} />
           <Field label="Price" value={data.price} />
           <Field label="Quantity" value={data.qty} />
-          <Field label="Status" value={status} />
+          <Field label="Note" value={data.note} />
         </Box>
         <Box
           sx={{
@@ -192,8 +192,8 @@ const Info: React.FC<ChildProps> = ({ data }) => {
             width: "100%",
           }}
         >
+          <Field label="Status" value={status} />
           <Field label="Description" value={data.description} />
-          <Field label="Note" value={data.note} />
         </Box>
       </DetailCard>
     </>

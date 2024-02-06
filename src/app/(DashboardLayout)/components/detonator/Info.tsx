@@ -172,19 +172,9 @@ const Info: React.FC<ChildProps> = ({ data }) => {
       >
         <Field label="Fullname" value={data.oauth.fullname} />
         <Field label="Email" value={data.oauth.email} />
-        <Field label="Status" value={status} />
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "start",
-          gap: "10px",
-          width: "100%",
-        }}
-      >
         <Field label="KTP Number" value={data.ktp_number} />
         <Field label="Phone Number" value={data.oauth.phone} />
+        {/* <Field label="Status" value={status} /> */}
       </Box>
     </DetailCard>
   );

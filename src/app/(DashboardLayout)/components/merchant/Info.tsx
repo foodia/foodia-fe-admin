@@ -185,7 +185,6 @@ const Info: React.FC<ChildProps> = ({ data }) => {
           <Field label="Phone Number" value={data.oauth.phone} />
           <Field label="Link Aja Number" value={data.no_link_aja} />
           <Field label="Email" value={data.oauth.email} />
-          <Field label="Status" value={status} />
         </Box>
         <Box
           sx={{
@@ -196,6 +195,7 @@ const Info: React.FC<ChildProps> = ({ data }) => {
             width: "100%",
           }}
         >
+          <Field label="Status" value={status} />
           <Field
             label="Address"
             value={`${data.address}, ${data.sub_district}, ${data.city}, ${data.province}, ${data.postal_code}`}

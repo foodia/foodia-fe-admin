@@ -1,5 +1,5 @@
 import { Box, SelectChangeEvent, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TableColumn } from "react-data-table-component";
 import DataTables from "../../shared/DataTables";
 
@@ -10,26 +10,20 @@ interface Meta {
   total: number;
 }
 
-interface CurrentWalletData {
-  id: number;
-  donator_name: any;
-  donation_total: any;
-  donation_left: any;
-}
-
 interface TransactionListData {
   id: number;
   donator_name: any;
-  donation_total: any;
-  transaction_date: any;
+  total_donation: any;
+  trx_date: any;
 }
 
 interface CampaignListData {
   id: number;
   campaign_name: any;
-  donation_total: any;
-  donator_list: { id: any; donator: any }[];
-  donations: { id: any; donations_detail: any }[];
+  total_donation: any;
+  details: { donation_by: any; amount: number }[];
+  // donator_list: { id: any; donator: any }[];
+  // donations: { id: any; donations_detail: any }[];
 }
 
 interface MerchantPaymentListData {
@@ -41,9 +35,6 @@ interface MerchantPaymentListData {
 }
 
 interface Props {
-  currentWalletData: CurrentWalletData[];
-  currentWalletMeta: Meta;
-
   transactionListData: TransactionListData[];
   transactionListMeta: Meta;
 
@@ -53,50 +44,6 @@ interface Props {
   merchantPaymentListData: MerchantPaymentListData[];
   merchantPaymentListMeta: Meta;
 }
-
-const currentWalletColumns: TableColumn<CurrentWalletData>[] = [
-  {
-    name: "No",
-    selector: (_row, i: any) => i + 1,
-    // sortable: true,
-    width: "70px",
-    // style: {
-    //   paddingLeft: "30px",
-    // },
-  },
-  {
-    name: "Nama Donator",
-    cell: (row: CurrentWalletData) => <div>{row.donator_name}</div>,
-    // sortable: true,
-  },
-  {
-    name: "Total Donasi",
-    cell: (row: CurrentWalletData) => (
-      <div>
-        {new Intl.NumberFormat("id-ID", {
-          style: "currency",
-          currency: "IDR",
-          minimumFractionDigits: 0,
-        }).format(row.donation_total)}
-      </div>
-    ),
-    // sortable: true,
-  },
-  {
-    name: "Sisa Donasi",
-    cell: (row: CurrentWalletData) => (
-      <div>
-        {new Intl.NumberFormat("id-ID", {
-          style: "currency",
-          currency: "IDR",
-          minimumFractionDigits: 0,
-        }).format(row.donation_left)}
-      </div>
-    ),
-    // sortable: true,
-    // width: "",
-  },
-];
 
 const transactionListColumns: TableColumn<TransactionListData>[] = [
   {
@@ -121,14 +68,14 @@ const transactionListColumns: TableColumn<TransactionListData>[] = [
           style: "currency",
           currency: "IDR",
           minimumFractionDigits: 0,
-        }).format(row.donation_total)}
+        }).format(row.total_donation)}
       </div>
     ),
     // sortable: true,
   },
   {
     name: "Tanggal Transaksi",
-    cell: (row: TransactionListData) => <div>{row.transaction_date}</div>,
+    cell: (row: TransactionListData) => <div>{row.trx_date}</div>,
     // sortable: true,
     // width: "",
   },
@@ -157,7 +104,7 @@ const campaignListColumns: TableColumn<CampaignListData>[] = [
           style: "currency",
           currency: "IDR",
           minimumFractionDigits: 0,
-        }).format(row.donation_total)}
+        }).format(row.total_donation)}
       </div>
     ),
     // sortable: true,
@@ -166,13 +113,13 @@ const campaignListColumns: TableColumn<CampaignListData>[] = [
     name: "Donasi Oleh",
     cell: (row: CampaignListData) => (
       <>
-        {row.donator_list.map((value: any, i) => (
+        {row.details?.map((value: any, i) => (
           <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
             {/* {value.donator} */}
-            {i === 1 && value.donator.length > 10
-              ? `${value.donator.slice(0, 10)}...`
-              : value.donator}
-            {i + 1 !== row.donator_list.length && (
+            {i === 1 && value.donation_by.length > 10
+              ? `${value.donation_by.slice(0, 10)}...`
+              : value.donation_by}
+            {i + 1 !== row.details.length && (
               <div style={{ marginRight: "5px" }}>,</div>
             )}
           </div>
@@ -186,14 +133,14 @@ const campaignListColumns: TableColumn<CampaignListData>[] = [
     name: "Detail Donasi",
     cell: (row: CampaignListData) => (
       <>
-        {row.donations.map((value: any, i) => (
+        {row.details?.map((value: any, i) => (
           <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
             {new Intl.NumberFormat("id-ID", {
               style: "currency",
               currency: "IDR",
               minimumFractionDigits: 0,
-            }).format(value.donations_detail)}
-            {i + 1 !== row.donations.length && (
+            }).format(value.amount)}
+            {i + 1 !== row.details.length && (
               <div style={{ marginRight: "5px" }}>,</div>
             )}
           </div>
@@ -266,9 +213,6 @@ const merchantPaymentListColumns: TableColumn<MerchantPaymentListData>[] = [
 ];
 
 const DataTableComponent: React.FC<Props> = ({
-  currentWalletData,
-  currentWalletMeta,
-
   transactionListData,
   transactionListMeta,
 
@@ -344,23 +288,7 @@ const DataTableComponent: React.FC<Props> = ({
           justifyContent: "space-between",
         }}
       >
-        <Box sx={{ width: "50%" }}>
-          <Typography sx={{ fontWeight: "bold" }}>Current Wallet</Typography>
-          <DataTables
-            // value={filterText}
-            // searchOption={searchOption}
-            // valueSearchBy={searchBy}
-            // onChange={handleChange}
-            // onChangeSearch={handleChangeSearch}
-            // onChangeSearchBy={handleChangeSearchBy}
-            pagination={true}
-            meta={currentWalletMeta}
-            pageItems={currentWalletData.length}
-            columns={currentWalletColumns}
-            data={currentWalletData}
-          />
-        </Box>
-        <Box sx={{ width: "50%" }}>
+        <Box sx={{ width: "100%" }}>
           <Typography sx={{ fontWeight: "bold" }}>List Transaksi</Typography>
           <DataTables
             // value={filterText}

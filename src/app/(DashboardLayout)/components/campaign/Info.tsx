@@ -57,7 +57,7 @@ export const Field = ({ value, label }: any) => {
         <Typography>{label}</Typography>
         <Typography>:</Typography>
       </Box>
-      <Box sx={{ paddingX: "10px" }}>{value}</Box>
+      <Box sx={{ paddingX: "15px" }}>{value}</Box>
     </Box>
   );
 };
@@ -159,8 +159,9 @@ const Info: React.FC<ChildProps> = ({ data }) => {
   const status = [
     <Stepper activeStep={activeStep()} alternativeLabel>
       {steps.map((label, index) => (
-        <Step key={label}>
+        <Step key={index}>
           <StepLabel
+            key={index}
             StepIconComponent={(props) => (
               <CustomStepIcon stepNumber={index + 1} {...props} />
             )}
@@ -195,7 +196,7 @@ const Info: React.FC<ChildProps> = ({ data }) => {
           />
           <Field label="Food Required" value={data.food_required} />
           <Field label="Food Total" value={data.food_total} />
-          <Field label="Status" value={status} />
+          <Field label="Donation Target" value={"Rp." + data.donation_target} />
         </Box>
         <Box
           sx={{
@@ -206,7 +207,7 @@ const Info: React.FC<ChildProps> = ({ data }) => {
             width: "100%",
           }}
         >
-          <Field label="Donation Target" value={"Rp." + data.donation_target} />
+          {/* <Field label="Status" value={status} /> */}
           <Field label="Description" value={data.description} />
         </Box>
       </DetailCard>

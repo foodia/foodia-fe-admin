@@ -23,11 +23,14 @@ const DetailCard: React.FC<ChildProps> = ({ children, title, subTitle }) => {
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-between",
-          paddingLeft: "45px",
-          paddingY: "20px",
+          padding: "20px",
+          // paddingLeft: "45px",
+          // paddingY: "20px",
           backgroundColor: "#FFF",
-          borderTop: "1px solid #EBEBEB",
-          borderBottom: "1px solid #EBEBEB",
+          borderRadius: "14px",
+          boxShadow: "0px 0px 12px 0px rgba(0, 38, 96, 0.08)",
+          // borderTop: "1px solid #EBEBEB",
+          // borderBottom: "1px solid #EBEBEB",
         }}
       >
         {children}
