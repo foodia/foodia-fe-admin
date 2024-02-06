@@ -11,6 +11,7 @@ import {
 import BaseCard from "../shared/DashboardCard";
 import DetailCard from "../shared/DetailCard";
 import { IconBan, IconCircleCheck, IconClock } from "@tabler/icons-react";
+import { uniqueId } from "lodash";
 
 type ChildProps = {
   data: {
@@ -151,7 +152,7 @@ const Info: React.FC<ChildProps> = ({ data }) => {
   };
 
   const status = [
-    <Stepper activeStep={activeStep()} alternativeLabel>
+    <Stepper key={uniqueId()} activeStep={activeStep()} alternativeLabel>
       {steps.map((label, index) => (
         <Step key={label}>
           <StepLabel

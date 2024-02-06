@@ -12,6 +12,7 @@ import BaseCard from "../shared/DashboardCard";
 import LeafLet from "../shared/LeafLet";
 import DetailCard from "../shared/DetailCard";
 import { IconBan, IconCircleCheck, IconClock } from "@tabler/icons-react";
+import { uniqueId } from "lodash";
 
 interface ChildProps {
   data: {
@@ -157,7 +158,7 @@ const Info: React.FC<ChildProps> = ({ data }) => {
   };
 
   const status = [
-    <Stepper activeStep={activeStep()} alternativeLabel>
+    <Stepper key={uniqueId()} activeStep={activeStep()} alternativeLabel>
       {steps.map((label, index) => (
         <Step key={index}>
           <StepLabel
@@ -207,7 +208,7 @@ const Info: React.FC<ChildProps> = ({ data }) => {
             width: "100%",
           }}
         >
-          {/* <Field label="Status" value={status} /> */}
+          <Field label="Status" value={status} />
           <Field label="Description" value={data.description} />
         </Box>
       </DetailCard>

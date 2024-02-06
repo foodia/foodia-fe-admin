@@ -24,6 +24,13 @@ type Props = {
   qty: string;
   note: string;
   description: string;
+  merchant: {
+    id: number;
+    merchant_name: string;
+    self_photo: any;
+    status: string;
+    oauth: { id: number; email: string; phone: string };
+  };
   images: [{ id: number; image_url: string }];
 };
 
@@ -42,6 +49,13 @@ const CampaignInfo = () => {
     qty: "",
     note: "",
     description: "",
+    merchant: {
+      id: 0,
+      merchant_name: "",
+      self_photo: "",
+      status: "",
+      oauth: { id: 0, email: "", phone: "" },
+    },
     images: [{ id: 0, image_url: "" }],
   });
 
