@@ -38,8 +38,10 @@ export const getAgnosticWalletCampaign = (
     )
     .then((res) => {
       var data: [] = [];
+      if (res.data.body.length > 0) {
+        data = res.data.body;
+      }
       setData(data);
-      console.log(data);
       setMeta(res.data.meta);
     })
     .catch((error) => {});
