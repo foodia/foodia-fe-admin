@@ -13,7 +13,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import DataTable from "react-data-table-component";
 import CustomStylesTable from "./CustomStylesTable";
 import ReactPaginate from "react-paginate";
@@ -26,6 +26,8 @@ import {
   IconSignLeft,
   IconSignRight,
 } from "@tabler/icons-react";
+import { DownloadTableExcel } from "react-export-table-to-excel";
+import * as XLSX from "xlsx";
 
 interface Data {
   value?: any;
@@ -58,6 +60,17 @@ const DataTables: React.FC<Data> = ({
   pagination,
   page,
 }) => {
+  const downloadExcel = async (data: any) => {
+    try {
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+      XLSX.writeFile(workbook, "DataSheet.xlsx");
+    } catch (error) {
+      console.error("Error downloading Excel file:", error);
+    }
+  };
+
   return (
     <>
       <Box
@@ -193,6 +206,7 @@ const DataTables: React.FC<Data> = ({
         ) : (
           //-- Button Download --//
           <Button
+            onClick={() => downloadExcel(data)}
             sx={{
               display: "flex",
               flexDirection: "row",
@@ -301,7 +315,7 @@ const DataTables: React.FC<Data> = ({
                 // width: "20px",
                 background: "var(--UI-Neutral-Neutral-30, #F5F6FA)",
               }}
-              // onChange={onChange}
+              onChange={onChange}
               page={page}
               count={meta?.page_count}
               defaultPage={1}

@@ -186,22 +186,12 @@ const Info: React.FC<ChildProps> = ({ data }) => {
           <Field label="Phone Number" value={data.oauth.phone} />
           <Field label="Link Aja Number" value={data.no_link_aja} />
           <Field label="Email" value={data.oauth.email} />
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "start",
-            gap: "10px",
-            width: "100%",
-          }}
-        >
-          <Field label="Status" value={status} />
           <Field
             label="Address"
             value={`${data.address}, ${data.sub_district}, ${data.city}, ${data.province}, ${data.postal_code}`}
           />
         </Box>
+        <Box>{status}</Box>
       </DetailCard>
     </>
   );

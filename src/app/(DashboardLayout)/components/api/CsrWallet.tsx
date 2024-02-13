@@ -1,12 +1,18 @@
 import axios from "axios";
 
-export const getCsrWalletCurrent = (setData: any, setMeta: any) => {
+export const getCsrWalletCurrent = (setData: any, setMeta: any, page: any) => {
   axios
-    .get(process.env.NEXT_PUBLIC_BASE + "/wallet/csr-current", {
-      headers: { authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` },
-    })
+    .get(
+      process.env.NEXT_PUBLIC_BASE +
+        `/wallet/csr-current?page=${page}&per_page=5`,
+      {
+        headers: { authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` },
+      }
+    )
     .then((res) => {
-      setData(res.data.body);
+      var data: [] = [];
+      setData(data);
+      console.log(data);
       setMeta(res.data.meta);
       // const isRejectedPresent: boolean = res.data.body.some(
       //   (obj: any) => obj.status === "rejected" || obj.status === "waiting"
@@ -17,40 +23,69 @@ export const getCsrWalletCurrent = (setData: any, setMeta: any) => {
     .catch((error) => {});
 };
 
-export const getCsrWalletTrx = (setData: any, setMeta: any) => {
-  axios
-    .get(process.env.NEXT_PUBLIC_BASE + `/wallet/transaction?trx_type=csr`, {
-      headers: { authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` },
-    })
-    .then((res) => {
-      setData(res.data.body);
-      setMeta(res.data.meta);
-    })
-    .catch((error) => {});
-};
-
-export const getCsrWalletCampaign = (setData: any, setMeta: any) => {
+export const getCsrWalletTrx = (setData: any, setMeta: any, page: any) => {
   axios
     .get(
-      process.env.NEXT_PUBLIC_BASE + `/wallet/campaign-report?wallet_type=csr`,
+      process.env.NEXT_PUBLIC_BASE +
+        `/wallet/transaction?trx_type=csr&page=${page}&per_page=5`,
       {
         headers: { authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` },
       }
     )
     .then((res) => {
-      setData(res.data.body);
+      var data: [] = [];
+      setData(data);
+      console.log(data);
       setMeta(res.data.meta);
     })
     .catch((error) => {});
 };
 
-export const getCsrWalletMerchant = (setData: any, setMeta: any) => {
+export const getCsrWalletCampaign = (setData: any, setMeta: any, page: any) => {
   axios
-    .get(process.env.NEXT_PUBLIC_BASE + `/wallet/merchant-payment`, {
+    .get(
+      process.env.NEXT_PUBLIC_BASE +
+        `/wallet/campaign-report?wallet_type=csr&page=${page}&per_page=5`,
+      {
+        headers: { authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` },
+      }
+    )
+    .then((res) => {
+      var data: [] = [];
+      setData(data);
+      console.log(data);
+      setMeta(res.data.meta);
+    })
+    .catch((error) => {});
+};
+
+export const getCsrWalletMerchant = (setData: any, setMeta: any, page: any) => {
+  axios
+    .get(
+      process.env.NEXT_PUBLIC_BASE +
+        `/wallet/merchant-payment?page=${page}&per_page=3`,
+      {
+        headers: { authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` },
+      }
+    )
+    .then((res) => {
+      var data: [] = [];
+      setData(data);
+      console.log(data);
+      setMeta(res.data.meta);
+    })
+    .catch((error) => {});
+};
+
+export const getCsrWalletBallance = (setData: any, setMeta: any) => {
+  axios
+    .get(process.env.NEXT_PUBLIC_BASE + `/wallet/balance?wallet_type=csr`, {
       headers: { authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` },
     })
     .then((res) => {
-      setData(res.data.body);
+      var data: [] = [];
+      setData(data);
+      console.log(data);
       setMeta(res.data.meta);
     })
     .catch((error) => {});

@@ -2,6 +2,8 @@ import { Box, SelectChangeEvent, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { TableColumn } from "react-data-table-component";
 import DataTables from "../../shared/DataTables";
+import Link from "next/link";
+import { ButtonAction } from "../../shared/Buttons";
 
 interface Meta {
   page: number;
@@ -18,7 +20,7 @@ interface TransactionListData {
 }
 
 interface CampaignListData {
-  id: number;
+  campaign_id: number;
   campaign_name: any;
   total_donation: any;
   details: { donation_by: any; amount: number }[];
@@ -37,12 +39,15 @@ interface MerchantPaymentListData {
 interface Props {
   transactionListData: TransactionListData[];
   transactionListMeta: Meta;
+  onChangePageTransactionList: any;
 
   campaignListData: CampaignListData[];
   campaignListMeta: Meta;
+  onChangePageCampaignList: any;
 
   merchantPaymentListData: MerchantPaymentListData[];
   merchantPaymentListMeta: Meta;
+  onChangePageMerchantPayment: any;
 }
 
 const transactionListColumns: TableColumn<TransactionListData>[] = [
@@ -93,7 +98,18 @@ const campaignListColumns: TableColumn<CampaignListData>[] = [
   },
   {
     name: "Nama Campaign",
-    cell: (row: CampaignListData) => <div>{row.campaign_name}</div>,
+    cell: (row: CampaignListData) => (
+      <Link
+        href={{
+          pathname: "/ui-components/pages/campaign/info",
+          query: {
+            id: row.campaign_id,
+          },
+        }}
+      >
+        {row.campaign_name}
+      </Link>
+    ),
     // sortable: true,
   },
   {
@@ -112,27 +128,35 @@ const campaignListColumns: TableColumn<CampaignListData>[] = [
   {
     name: "Donasi Oleh",
     cell: (row: CampaignListData) => (
-      <>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+          paddingTop: "10px",
+          paddingBottom: "10px",
+        }}
+      >
         {row.details?.map((value: any, i) => (
           <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
-            {/* {value.donator} */}
-            {i === 1 && value.donation_by.length > 10
+            {/* {i === 1 && value.donation_by?.length > 10
               ? `${value.donation_by.slice(0, 10)}...`
-              : value.donation_by}
-            {i + 1 !== row.details.length && (
+              : value.donation_by} */}
+            {value.donation_by}
+            {i + 1 !== value.length && (
               <div style={{ marginRight: "5px" }}>,</div>
             )}
           </div>
         ))}
-      </>
+      </div>
     ),
     // sortable: true,
-    width: "280px",
+    width: "auto",
   },
   {
     name: "Detail Donasi",
     cell: (row: CampaignListData) => (
-      <>
+      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
         {row.details?.map((value: any, i) => (
           <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
             {new Intl.NumberFormat("id-ID", {
@@ -140,15 +164,31 @@ const campaignListColumns: TableColumn<CampaignListData>[] = [
               currency: "IDR",
               minimumFractionDigits: 0,
             }).format(value.amount)}
-            {i + 1 !== row.details.length && (
+            {i + 1 !== value.length && (
               <div style={{ marginRight: "5px" }}>,</div>
             )}
           </div>
         ))}
-      </>
+      </div>
     ),
     // sortable: true,
     // width: "",
+  },
+  {
+    name: "Action",
+    cell: (row: CampaignListData) => (
+      <Link
+        href={{
+          pathname: "/ui-components/pages/wallet/agnostic/info",
+          query: {
+            // id: row.id,
+          },
+        }}
+      >
+        <ButtonAction />
+      </Link>
+    ),
+    // sortable: true,
   },
 ];
 
@@ -171,10 +211,10 @@ const merchantPaymentListColumns: TableColumn<MerchantPaymentListData>[] = [
     name: "Nama Merchant",
     cell: (row: MerchantPaymentListData) => (
       <>
-        {row.merchants.map((value: any, i) => (
+        {row.merchants?.map((value: any, i) => (
           <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
             {value.name}
-            {i + 1 !== row.merchants.length && (
+            {i + 1 !== value.length && (
               <div style={{ marginRight: "5px" }}>,</div>
             )}
           </div>
@@ -194,7 +234,7 @@ const merchantPaymentListColumns: TableColumn<MerchantPaymentListData>[] = [
               currency: "IDR",
               minimumFractionDigits: 0,
             }).format(value.amount)}
-            {i + 1 !== row.payments.length && (
+            {i + 1 !== row.payments?.length && (
               <div style={{ marginRight: "5px" }}>,</div>
             )}
           </div>
@@ -215,28 +255,31 @@ const merchantPaymentListColumns: TableColumn<MerchantPaymentListData>[] = [
 const DataTableComponent: React.FC<Props> = ({
   transactionListData,
   transactionListMeta,
+  onChangePageTransactionList,
 
   campaignListData,
   campaignListMeta,
+  onChangePageCampaignList,
 
   merchantPaymentListData,
   merchantPaymentListMeta,
+  onChangePageMerchantPayment,
 }) => {
-  const [filterText, setFilterText] = useState<string>("unapproved");
-  const [searchBy, setSearchBy] = useState<string>("name");
-  const [searchText, setSearchText] = useState<string>("");
+  // const [filterText, setFilterText] = useState<string>("unapproved");
+  // const [searchBy, setSearchBy] = useState<string>("name");
+  // const [searchText, setSearchText] = useState<string>("");
 
-  const handleChangeSearchBy = (event: SelectChangeEvent) => {
-    setSearchBy(event.target.value);
-  };
+  // const handleChangeSearchBy = (event: SelectChangeEvent) => {
+  //   setSearchBy(event.target.value);
+  // };
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setFilterText(event.target.value);
-  };
+  // const handleChange = (event: SelectChangeEvent) => {
+  //   setFilterText(event.target.value);
+  // };
 
-  const handleChangeSearch = (event: SelectChangeEvent) => {
-    setSearchText(event.target.value);
-  };
+  // const handleChangeSearch = (event: SelectChangeEvent) => {
+  //   setSearchText(event.target.value);
+  // };
 
   // let filteredItems: any;
   // if (filterText === "unapproved") {
@@ -294,12 +337,12 @@ const DataTableComponent: React.FC<Props> = ({
             // value={filterText}
             // searchOption={searchOption}
             // valueSearchBy={searchBy}
-            // onChange={handleChange}
             // onChangeSearch={handleChangeSearch}
             // onChangeSearchBy={handleChangeSearchBy}
+            onChange={onChangePageTransactionList}
             pagination={true}
             meta={transactionListMeta}
-            pageItems={transactionListData.length}
+            pageItems={transactionListData?.length}
             columns={transactionListColumns}
             data={transactionListData}
           />
@@ -311,17 +354,17 @@ const DataTableComponent: React.FC<Props> = ({
           // value={filterText}
           // searchOption={searchOption}
           // valueSearchBy={searchBy}
-          // onChange={handleChange}
           // onChangeSearch={handleChangeSearch}
           // onChangeSearchBy={handleChangeSearchBy}
+          onChange={onChangePageCampaignList}
           pagination={true}
           meta={campaignListMeta}
-          pageItems={campaignListData.length}
+          pageItems={campaignListData?.length}
           columns={campaignListColumns}
           data={campaignListData}
         />
       </Box>
-      <Box>
+      {/* <Box>
         <Typography sx={{ fontWeight: "bold" }}>
           List Pembayaran Merchant
         </Typography>
@@ -329,16 +372,16 @@ const DataTableComponent: React.FC<Props> = ({
           // value={filterText}
           // searchOption={searchOption}
           // valueSearchBy={searchBy}
-          // onChange={handleChange}
           // onChangeSearch={handleChangeSearch}
           // onChangeSearchBy={handleChangeSearchBy}
+          // onChange={onChangePageMerchantPayment}
           pagination={true}
           meta={merchantPaymentListMeta}
-          pageItems={merchantPaymentListData.length}
+          // pageItems={merchantPaymentListData?.length}
           columns={merchantPaymentListColumns}
           data={merchantPaymentListData}
         />
-      </Box>
+      </Box> */}
     </Box>
   );
 };

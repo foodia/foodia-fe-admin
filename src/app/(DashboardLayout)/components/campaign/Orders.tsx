@@ -31,7 +31,7 @@ interface ChildProps {
         merchant_product: {
           id: number;
           name: string;
-          price: string;
+          price: any;
           images: [{ image_url: string }];
         };
       }
@@ -168,7 +168,11 @@ const Orders: React.FC<ChildProps> = ({ data }) => {
                     }}
                   >
                     <Typography sx={{ fontSize: "12px" }}>
-                      Rp. {orders.merchant_product.price}
+                      {new Intl.NumberFormat("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                        minimumFractionDigits: 0,
+                      }).format(orders.merchant_product.price)}
                     </Typography>
                     <Typography sx={{ fontSize: "12px" }}>
                       Quantity: {orders.qty}

@@ -7,13 +7,21 @@ import { getProduct } from "../../api/Product";
 import { Box, Typography } from "@mui/material";
 import DashboardCard from "../../shared/DashboardCard";
 import {
+  getAgnosticWalletBallance,
   getAgnosticWalletCampaign,
   getAgnosticWalletTrx,
 } from "../../api/AgnosticWallet";
 
+type ballance = {
+  wallet_name: string;
+  total_balance: number;
+};
+
 const List = () => {
   const { productData } = useAppContext();
   const { setIsUnapprovedProduct } = useAppContext();
+  const [balanceListData, setBalanceListData] = useState<ballance>();
+  const [balanceListMeta, setBalanceListMeta] = useState({});
   const [transactionListData, setTransactionListData] = useState([]);
   const [transactionListMeta, setTransactionListMeta] = useState({
     page: 0,
@@ -63,10 +71,36 @@ const List = () => {
     page_count: 2,
     total: 10,
   });
+  const [page, setPage] = useState(1);
+
+  const handleChangePagePaymentList = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+    getAgnosticWalletTrx(setTransactionListData, setTransactionListMeta, value);
+  };
+
+  const handleChangePageCampaignList = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+    getAgnosticWalletCampaign(setCampaignListData, setCampaignListMeta, value);
+  };
+
+  const handleChangePageMerchantPayment = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+    getAgnosticWalletCampaign(setCampaignListData, setCampaignListMeta, value);
+  };
 
   useEffect(() => {
-    getAgnosticWalletTrx(setTransactionListData, setTransactionListMeta);
-    getAgnosticWalletCampaign(setCampaignListData, setCampaignListMeta);
+    getAgnosticWalletBallance(setBalanceListData, setBalanceListMeta);
+    getAgnosticWalletTrx(setTransactionListData, setTransactionListMeta, page);
+    getAgnosticWalletCampaign(setCampaignListData, setCampaignListMeta, page);
   }, []);
 
   const breadcrumbs = [
@@ -79,17 +113,20 @@ const List = () => {
     <>
       <DashboardCard
         title="Agnostic Wallet"
-        currentBalance={9500000}
+        currentBalance={balanceListData?.total_balance}
         breadcrumb={breadcrumbs}
       >
         <Box sx={{ paddingX: "40px" }}>
           <DataTableComponent
             merchantPaymentListData={merchantPaymentListData}
             merchantPaymentListMeta={merchantPaymentListMeta}
+            onChangePageTransactionList={handleChangePagePaymentList}
             campaignListData={campaignListData}
             campaignListMeta={campaignListMeta}
+            onChangePageCampaignList={handleChangePageCampaignList}
             transactionListData={transactionListData}
             transactionListMeta={transactionListMeta}
+            onChangePageMerchantPayment={handleChangePageMerchantPayment}
           />
         </Box>
       </DashboardCard>

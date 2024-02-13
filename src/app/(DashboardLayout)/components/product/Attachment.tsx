@@ -110,7 +110,7 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
             flexDirection: "column",
             gap: "10px",
             width: "100%",
-            paddingRight: "40px",
+            // paddingRight: "40px",
           }}
         >
           <Box

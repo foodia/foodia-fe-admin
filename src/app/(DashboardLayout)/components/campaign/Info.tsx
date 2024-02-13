@@ -22,7 +22,7 @@ interface ChildProps {
     event_date: string;
     event_time: string;
     description: string;
-    donation_target: string;
+    donation_target: any;
     province: string;
     city: string;
     status: string;
@@ -197,7 +197,14 @@ const Info: React.FC<ChildProps> = ({ data }) => {
           />
           <Field label="Food Required" value={data.food_required} />
           <Field label="Food Total" value={data.food_total} />
-          <Field label="Donation Target" value={"Rp." + data.donation_target} />
+          <Field
+            label="Donation Target"
+            value={new Intl.NumberFormat("id-ID", {
+              style: "currency",
+              currency: "IDR",
+              minimumFractionDigits: 0,
+            }).format(data.donation_target)}
+          />
           <Field label="Description" value={data.description} />
           <Box sx={{ paddingY: "20px" }}>{status}</Box>
         </Box>

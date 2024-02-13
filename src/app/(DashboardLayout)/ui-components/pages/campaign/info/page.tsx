@@ -21,7 +21,7 @@ type Props = {
   event_type: string;
   event_time: string;
   description: string;
-  donation_target: string;
+  donation_target: any;
   status: string;
   order_status: string;
   image_url: string;

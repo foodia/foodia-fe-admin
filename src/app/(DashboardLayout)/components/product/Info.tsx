@@ -17,7 +17,7 @@ type ChildProps = {
   data: {
     id: number;
     name: string;
-    price: string;
+    price: any;
     status: string;
     qty: string;
     note: string;
@@ -180,22 +180,19 @@ const Info: React.FC<ChildProps> = ({ data }) => {
           }}
         >
           <Field label="Name" value={data.name} />
-          <Field label="Price" value={data.price} />
+          <Field
+            label="Price"
+            value={new Intl.NumberFormat("id-ID", {
+              style: "currency",
+              currency: "IDR",
+              minimumFractionDigits: 0,
+            }).format(data.price)}
+          />
           <Field label="Quantity" value={data.qty} />
           <Field label="Note" value={data.note} />
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "start",
-            gap: "10px",
-            width: "100%",
-          }}
-        >
-          <Field label="Status" value={status} />
           <Field label="Description" value={data.description} />
         </Box>
+        <Box>{status}</Box>
       </DetailCard>
     </>
   );

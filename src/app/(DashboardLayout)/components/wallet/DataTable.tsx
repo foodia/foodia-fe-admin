@@ -17,41 +17,54 @@ interface CurrentWalletData {
   total_donation: any;
   remaining_balance: any;
 }
+[];
 
 interface TransactionListData {
   id: number;
   donator_name: any;
   total_donation: any;
-  transaction_date: any;
+  trx_date: any;
 }
+[];
 
 interface CampaignListData {
-  id: number;
+  campaign_id: number;
   campaign_name: any;
   total_donation: any;
   details: { donation_by: any; amount: number }[];
   // donator_list: { id: any; donator: any }[];
   // donations: { id: any; donations_detail: any }[];
 }
+[];
 
 interface MerchantPaymentListData {
-  id: number;
+  campaign_id: number;
   campaign_name: any;
-  details: { merchant_name: any; total_amount: number; payment_date: string }[];
+  details: {
+    merchant_id: any;
+    merchant_name: any;
+    total_amount: number;
+    payment_date: string;
+  }[];
 }
+[];
 
 interface Props {
   currentWalletData: CurrentWalletData[];
   currentWalletMeta: Meta;
+  onChangePageWalletCurrent: any;
 
   transactionListData: TransactionListData[];
   transactionListMeta: Meta;
+  onChangePageWalletTrx: any;
 
   campaignListData: CampaignListData[];
   campaignListMeta: Meta;
+  onChangePageWalletCampaign: any;
 
   merchantPaymentListData: MerchantPaymentListData[];
   merchantPaymentListMeta: Meta;
+  onChangePageWalletMerchant: any;
 }
 
 const currentWalletColumns: TableColumn<CurrentWalletData>[] = [
@@ -66,7 +79,7 @@ const currentWalletColumns: TableColumn<CurrentWalletData>[] = [
   },
   {
     name: "Nama Donator",
-    cell: (row: CurrentWalletData) => <Link href="">{row.donator_name}</Link>,
+    cell: (row: CurrentWalletData) => <div>{row.donator_name}</div>,
     // sortable: true,
   },
   {
@@ -110,7 +123,7 @@ const transactionListColumns: TableColumn<TransactionListData>[] = [
   },
   {
     name: "Nama Donator",
-    cell: (row: TransactionListData) => <Link href="">{row.donator_name}</Link>,
+    cell: (row: TransactionListData) => <div>{row.donator_name}</div>,
     // sortable: true,
   },
   {
@@ -128,7 +141,7 @@ const transactionListColumns: TableColumn<TransactionListData>[] = [
   },
   {
     name: "Tanggal Transaksi",
-    cell: (row: TransactionListData) => <div>{row.transaction_date}</div>,
+    cell: (row: TransactionListData) => <div>{row.trx_date}</div>,
     // sortable: true,
     // width: "",
   },
@@ -146,7 +159,18 @@ const campaignListColumns: TableColumn<CampaignListData>[] = [
   },
   {
     name: "Nama Campaign",
-    cell: (row: CampaignListData) => <Link href="">{row.campaign_name}</Link>,
+    cell: (row: CampaignListData) => (
+      <Link
+        href={{
+          pathname: "/ui-components/pages/campaign/info",
+          query: {
+            id: row.campaign_id,
+          },
+        }}
+      >
+        {row.campaign_name}
+      </Link>
+    ),
     // sortable: true,
   },
   {
@@ -173,10 +197,10 @@ const campaignListColumns: TableColumn<CampaignListData>[] = [
             style={{ display: "flex", flexDirection: "row" }}
           >
             {/* {value.donator} */}
-            {i === 1 && value.donation_by.length > 10
+            {i === 1 && value.donation_by?.length > 10
               ? `${value.donation_by.slice(0, 10)}...`
               : value.donator}
-            {i + 1 !== row.details.length && (
+            {i + 1 !== row.details?.length && (
               <div style={{ marginRight: "5px" }}>,</div>
             )}
           </Link>
@@ -197,7 +221,7 @@ const campaignListColumns: TableColumn<CampaignListData>[] = [
               currency: "IDR",
               minimumFractionDigits: 0,
             }).format(value.amount)}
-            {i + 1 !== row.details.length && (
+            {i + 1 !== row.details?.length && (
               <div style={{ marginRight: "5px" }}>,</div>
             )}
           </div>
@@ -222,7 +246,16 @@ const merchantPaymentListColumns: TableColumn<MerchantPaymentListData>[] = [
   {
     name: "Nama Campaign",
     cell: (row: MerchantPaymentListData) => (
-      <Link href="">{row.campaign_name}</Link>
+      <Link
+        href={{
+          pathname: "/ui-components/pages/campaign/info",
+          query: {
+            id: row.campaign_id,
+          },
+        }}
+      >
+        {row.campaign_name}
+      </Link>
     ),
     // sortable: true,
   },
@@ -232,15 +265,20 @@ const merchantPaymentListColumns: TableColumn<MerchantPaymentListData>[] = [
       <>
         {row.details?.map((value: any, i) => (
           <Link
-            href=""
+            href={{
+              pathname: "/ui-components/pages/merchant/info",
+              query: {
+                id: value.merchant_id,
+              },
+            }}
             key={value.id}
             style={{ display: "flex", flexDirection: "row" }}
           >
             {/* {value.merchant_name} */}
-            {i === 1 && value.donation_by.length > 10
+            {i === 1 && value.donation_by?.length > 10
               ? `${value.donation_by.slice(0, 10)}...`
               : value.merchant_name}
-            {i + 1 !== row.details.length && (
+            {i + 1 !== row.details?.length && (
               <div style={{ marginRight: "5px" }}>,</div>
             )}
           </Link>
@@ -260,7 +298,7 @@ const merchantPaymentListColumns: TableColumn<MerchantPaymentListData>[] = [
               currency: "IDR",
               minimumFractionDigits: 0,
             }).format(value.total_amount)}
-            {i + 1 !== row.details.length && (
+            {i + 1 !== row.details?.length && (
               <div style={{ marginRight: "5px" }}>,</div>
             )}
           </div>
@@ -277,10 +315,10 @@ const merchantPaymentListColumns: TableColumn<MerchantPaymentListData>[] = [
         {row.details?.map((value: any, i) => (
           <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
             {/* {value.payment_date} */}
-            {i === 1 && value.donation_by.length > 10
+            {i === 1 && value.donation_by?.length > 10
               ? `${value.donation_by.slice(0, 10)}...`
               : value.payment_date}
-            {i + 1 !== row.details.length && (
+            {i + 1 !== row.details?.length && (
               <div style={{ marginRight: "5px" }}>,</div>
             )}
           </div>
@@ -295,31 +333,35 @@ const merchantPaymentListColumns: TableColumn<MerchantPaymentListData>[] = [
 const DataTableComponent: React.FC<Props> = ({
   currentWalletData,
   currentWalletMeta,
+  onChangePageWalletCurrent,
 
   transactionListData,
   transactionListMeta,
+  onChangePageWalletTrx,
 
   campaignListData,
   campaignListMeta,
+  onChangePageWalletCampaign,
 
   merchantPaymentListData,
   merchantPaymentListMeta,
+  onChangePageWalletMerchant,
 }) => {
-  const [filterText, setFilterText] = useState<string>("unapproved");
-  const [searchBy, setSearchBy] = useState<string>("name");
-  const [searchText, setSearchText] = useState<string>("");
+  // const [filterText, setFilterText] = useState<string>("unapproved");
+  // const [searchBy, setSearchBy] = useState<string>("name");
+  // const [searchText, setSearchText] = useState<string>("");
 
-  const handleChangeSearchBy = (event: SelectChangeEvent) => {
-    setSearchBy(event.target.value);
-  };
+  // const handleChangeSearchBy = (event: SelectChangeEvent) => {
+  //   setSearchBy(event.target.value);
+  // };
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setFilterText(event.target.value);
-  };
+  // const handleChange = (event: SelectChangeEvent) => {
+  //   setFilterText(event.target.value);
+  // };
 
-  const handleChangeSearch = (event: SelectChangeEvent) => {
-    setSearchText(event.target.value);
-  };
+  // const handleChangeSearch = (event: SelectChangeEvent) => {
+  //   setSearchText(event.target.value);
+  // };
 
   // let filteredItems: any;
   // if (filterText === "unapproved") {
@@ -377,12 +419,12 @@ const DataTableComponent: React.FC<Props> = ({
             // value={filterText}
             // searchOption={searchOption}
             // valueSearchBy={searchBy}
-            // onChange={handleChange}
             // onChangeSearch={handleChangeSearch}
             // onChangeSearchBy={handleChangeSearchBy}
+            onChange={onChangePageWalletCurrent}
             pagination={true}
             meta={currentWalletMeta}
-            pageItems={currentWalletData.length}
+            pageItems={currentWalletData?.length}
             columns={currentWalletColumns}
             data={currentWalletData}
           />
@@ -393,12 +435,12 @@ const DataTableComponent: React.FC<Props> = ({
             // value={filterText}
             // searchOption={searchOption}
             // valueSearchBy={searchBy}
-            // onChange={handleChange}
             // onChangeSearch={handleChangeSearch}
             // onChangeSearchBy={handleChangeSearchBy}
+            onChange={onChangePageWalletTrx}
             pagination={true}
             meta={transactionListMeta}
-            pageItems={transactionListData.length}
+            pageItems={transactionListData?.length}
             columns={transactionListColumns}
             data={transactionListData}
           />
@@ -410,17 +452,17 @@ const DataTableComponent: React.FC<Props> = ({
           // value={filterText}
           // searchOption={searchOption}
           // valueSearchBy={searchBy}
-          // onChange={handleChange}
           // onChangeSearch={handleChangeSearch}
           // onChangeSearchBy={handleChangeSearchBy}
+          onChange={onChangePageWalletCampaign}
           pagination={true}
           meta={campaignListMeta}
-          pageItems={campaignListData.length}
+          pageItems={campaignListData?.length}
           columns={campaignListColumns}
           data={campaignListData}
         />
       </Box>
-      <Box>
+      {/* <Box>
         <Typography sx={{ fontWeight: "bold" }}>
           List Pembayaran Merchant
         </Typography>
@@ -428,16 +470,16 @@ const DataTableComponent: React.FC<Props> = ({
           // value={filterText}
           // searchOption={searchOption}
           // valueSearchBy={searchBy}
-          // onChange={handleChange}
           // onChangeSearch={handleChangeSearch}
           // onChangeSearchBy={handleChangeSearchBy}
+          onChange={onChangePageWalletMerchant}
           pagination={true}
           meta={merchantPaymentListMeta}
-          pageItems={merchantPaymentListData.length}
+          pageItems={merchantPaymentListData?.length}
           columns={merchantPaymentListColumns}
           data={merchantPaymentListData}
         />
-      </Box>
+      </Box> */}
     </Box>
   );
 };

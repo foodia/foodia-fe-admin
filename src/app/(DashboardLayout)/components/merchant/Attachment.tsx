@@ -102,7 +102,7 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
             }}
           >
             <Button
-              onClick={() => onViewImage(data.self_photo)}
+              onClick={() => onViewImage(data.ktp_photo)}
               variant="contained"
               size="small"
               sx={{

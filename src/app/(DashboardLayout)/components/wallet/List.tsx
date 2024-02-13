@@ -5,15 +5,23 @@ import DataTableComponent from "./DataTable";
 import { Box, Typography } from "@mui/material";
 import DashboardCard from "../shared/DashboardCard";
 import {
+  getCsrWalletBallance,
   getCsrWalletCampaign,
   getCsrWalletCurrent,
   getCsrWalletMerchant,
   getCsrWalletTrx,
 } from "../api/CsrWallet";
 
+type ballance = {
+  wallet_name: string;
+  total_balance: number;
+};
+
 const List = () => {
   const { productData } = useAppContext();
   const { setIsUnapprovedProduct } = useAppContext();
+  const [ballanceWalletData, setBallanceWalletData] = useState<ballance>();
+  const [ballanceWalletMeta, setBallanceWalletMeta] = useState([]);
   const [currentWalletData, setCurrentWalletData] = useState([]);
   const [currentWalletMeta, setCurrentWalletMeta] = useState({
     page: 0,
@@ -42,6 +50,42 @@ const List = () => {
     page_count: 2,
     total: 10,
   });
+  const [page, setPage] = useState(1);
+  const handleChangePageWalletCurrent = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+    getCsrWalletCurrent(setCurrentWalletData, setCurrentWalletMeta, value);
+  };
+
+  const handleChangePageWalletTrx = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+    getCsrWalletTrx(setTransactionListData, setTransactionListMeta, value);
+  };
+
+  const handleChangePageWalletCampaign = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+    getCsrWalletCampaign(setCampaignListData, setCampaignListMeta, value);
+  };
+
+  const handleChangePageWalletMerchant = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+    getCsrWalletMerchant(
+      setMerchantPaymentListData,
+      setMerchantPaymentListMeta,
+      value
+    );
+  };
 
   const breadcrumbs = [
     <Typography fontSize="13px" key="3" color="#999" fontWeight={400}>
@@ -50,12 +94,14 @@ const List = () => {
   ];
 
   useEffect(() => {
-    getCsrWalletCurrent(setCurrentWalletData, setCurrentWalletMeta);
-    getCsrWalletTrx(setTransactionListData, setTransactionListMeta);
-    getCsrWalletCampaign(setCampaignListData, setCampaignListMeta);
+    getCsrWalletBallance(setBallanceWalletData, setBallanceWalletMeta);
+    getCsrWalletCurrent(setCurrentWalletData, setCurrentWalletMeta, page);
+    getCsrWalletTrx(setTransactionListData, setTransactionListMeta, page);
+    getCsrWalletCampaign(setCampaignListData, setCampaignListMeta, page);
     getCsrWalletMerchant(
       setMerchantPaymentListData,
-      setMerchantPaymentListMeta
+      setMerchantPaymentListMeta,
+      page
     );
   }, []);
 
@@ -64,18 +110,22 @@ const List = () => {
       <DashboardCard
         title="CSR Wallet"
         breadcrumb={breadcrumbs}
-        currentBalance={9500000}
+        currentBalance={ballanceWalletData?.total_balance}
       >
         <Box sx={{ paddingX: "40px" }}>
           <DataTableComponent
             currentWalletMeta={currentWalletMeta}
             currentWalletData={currentWalletData}
+            onChangePageWalletCurrent={handleChangePageWalletCurrent}
             merchantPaymentListData={merchantPaymentListData}
+            onChangePageWalletTrx={handleChangePageWalletTrx}
             merchantPaymentListMeta={merchantPaymentListMeta}
             campaignListData={campaignListData}
             campaignListMeta={campaignListMeta}
+            onChangePageWalletCampaign={handleChangePageWalletCampaign}
             transactionListData={transactionListData}
             transactionListMeta={transactionListMeta}
+            onChangePageWalletMerchant={handleChangePageWalletMerchant}
           />
         </Box>
       </DashboardCard>
