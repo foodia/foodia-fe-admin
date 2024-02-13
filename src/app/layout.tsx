@@ -1,12 +1,10 @@
 "use client";
-import { baselightTheme } from "@/utils/theme/DefaultColors";
-import { ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import { ProgressLoader } from "nextjs-progressloader";
-import AppProvider from "./(DashboardLayout)/components/shared/Context";
 import "@/app/global.css";
-import { useState } from "react";
+import { baselightTheme } from "@/utils/theme/DefaultColors";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider } from "@mui/material/styles";
 import NextTopLoader from "nextjs-toploader";
+import AppProvider from "./(DashboardLayout)/components/shared/Context";
 
 export default function RootLayout({
   children,
