@@ -1,8 +1,9 @@
 import { Box, SelectChangeEvent, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { TableColumn } from "react-data-table-component";
-import DataTables from "../shared/DataTables";
+import DataTables from "../../shared/DataTables";
 import Link from "next/link";
+import { ButtonAction } from "../../shared/Buttons";
 
 interface Meta {
   page: number;
@@ -230,6 +231,24 @@ const campaignListColumns: TableColumn<CampaignListData>[] = [
     ),
     // sortable: true,
     // width: "",
+  },
+  {
+    name: "Action",
+    cell: (row: CampaignListData, i: number) => (
+      <Link
+        href={{
+          pathname: "/ui-components/pages/wallet/csr/info",
+          query: {
+            campaign_id: row.campaign_id,
+            campaign_name: row.campaign_name,
+            total_donations: row.total_donation,
+          },
+        }}
+      >
+        <ButtonAction />
+      </Link>
+    ),
+    // sortable: true,
   },
 ];
 

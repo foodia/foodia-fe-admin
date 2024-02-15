@@ -30,7 +30,7 @@ const Menuitems = () => {
       submenu: [
         {
           id: uniqueId(),
-          href: "/ui-components/pages/wallet",
+          href: "/ui-components/pages/wallet/csr",
           name: "CSR Wallet",
           icon: <IconWallet />,
           // isUnapproved: isUnapprovedMerchant,
@@ -39,6 +39,13 @@ const Menuitems = () => {
           id: uniqueId(),
           href: "/ui-components/pages/wallet/agnostic",
           name: "Agnostic Wallet",
+          icon: <IconWallet />,
+          // isUnapproved: isUnapprovedProduct,
+        },
+        {
+          id: uniqueId(),
+          href: "/ui-components/pages/wallet/merchant-payments",
+          name: "Merchant Payments",
           icon: <IconWallet />,
           // isUnapproved: isUnapprovedProduct,
         },

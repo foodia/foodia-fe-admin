@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
-import { useAppContext } from "../shared/Context";
-import BaseCard from "../shared/DashboardCard";
+import { useAppContext } from "../../shared/Context";
+import BaseCard from "../../shared/DashboardCard";
 import DataTableComponent from "./DataTable";
 import { Box, Typography } from "@mui/material";
-import DashboardCard from "../shared/DashboardCard";
+import DashboardCard from "../../shared/DashboardCard";
 import {
   getCsrWalletBallance,
   getCsrWalletCampaign,
   getCsrWalletCurrent,
   getCsrWalletMerchant,
   getCsrWalletTrx,
-} from "../api/CsrWallet";
+} from "../../api/CsrWallet";
 
 type ballance = {
   wallet_name: string;

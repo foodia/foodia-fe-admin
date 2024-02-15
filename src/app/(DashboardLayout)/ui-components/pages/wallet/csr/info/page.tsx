@@ -1,22 +1,22 @@
 "use client";
-import Info from "@/app/(DashboardLayout)/components/wallet/agnostic/Info";
+import Info from "@/app/(DashboardLayout)/components/wallet/csr/Info";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-const AgnosticInfo = () => {
+const CsrInfo = () => {
   const searchParams = useSearchParams();
 
   const data = [
     {
-      donation_by: "addsa",
+      donation_by: "OFSASL",
       amount: 1231231,
     },
     {
-      donation_by: "afawfa",
+      donation_by: "OSAOLLFF",
       amount: 1231231,
     },
     {
-      donation_by: "fwwfw",
+      donation_by: "VMVASSS",
       amount: 1231231,
     },
   ];
@@ -28,4 +28,4 @@ const AgnosticInfo = () => {
   );
 };
 
-export default AgnosticInfo;
+export default CsrInfo;

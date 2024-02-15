@@ -4,6 +4,7 @@ import { TableColumn } from "react-data-table-component";
 import DataTables from "../../shared/DataTables";
 import Link from "next/link";
 import { ButtonAction } from "../../shared/Buttons";
+import { useRouter } from "next/router";
 
 interface Meta {
   page: number;
@@ -50,208 +51,6 @@ interface Props {
   onChangePageMerchantPayment: any;
 }
 
-const transactionListColumns: TableColumn<TransactionListData>[] = [
-  {
-    name: "No",
-    selector: (_row, i: any) => i + 1,
-    // sortable: true,
-    width: "70px",
-    // style: {
-    //   paddingLeft: "30px",
-    // },
-  },
-  {
-    name: "Nama Donator",
-    cell: (row: TransactionListData) => <div>{row.donator_name}</div>,
-    // sortable: true,
-  },
-  {
-    name: "Jumlah Donasi",
-    cell: (row: TransactionListData) => (
-      <div>
-        {new Intl.NumberFormat("id-ID", {
-          style: "currency",
-          currency: "IDR",
-          minimumFractionDigits: 0,
-        }).format(row.total_donation)}
-      </div>
-    ),
-    // sortable: true,
-  },
-  {
-    name: "Tanggal Transaksi",
-    cell: (row: TransactionListData) => <div>{row.trx_date}</div>,
-    // sortable: true,
-    // width: "",
-  },
-];
-
-const campaignListColumns: TableColumn<CampaignListData>[] = [
-  {
-    name: "No",
-    selector: (_row, i: any) => i + 1,
-    // sortable: true,
-    width: "70px",
-    // style: {
-    //   paddingLeft: "30px",
-    // },
-  },
-  {
-    name: "Nama Campaign",
-    cell: (row: CampaignListData) => (
-      <Link
-        href={{
-          pathname: "/ui-components/pages/campaign/info",
-          query: {
-            id: row.campaign_id,
-          },
-        }}
-      >
-        {row.campaign_name}
-      </Link>
-    ),
-    // sortable: true,
-  },
-  {
-    name: "Jumlah Donasi",
-    cell: (row: CampaignListData) => (
-      <div>
-        {new Intl.NumberFormat("id-ID", {
-          style: "currency",
-          currency: "IDR",
-          minimumFractionDigits: 0,
-        }).format(row.total_donation)}
-      </div>
-    ),
-    // sortable: true,
-  },
-  {
-    name: "Donasi Oleh",
-    cell: (row: CampaignListData) => (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "10px",
-          paddingTop: "10px",
-          paddingBottom: "10px",
-        }}
-      >
-        {row.details?.map((value: any, i) => (
-          <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
-            {/* {i === 1 && value.donation_by?.length > 10
-              ? `${value.donation_by.slice(0, 10)}...`
-              : value.donation_by} */}
-            {value.donation_by}
-            {i + 1 !== value.length && (
-              <div style={{ marginRight: "5px" }}>,</div>
-            )}
-          </div>
-        ))}
-      </div>
-    ),
-    // sortable: true,
-    width: "auto",
-  },
-  {
-    name: "Detail Donasi",
-    cell: (row: CampaignListData) => (
-      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-        {row.details?.map((value: any, i) => (
-          <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
-            {new Intl.NumberFormat("id-ID", {
-              style: "currency",
-              currency: "IDR",
-              minimumFractionDigits: 0,
-            }).format(value.amount)}
-            {i + 1 !== value.length && (
-              <div style={{ marginRight: "5px" }}>,</div>
-            )}
-          </div>
-        ))}
-      </div>
-    ),
-    // sortable: true,
-    // width: "",
-  },
-  {
-    name: "Action",
-    cell: (row: CampaignListData) => (
-      <Link
-        href={{
-          pathname: "/ui-components/pages/wallet/agnostic/info",
-          query: {
-            // id: row.id,
-          },
-        }}
-      >
-        <ButtonAction />
-      </Link>
-    ),
-    // sortable: true,
-  },
-];
-
-const merchantPaymentListColumns: TableColumn<MerchantPaymentListData>[] = [
-  {
-    name: "No",
-    selector: (_row, i: any) => i + 1,
-    // sortable: true,
-    width: "70px",
-    // style: {
-    //   paddingLeft: "30px",
-    // },
-  },
-  {
-    name: "Nama Campaign",
-    cell: (row: MerchantPaymentListData) => <div>{row.campaign_name}</div>,
-    // sortable: true,
-  },
-  {
-    name: "Nama Merchant",
-    cell: (row: MerchantPaymentListData) => (
-      <>
-        {row.merchants?.map((value: any, i) => (
-          <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
-            {value.name}
-            {i + 1 !== value.length && (
-              <div style={{ marginRight: "5px" }}>,</div>
-            )}
-          </div>
-        ))}
-      </>
-    ),
-    // sortable: true,
-  },
-  {
-    name: "Jumlah Pembayaran",
-    cell: (row: MerchantPaymentListData) => (
-      <>
-        {row.payments.map((value: any, i) => (
-          <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
-            {new Intl.NumberFormat("id-ID", {
-              style: "currency",
-              currency: "IDR",
-              minimumFractionDigits: 0,
-            }).format(value.amount)}
-            {i + 1 !== row.payments?.length && (
-              <div style={{ marginRight: "5px" }}>,</div>
-            )}
-          </div>
-        ))}
-      </>
-    ),
-    // sortable: true,
-    // width: "",
-  },
-  {
-    name: "Tgl Pembayaran",
-    cell: (row: MerchantPaymentListData) => <div>{row.payment_date}</div>,
-    // sortable: true,
-    // width: "",
-  },
-];
-
 const DataTableComponent: React.FC<Props> = ({
   transactionListData,
   transactionListMeta,
@@ -265,7 +64,6 @@ const DataTableComponent: React.FC<Props> = ({
   merchantPaymentListMeta,
   onChangePageMerchantPayment,
 }) => {
-  // const [filterText, setFilterText] = useState<string>("unapproved");
   // const [searchBy, setSearchBy] = useState<string>("name");
   // const [searchText, setSearchText] = useState<string>("");
 
@@ -320,6 +118,222 @@ const DataTableComponent: React.FC<Props> = ({
   //     label: "Description",
   //   },
   // ];
+
+  const transactionListColumns: TableColumn<TransactionListData>[] = [
+    {
+      name: "No",
+      selector: (_row, i: any) => i + 1,
+      // sortable: true,
+      width: "70px",
+      // style: {
+      //   paddingLeft: "30px",
+      // },
+    },
+    {
+      name: "Nama Donator",
+      cell: (row: TransactionListData) => <div>{row.donator_name}</div>,
+      // sortable: true,
+    },
+    {
+      name: "Jumlah Donasi",
+      cell: (row: TransactionListData) => (
+        <div>
+          {new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+          }).format(row.total_donation)}
+        </div>
+      ),
+      // sortable: true,
+    },
+    {
+      name: "Tanggal Transaksi",
+      cell: (row: TransactionListData) => <div>{row.trx_date}</div>,
+      // sortable: true,
+      // width: "",
+    },
+  ];
+
+  const campaignListColumns: TableColumn<CampaignListData>[] = [
+    {
+      name: "No",
+      cell: (_row, i: any) => i + 1,
+      // sortable: true,
+      width: "70px",
+      // style: {
+      //   paddingLeft: "30px",
+      // },
+    },
+    {
+      name: "Nama Campaign",
+      cell: (row: CampaignListData) => (
+        <Link
+          href={{
+            pathname: "/ui-components/pages/campaign/info",
+            query: {
+              id: row.campaign_id,
+            },
+          }}
+        >
+          {row.campaign_name}
+        </Link>
+      ),
+      // sortable: true,
+    },
+    {
+      name: "Jumlah Donasi",
+      cell: (row: CampaignListData) => (
+        <div>
+          {new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+          }).format(row.total_donation)}
+        </div>
+      ),
+      // sortable: true,
+    },
+    {
+      name: "Donasi Oleh",
+      cell: (row: CampaignListData) => (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+            paddingTop: "10px",
+            paddingBottom: "10px",
+          }}
+        >
+          {row.details?.map((value: any, i) => (
+            <div
+              key={value.id}
+              style={{ display: "flex", flexDirection: "row" }}
+            >
+              {/* {i === 1 && value.donation_by?.length > 10
+                ? `${value.donation_by.slice(0, 10)}...`
+                : value.donation_by} */}
+              {value.donation_by}
+              {i + 1 !== value.length && (
+                <div style={{ marginRight: "5px" }}>,</div>
+              )}
+            </div>
+          ))}
+        </div>
+      ),
+      // sortable: true,
+      width: "auto",
+    },
+    {
+      name: "Detail Donasi",
+      cell: (row: CampaignListData) => (
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          {row.details?.map((value: any, i) => (
+            <div
+              key={value.id}
+              style={{ display: "flex", flexDirection: "row" }}
+            >
+              {new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }).format(value.amount)}
+              {i + 1 !== value.length && (
+                <div style={{ marginRight: "5px" }}>,</div>
+              )}
+            </div>
+          ))}
+        </div>
+      ),
+      // sortable: true,
+      // width: "",
+    },
+    {
+      name: "Action",
+      cell: (row: CampaignListData, i: number) => (
+        <Link
+          href={{
+            pathname: "/ui-components/pages/wallet/agnostic/info",
+            query: {
+              campaign_id: row.campaign_id,
+              campaign_name: row.campaign_name,
+              total_donations: row.total_donation,
+            },
+          }}
+        >
+          <ButtonAction />
+        </Link>
+      ),
+      // sortable: true,
+    },
+  ];
+
+  const merchantPaymentListColumns: TableColumn<MerchantPaymentListData>[] = [
+    {
+      name: "No",
+      selector: (_row, i: any) => i + 1,
+      // sortable: true,
+      width: "70px",
+      // style: {
+      //   paddingLeft: "30px",
+      // },
+    },
+    {
+      name: "Nama Campaign",
+      cell: (row: MerchantPaymentListData) => <div>{row.campaign_name}</div>,
+      // sortable: true,
+    },
+    {
+      name: "Nama Merchant",
+      cell: (row: MerchantPaymentListData) => (
+        <>
+          {row.merchants?.map((value: any, i) => (
+            <div
+              key={value.id}
+              style={{ display: "flex", flexDirection: "row" }}
+            >
+              {value.name}
+              {i + 1 !== value.length && (
+                <div style={{ marginRight: "5px" }}>,</div>
+              )}
+            </div>
+          ))}
+        </>
+      ),
+      // sortable: true,
+    },
+    {
+      name: "Jumlah Pembayaran",
+      cell: (row: MerchantPaymentListData) => (
+        <>
+          {row.payments.map((value: any, i) => (
+            <div
+              key={value.id}
+              style={{ display: "flex", flexDirection: "row" }}
+            >
+              {new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }).format(value.amount)}
+              {i + 1 !== row.payments?.length && (
+                <div style={{ marginRight: "5px" }}>,</div>
+              )}
+            </div>
+          ))}
+        </>
+      ),
+      // sortable: true,
+      // width: "",
+    },
+    {
+      name: "Tgl Pembayaran",
+      cell: (row: MerchantPaymentListData) => <div>{row.payment_date}</div>,
+      // sortable: true,
+      // width: "",
+    },
+  ];
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>

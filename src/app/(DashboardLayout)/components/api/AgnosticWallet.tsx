@@ -11,14 +11,11 @@ export const getAgnosticWalletTrx = (setData: any, setMeta: any, page: any) => {
     )
     .then((res) => {
       var data: [] = [];
+      if (res.data.body.length > 0) {
+        data = res.data.body;
+      }
       setData(data);
-      console.log(data);
       setMeta(res.data.meta);
-      // const isRejectedPresent: boolean = res.data.body.some(
-      //   (obj: any) => obj.status === "rejected" || obj.status === "waiting"
-      // );
-      // // console.log(isRejectedPresent);
-      // setIsUnapprovedProduct(isRejectedPresent);
     })
     .catch((error) => {});
 };
@@ -57,8 +54,10 @@ export const getAgnosticWalletBallance = (setData: any, setMeta: any) => {
     )
     .then((res) => {
       var data: [] = [];
+      if (res.data.body.length > 0) {
+        data = res.data.body;
+      }
       setData(data);
-      console.log(data);
       setMeta(res.data.meta);
     })
     .catch((error) => {});

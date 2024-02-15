@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const getCampaign = (setData: any, setMeta: any) => {
+export const getCampaign = (setData: any, setMeta?: any) => {
   axios
     .get(process.env.NEXT_PUBLIC_BASE + "/campaign/filter", {
       headers: { authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` },

@@ -11,8 +11,10 @@ export const getCsrWalletCurrent = (setData: any, setMeta: any, page: any) => {
     )
     .then((res) => {
       var data: [] = [];
+      if (res.data.body.length > 0) {
+        data = res.data.body;
+      }
       setData(data);
-      console.log(data);
       setMeta(res.data.meta);
       // const isRejectedPresent: boolean = res.data.body.some(
       //   (obj: any) => obj.status === "rejected" || obj.status === "waiting"
@@ -34,8 +36,10 @@ export const getCsrWalletTrx = (setData: any, setMeta: any, page: any) => {
     )
     .then((res) => {
       var data: [] = [];
+      if (res.data.body.length > 0) {
+        data = res.data.body;
+      }
       setData(data);
-      console.log(data);
       setMeta(res.data.meta);
     })
     .catch((error) => {});
@@ -52,8 +56,10 @@ export const getCsrWalletCampaign = (setData: any, setMeta: any, page: any) => {
     )
     .then((res) => {
       var data: [] = [];
+      if (res.data.body.length > 0) {
+        data = res.data.body;
+      }
       setData(data);
-      console.log(data);
       setMeta(res.data.meta);
     })
     .catch((error) => {});
@@ -70,8 +76,10 @@ export const getCsrWalletMerchant = (setData: any, setMeta: any, page: any) => {
     )
     .then((res) => {
       var data: [] = [];
+      if (res.data.body.length > 0) {
+        data = res.data.body;
+      }
       setData(data);
-      console.log(data);
       setMeta(res.data.meta);
     })
     .catch((error) => {});
@@ -84,8 +92,10 @@ export const getCsrWalletBallance = (setData: any, setMeta: any) => {
     })
     .then((res) => {
       var data: [] = [];
+      if (res.data.body.length > 0) {
+        data = res.data.body;
+      }
       setData(data);
-      console.log(data);
       setMeta(res.data.meta);
     })
     .catch((error) => {});

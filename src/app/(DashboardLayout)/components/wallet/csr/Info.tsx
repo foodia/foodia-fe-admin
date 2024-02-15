@@ -1,8 +1,8 @@
 import { Box, Button, Typography } from "@mui/material";
-import DashboardCard from "../../shared/DashboardCard";
-import DataTables from "../../shared/DataTables";
 import React from "react";
 import { TableColumn } from "react-data-table-component";
+import DashboardCard from "../../shared/DashboardCard";
+import DataTables from "../../shared/DataTables";
 
 interface Details {
   donation_by: string;
@@ -22,9 +22,9 @@ const breadcrumbs = [
       fontWeight: 400,
       ":hover": { color: "blue" },
     }}
-    href="/ui-components/pages/wallet/agnostic"
+    href="/ui-components/pages/wallet/csr"
   >
-    Agnostic Wallet
+    CSR Wallet
   </Button>,
   <Typography fontSize="13px" key="2" color="#999" fontWeight={400}>
     Campaign Donation Details
@@ -59,11 +59,7 @@ const columns: TableColumn<Details>[] = [
 const Info: React.FC<Props> = ({ data }) => {
   return (
     <>
-      <DashboardCard
-        title="Depok Jumat Berkah"
-        currentBalance={100000}
-        breadcrumb={breadcrumbs}
-      >
+      <DashboardCard title="Campaign Donation Detail" breadcrumb={breadcrumbs}>
         <Box
           sx={{
             display: "flex",
