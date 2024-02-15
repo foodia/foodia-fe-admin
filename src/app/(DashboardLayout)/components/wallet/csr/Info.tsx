@@ -15,6 +15,7 @@ interface Props {
 
 const breadcrumbs = [
   <Button
+    key={0}
     sx={{
       p: 0,
       fontSize: "13px",
@@ -26,7 +27,7 @@ const breadcrumbs = [
   >
     CSR Wallet
   </Button>,
-  <Typography fontSize="13px" key="2" color="#999" fontWeight={400}>
+  <Typography fontSize="13px" key={1} color="#999" fontWeight={400}>
     Campaign Donation Details
   </Typography>,
 ];
