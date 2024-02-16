@@ -18,7 +18,7 @@ export const Approvals = (
             },
             {
               headers: {
-                authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+                authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
               },
             }
           )
@@ -39,7 +39,7 @@ export const Approvals = (
             },
             {
               headers: {
-                authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+                authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
               },
             }
           )

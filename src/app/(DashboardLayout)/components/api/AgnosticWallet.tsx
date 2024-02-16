@@ -6,7 +6,7 @@ export const getAgnosticWalletTrx = (setData: any, setMeta: any, page: any) => {
       process.env.NEXT_PUBLIC_BASE +
         `/wallet/transaction?trx_type=agnostic&page=${page}&per_page=5`,
       {
-        headers: { authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` },
+        headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       }
     )
     .then((res) => {
@@ -30,7 +30,7 @@ export const getAgnosticWalletCampaign = (
       process.env.NEXT_PUBLIC_BASE +
         `/wallet/campaign-report?wallet_type=agnostic&page=${page}&per_page=5`,
       {
-        headers: { authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` },
+        headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       }
     )
     .then((res) => {
@@ -49,7 +49,7 @@ export const getAgnosticWalletBallance = (setData: any, setMeta: any) => {
     .get(
       process.env.NEXT_PUBLIC_BASE + `/wallet/balance?wallet_type=agnostic`,
       {
-        headers: { authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` },
+        headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       }
     )
     .then((res) => {
