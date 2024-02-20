@@ -1,8 +1,10 @@
 import { Box, Button, Typography } from "@mui/material";
 import DashboardCard from "../../shared/DashboardCard";
 import DataTables from "../../shared/DataTables";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { TableColumn } from "react-data-table-component";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useAppContext } from "../../shared/Context";
 
 interface Details {
   donation_by: string;
@@ -12,7 +14,6 @@ interface Details {
 interface Props {
   data: Details[];
 }
-
 const breadcrumbs = [
   <Button
     key={0}
@@ -32,7 +33,7 @@ const breadcrumbs = [
   </Typography>,
 ];
 
-const columns: TableColumn<Details>[] = [
+const columns: TableColumn<Props>[] = [
   {
     name: "No",
     selector: (_row: any, i: any) => i + 1,
@@ -44,13 +45,21 @@ const columns: TableColumn<Details>[] = [
   },
   {
     name: "Donation By",
-    cell: (row: Details) => <div>{row.donation_by}</div>,
+    cell: (row: any) => <div>{row.donation_by}</div>,
     // sortable: true,
     width: "auto",
   },
   {
     name: "Amount",
-    cell: (row: Details) => <div>{row.amount}</div>,
+    cell: (row: any) => (
+      <div>
+        {new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          minimumFractionDigits: 0,
+        }).format(row.amount)}
+      </div>
+    ),
     // sortable: true,
     width: "auto",
   },
@@ -58,6 +67,10 @@ const columns: TableColumn<Details>[] = [
 ];
 
 const Info: React.FC<Props> = ({ data }) => {
+  const [meta, setMeta] = useState();
+  const [page, setPage] = useState(1);
+  const router = useRouter();
+
   return (
     <>
       <DashboardCard

@@ -1,29 +1,17 @@
 "use client";
+import { useAppContext } from "@/app/(DashboardLayout)/components/shared/Context";
 import Info from "@/app/(DashboardLayout)/components/wallet/agnostic/Info";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const AgnosticInfo = () => {
-  const searchParams = useSearchParams();
+  const { campaignDonationDetails } = useAppContext();
 
-  const data = [
-    {
-      donation_by: "addsa",
-      amount: 1231231,
-    },
-    {
-      donation_by: "afawfa",
-      amount: 1231231,
-    },
-    {
-      donation_by: "fwwfw",
-      amount: 1231231,
-    },
-  ];
+  console.log("asdadasdas", campaignDonationDetails);
 
   return (
     <>
-      <Info data={data} />
+      <Info data={campaignDonationDetails} />
     </>
   );
 };

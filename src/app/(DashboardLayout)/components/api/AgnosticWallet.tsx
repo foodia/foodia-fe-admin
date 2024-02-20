@@ -35,6 +35,7 @@ export const getAgnosticWalletCampaign = (
     )
     .then((res) => {
       var data: [] = [];
+      var details: [] = [];
       if (res.data.body.length > 0) {
         data = res.data.body;
       }
@@ -43,6 +44,32 @@ export const getAgnosticWalletCampaign = (
     })
     .catch((error) => {});
 };
+
+// export const getAgnosticWalletCampaignDonationDetails = (
+//   setData: any,
+//   setMeta: any,
+//   page: any
+// ) => {
+//   axios
+//     .get(
+//       process.env.NEXT_PUBLIC_BASE +
+//         `/wallet/campaign-report?wallet_type=agnostic&page=${page}&per_page=5`,
+//       {
+//         headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
+//       }
+//     )
+//     .then((res) => {
+//       var data: [] = [];
+
+//       if (res.data.body.length > 0) {
+//         data = res.data.body;
+//       }
+
+//       setData(data);
+//       setMeta(res.data.meta);
+//     })
+//     .catch((error) => {});
+// };
 
 export const getAgnosticWalletBallance = (setData: any, setMeta: any) => {
   axios
@@ -53,11 +80,7 @@ export const getAgnosticWalletBallance = (setData: any, setMeta: any) => {
       }
     )
     .then((res) => {
-      var data: [] = [];
-      if (res.data.body.length > 0) {
-        data = res.data.body;
-      }
-      setData(data);
+      setData(res.data.body);
       setMeta(res.data.meta);
     })
     .catch((error) => {});

@@ -69,7 +69,7 @@ export const getCsrWalletMerchant = (setData: any, setMeta: any, page: any) => {
   axios
     .get(
       process.env.NEXT_PUBLIC_BASE +
-        `/wallet/merchant-payment?page=${page}&per_page=3`,
+        `/wallet/merchant-payment?page=${page}&per_page=5`,
       {
         headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       }
@@ -91,11 +91,7 @@ export const getCsrWalletBallance = (setData: any, setMeta: any) => {
       headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
     })
     .then((res) => {
-      var data: [] = [];
-      if (res.data.body.length > 0) {
-        data = res.data.body;
-      }
-      setData(data);
+      setData(res.data.body);
       setMeta(res.data.meta);
     })
     .catch((error) => {});

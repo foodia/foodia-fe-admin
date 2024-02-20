@@ -4,7 +4,8 @@ import { TableColumn } from "react-data-table-component";
 import DataTables from "../../shared/DataTables";
 import Link from "next/link";
 import { ButtonAction } from "../../shared/Buttons";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import { useAppContext } from "../../shared/Context";
 
 interface Meta {
   page: number;
@@ -119,6 +120,13 @@ const DataTableComponent: React.FC<Props> = ({
   //   },
   // ];
 
+  // const router = useRouter();
+  const { setCampaignDonationDetails } = useAppContext();
+
+  const handleClick = (details: any, total_donation: any) => {
+    setCampaignDonationDetails(details);
+  };
+
   const transactionListColumns: TableColumn<TransactionListData>[] = [
     {
       name: "No",
@@ -180,6 +188,7 @@ const DataTableComponent: React.FC<Props> = ({
         </Link>
       ),
       // sortable: true,
+      width: "200px",
     },
     {
       name: "Jumlah Donasi",
@@ -200,36 +209,30 @@ const DataTableComponent: React.FC<Props> = ({
         <div
           style={{
             display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-            paddingTop: "10px",
-            paddingBottom: "10px",
+            flexDirection: "row",
           }}
         >
-          {row.details?.map((value: any, i) => (
+          {row.details?.slice(0, 2).map((value: any, i) => (
             <div
               key={value.id}
               style={{ display: "flex", flexDirection: "row" }}
             >
-              {/* {i === 1 && value.donation_by?.length > 10
+              {i == 1 && value.donation_by?.length > 10
                 ? `${value.donation_by.slice(0, 10)}...`
-                : value.donation_by} */}
-              {value.donation_by}
-              {i + 1 !== value.length && (
-                <div style={{ marginRight: "5px" }}>,</div>
-              )}
+                : value.donation_by}
+              {i == 0 && <div style={{ marginRight: "5px" }}>,</div>}
             </div>
           ))}
         </div>
       ),
       // sortable: true,
-      width: "auto",
+      width: "200px",
     },
     {
       name: "Detail Donasi",
       cell: (row: CampaignListData) => (
-        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-          {row.details?.map((value: any, i) => (
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          {row.details?.slice(0, 2).map((value: any, i) => (
             <div
               key={value.id}
               style={{ display: "flex", flexDirection: "row" }}
@@ -239,15 +242,13 @@ const DataTableComponent: React.FC<Props> = ({
                 currency: "IDR",
                 minimumFractionDigits: 0,
               }).format(value.amount)}
-              {i + 1 !== value.length && (
-                <div style={{ marginRight: "5px" }}>,</div>
-              )}
+              {i == 0 && <div style={{ marginRight: "5px" }}>,</div>}
             </div>
           ))}
         </div>
       ),
       // sortable: true,
-      // width: "",
+      width: "190px",
     },
     {
       name: "Action",
@@ -255,17 +256,20 @@ const DataTableComponent: React.FC<Props> = ({
         <Link
           href={{
             pathname: "/ui-components/pages/wallet/agnostic/info",
-            query: {
-              campaign_id: row.campaign_id,
-              campaign_name: row.campaign_name,
-              total_donations: row.total_donation,
-            },
           }}
         >
-          <ButtonAction />
+          <ButtonAction
+            onClick={() => handleClick(row.details, row.total_donation)}
+            label={
+              row.details.length > 1
+                ? `View ${row.details.length - 2} More`
+                : "View"
+            }
+          />
         </Link>
       ),
       // sortable: true,
+      width: "180px",
     },
   ];
 

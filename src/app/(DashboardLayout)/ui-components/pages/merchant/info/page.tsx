@@ -14,11 +14,11 @@ import Attachment from "@/app/(DashboardLayout)/components/merchant/Attachment";
 import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import { IconBan, IconCircleCheck, IconClock } from "@tabler/icons-react";
-import ModalPopup from "@/app/(DashboardLayout)/components/shared/ModalPopup";
 import { getMerchantDetail } from "@/app/(DashboardLayout)/components/api/Merchant";
 import { Approvals } from "@/app/(DashboardLayout)/components/api/Approvals";
 import DetailCard from "@/app/(DashboardLayout)/components/shared/DetailCard";
 import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
+import { ModalPopupApprovals } from "@/app/(DashboardLayout)/components/shared/ModalPopup";
 
 type Props = {
   id: number;
@@ -116,7 +116,7 @@ const MerchantInfo = () => {
         </>
       </DashboardCard>
 
-      <ModalPopup
+      <ModalPopupApprovals
         open={isOpen}
         handleClose={handleClose}
         status={status}

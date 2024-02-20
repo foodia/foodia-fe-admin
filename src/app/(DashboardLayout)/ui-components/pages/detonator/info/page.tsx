@@ -4,7 +4,7 @@ import { getDetonatorDetail } from "@/app/(DashboardLayout)/components/api/Deton
 import Attachment from "@/app/(DashboardLayout)/components/detonator/Attachment";
 import Info from "@/app/(DashboardLayout)/components/detonator/Info";
 import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
-import ModalPopup from "@/app/(DashboardLayout)/components/shared/ModalPopup";
+import { ModalPopupApprovals } from "@/app/(DashboardLayout)/components/shared/ModalPopup";
 import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import { IconBan, IconCircleCheck } from "@tabler/icons-react";
 import axios from "axios";
@@ -104,7 +104,7 @@ const DetonatorInfo = () => {
           </Box>
         </>
       </DashboardCard>
-      <ModalPopup
+      <ModalPopupApprovals
         open={isOpen}
         handleClose={handleClose}
         status={status}

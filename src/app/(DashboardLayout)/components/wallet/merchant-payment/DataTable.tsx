@@ -60,7 +60,7 @@ const merchantPaymentListColumns: TableColumn<MerchantPaymentListData>[] = [
     name: "Nama Merchant",
     cell: (row: MerchantPaymentListData) => (
       <>
-        {row.details?.map((value: any, i) => (
+        {row.details?.slice(0, 2).map((value: any, i) => (
           <Link
             href={{
               pathname: "/ui-components/pages/merchant/info",
@@ -72,58 +72,62 @@ const merchantPaymentListColumns: TableColumn<MerchantPaymentListData>[] = [
             style={{ display: "flex", flexDirection: "row" }}
           >
             {/* {value.merchant_name} */}
-            {i === 1 && value.donation_by?.length > 10
-              ? `${value.donation_by.slice(0, 10)}...`
+            {i === 1 && value.merchant_name?.length > 10
+              ? `${value.merchant_name.slice(0, 10)}...`
               : value.merchant_name}
-            {i + 1 !== row.details?.length && (
-              <div style={{ marginRight: "5px" }}>,</div>
-            )}
+            {i == 0 && <div style={{ marginRight: "5px" }}>,</div>}
           </Link>
         ))}
       </>
     ),
     // sortable: true,
+    width: "220px",
   },
   {
     name: "Jumlah Pembayaran",
     cell: (row: MerchantPaymentListData) => (
-      <>
-        {row.details?.map((value: any, i) => (
+      <div style={{ display: "flex", flexDirection: "row" }}>
+        {row.details?.slice(0, 2).map((value: any, i) => (
           <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
             {new Intl.NumberFormat("id-ID", {
               style: "currency",
               currency: "IDR",
               minimumFractionDigits: 0,
             }).format(value.total_amount)}
-            {i + 1 !== row.details?.length && (
-              <div style={{ marginRight: "5px" }}>,</div>
-            )}
+            {i === 1 && `...`}
+            {i == 0 && <div style={{ marginRight: "5px" }}>,</div>}
           </div>
         ))}
-      </>
+      </div>
     ),
     // sortable: true,
-    // width: "",
+    width: "200px",
   },
   {
     name: "Tgl Pembayaran",
     cell: (row: MerchantPaymentListData) => (
       <>
-        {row.details?.map((value: any, i) => (
+        {row.details?.slice(0, 2).map((value: any, i) => (
           <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
-            {/* {value.payment_date} */}
-            {i === 1 && value.donation_by?.length > 10
-              ? `${value.donation_by.slice(0, 10)}...`
-              : value.payment_date}
-            {i + 1 !== row.details?.length && (
-              <div style={{ marginRight: "5px" }}>,</div>
-            )}
+            {value.payment_date}
+            {i === 1 && `...`}
+            {i == 0 && <div style={{ marginRight: "5px" }}>,</div>}
           </div>
         ))}
       </>
     ),
     // sortable: true,
-    // width: "",
+    width: "240px",
+  },
+  {
+    name: "Action",
+    cell: (row: MerchantPaymentListData, i: number) => (
+      <Link href="">
+        <ButtonAction label="View" />
+      </Link>
+    ),
+    // sortable: true,
+    width: "150px",
   },
 ];
 

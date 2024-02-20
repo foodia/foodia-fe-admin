@@ -94,7 +94,7 @@ const PageHeader: React.FC<ItemType> = ({
                     fontWeight: 900,
                   }}
                 >
-                  Current Balance
+                  Total Balance
                 </Typography>
                 <Typography
                   sx={{

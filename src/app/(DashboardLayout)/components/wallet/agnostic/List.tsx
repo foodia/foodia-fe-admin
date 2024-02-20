@@ -109,6 +109,8 @@ const List = () => {
     </Typography>,
   ];
 
+  // console.log(balanceListData?.total_balance);
+
   return (
     <>
       <DashboardCard

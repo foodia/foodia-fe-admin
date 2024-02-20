@@ -26,6 +26,9 @@ interface AppContextProps {
   detonatorData: any;
   merchantData: any;
   productData: any;
+
+  campaignDonationDetails: any;
+  setCampaignDonationDetails: any;
 }
 const AppContext = createContext<AppContextProps | undefined>(undefined);
 
@@ -47,6 +50,9 @@ const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [merchantData, setMerchantdata] = useState([]);
   const [productData, setProductdata] = useState([]);
 
+  const [campaignDonationDetails, setCampaignDonationDetails] = useState([]);
+  const [campaignDonationTotal, setCampaignDonationTotal] = useState([]);
+
   const contextValue = {
     isUnapprovedDetonator,
     setIsUnapprovedDetonator,
@@ -64,6 +70,11 @@ const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     detonatorData,
     merchantData,
     productData,
+
+    campaignDonationTotal,
+    setCampaignDonationTotal,
+    campaignDonationDetails,
+    setCampaignDonationDetails,
   };
 
   useEffect(() => {

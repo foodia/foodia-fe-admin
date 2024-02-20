@@ -14,10 +14,10 @@ import { IconBan, IconCircleCheck, IconClock } from "@tabler/icons-react";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import ModalPopup from "@/app/(DashboardLayout)/components/shared/ModalPopup";
 import { getProductDetail } from "@/app/(DashboardLayout)/components/api/Product";
 import { Approvals } from "@/app/(DashboardLayout)/components/api/Approvals";
 import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
+import { ModalPopupApprovals } from "@/app/(DashboardLayout)/components/shared/ModalPopup";
 
 type Props = {
   id: number;
@@ -124,7 +124,7 @@ const ProductInfo = () => {
         </>
       </DashboardCard>
 
-      <ModalPopup
+      <ModalPopupApprovals
         open={isOpen}
         handleClose={handleClose}
         status={status}

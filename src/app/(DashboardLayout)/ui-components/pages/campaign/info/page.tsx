@@ -1,18 +1,33 @@
 "use client";
 import { Approvals } from "@/app/(DashboardLayout)/components/api/Approvals";
-import { getCampaignDetail } from "@/app/(DashboardLayout)/components/api/Campaign";
+import {
+  getCampaignDetail,
+  postCampaignPayment,
+} from "@/app/(DashboardLayout)/components/api/Campaign";
 import Attachment from "@/app/(DashboardLayout)/components/campaign/EventDocuments";
 import Detonator from "@/app/(DashboardLayout)/components/campaign/Detonator";
 import Info from "@/app/(DashboardLayout)/components/campaign/Info";
 import Maps from "@/app/(DashboardLayout)/components/campaign/Maps";
 import Orders from "@/app/(DashboardLayout)/components/campaign/Orders";
 import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
-import ModalPopup from "@/app/(DashboardLayout)/components/shared/ModalPopup";
-import { Box, Button, Grid, Stack, Typography } from "@mui/material";
-import { IconBan, IconCircleCheck } from "@tabler/icons-react";
-import { useSearchParams } from "next/navigation";
+import {
+  Box,
+  Button,
+  Grid,
+  SelectChangeEvent,
+  Stack,
+  Typography,
+} from "@mui/material";
+import { IconBan, IconCircleCheck, IconCirclePlus } from "@tabler/icons-react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import DetailCard from "@/app/(DashboardLayout)/components/shared/DetailCard";
+import {
+  ModalPopupAddDonations,
+  ModalPopupApprovals,
+} from "@/app/(DashboardLayout)/components/shared/ModalPopup";
+import { getWalletList } from "@/app/(DashboardLayout)/components/api/Wallet";
+import { toInteger } from "lodash";
 
 type Props = {
   id: number;
@@ -22,6 +37,7 @@ type Props = {
   event_time: string;
   description: string;
   donation_target: any;
+  donation_collected: any;
   status: string;
   order_status: string;
   image_url: string;
@@ -59,10 +75,14 @@ type Props = {
 const CampaignInfo = () => {
   const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenAddDonation, setIsOpenAddDonation] = useState(false);
   const [ids, setId] = useState<number>(0);
   const [status, setStatus] = useState("");
+  const [valueWalletType, setValueWalletType] = useState("default");
+  const [selectedWallet, setSelectedWallet] = useState("default");
   const [name, setName] = useState("");
   const [note, setNote] = useState("");
+  const [amount, setAmount] = useState("");
   const [data, setData] = useState<Props>({
     id: 0,
     event_name: "",
@@ -71,6 +91,7 @@ const CampaignInfo = () => {
     event_time: "",
     description: "",
     donation_target: "",
+    donation_collected: "",
     status: "",
     order_status: "",
     image_url: "",
@@ -104,6 +125,44 @@ const CampaignInfo = () => {
       },
     ],
   });
+  const [walletList, setWalletList] = useState([]);
+  const router = useRouter();
+
+  console.log(selectedWallet);
+
+  const onChangeWalletType = (event: SelectChangeEvent) => {
+    setValueWalletType(event.target.value);
+    setSelectedWallet("default");
+    getWalletList(setWalletList, event.target.value);
+  };
+
+  const onChangeAddDonationAmount = (event: SelectChangeEvent) => {
+    let inputVal = event.target.value;
+    inputVal = inputVal.replace(/\D/g, ""); // Remove all non-numeric characters
+    inputVal = inputVal.replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Add dots every 3 digits
+    setAmount(inputVal);
+  };
+
+  const onChangeSelectedWallet = (event: SelectChangeEvent) => {
+    setSelectedWallet(event.target.value);
+  };
+
+  const handleOpenAddDonation = () => {
+    setIsOpenAddDonation(true);
+  };
+
+  const handleCloseAddDonation = () => {
+    setIsOpenAddDonation(false);
+  };
+
+  const handleAddDonation = (id: any, selectedWallet: any, amount: any) => {
+    const onSuccess = () => {
+      console.log("SUCCESS");
+      handleCloseAddDonation();
+      location.reload();
+    };
+    postCampaignPayment(id, selectedWallet, amount, onSuccess());
+  };
 
   const handleOpen = (id: number, status: string, name: string) => {
     setIsOpen(true);
@@ -114,6 +173,7 @@ const CampaignInfo = () => {
 
   const handleClose = () => {
     setIsOpen(false);
+    // setValueEventTypeSelect("default");
   };
 
   useEffect(() => {
@@ -155,6 +215,15 @@ const CampaignInfo = () => {
                 variant="contained"
                 size="large"
                 color="success"
+                disabled={data.donation_collected >= data.donation_target}
+                onClick={() => handleOpenAddDonation()}
+              >
+                <IconCirclePlus size={18} /> Add Donation
+              </Button>
+              <Button
+                variant="contained"
+                size="large"
+                color="success"
                 disabled={data.status === "approved"}
                 onClick={() => handleOpen(data.id, "approved", data.event_name)}
               >
@@ -174,14 +243,44 @@ const CampaignInfo = () => {
         </>
       </DashboardCard>
 
-      <ModalPopup
+      <ModalPopupAddDonations
+        open={isOpenAddDonation}
+        handleClose={handleCloseAddDonation}
+        campaign_name={data.event_name}
+        required_donation={data.donation_target}
+        collected_donation={data.donation_collected}
+        valueWalletType={valueWalletType}
+        onChangeWalletType={onChangeWalletType}
+        walletList={walletList}
+        selectedWallet={selectedWallet}
+        onChangeSelectedWallet={onChangeSelectedWallet}
+        onChangeAddDonationAmount={onChangeAddDonationAmount}
+        valueDonationAmount={amount}
+        handleAddDonation={() =>
+          handleAddDonation(data.id, selectedWallet, amount)
+        }
+      />
+
+      <ModalPopupApprovals
         open={isOpen}
         handleClose={handleClose}
         status={status}
         name={name}
         note={note}
         onChange={(e: any) => setNote(e.target.value)}
-        handleSubmit={() => Approvals(ids, status, note, setIsOpen, "campaign")}
+        handleSubmit={() =>
+          Approvals(
+            ids,
+            status,
+            note,
+            setIsOpen,
+            "campaign"
+            // valueEventTypeSelect
+          )
+        }
+        // valueEventTypeSelect={valueEventTypeSelect}
+        // onChangeEventType={onChangeValueEventTypeSelect}
+        // disableApprove={valueEventTypeSelect === "default"}
       />
     </>
   );

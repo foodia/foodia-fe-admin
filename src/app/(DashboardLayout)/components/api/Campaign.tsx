@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export const getCampaign = (setData: any, setMeta?: any) => {
   axios
@@ -23,6 +24,31 @@ export const getCampaignDetail = (id: any, setData: any) => {
     })
     .then((res) => {
       setData(res.data.body);
+    })
+    .catch((error) => {});
+};
+
+export const postCampaignPayment = (
+  id: any,
+  wallet_id: any,
+  amount: any,
+  onSuccess: any
+) => {
+  axios
+    .post(
+      process.env.NEXT_PUBLIC_BASE + `/campaign/payment/${id}`,
+      {
+        wallet_id: parseInt(wallet_id),
+        amount: parseInt(amount.replace(/\./g, ""), 10),
+      },
+      {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
+        },
+      }
+    )
+    .then((res) => {
+      onSuccess(); // Call the onSuccess function with the response
     })
     .catch((error) => {});
 };

@@ -5,7 +5,8 @@ export const Approvals = (
   status: string,
   note: any,
   setIsOpen: any,
-  modul: any
+  modul: any,
+  valueEventTypeSelect?: any
 ) => {
   {
     status === "approved"
@@ -23,13 +24,10 @@ export const Approvals = (
             }
           )
           .then((res) => {
-            // getDetonatorDetail();
             location.reload();
             setIsOpen(false);
           })
           .catch((error) => {})
-      : note === ""
-      ? console.log("Note Empty")
       : axios
           .put(
             process.env.NEXT_PUBLIC_BASE + `/${modul}/approval/${id}`,

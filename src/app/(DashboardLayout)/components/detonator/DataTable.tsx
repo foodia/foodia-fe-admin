@@ -106,7 +106,7 @@ const columns: TableColumn<Data>[] = [
           },
         }}
       >
-        <ButtonAction />
+        <ButtonAction label="View" />
       </Link>
     ),
     // sortable: true,

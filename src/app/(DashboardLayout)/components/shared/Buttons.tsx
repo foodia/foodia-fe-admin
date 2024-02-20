@@ -7,7 +7,19 @@ interface StatusProps {
   row: { status: any };
 }
 
-export const ButtonAction = ({ query, pathname }: any) => {
+interface ButtonAction {
+  query?: any;
+  pathname?: any;
+  label?: any;
+  onClick?: any;
+}
+
+export const ButtonAction: React.FC<ButtonAction> = ({
+  query,
+  pathname,
+  label,
+  onClick,
+}) => {
   return (
     // <Link
     //   href={{
@@ -20,8 +32,10 @@ export const ButtonAction = ({ query, pathname }: any) => {
       variant="contained"
       size="small"
       color="info"
+      onClick={onClick}
     >
-      <IconEye size={20} /> View
+      <IconEye size={20} />
+      {label}
     </Button>
     // </Link>
   );
