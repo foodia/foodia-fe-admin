@@ -186,6 +186,7 @@ const campaignListColumns: TableColumn<CampaignListData>[] = [
       </div>
     ),
     // sortable: true,
+    width: "140px",
   },
   {
     name: "Donasi Oleh",
@@ -200,16 +201,14 @@ const campaignListColumns: TableColumn<CampaignListData>[] = [
             {/* {value.donator} */}
             {i === 1 && value.donation_by?.length > 10
               ? `${value.donation_by.slice(0, 10)}...`
-              : value.donator}
-            {i + 1 !== row.details?.length && (
-              <div style={{ marginRight: "5px" }}>,</div>
-            )}
+              : value.donation_by}
+            {i == 0 && <div style={{ marginRight: "5px" }}>,</div>}
           </Link>
         ))}
       </>
     ),
     // sortable: true,
-    // width: "",
+    width: "200px",
   },
   {
     name: "Detail Donasi",
@@ -222,6 +221,7 @@ const campaignListColumns: TableColumn<CampaignListData>[] = [
               currency: "IDR",
               minimumFractionDigits: 0,
             }).format(value.amount)}
+            {i === 1 && `...`}
             {i + 1 !== row.details?.length && (
               <div style={{ marginRight: "5px" }}>,</div>
             )}
