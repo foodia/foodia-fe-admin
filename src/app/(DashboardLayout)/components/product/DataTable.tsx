@@ -64,7 +64,15 @@ const columns: TableColumn<Data>[] = [
   },
   {
     name: "Price",
-    cell: (row: Data) => <div>Rp.{row.price}</div>,
+    cell: (row: Data) => (
+      <div>
+        {new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          minimumFractionDigits: 0,
+        }).format(parseInt(row.price))}
+      </div>
+    ),
     // sortable: true,
   },
   // {
@@ -91,7 +99,7 @@ const columns: TableColumn<Data>[] = [
             },
           }}
         >
-          <ButtonAction />
+          <ButtonAction label="View" />
         </Link>
       </Stack>
     ),

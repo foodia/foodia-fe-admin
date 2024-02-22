@@ -4,6 +4,7 @@ import { TableColumn } from "react-data-table-component";
 import DataTables from "../../shared/DataTables";
 import Link from "next/link";
 import { ButtonAction } from "../../shared/Buttons";
+import { useAppContext } from "../../shared/Context";
 
 interface Meta {
   page: number;
@@ -67,287 +68,6 @@ interface Props {
   merchantPaymentListMeta: Meta;
   onChangePageWalletMerchant: any;
 }
-
-const currentWalletColumns: TableColumn<CurrentWalletData>[] = [
-  {
-    name: "No",
-    selector: (_row, i: any) => i + 1,
-    // sortable: true,
-    width: "70px",
-    // style: {
-    //   paddingLeft: "30px",
-    // },
-  },
-  {
-    name: "Nama Donator",
-    cell: (row: CurrentWalletData) => <div>{row.donator_name}</div>,
-    // sortable: true,
-  },
-  {
-    name: "Total Donasi",
-    cell: (row: CurrentWalletData) => (
-      <div>
-        {new Intl.NumberFormat("id-ID", {
-          style: "currency",
-          currency: "IDR",
-          minimumFractionDigits: 0,
-        }).format(row.total_donation)}
-      </div>
-    ),
-    // sortable: true,
-  },
-  {
-    name: "Sisa Donasi",
-    cell: (row: CurrentWalletData) => (
-      <div>
-        {new Intl.NumberFormat("id-ID", {
-          style: "currency",
-          currency: "IDR",
-          minimumFractionDigits: 0,
-        }).format(row.remaining_balance)}
-      </div>
-    ),
-    // sortable: true,
-    // width: "",
-  },
-];
-
-const transactionListColumns: TableColumn<TransactionListData>[] = [
-  {
-    name: "No",
-    selector: (_row, i: any) => i + 1,
-    // sortable: true,
-    width: "70px",
-    // style: {
-    //   paddingLeft: "30px",
-    // },
-  },
-  {
-    name: "Nama Donator",
-    cell: (row: TransactionListData) => <div>{row.donator_name}</div>,
-    // sortable: true,
-  },
-  {
-    name: "Jumlah Donasi",
-    cell: (row: TransactionListData) => (
-      <div>
-        {new Intl.NumberFormat("id-ID", {
-          style: "currency",
-          currency: "IDR",
-          minimumFractionDigits: 0,
-        }).format(row.total_donation)}
-      </div>
-    ),
-    // sortable: true,
-  },
-  {
-    name: "Tanggal Transaksi",
-    cell: (row: TransactionListData) => <div>{row.trx_date}</div>,
-    // sortable: true,
-    // width: "",
-  },
-];
-
-const campaignListColumns: TableColumn<CampaignListData>[] = [
-  {
-    name: "No",
-    selector: (_row, i: any) => i + 1,
-    // sortable: true,
-    width: "70px",
-    // style: {
-    //   paddingLeft: "30px",
-    // },
-  },
-  {
-    name: "Nama Campaign",
-    cell: (row: CampaignListData) => (
-      <Link
-        href={{
-          pathname: "/ui-components/pages/campaign/info",
-          query: {
-            id: row.campaign_id,
-          },
-        }}
-      >
-        {row.campaign_name}
-      </Link>
-    ),
-    // sortable: true,
-  },
-  {
-    name: "Jumlah Donasi",
-    cell: (row: CampaignListData) => (
-      <div>
-        {new Intl.NumberFormat("id-ID", {
-          style: "currency",
-          currency: "IDR",
-          minimumFractionDigits: 0,
-        }).format(row.total_donation)}
-      </div>
-    ),
-    // sortable: true,
-    width: "140px",
-  },
-  {
-    name: "Donasi Oleh",
-    cell: (row: CampaignListData) => (
-      <>
-        {row.details?.map((value: any, i) => (
-          <Link
-            href=""
-            key={value.id}
-            style={{ display: "flex", flexDirection: "row" }}
-          >
-            {/* {value.donator} */}
-            {i === 1 && value.donation_by?.length > 10
-              ? `${value.donation_by.slice(0, 10)}...`
-              : value.donation_by}
-            {i == 0 && <div style={{ marginRight: "5px" }}>,</div>}
-          </Link>
-        ))}
-      </>
-    ),
-    // sortable: true,
-    width: "200px",
-  },
-  {
-    name: "Detail Donasi",
-    cell: (row: CampaignListData) => (
-      <>
-        {row.details?.map((value: any, i) => (
-          <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
-            {new Intl.NumberFormat("id-ID", {
-              style: "currency",
-              currency: "IDR",
-              minimumFractionDigits: 0,
-            }).format(value.amount)}
-            {i === 1 && `...`}
-            {i + 1 !== row.details?.length && (
-              <div style={{ marginRight: "5px" }}>,</div>
-            )}
-          </div>
-        ))}
-      </>
-    ),
-    // sortable: true,
-    // width: "",
-  },
-  {
-    name: "Action",
-    cell: (row: CampaignListData, i: number) => (
-      <Link
-        href={{
-          pathname: "/ui-components/pages/wallet/csr/info",
-          query: {
-            campaign_id: row.campaign_id,
-            campaign_name: row.campaign_name,
-            total_donations: row.total_donation,
-          },
-        }}
-      >
-        <ButtonAction />
-      </Link>
-    ),
-    // sortable: true,
-  },
-];
-
-const merchantPaymentListColumns: TableColumn<MerchantPaymentListData>[] = [
-  {
-    name: "No",
-    selector: (_row, i: any) => i + 1,
-    // sortable: true,
-    width: "70px",
-    // style: {
-    //   paddingLeft: "30px",
-    // },
-  },
-  {
-    name: "Nama Campaign",
-    cell: (row: MerchantPaymentListData) => (
-      <Link
-        href={{
-          pathname: "/ui-components/pages/campaign/info",
-          query: {
-            id: row.campaign_id,
-          },
-        }}
-      >
-        {row.campaign_name}
-      </Link>
-    ),
-    // sortable: true,
-  },
-  {
-    name: "Nama Merchant",
-    cell: (row: MerchantPaymentListData) => (
-      <>
-        {row.details?.map((value: any, i) => (
-          <Link
-            href={{
-              pathname: "/ui-components/pages/merchant/info",
-              query: {
-                id: value.merchant_id,
-              },
-            }}
-            key={value.id}
-            style={{ display: "flex", flexDirection: "row" }}
-          >
-            {/* {value.merchant_name} */}
-            {i === 1 && value.donation_by?.length > 10
-              ? `${value.donation_by.slice(0, 10)}...`
-              : value.merchant_name}
-            {i + 1 !== row.details?.length && (
-              <div style={{ marginRight: "5px" }}>,</div>
-            )}
-          </Link>
-        ))}
-      </>
-    ),
-    // sortable: true,
-  },
-  {
-    name: "Jumlah Pembayaran",
-    cell: (row: MerchantPaymentListData) => (
-      <>
-        {row.details?.map((value: any, i) => (
-          <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
-            {new Intl.NumberFormat("id-ID", {
-              style: "currency",
-              currency: "IDR",
-              minimumFractionDigits: 0,
-            }).format(value.total_amount)}
-            {i + 1 !== row.details?.length && (
-              <div style={{ marginRight: "5px" }}>,</div>
-            )}
-          </div>
-        ))}
-      </>
-    ),
-    // sortable: true,
-    // width: "",
-  },
-  {
-    name: "Tgl Pembayaran",
-    cell: (row: MerchantPaymentListData) => (
-      <>
-        {row.details?.map((value: any, i) => (
-          <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
-            {/* {value.payment_date} */}
-            {i === 1 && value.donation_by?.length > 10
-              ? `${value.donation_by.slice(0, 10)}...`
-              : value.payment_date}
-            {i + 1 !== row.details?.length && (
-              <div style={{ marginRight: "5px" }}>,</div>
-            )}
-          </div>
-        ))}
-      </>
-    ),
-    // sortable: true,
-    // width: "",
-  },
-];
 
 const DataTableComponent: React.FC<Props> = ({
   currentWalletData,
@@ -421,6 +141,306 @@ const DataTableComponent: React.FC<Props> = ({
   //     label: "Description",
   //   },
   // ];
+  const { setCampaignDonationDetails } = useAppContext();
+
+  const currentWalletColumns: TableColumn<CurrentWalletData>[] = [
+    {
+      name: "No",
+      selector: (_row, i: any) => i + 1,
+      // sortable: true,
+      width: "70px",
+      // style: {
+      //   paddingLeft: "30px",
+      // },
+    },
+    {
+      name: "Nama Donator",
+      cell: (row: CurrentWalletData) => <div>{row.donator_name}</div>,
+      // sortable: true,
+    },
+    {
+      name: "Total Donasi",
+      cell: (row: CurrentWalletData) => (
+        <div>
+          {new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+          }).format(row.total_donation)}
+        </div>
+      ),
+      // sortable: true,
+    },
+    {
+      name: "Sisa Donasi",
+      cell: (row: CurrentWalletData) => (
+        <div>
+          {new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+          }).format(row.remaining_balance)}
+        </div>
+      ),
+      // sortable: true,
+      // width: "",
+    },
+  ];
+
+  const transactionListColumns: TableColumn<TransactionListData>[] = [
+    {
+      name: "No",
+      selector: (_row, i: any) => i + 1,
+      // sortable: true,
+      width: "70px",
+      // style: {
+      //   paddingLeft: "30px",
+      // },
+    },
+    {
+      name: "Nama Donator",
+      cell: (row: TransactionListData) => <div>{row.donator_name}</div>,
+      // sortable: true,
+    },
+    {
+      name: "Jumlah Donasi",
+      cell: (row: TransactionListData) => (
+        <div>
+          {new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+          }).format(row.total_donation)}
+        </div>
+      ),
+      // sortable: true,
+    },
+    {
+      name: "Tanggal Transaksi",
+      cell: (row: TransactionListData) => <div>{row.trx_date}</div>,
+      // sortable: true,
+      // width: "",
+    },
+  ];
+
+  const campaignListColumns: TableColumn<CampaignListData>[] = [
+    {
+      name: "No",
+      selector: (_row, i: any) => i + 1,
+      // sortable: true,
+      width: "70px",
+      // style: {
+      //   paddingLeft: "30px",
+      // },
+    },
+    {
+      name: "Nama Campaign",
+      cell: (row: CampaignListData) => (
+        <Link
+          href={{
+            pathname: "/ui-components/pages/campaign/info",
+            query: {
+              id: row.campaign_id,
+            },
+          }}
+        >
+          {row.campaign_name}
+        </Link>
+      ),
+      // sortable: true,
+    },
+    {
+      name: "Jumlah Donasi",
+      cell: (row: CampaignListData) => (
+        <div>
+          {new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+          }).format(row.total_donation)}
+        </div>
+      ),
+      // sortable: true,
+      width: "140px",
+    },
+    {
+      name: "Donasi Oleh",
+      cell: (row: CampaignListData) => (
+        <>
+          {row.details?.map((value: any, i) => (
+            <Link
+              href=""
+              key={value.id}
+              style={{ display: "flex", flexDirection: "row" }}
+            >
+              {/* {value.donator} */}
+              {i === 1 && value.donation_by?.length > 10
+                ? `${value.donation_by.slice(0, 10)}...`
+                : value.donation_by}
+              {i == 0 && <div style={{ marginRight: "5px" }}>,</div>}
+            </Link>
+          ))}
+        </>
+      ),
+      // sortable: true,
+      width: "200px",
+    },
+    {
+      name: "Detail Donasi",
+      cell: (row: CampaignListData) => (
+        <>
+          {row.details?.map((value: any, i) => (
+            <div
+              key={value.id}
+              style={{ display: "flex", flexDirection: "row" }}
+            >
+              {new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }).format(value.amount)}
+              {i === 1 && `...`}
+              {i + 1 !== row.details?.length && (
+                <div style={{ marginRight: "5px" }}>,</div>
+              )}
+            </div>
+          ))}
+        </>
+      ),
+      // sortable: true,
+      // width: "",
+    },
+    {
+      name: "Action",
+      cell: (row: CampaignListData, i: number) => (
+        <Link
+          href={{
+            pathname: "/ui-components/pages/wallet/csr/info",
+          }}
+          aria-disabled="true"
+          tabIndex={-1}
+        >
+          <ButtonAction
+            disabled={row.details == undefined}
+            onClick={() => handleClick(row.details, row.total_donation)}
+            label={
+              row.details?.length > 2
+                ? `View ${row.details.length - 2} More`
+                : "View"
+            }
+          />
+        </Link>
+      ),
+      // sortable: true,
+    },
+  ];
+
+  const merchantPaymentListColumns: TableColumn<MerchantPaymentListData>[] = [
+    {
+      name: "No",
+      selector: (_row, i: any) => i + 1,
+      // sortable: true,
+      width: "70px",
+      // style: {
+      //   paddingLeft: "30px",
+      // },
+    },
+    {
+      name: "Nama Campaign",
+      cell: (row: MerchantPaymentListData) => (
+        <Link
+          href={{
+            pathname: "/ui-components/pages/campaign/info",
+            query: {
+              id: row.campaign_id,
+            },
+          }}
+        >
+          {row.campaign_name}
+        </Link>
+      ),
+      // sortable: true,
+    },
+    {
+      name: "Nama Merchant",
+      cell: (row: MerchantPaymentListData) => (
+        <>
+          {row.details?.map((value: any, i) => (
+            <Link
+              href={{
+                pathname: "/ui-components/pages/merchant/info",
+                query: {
+                  id: value.merchant_id,
+                },
+              }}
+              key={value.id}
+              style={{ display: "flex", flexDirection: "row" }}
+            >
+              {/* {value.merchant_name} */}
+              {i === 1 && value.donation_by?.length > 10
+                ? `${value.donation_by.slice(0, 10)}...`
+                : value.merchant_name}
+              {i + 1 !== row.details?.length && (
+                <div style={{ marginRight: "5px" }}>,</div>
+              )}
+            </Link>
+          ))}
+        </>
+      ),
+      // sortable: true,
+    },
+    {
+      name: "Jumlah Pembayaran",
+      cell: (row: MerchantPaymentListData) => (
+        <>
+          {row.details?.map((value: any, i) => (
+            <div
+              key={value.id}
+              style={{ display: "flex", flexDirection: "row" }}
+            >
+              {new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }).format(value.total_amount)}
+              {i + 1 !== row.details?.length && (
+                <div style={{ marginRight: "5px" }}>,</div>
+              )}
+            </div>
+          ))}
+        </>
+      ),
+      // sortable: true,
+      // width: "",
+    },
+    {
+      name: "Tgl Pembayaran",
+      cell: (row: MerchantPaymentListData) => (
+        <>
+          {row.details?.map((value: any, i) => (
+            <div
+              key={value.id}
+              style={{ display: "flex", flexDirection: "row" }}
+            >
+              {/* {value.payment_date} */}
+              {i === 1 && value.donation_by?.length > 10
+                ? `${value.donation_by.slice(0, 10)}...`
+                : value.payment_date}
+              {i + 1 !== row.details?.length && (
+                <div style={{ marginRight: "5px" }}>,</div>
+              )}
+            </div>
+          ))}
+        </>
+      ),
+      // sortable: true,
+      // width: "",
+    },
+  ];
+
+  const handleClick = (details: any, total_donation: any) => {
+    setCampaignDonationDetails(details);
+  };
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>

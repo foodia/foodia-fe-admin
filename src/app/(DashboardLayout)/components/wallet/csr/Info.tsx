@@ -70,7 +70,11 @@ const Info: React.FC<Props> = ({ data }) => {
           }}
         >
           <Box sx={{ width: "100%" }}>
-            <DataTables pagination={true} columns={columns} data={data} />
+            <DataTables
+              pagination={true}
+              columns={columns}
+              data={data ? data : []}
+            />
           </Box>
         </Box>
       </DashboardCard>

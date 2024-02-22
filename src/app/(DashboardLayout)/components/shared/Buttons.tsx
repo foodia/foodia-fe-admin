@@ -12,6 +12,7 @@ interface ButtonAction {
   pathname?: any;
   label?: any;
   onClick?: any;
+  disabled?: any;
 }
 
 export const ButtonAction: React.FC<ButtonAction> = ({
@@ -19,6 +20,7 @@ export const ButtonAction: React.FC<ButtonAction> = ({
   pathname,
   label,
   onClick,
+  disabled,
 }) => {
   return (
     // <Link
@@ -33,6 +35,7 @@ export const ButtonAction: React.FC<ButtonAction> = ({
       size="small"
       color="info"
       onClick={onClick}
+      disabled={disabled}
     >
       <IconEye size={20} />
       {label}
