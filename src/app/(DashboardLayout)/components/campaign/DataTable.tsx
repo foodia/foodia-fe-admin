@@ -56,12 +56,6 @@ const columns: TableColumn<Data>[] = [
     // sortable: true,
     width: "auto",
   },
-  // {
-  //   name: "Description",
-  //   cell: (row: Data) => <div>{row.description}</div>,
-  //   // sortable: true,
-  //   width: "200px",
-  // },
   {
     name: "Submitted at",
     cell: (row: Data) => (

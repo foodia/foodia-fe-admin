@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  Icon,
   IconButton,
   InputAdornment,
   TextField,
@@ -10,16 +11,22 @@ import {
 } from "@mui/material";
 
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { IconLock, IconUserFilled } from "@tabler/icons-react";
+import {
+  IconAddressBook,
+  IconFileDescription,
+  IconLock,
+  IconMail,
+  IconPhone,
+  IconUserFilled,
+} from "@tabler/icons-react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import Link from "next/link";
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const RegisterCorp = () => {
+  const [description, setDescription] = useState("");
+  const [address, setAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
 
@@ -28,32 +35,23 @@ const Login = () => {
   const router = useRouter();
   const theme = useTheme();
 
-  const onLogin = () => {
+  const onRegisterCorp = () => {
     setIsLoading(true);
     axios
-      .post(process.env.NEXT_PUBLIC_BASE + "/auth/login", {
-        email,
-        password,
-      })
-      .then((res) => {
-        const role = res?.data?.body.role;
-        const email = res?.data?.body.email;
-        const token = res?.data.body.token;
-        const username = res?.data?.body.fullname;
-        const user_id = res?.data?.body.user_id;
-        Cookies.set("role", role);
-        localStorage.setItem("TOKEN", token);
-        localStorage.setItem("USERNAME", username);
-        localStorage.setItem("ROLE", role);
-        localStorage.setItem("EMAIL", email);
-        localStorage.setItem("USER_ID", user_id);
-        if (role === "superadmin") {
-          router.push("/ui-components/pages/detonator");
-        } else {
-          router.refresh();
-          // window.location.href = "/authentication/sign-in";
+      .post(
+        process.env.NEXT_PUBLIC_BASE + "/corporation/register",
+        {
+          user_id: parseInt(`${localStorage.getItem("USER_ID")}`),
+          description,
+          address,
+        },
+        {
+          headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
         }
+      )
+      .then((res) => {
         // setIsLoading(false);
+        router.push("/ui-components/auth/login");
       })
       .catch((error) => {
         // if (error.code === "ERR_NETWORK") {
@@ -115,19 +113,19 @@ const Login = () => {
           padding: "20px 0 20px 0",
         }}
       >
-        Login with your account
+        Register New Account
       </Typography>
       <TextField
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={(e) => setDescription(e.target.value)}
         // label="Username"
-        placeholder="Username"
+        placeholder="About Company"
         InputProps={{
           startAdornment: (
             <InputAdornment
               sx={{ color: "rgba(255, 255, 255, 0.54)" }}
               position="start"
             >
-              <IconUserFilled />
+              <IconFileDescription />
             </InputAdornment>
           ),
         }}
@@ -144,30 +142,16 @@ const Login = () => {
         }}
       />
       <TextField
-        onChange={(e) => setPassword(e.target.value)}
-        type={showPassword ? "password" : "text"}
-        placeholder="Password"
-        color="secondary"
+        onChange={(e) => setAddress(e.target.value)}
+        // label="Username"
+        placeholder="Address"
         InputProps={{
           startAdornment: (
             <InputAdornment
               sx={{ color: "rgba(255, 255, 255, 0.54)" }}
               position="start"
             >
-              <IconLock />
-            </InputAdornment>
-          ),
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton
-                sx={{ color: "rgba(255, 255, 255, 0.54)" }}
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                // onMouseDown={handleMouseDownPassword}
-                edge="end"
-              >
-                {showPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
+              <IconAddressBook />
             </InputAdornment>
           ),
         }}
@@ -184,7 +168,7 @@ const Login = () => {
         }}
       />
       <Button
-        onClick={() => onLogin()}
+        onClick={() => onRegisterCorp()}
         style={{
           width: "100%",
           height: "56px",
@@ -201,22 +185,10 @@ const Login = () => {
         ) : (
           ""
         )}
-        Login
+        Submit
       </Button>
-      <Link
-        style={{
-          display: "flex",
-          fontSize: "16px",
-          color: "white",
-          justifyContent: "center",
-          fontWeight: "bold",
-        }}
-        href="/ui-components/auth/register"
-      >
-        Register Account
-      </Link>
     </Box>
   );
 };
 
-export default Login;
+export default RegisterCorp;

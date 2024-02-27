@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  Icon,
   IconButton,
   InputAdornment,
   TextField,
@@ -10,14 +11,21 @@ import {
 } from "@mui/material";
 
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { IconLock, IconUserFilled } from "@tabler/icons-react";
+import {
+  IconLock,
+  IconMail,
+  IconPhone,
+  IconUserFilled,
+} from "@tabler/icons-react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
 
-const Login = () => {
+const Register = () => {
+  const [fullname, setFullname] = useState("");
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -28,32 +36,21 @@ const Login = () => {
   const router = useRouter();
   const theme = useTheme();
 
-  const onLogin = () => {
+  const onRegister = () => {
     setIsLoading(true);
     axios
-      .post(process.env.NEXT_PUBLIC_BASE + "/auth/login", {
+      .post(process.env.NEXT_PUBLIC_BASE + "/auth/register", {
+        fullname,
+        phone,
         email,
         password,
       })
       .then((res) => {
-        const role = res?.data?.body.role;
-        const email = res?.data?.body.email;
-        const token = res?.data.body.token;
-        const username = res?.data?.body.fullname;
-        const user_id = res?.data?.body.user_id;
-        Cookies.set("role", role);
-        localStorage.setItem("TOKEN", token);
-        localStorage.setItem("USERNAME", username);
-        localStorage.setItem("ROLE", role);
-        localStorage.setItem("EMAIL", email);
-        localStorage.setItem("USER_ID", user_id);
-        if (role === "superadmin") {
-          router.push("/ui-components/pages/detonator");
-        } else {
-          router.refresh();
-          // window.location.href = "/authentication/sign-in";
-        }
         // setIsLoading(false);
+        router.push("/ui-components/auth/register/corporate");
+        localStorage.setItem("USER_ID", res.data.body.user_id);
+        localStorage.setItem("TOKEN", res.data.body.token);
+        console.log(res.data.body.user_id);
       })
       .catch((error) => {
         // if (error.code === "ERR_NETWORK") {
@@ -115,12 +112,12 @@ const Login = () => {
           padding: "20px 0 20px 0",
         }}
       >
-        Login with your account
+        Register New Account
       </Typography>
       <TextField
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={(e) => setFullname(e.target.value)}
         // label="Username"
-        placeholder="Username"
+        placeholder="Name"
         InputProps={{
           startAdornment: (
             <InputAdornment
@@ -128,6 +125,58 @@ const Login = () => {
               position="start"
             >
               <IconUserFilled />
+            </InputAdornment>
+          ),
+        }}
+        sx={{
+          width: "100%",
+          background: "rgba(0, 0, 0, 0.16)",
+          borderRadius: "15px",
+          "& .MuiOutlinedInput-root": {
+            color: "white",
+            "& fieldset": {
+              border: "none", // Remove the border
+            },
+          },
+        }}
+      />
+      <TextField
+        onChange={(e) => setPhone(e.target.value)}
+        // label="Username"
+        placeholder="Phone"
+        InputProps={{
+          startAdornment: (
+            <InputAdornment
+              sx={{ color: "rgba(255, 255, 255, 0.54)" }}
+              position="start"
+            >
+              <IconPhone />
+            </InputAdornment>
+          ),
+        }}
+        sx={{
+          width: "100%",
+          background: "rgba(0, 0, 0, 0.16)",
+          borderRadius: "15px",
+          "& .MuiOutlinedInput-root": {
+            color: "white",
+            "& fieldset": {
+              border: "none", // Remove the border
+            },
+          },
+        }}
+      />
+      <TextField
+        onChange={(e) => setEmail(e.target.value)}
+        // label="Username"
+        placeholder="Email"
+        InputProps={{
+          startAdornment: (
+            <InputAdornment
+              sx={{ color: "rgba(255, 255, 255, 0.54)" }}
+              position="start"
+            >
+              <IconMail />
             </InputAdornment>
           ),
         }}
@@ -184,7 +233,7 @@ const Login = () => {
         }}
       />
       <Button
-        onClick={() => onLogin()}
+        onClick={() => onRegister()}
         style={{
           width: "100%",
           height: "56px",
@@ -201,7 +250,7 @@ const Login = () => {
         ) : (
           ""
         )}
-        Login
+        Next
       </Button>
       <Link
         style={{
@@ -211,12 +260,12 @@ const Login = () => {
           justifyContent: "center",
           fontWeight: "bold",
         }}
-        href="/ui-components/auth/register"
+        href="/"
       >
-        Register Account
+        Back to Login
       </Link>
     </Box>
   );
 };
 
-export default Login;
+export default Register;

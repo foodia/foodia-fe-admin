@@ -1,14 +1,11 @@
 "use client";
 import { Approvals } from "@/app/(DashboardLayout)/components/api/Approvals";
 import { getCorporationDetail } from "@/app/(DashboardLayout)/components/api/Corporation";
-import { getDetonatorDetail } from "@/app/(DashboardLayout)/components/api/Detonator";
-import Attachment from "@/app/(DashboardLayout)/components/detonator/Attachment";
-import Info from "@/app/(DashboardLayout)/components/detonator/Info";
+import Info from "@/app/(DashboardLayout)/components/donator/Info";
 import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
 import { ModalPopupApprovals } from "@/app/(DashboardLayout)/components/shared/ModalPopup";
-import { Box, Button, Grid, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import { IconBan, IconCircleCheck } from "@tabler/icons-react";
-import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -17,11 +14,11 @@ type Props = {
   ktp_number: string;
   status: string;
   self_photo: string;
-  ktp_photo: string;
+  description: string;
   oauth: { fullname: string; email: string; phone: string };
 };
 
-const DetonatorInfo = () => {
+const CorporationInfo = () => {
   const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);
   const [ids, setId] = useState<number>(0);
@@ -33,7 +30,7 @@ const DetonatorInfo = () => {
     ktp_number: "",
     status: "",
     self_photo: "",
-    ktp_photo: "",
+    description: "",
     oauth: { fullname: "", email: "", phone: "" },
   });
 
@@ -60,10 +57,10 @@ const DetonatorInfo = () => {
 
   return (
     <>
-      <DashboardCard title="Detonator Detail" breadcrumb={breadcrumbs}>
+      <DashboardCard title="Corporation Detail" breadcrumb={breadcrumbs}>
         <>
           <Info data={data} />
-          <Attachment data={data} />
+          {/* <Attachment data={data} /> */}
           <Box
             marginTop="20px"
             display="flex"
@@ -113,11 +110,11 @@ const DetonatorInfo = () => {
         note={note}
         onChange={(e: any) => setNote(e.target.value)}
         handleSubmit={() =>
-          Approvals(ids, status, note, setIsOpen, "detonator")
+          Approvals(ids, status, note, setIsOpen, "corporation")
         }
       />
     </>
   );
 };
 
-export default DetonatorInfo;
+export default CorporationInfo;

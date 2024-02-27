@@ -41,7 +41,7 @@ const Profile = () => {
 
   const onLogout = () => {
     localStorage.clear();
-    router.push("/ui-components/auth");
+    router.push("/ui-components/auth/login");
   };
 
   const theme = useTheme();

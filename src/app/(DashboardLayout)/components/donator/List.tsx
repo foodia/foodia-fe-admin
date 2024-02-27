@@ -6,6 +6,7 @@ import { useAppContext } from "../shared/Context";
 import { getDetonator } from "../api/Detonator";
 import { Box, Typography } from "@mui/material";
 import DashboardCard from "../shared/DashboardCard";
+import { getCorporation } from "../api/Corporation";
 
 interface Meta {
   page: number;
@@ -26,7 +27,7 @@ const List = () => {
   const { setIsUnapprovedDetonator } = useAppContext();
 
   useEffect(() => {
-    getDetonator(setData, setMeta);
+    getCorporation(setData, setMeta);
   }, []);
 
   const breadcrumbs = [

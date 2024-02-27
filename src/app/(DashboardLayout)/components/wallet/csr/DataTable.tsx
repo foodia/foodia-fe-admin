@@ -267,7 +267,7 @@ const DataTableComponent: React.FC<Props> = ({
       name: "Donasi Oleh",
       cell: (row: CampaignListData) => (
         <>
-          {row.details?.map((value: any, i) => (
+          {row.details?.slice(0, 2).map((value: any, i) => (
             <Link
               href=""
               key={value.id}
@@ -289,7 +289,7 @@ const DataTableComponent: React.FC<Props> = ({
       name: "Detail Donasi",
       cell: (row: CampaignListData) => (
         <>
-          {row.details?.map((value: any, i) => (
+          {row.details?.slice(0, 2).map((value: any, i) => (
             <div
               key={value.id}
               style={{ display: "flex", flexDirection: "row" }}
@@ -300,9 +300,7 @@ const DataTableComponent: React.FC<Props> = ({
                 minimumFractionDigits: 0,
               }).format(value.amount)}
               {i === 1 && `...`}
-              {i + 1 !== row.details?.length && (
-                <div style={{ marginRight: "5px" }}>,</div>
-              )}
+              {i == 0 && <div style={{ marginRight: "5px" }}>,</div>}
             </div>
           ))}
         </>

@@ -126,9 +126,23 @@ const CampaignInfo = () => {
     ],
   });
   const [walletList, setWalletList] = useState([]);
-  const router = useRouter();
+  const [fieldsCsrWalletSelection, setFields] = useState([""]); // Initial state with one empty field
 
-  console.log(selectedWallet);
+  const handleChange = (index: any, value: any) => {
+    const newFields = [...fieldsCsrWalletSelection];
+    newFields[index] = value;
+    setFields(newFields);
+  };
+
+  const addField = () => {
+    setFields([...fieldsCsrWalletSelection, ""]);
+  };
+
+  const removeField = (index: any) => {
+    const newFields = [...fieldsCsrWalletSelection];
+    newFields.splice(index, 1);
+    setFields(newFields);
+  };
 
   const onChangeWalletType = (event: SelectChangeEvent) => {
     setValueWalletType(event.target.value);
@@ -157,7 +171,6 @@ const CampaignInfo = () => {
 
   const handleAddDonation = (id: any, selectedWallet: any, amount: any) => {
     const onSuccess = () => {
-      console.log("SUCCESS");
       handleCloseAddDonation();
       location.reload();
     };
@@ -215,7 +228,10 @@ const CampaignInfo = () => {
                 variant="contained"
                 size="large"
                 color="success"
-                disabled={data.donation_collected >= data.donation_target}
+                disabled={
+                  data.donation_collected >= data.donation_target ||
+                  data.status !== "approved"
+                }
                 onClick={() => handleOpenAddDonation()}
               >
                 <IconCirclePlus size={18} /> Add Donation
@@ -259,6 +275,7 @@ const CampaignInfo = () => {
         handleAddDonation={() =>
           handleAddDonation(data.id, selectedWallet, amount)
         }
+        fieldsCsrWalletSelection={fieldsCsrWalletSelection}
       />
 
       <ModalPopupApprovals

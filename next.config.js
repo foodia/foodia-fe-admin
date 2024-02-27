@@ -11,7 +11,7 @@ module.exports = {
     return [
       {
         source: "/",
-        destination: "/ui-components/auth",
+        destination: "/ui-components/auth/login",
       },
     ];
   },
@@ -19,7 +19,7 @@ module.exports = {
     return [
       {
         source: "/",
-        destination: "/ui-components/auth",
+        destination: "/ui-components/auth/login",
         statusCode: 301,
       },
     ];

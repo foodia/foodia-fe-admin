@@ -16,15 +16,12 @@ interface Meta {
 
 interface Data {
   id: number;
+  corporate_name: string;
+  description: string;
+  address: string;
   status: string;
   created_at: string;
   oauth: { fullname: string; email: string; phone: string };
-  meta: {
-    page: number;
-    per_page: number;
-    page_count: number;
-    total: number;
-  };
 }
 
 interface Props {
@@ -76,7 +73,7 @@ const columns: TableColumn<Data>[] = [
       <Stack spacing={1} direction="row">
         <Link
           href={{
-            pathname: "/ui-components/pages/detonator/info",
+            pathname: "/ui-components/pages/donator/info",
             query: {
               id: row.id,
             },

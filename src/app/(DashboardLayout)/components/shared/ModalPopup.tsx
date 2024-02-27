@@ -44,6 +44,7 @@ type Props = {
   handleAddDonation?: any;
   valueDonationAmount?: any;
   onChangeAddDonationAmount?: any;
+  fieldsCsrWalletSelection?: any;
 };
 
 export const ModalPopupAddDonations = ({
@@ -60,6 +61,7 @@ export const ModalPopupAddDonations = ({
   handleAddDonation,
   valueDonationAmount,
   onChangeAddDonationAmount,
+  fieldsCsrWalletSelection,
 }: Props) => {
   return (
     <Modal
@@ -112,8 +114,8 @@ export const ModalPopupAddDonations = ({
               }).format(collected_donation)}
             </Typography>
           </Box>
-          {/* Wallet Type */}
           <Box sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+            {/* Wallet Type */}
             <Box sx={{ display: "flex", flexDirection: "column", gap: "1px" }}>
               <Select
                 variant="standard"
@@ -227,6 +229,7 @@ export const ModalPopupAddDonations = ({
                   width: "100%",
                 }}
               >
+                {/* {fieldsCsrWalletSelection.map((field, index) => ( */}
                 <TextField
                   variant="standard"
                   size="small"
@@ -251,11 +254,14 @@ export const ModalPopupAddDonations = ({
                   }}
                   onChange={onChangeAddDonationAmount}
                 />
-                <Typography
-                  sx={{ color: "red", fontSize: "14px", marginLeft: "1px" }}
-                >
-                  *Input amount of donation
-                </Typography>
+                {/* ))} */}
+                {valueDonationAmount === "" && (
+                  <Typography
+                    sx={{ color: "red", fontSize: "14px", marginLeft: "1px" }}
+                  >
+                    *Input amount of donation
+                  </Typography>
+                )}
               </Box>
             )}
           </Box>
