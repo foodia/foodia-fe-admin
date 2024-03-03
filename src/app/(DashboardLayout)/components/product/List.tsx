@@ -8,6 +8,7 @@ import { Box, Typography } from "@mui/material";
 
 const List = () => {
   const [data, setData] = useState([]);
+  const [page, setPage] = useState(1);
   const [meta, setMeta] = useState({
     page: 0,
     per_page: 0,
@@ -16,8 +17,16 @@ const List = () => {
   });
   const { setIsUnapprovedProduct } = useAppContext();
 
+  const handleChangePage = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+    getProduct(setData, setMeta, value);
+  };
+
   useEffect(() => {
-    getProduct(setData, setMeta);
+    getProduct(setData, setMeta, page);
   }, []);
 
   const breadcrumbs = [
@@ -30,7 +39,11 @@ const List = () => {
     <>
       <BaseCard title="Product Management" breadcrumb={breadcrumbs}>
         <Box sx={{ paddingX: "30px" }}>
-          <DataTableComponent data={data} meta={meta} />
+          <DataTableComponent
+            data={data}
+            meta={meta}
+            handleChangePage={handleChangePage}
+          />
         </Box>
       </BaseCard>
     </>

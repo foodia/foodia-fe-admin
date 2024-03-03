@@ -15,9 +15,10 @@ const List = () => {
     total: 0,
   });
   const { setIsUnapprovedCampaign } = useAppContext();
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
-    getCampaign(setData, setMeta);
+    getCampaign(setData, setMeta, page);
   }, []);
 
   const breadcrumbs = [
@@ -26,11 +27,23 @@ const List = () => {
     </Typography>,
   ];
 
+  const handleChangePage = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+    getCampaign(setData, setMeta, value);
+  };
+
   return (
     <>
       <BaseCard title="List Campaign" breadcrumb={breadcrumbs}>
         <Box sx={{ paddingX: "30px" }}>
-          <DataTableComponent data={data} meta={meta} />
+          <DataTableComponent
+            data={data}
+            meta={meta}
+            handleChangePage={handleChangePage}
+          />
         </Box>
       </BaseCard>
     </>

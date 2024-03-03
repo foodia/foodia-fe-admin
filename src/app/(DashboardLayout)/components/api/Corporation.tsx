@@ -1,9 +1,10 @@
 import axios from "axios";
 
-export const getCorporation = (setData: any, setMeta: any) => {
+export const getCorporation = (setData: any, setMeta: any, page: any) => {
   axios
     .get(
-      process.env.NEXT_PUBLIC_BASE + "/corporation/filter?page=1&per_page=10",
+      process.env.NEXT_PUBLIC_BASE +
+        `/corporation/filter?page=${page}&per_page=10`,
       {
         headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       }

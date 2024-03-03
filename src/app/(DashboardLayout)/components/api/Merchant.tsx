@@ -1,10 +1,13 @@
 import axios from "axios";
 
-export const getMerchant = (setData: any, setMeta: any) => {
+export const getMerchant = (setData: any, setMeta: any, page: any) => {
   axios
-    .get(process.env.NEXT_PUBLIC_BASE + "/merchant/filter", {
-      headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
-    })
+    .get(
+      process.env.NEXT_PUBLIC_BASE + `/merchant/filter?page=${page}&per_page=5`,
+      {
+        headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
+      }
+    )
     .then((res) => {
       setData(res.data.body);
       setMeta(res.data.meta);

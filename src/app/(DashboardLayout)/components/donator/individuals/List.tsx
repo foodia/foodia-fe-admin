@@ -5,6 +5,7 @@ import { useAppContext } from "../../shared/Context";
 import { getDetonator } from "../../api/Detonator";
 import DashboardCard from "../../shared/DashboardCard";
 import { Box, Typography } from "@mui/material";
+import { getIndividual } from "../../api/Individual";
 
 interface Meta {
   page: number;
@@ -23,9 +24,18 @@ const List = () => {
     total: 0,
   });
   const { setIsUnapprovedDetonator } = useAppContext();
+  const [page, setPage] = useState(1);
+
+  const handleChangePage = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+    getIndividual(setData, setMeta, value);
+  };
 
   useEffect(() => {
-    getDetonator(setData, setMeta);
+    getIndividual(setData, setMeta, page);
   }, []);
 
   const breadcrumbs = [
@@ -41,7 +51,11 @@ const List = () => {
         breadcrumb={breadcrumbs}
       >
         <Box sx={{ paddingX: "40px" }}>
-          <DataTableComponent data={data} meta={meta} />
+          <DataTableComponent
+            data={data}
+            meta={meta}
+            handleChangePage={handleChangePage}
+          />
         </Box>
       </DashboardCard>
     </>

@@ -1,10 +1,10 @@
 import axios from "axios";
 
-export const getDetonator = (setData: any, setMeta: any, page: any) => {
+export const getIndividual = (setData: any, setMeta: any, page: any) => {
   axios
     .get(
       process.env.NEXT_PUBLIC_BASE +
-        `/detonator/filter?page=${page}&per_page=5`,
+        `/individual/filter?page=${page}&per_page=10`,
       {
         headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       }
@@ -20,9 +20,9 @@ export const getDetonator = (setData: any, setMeta: any, page: any) => {
     .catch((error) => {});
 };
 
-export const getDetonatorDetail = (id: any, setData: any) => {
+export const getIndividualDetail = (id: any, setData: any) => {
   axios
-    .get(process.env.NEXT_PUBLIC_BASE + `/detonator/fetch/${id}`, {
+    .get(process.env.NEXT_PUBLIC_BASE + `/individual/fetch/${id}`, {
       headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
     })
     .then((res) => {

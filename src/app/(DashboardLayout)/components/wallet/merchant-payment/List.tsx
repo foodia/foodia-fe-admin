@@ -1,16 +1,8 @@
+import { Box, SelectChangeEvent, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useAppContext } from "../../shared/Context";
-import BaseCard from "../../shared/DashboardCard";
-import DataTableComponent from "./DataTable";
-import { Box, Typography } from "@mui/material";
+import { getCsrWalletMerchant } from "../../api/CsrWallet";
 import DashboardCard from "../../shared/DashboardCard";
-import {
-  getCsrWalletBallance,
-  getCsrWalletCampaign,
-  getCsrWalletCurrent,
-  getCsrWalletMerchant,
-  getCsrWalletTrx,
-} from "../../api/CsrWallet";
+import DataTableComponent from "./DataTable";
 
 type ballance = {
   wallet_name: string;
@@ -26,6 +18,7 @@ const List = () => {
     total: 10,
   });
   const [page, setPage] = useState(1);
+  const [searchTextCampaign, setSearchTextCampaign] = useState<string>("");
 
   const handleChangePageWalletMerchant = (
     event: React.ChangeEvent<unknown>,
@@ -52,6 +45,16 @@ const List = () => {
       page
     );
   }, []);
+
+  // let filteredItemsCampaign: any = merchantPaymentListData;
+  // if (searchTextCampaign !== "") {
+  //   filteredItemsCampaign = merchantPaymentListData.filter((data) =>
+  //     data.campaign_name.toLowerCase().includes(searchTextCampaign.toLowerCase())
+  //   );
+  // }
+  // const handleChangeSearchCampaign = (event: SelectChangeEvent) => {
+  //   setSearchTextCampaign(event.target.value);
+  // };
 
   return (
     <>

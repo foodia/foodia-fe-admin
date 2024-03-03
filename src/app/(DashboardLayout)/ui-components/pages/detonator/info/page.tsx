@@ -49,7 +49,7 @@ const DetonatorInfo = () => {
   };
 
   useEffect(() => {
-    getCorporationDetail(searchParams.get("id"), setData);
+    getDetonatorDetail(searchParams.get("id"), setData);
   }, []);
 
   const breadcrumbs = [

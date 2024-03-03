@@ -4,10 +4,11 @@ import BaseCard from "../shared/DashboardCard";
 import DataTableComponent from "./DataTable";
 import { useAppContext } from "../shared/Context";
 import { getMerchant } from "../api/Merchant";
-import { Box, Typography } from "@mui/material";
+import { Box, SelectChangeEvent, Typography } from "@mui/material";
 
 const List = () => {
   const [data, setData] = useState([]);
+  const [page, setPage] = useState(1);
   const [meta, setMeta] = useState({
     page: 0,
     per_page: 0,
@@ -16,8 +17,16 @@ const List = () => {
   });
   const { setIsUnapprovedMerchant } = useAppContext();
 
+  const handleChangePage = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+    getMerchant(setData, setMeta, value);
+  };
+
   useEffect(() => {
-    getMerchant(setData, setMeta);
+    getMerchant(setData, setMeta, page);
   }, []);
 
   const breadcrumbs = [
@@ -30,7 +39,11 @@ const List = () => {
     <>
       <BaseCard title="Merchant Management" breadcrumb={breadcrumbs}>
         <Box sx={{ paddingX: "30px" }}>
-          <DataTableComponent data={data} meta={meta} />
+          <DataTableComponent
+            data={data}
+            meta={meta}
+            handleChangePage={handleChangePage}
+          />
         </Box>
       </BaseCard>
     </>

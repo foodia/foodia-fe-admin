@@ -1,12 +1,9 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import BaseCard from "../shared/DashboardCard";
-import DataTableComponent from "./DataTable";
-import { useAppContext } from "../shared/Context";
-import { getDetonator } from "../api/Detonator";
 import { Box, Typography } from "@mui/material";
-import DashboardCard from "../shared/DashboardCard";
+import { useEffect, useState } from "react";
 import { getCorporation } from "../api/Corporation";
+import { useAppContext } from "../shared/Context";
+import DashboardCard from "../shared/DashboardCard";
+import DataTableComponent from "./DataTable";
 
 interface Meta {
   page: number;
@@ -25,9 +22,18 @@ const List = () => {
     total: 0,
   });
   const { setIsUnapprovedDetonator } = useAppContext();
+  const [page, setPage] = useState(1);
+
+  const handleChangePage = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+    getCorporation(setData, setMeta, value);
+  };
 
   useEffect(() => {
-    getCorporation(setData, setMeta);
+    getCorporation(setData, setMeta, page);
   }, []);
 
   const breadcrumbs = [
@@ -43,7 +49,11 @@ const List = () => {
         breadcrumb={breadcrumbs}
       >
         <Box sx={{ paddingX: "40px" }}>
-          <DataTableComponent data={data} meta={meta} />
+          <DataTableComponent
+            data={data}
+            meta={meta}
+            handleChangePage={handleChangePage}
+          />
         </Box>
       </DashboardCard>
     </>

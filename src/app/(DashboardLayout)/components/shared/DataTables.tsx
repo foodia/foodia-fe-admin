@@ -2,10 +2,8 @@ import { Search } from "@mui/icons-material";
 import {
   Box,
   Button,
-  FormControl,
   Input,
   InputAdornment,
-  InputLabel,
   MenuItem,
   Pagination,
   PaginationItem,
@@ -13,26 +11,18 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
+import React from "react";
 import DataTable from "react-data-table-component";
-import CustomStylesTable from "./CustomStylesTable";
-import ReactPaginate from "react-paginate";
-import {
-  IconArrowBack,
-  IconArrowForward,
-  IconArrowLeft,
-  IconArrowRight,
-  IconDownload,
-  IconSignLeft,
-  IconSignRight,
-} from "@tabler/icons-react";
-import { DownloadTableExcel } from "react-export-table-to-excel";
 import * as XLSX from "xlsx";
+import CustomStylesTable from "./CustomStylesTable";
 
 interface Data {
   value?: any;
   valueSearchBy?: any;
   onChange?: any;
+  onChangeFilterText?: any;
+  filterText?: { id?: number; value?: any; label?: any }[];
   columns?: any;
   data?: any;
   onChangeSearch?: any;
@@ -49,6 +39,7 @@ const DataTables: React.FC<Data> = ({
   value,
   valueSearchBy,
   onChange,
+  onChangeFilterText,
   columns,
   data,
   onChangeSearch,
@@ -56,7 +47,7 @@ const DataTables: React.FC<Data> = ({
   searchOption,
   meta,
   pageItems,
-  totalItems,
+  filterText,
   pagination,
   page,
 }) => {
@@ -149,7 +140,7 @@ const DataTables: React.FC<Data> = ({
           <Input
             disableUnderline
             size="small"
-            placeholder="Search"
+            placeholder="Search Name"
             sx={{
               background: "rgba(63, 182, 72, 0.10)",
               padding: "10px 16px",
@@ -166,7 +157,7 @@ const DataTables: React.FC<Data> = ({
             onChange={onChangeSearch}
           />
         )}
-        {value ? (
+        {value != undefined ? (
           //-- Filter Status Approval --//
           <Box
             sx={{
@@ -197,10 +188,13 @@ const DataTables: React.FC<Data> = ({
                 },
               }}
               value={value}
-              onChange={onChange}
+              onChange={onChangeFilterText}
             >
-              <MenuItem value="approved">Approved</MenuItem>
-              <MenuItem value="unapproved">Unapproved</MenuItem>
+              {filterText?.map((data) => (
+                <MenuItem key={data.id} value={data.value}>
+                  {data.label}
+                </MenuItem>
+              ))}
             </Select>
           </Box>
         ) : (

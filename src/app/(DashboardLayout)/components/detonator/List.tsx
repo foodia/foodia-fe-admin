@@ -23,10 +23,19 @@ const List = () => {
     total: 0,
   });
   const { setIsUnapprovedDetonator } = useAppContext();
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
-    getDetonator(setData, setMeta);
+    getDetonator(setData, setMeta, page);
   }, []);
+
+  const handleChangePage = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+    getDetonator(setData, setMeta, value);
+  };
 
   const breadcrumbs = [
     <Typography fontSize="13px" key="3" color="#999" fontWeight={400}>
@@ -38,7 +47,11 @@ const List = () => {
     <>
       <BaseCard title="Detonator Management" breadcrumb={breadcrumbs}>
         <Box sx={{ paddingX: "30px" }}>
-          <DataTableComponent data={data} meta={meta} />
+          <DataTableComponent
+            data={data}
+            meta={meta}
+            handleChange={handleChangePage}
+          />
         </Box>
       </BaseCard>
     </>

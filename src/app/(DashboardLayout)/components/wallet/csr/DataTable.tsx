@@ -86,62 +86,42 @@ const DataTableComponent: React.FC<Props> = ({
   merchantPaymentListMeta,
   onChangePageWalletMerchant,
 }) => {
-  // const [filterText, setFilterText] = useState<string>("unapproved");
-  // const [searchBy, setSearchBy] = useState<string>("name");
-  // const [searchText, setSearchText] = useState<string>("");
-
-  // const handleChangeSearchBy = (event: SelectChangeEvent) => {
-  //   setSearchBy(event.target.value);
-  // };
-
-  // const handleChange = (event: SelectChangeEvent) => {
-  //   setFilterText(event.target.value);
-  // };
-
-  // const handleChangeSearch = (event: SelectChangeEvent) => {
-  //   setSearchText(event.target.value);
-  // };
-
-  // let filteredItems: any;
-  // if (filterText === "unapproved") {
-  //   filteredItems = data.filter(
-  //     (data) =>
-  //       data.status.toLowerCase() !== "approved" &&
-  //       (searchBy === "name"
-  //         ? data.name.toLowerCase().includes(searchText.toLowerCase())
-  //         : searchBy === "price"
-  //         ? data.price.toLowerCase().includes(searchText.toLowerCase())
-  //         : data.description.toLowerCase().includes(searchText.toLowerCase()))
-  //   );
-  // } else {
-  //   filteredItems = data.filter(
-  //     (data) =>
-  //       data.status.toLowerCase() === "approved" &&
-  //       (searchBy === "name"
-  //         ? data.name.toLowerCase().includes(searchText.toLowerCase())
-  //         : searchBy === "price"
-  //         ? data.price.toLowerCase().includes(searchText.toLowerCase())
-  //         : data.description.toLowerCase().includes(searchText.toLowerCase()))
-  //   );
-  // }
-  // const searchOption = [
-  //   {
-  //     id: 1,
-  //     value: "name",
-  //     label: "Name",
-  //   },
-  //   {
-  //     id: 2,
-  //     value: "price",
-  //     label: "Price",
-  //   },
-  //   {
-  //     id: 3,
-  //     value: "description",
-  //     label: "Description",
-  //   },
-  // ];
   const { setCampaignDonationDetails } = useAppContext();
+  const [searchTextTrxData, setSearchTextTrxData] = useState<string>("");
+  const [searchTextCurrWallet, setSearchTextCurrWallet] = useState<string>("");
+  const [searchTextCampaign, setSearchTextCampaign] = useState<string>("");
+
+  let filteredItemsCurrWallet: any = currentWalletData;
+  if (searchTextCurrWallet !== "") {
+    filteredItemsCurrWallet = currentWalletData.filter((data) =>
+      data.donator_name.toLowerCase().includes(searchTextTrxData.toLowerCase())
+    );
+  }
+  const handleChangeSearchCurrWallet = (event: SelectChangeEvent) => {
+    setSearchTextCurrWallet(event.target.value);
+  };
+
+  let filteredItemsTrxData: any = transactionListData;
+  if (searchTextTrxData !== "") {
+    filteredItemsTrxData = transactionListData.filter((data) =>
+      data.donator_name.toLowerCase().includes(searchTextTrxData.toLowerCase())
+    );
+  }
+  const handleChangeSearchTrxData = (event: SelectChangeEvent) => {
+    setSearchTextTrxData(event.target.value);
+  };
+
+  let filteredItemsCampaign: any = campaignListData;
+  if (searchTextCampaign !== "") {
+    filteredItemsCampaign = campaignListData.filter((data) =>
+      data.campaign_name
+        .toLowerCase()
+        .includes(searchTextCampaign.toLowerCase())
+    );
+  }
+  const handleChangeSearchCampaign = (event: SelectChangeEvent) => {
+    setSearchTextCampaign(event.target.value);
+  };
 
   const currentWalletColumns: TableColumn<CurrentWalletData>[] = [
     {
@@ -456,14 +436,14 @@ const DataTableComponent: React.FC<Props> = ({
             // value={filterText}
             // searchOption={searchOption}
             // valueSearchBy={searchBy}
-            // onChangeSearch={handleChangeSearch}
+            onChangeSearch={handleChangeSearchCurrWallet}
             // onChangeSearchBy={handleChangeSearchBy}
             onChange={onChangePageWalletCurrent}
             pagination={true}
             meta={currentWalletMeta}
-            pageItems={currentWalletData?.length}
+            pageItems={filteredItemsCurrWallet?.length}
             columns={currentWalletColumns}
-            data={currentWalletData}
+            data={filteredItemsCurrWallet}
           />
         </Box>
         <Box sx={{ width: "50%" }}>
@@ -472,14 +452,14 @@ const DataTableComponent: React.FC<Props> = ({
             // value={filterText}
             // searchOption={searchOption}
             // valueSearchBy={searchBy}
-            // onChangeSearch={handleChangeSearch}
+            onChangeSearch={handleChangeSearchTrxData}
             // onChangeSearchBy={handleChangeSearchBy}
             onChange={onChangePageWalletTrx}
             pagination={true}
             meta={transactionListMeta}
-            pageItems={transactionListData?.length}
+            pageItems={filteredItemsTrxData?.length}
             columns={transactionListColumns}
-            data={transactionListData}
+            data={filteredItemsTrxData}
           />
         </Box>
       </Box>
@@ -489,14 +469,14 @@ const DataTableComponent: React.FC<Props> = ({
           // value={filterText}
           // searchOption={searchOption}
           // valueSearchBy={searchBy}
-          // onChangeSearch={handleChangeSearch}
+          onChangeSearch={handleChangeSearchCampaign}
           // onChangeSearchBy={handleChangeSearchBy}
           onChange={onChangePageWalletCampaign}
           pagination={true}
           meta={campaignListMeta}
-          pageItems={campaignListData?.length}
+          pageItems={filteredItemsCampaign?.length}
           columns={campaignListColumns}
-          data={campaignListData}
+          data={filteredItemsCampaign}
         />
       </Box>
       {/* <Box>

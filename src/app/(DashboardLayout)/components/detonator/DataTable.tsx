@@ -30,6 +30,7 @@ interface Data {
 interface Props {
   data: Data[];
   meta: Meta;
+  handleChange: any;
 }
 
 const columns: TableColumn<Data>[] = [
@@ -114,7 +115,7 @@ const columns: TableColumn<Data>[] = [
   // Add more columns as needed
 ];
 
-const DataTableComponent: React.FC<Props> = ({ data, meta }) => {
+const DataTableComponent: React.FC<Props> = ({ data, meta, handleChange }) => {
   const [filterText, setFilterText] = useState<string>("unapproved");
   const [searchBy, setSearchBy] = useState<string>("fullname");
   const [searchText, setSearchText] = useState<string>("");
@@ -123,7 +124,7 @@ const DataTableComponent: React.FC<Props> = ({ data, meta }) => {
     setSearchBy(event.target.value);
   };
 
-  const handleChange = (event: SelectChangeEvent) => {
+  const handleChangeFilterText = (event: SelectChangeEvent) => {
     setFilterText(event.target.value);
   };
 
@@ -172,12 +173,27 @@ const DataTableComponent: React.FC<Props> = ({ data, meta }) => {
     },
   ];
 
+  const filterOptions = [
+    {
+      id: 1,
+      value: "unapproved",
+      label: "Unapproved",
+    },
+    {
+      id: 2,
+      value: "approved",
+      label: "Approved",
+    },
+  ];
+
   return (
     <>
       <DataTables
         value={filterText}
         searchOption={searchOption}
         valueSearchBy={searchBy}
+        onChangeFilterText={handleChangeFilterText}
+        filterText={filterOptions}
         onChange={handleChange}
         onChangeSearch={handleChangeSearch}
         onChangeSearchBy={handleChangeSearchBy}

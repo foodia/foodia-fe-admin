@@ -27,6 +27,7 @@ interface Data {
 interface Props {
   data: Data[];
   meta: Meta;
+  handleChangePage: any;
 }
 
 const columns: TableColumn<Data>[] = [
@@ -88,7 +89,11 @@ const columns: TableColumn<Data>[] = [
   // Add more columns as needed
 ];
 
-const DataTableComponent: React.FC<Props> = ({ data, meta }) => {
+const DataTableComponent: React.FC<Props> = ({
+  data,
+  meta,
+  handleChangePage,
+}) => {
   const [filterText, setFilterText] = useState<string>("unapproved");
   const [searchBy, setSearchBy] = useState<string>("fullname");
   const [searchText, setSearchText] = useState<string>("");
@@ -146,13 +151,28 @@ const DataTableComponent: React.FC<Props> = ({ data, meta }) => {
     },
   ];
 
+  const filterOptions = [
+    {
+      id: 1,
+      value: "unapproved",
+      label: "Unapproved",
+    },
+    {
+      id: 2,
+      value: "approved",
+      label: "Approved",
+    },
+  ];
+
   return (
     <>
       <DataTables
         value={filterText}
         searchOption={searchOption}
         valueSearchBy={searchBy}
-        onChange={handleChange}
+        onChangeFilterText={handleChange}
+        filterText={filterOptions}
+        onChange={handleChangePage}
         onChangeSearch={handleChangeSearch}
         onChangeSearchBy={handleChangeSearchBy}
         pageItems={filteredItems.length}

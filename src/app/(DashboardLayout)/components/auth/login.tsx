@@ -48,7 +48,7 @@ const Login = () => {
         localStorage.setItem("EMAIL", email);
         localStorage.setItem("USER_ID", user_id);
         if (role === "superadmin") {
-          router.push("/ui-components/pages/detonator");
+          router.push("/ui-components/pages/donator/individuals");
         } else {
           router.refresh();
           // window.location.href = "/authentication/sign-in";
@@ -213,7 +213,7 @@ const Login = () => {
         }}
         href="/ui-components/auth/register"
       >
-        Register Account
+        Register Corporation Account
       </Link>
     </Box>
   );

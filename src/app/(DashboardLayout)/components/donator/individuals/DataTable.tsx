@@ -1,11 +1,12 @@
-import { Button, Chip, SelectChangeEvent, Stack } from "@mui/material";
-import { IconEye } from "@tabler/icons-react";
+import { Box, Button, Chip, SelectChangeEvent, Stack } from "@mui/material";
+import { IconCircleCheck, IconEye } from "@tabler/icons-react";
 import moment from "moment";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { TableColumn } from "react-data-table-component";
 import DataTables from "../../shared/DataTables";
 import { ButtonAction, Status } from "../../shared/Buttons";
+import { getIndividual } from "../../api/Individual";
 
 interface Meta {
   page: number;
@@ -18,7 +19,11 @@ interface Data {
   id: number;
   status: string;
   created_at: string;
-  oauth: { fullname: string; email: string; phone: string };
+  fullname: string;
+  email: string;
+  phone: string;
+  is_active: any;
+  is_locked: any;
   meta: {
     page: number;
     per_page: number;
@@ -30,6 +35,7 @@ interface Data {
 interface Props {
   data: Data[];
   meta: Meta;
+  handleChangePage: any;
 }
 
 const columns: TableColumn<Data>[] = [
@@ -44,18 +50,18 @@ const columns: TableColumn<Data>[] = [
   },
   {
     name: "Fullname",
-    cell: (row: Data) => <div>{row.oauth.fullname}</div>,
+    cell: (row: Data) => <div>{row.fullname}</div>,
     // sortable: true,
   },
   {
     name: "Email",
-    cell: (row: Data) => <div>{row.oauth.email}</div>,
+    cell: (row: Data) => <div>{row.email}</div>,
     // sortable: true,
     width: "270px",
   },
   {
     name: "Phone number",
-    cell: (row: Data) => <div>{row.oauth.phone}</div>,
+    cell: (row: Data) => <div>{row.phone}</div>,
     // sortable: true,
   },
   {
@@ -66,8 +72,17 @@ const columns: TableColumn<Data>[] = [
     // sortable: true,
   },
   {
-    name: "Status",
-    cell: (row: Data) => <Status row={row} />,
+    name: "Active",
+    cell: (row: Data) => (
+      <div>{row.is_active ? <IconCircleCheck color="green" /> : ""}</div>
+    ),
+    // sortable: true,
+  },
+  {
+    name: "Locked",
+    cell: (row: Data) => (
+      <div>{row.is_locked ? <IconCircleCheck color="green" /> : ""}</div>
+    ),
     // sortable: true,
   },
   {
@@ -91,8 +106,12 @@ const columns: TableColumn<Data>[] = [
   // Add more columns as needed
 ];
 
-const DataTableComponent: React.FC<Props> = ({ data, meta }) => {
-  const [filterText, setFilterText] = useState<string>("unapproved");
+const DataTableComponent: React.FC<Props> = ({
+  data,
+  meta,
+  handleChangePage,
+}) => {
+  const [filterText, setFilterText] = useState<any>(false);
   const [searchBy, setSearchBy] = useState<string>("fullname");
   const [searchText, setSearchText] = useState<string>("");
 
@@ -108,26 +127,26 @@ const DataTableComponent: React.FC<Props> = ({ data, meta }) => {
     setSearchText(event.target.value);
   };
 
-  let filteredItems: any;
-  if (filterText === "unapproved") {
+  let filteredItems: any = data;
+  if (filterText == false) {
     filteredItems = data.filter(
       (data) =>
-        data.status.toLowerCase() !== "approved" &&
+        data.is_active == false &&
         (searchBy === "fullname"
-          ? data.oauth.fullname.toLowerCase().includes(searchText.toLowerCase())
+          ? data.fullname.toLowerCase().includes(searchText.toLowerCase())
           : searchBy === "email"
-          ? data.oauth.email.toLowerCase().includes(searchText.toLowerCase())
-          : data.oauth.phone.toLowerCase().includes(searchText.toLowerCase()))
+          ? data.email.toLowerCase().includes(searchText.toLowerCase())
+          : data.phone.toLowerCase().includes(searchText.toLowerCase()))
     );
   } else {
     filteredItems = data.filter(
       (data) =>
-        data.status.toLowerCase() === "approved" &&
+        data.is_active == true &&
         (searchBy === "fullname"
-          ? data.oauth.fullname.toLowerCase().includes(searchText.toLowerCase())
+          ? data.fullname.toLowerCase().includes(searchText.toLowerCase())
           : searchBy === "email"
-          ? data.oauth.email.toLowerCase().includes(searchText.toLowerCase())
-          : data.oauth.phone.toLowerCase().includes(searchText.toLowerCase()))
+          ? data.email.toLowerCase().includes(searchText.toLowerCase())
+          : data.phone.toLowerCase().includes(searchText.toLowerCase()))
     );
   }
 
@@ -149,13 +168,28 @@ const DataTableComponent: React.FC<Props> = ({ data, meta }) => {
     },
   ];
 
+  const filterOptions = [
+    {
+      id: 1,
+      value: true,
+      label: "Active",
+    },
+    {
+      id: 2,
+      value: false,
+      label: "Un-Active",
+    },
+  ];
+
   return (
     <>
       <DataTables
         value={filterText}
         searchOption={searchOption}
         valueSearchBy={searchBy}
-        onChange={handleChange}
+        onChange={handleChangePage}
+        onChangeFilterText={handleChange}
+        filterText={filterOptions}
         onChangeSearch={handleChangeSearch}
         onChangeSearchBy={handleChangeSearchBy}
         pageItems={filteredItems.length}

@@ -63,13 +63,13 @@ const Menuitems = () => {
           icon: <IconBusinessplan />,
           // isUnapproved: isUnapprovedProduct,
         },
-        // {
-        //   id: uniqueId(),
-        //   href: "/ui-components/pages/donator/individuals",
-        //   name: "Individuals",
-        //   icon: <IconUser />,
-        //   // isUnapproved: isUnapprovedMerchant,
-        // },
+        {
+          id: uniqueId(),
+          href: "/ui-components/pages/donator/individuals",
+          name: "Individuals",
+          icon: <IconUser />,
+          // isUnapproved: isUnapprovedMerchant,
+        },
       ],
     },
     {

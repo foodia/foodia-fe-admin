@@ -1,11 +1,14 @@
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-export const getCampaign = (setData: any, setMeta?: any) => {
+export const getCampaign = (setData: any, setMeta?: any, page?: any) => {
   axios
-    .get(process.env.NEXT_PUBLIC_BASE + "/campaign/filter", {
-      headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
-    })
+    .get(
+      process.env.NEXT_PUBLIC_BASE + `/campaign/filter?page=${page}&per_page=5`,
+      {
+        headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
+      }
+    )
     .then((res) => {
       setData(res.data.body);
       setMeta(res.data.meta);

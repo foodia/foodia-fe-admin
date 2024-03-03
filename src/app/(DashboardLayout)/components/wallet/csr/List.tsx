@@ -1,9 +1,5 @@
-import { useEffect, useState } from "react";
-import { useAppContext } from "../../shared/Context";
-import BaseCard from "../../shared/DashboardCard";
-import DataTableComponent from "./DataTable";
 import { Box, Typography } from "@mui/material";
-import DashboardCard from "../../shared/DashboardCard";
+import { useEffect, useState } from "react";
 import {
   getCsrWalletBallance,
   getCsrWalletCampaign,
@@ -11,6 +7,9 @@ import {
   getCsrWalletMerchant,
   getCsrWalletTrx,
 } from "../../api/CsrWallet";
+import { useAppContext } from "../../shared/Context";
+import DashboardCard from "../../shared/DashboardCard";
+import DataTableComponent from "./DataTable";
 
 type ballance = {
   wallet_name: string;
