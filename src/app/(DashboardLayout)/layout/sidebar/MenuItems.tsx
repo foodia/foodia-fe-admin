@@ -13,7 +13,7 @@ import {
 import { uniqueId } from "lodash";
 import { useAppContext } from "../../components/shared/Context";
 
-const Menuitems = (req: any) => {
+const Menuitems = () => {
   const {
     isUnapprovedDetonator,
     isUnapprovedCampaign,

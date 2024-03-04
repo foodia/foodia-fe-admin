@@ -1,25 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 // mui imports
 import {
-  ListItemIcon,
-  ListItem,
-  List,
-  styled,
-  ListItemText,
-  useTheme,
-  ListItemButton,
-  Collapse,
-  Button,
   Box,
+  Button,
+  Collapse,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  styled,
+  useTheme,
 } from "@mui/material";
-import Link from "next/link";
 import {
   IconChevronDown,
   IconChevronUp,
   IconCircle,
-  IconUser,
 } from "@tabler/icons-react";
-import { useAppContext } from "@/app/(DashboardLayout)/components/shared/Context";
+import Link from "next/link";
 
 type NavGroup = {
   [x: string]: any;
@@ -57,18 +54,10 @@ const NavItem = ({ item, index, level, pathDirect, onClick }: ItemType) => {
     parseInt(`${localStorage.getItem("Index")}`, 10)
   );
 
-  // useEffect(() => {
-  //   const storedValue = localStorage.getItem("Index");
-
-  //   // If a value is found in localStorage, update the state
-  //   if (storedValue) {
-  //     setIndex(parseInt(storedValue, 10));
-  //   }
-  // }, []);
-
   console.log(Index);
 
   const handleClick = (index: any) => {
+    setOpen(!open);
     setIndex(index);
     localStorage.setItem("Index", index);
   };
@@ -176,7 +165,7 @@ const NavItem = ({ item, index, level, pathDirect, onClick }: ItemType) => {
                 key={t.id}
                 href={t.href}
                 selected={pathDirect === t.href}
-                onClick={() => handleClick(index)}
+                // onClick={() => handleClick(index)}
               >
                 {/* <ListItemIcon
                   sx={{

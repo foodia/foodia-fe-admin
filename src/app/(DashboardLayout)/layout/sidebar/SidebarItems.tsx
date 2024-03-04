@@ -13,7 +13,7 @@ const SidebarItems = ({ toggleMobileSidebar }: any) => {
   return (
     <Box sx={{ px: 2 }}>
       <List className="sidebarNav" component="div">
-        {menuItems.map((item, index) => {
+        {menuItems?.map((item, index) => {
           // {/********SubHeader**********/}
           // if (item.subheader) {
           //   return <NavGroup item={item} key={item.subheader} />;
