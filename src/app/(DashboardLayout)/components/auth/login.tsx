@@ -49,6 +49,8 @@ const Login = () => {
         localStorage.setItem("USER_ID", user_id);
         if (role === "superadmin") {
           router.push("/ui-components/pages/donator/individuals");
+        } else if (role === "corporate") {
+          router.push("/ui-components/pages/wallet/csr");
         } else {
           router.refresh();
           // window.location.href = "/authentication/sign-in";
