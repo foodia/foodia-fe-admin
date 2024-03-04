@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // mui imports
 import {
   Box,
@@ -54,10 +54,8 @@ const NavItem = ({ item, index, level, pathDirect, onClick }: ItemType) => {
     parseInt(`${localStorage.getItem("Index")}`, 10)
   );
 
-  console.log(Index);
-
   const handleClick = (index: any) => {
-    setOpen(!open);
+    setOpen((prevOpen) => (index === Index ? !prevOpen : true));
     setIndex(index);
     localStorage.setItem("Index", index);
   };
