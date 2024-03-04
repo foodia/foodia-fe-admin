@@ -85,24 +85,24 @@ const columns: TableColumn<Data>[] = [
     ),
     // sortable: true,
   },
-  {
-    name: "Action",
-    cell: (row: Data) => (
-      <Stack spacing={1} direction="row">
-        <Link
-          href={{
-            pathname: "/ui-components/detonator/info",
-            query: {
-              id: row.id,
-            },
-          }}
-        >
-          <ButtonAction label="View" />
-        </Link>
-      </Stack>
-    ),
-    // sortable: true,
-  },
+  // {
+  //   name: "Action",
+  //   cell: (row: Data) => (
+  //     <Stack spacing={1} direction="row">
+  //       <Link
+  //         href={{
+  //           pathname: "/ui-components/detonator/info",
+  //           query: {
+  //             id: row.id,
+  //           },
+  //         }}
+  //       >
+  //         <ButtonAction label="View" />
+  //       </Link>
+  //     </Stack>
+  //   ),
+  //   // sortable: true,
+  // },
   // Add more columns as needed
 ];
 
