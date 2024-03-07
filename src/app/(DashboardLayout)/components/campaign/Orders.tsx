@@ -18,6 +18,7 @@ import { useState } from "react";
 import { ModalPopupFilesDetail } from "../shared/ModalPopup";
 import Link from "next/link";
 import DetailCard from "../shared/DetailCard";
+import Images from "../shared/Images";
 
 interface ChildProps {
   data: {
@@ -121,14 +122,8 @@ const Orders: React.FC<ChildProps> = ({ data }) => {
                 size="small"
                 color="primary"
               >
-                <Image
-                  style={{ borderRadius: "10px" }}
-                  onClick={() =>
-                    onViewImage(orders.merchant_product.images[0].image_url)
-                  }
-                  src={`${process.env.NEXT_PUBLIC_FILE}${orders.merchant_product.images[0].image_url}`}
-                  alt="NotFound"
-                  layout="fill"
+                <Images
+                  url={`${process.env.NEXT_PUBLIC_FILE}${orders.merchant_product.images[0].image_url}`}
                 />
               </Button>
               <Box

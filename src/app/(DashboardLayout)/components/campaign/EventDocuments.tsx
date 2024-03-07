@@ -1,23 +1,8 @@
-import {
-  Box,
-  Button,
-  Grid,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  Typography,
-} from "@mui/material";
-import { IconEye, IconPhone } from "@tabler/icons-react";
-import Image from "next/image";
-import BaseCard from "../shared/DashboardCard";
-
+import { Button } from "@mui/material";
 import { useState } from "react";
-import { ModalPopupFilesDetail } from "../shared/ModalPopup";
-import Link from "next/link";
 import DetailCard from "../shared/DetailCard";
+import Images from "../shared/Images";
+import { ModalPopupFilesDetail } from "../shared/ModalPopup";
 
 interface ChildProps {
   data: {
@@ -45,29 +30,6 @@ interface ChildProps {
   };
 }
 
-// const products = [
-//   {
-//     id: "1",
-//     name: "Selfi.jpg",
-//     post: "2 MB",
-//     pname: "Elite Admin",
-//     priority: "Low",
-//     pbg: "primary.main",
-//     budget: "3.9",
-//     img: img1,
-//   },
-//   {
-//     id: "2",
-//     name: "KTP.jpg",
-//     post: "1 MB",
-//     pname: "Real Homes WP Theme",
-//     priority: "Medium",
-//     pbg: "secondary.main",
-//     budget: "24.5",
-//     img: img2,
-//   },
-// ];
-
 const Attachment: React.FC<ChildProps> = ({ data }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [file, setFile] = useState("");
@@ -75,7 +37,6 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
   const onViewImage = (file: string) => {
     setIsOpen(true);
     setFile(file);
-    console.log(file);
   };
 
   const onCloseView = () => {
@@ -91,11 +52,7 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
           size="small"
           sx={{ width: "210px", height: "125px", borderRadius: "10px" }}
         >
-          <Image
-            src={`${process.env.NEXT_PUBLIC_FILE}${data.image_url}`}
-            alt="NotFound"
-            layout="fill"
-          />
+          <Images url={`${process.env.NEXT_PUBLIC_FILE}${data.image_url}`} />
         </Button>
       </DetailCard>
       <ModalPopupFilesDetail

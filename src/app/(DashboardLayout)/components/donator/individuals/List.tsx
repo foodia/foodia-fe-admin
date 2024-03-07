@@ -40,7 +40,7 @@ const List = () => {
 
   const breadcrumbs = [
     <Typography fontSize="13px" key="3" color="#999" fontWeight={400}>
-      Individuals Donators
+      Individuals Donator List
     </Typography>,
   ];
 

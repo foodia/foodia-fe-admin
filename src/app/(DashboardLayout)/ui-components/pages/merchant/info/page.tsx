@@ -73,9 +73,28 @@ const MerchantInfo = () => {
     getMerchantDetail(searchParams.get("id"), setData);
   }, []);
 
+  const breadcrumbs = [
+    <Button
+      key={0}
+      sx={{
+        p: 0,
+        fontSize: "13px",
+        color: "#000",
+        fontWeight: 400,
+        ":hover": { color: "blue" },
+      }}
+      href="/ui-components/pages/merchant"
+    >
+      Merchant List
+    </Button>,
+    <Typography fontSize="13px" key="3" color="#999" fontWeight={400}>
+      Merchant Details
+    </Typography>,
+  ];
+
   return (
     <>
-      <DashboardCard title="Merchant Details">
+      <DashboardCard title="Merchant Details" breadcrumb={breadcrumbs}>
         <>
           <Info data={data} />
           <Attachment data={data} />

@@ -177,7 +177,7 @@ const DataTableComponent: React.FC<Props> = ({
     {
       id: 2,
       value: false,
-      label: "Un-Active",
+      label: "Unactive",
     },
   ];
 

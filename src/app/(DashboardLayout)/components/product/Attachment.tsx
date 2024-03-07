@@ -1,48 +1,11 @@
-import {
-  Box,
-  Button,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { IconEye } from "@tabler/icons-react";
 import Image from "next/image";
-import BaseCard from "../shared/DashboardCard";
 
-import img1 from "public/images/backgrounds/u1.jpg";
-import img2 from "public/images/backgrounds/u3.jpg";
-import { ModalPopupFilesDetail } from "../shared/ModalPopup";
-import { useState } from "react";
-import DashboardCard from "../shared/DashboardCard";
-import DetailCard from "../shared/DetailCard";
 import Link from "next/link";
-
-// const products = [
-//   {
-//     id: "1",
-//     name: "Selfi.jpg",
-//     post: "2 MB",
-//     pname: "Elite Admin",
-//     priority: "Low",
-//     pbg: "primary.main",
-//     budget: "3.9",
-//     img: img1,
-//   },
-//   {
-//     id: "2",
-//     name: "KTP.jpg",
-//     post: "1 MB",
-//     pname: "Real Homes WP Theme",
-//     priority: "Medium",
-//     pbg: "secondary.main",
-//     budget: "24.5",
-//     img: img2,
-//   },
-// ];
+import { useState } from "react";
+import DetailCard from "../shared/DetailCard";
+import { ModalPopupFilesDetail } from "../shared/ModalPopup";
 
 type ChildProps = {
   data: {

@@ -53,8 +53,21 @@ const DetonatorInfo = () => {
   }, []);
 
   const breadcrumbs = [
+    <Button
+      key={0}
+      sx={{
+        p: 0,
+        fontSize: "13px",
+        color: "#000",
+        fontWeight: 400,
+        ":hover": { color: "blue" },
+      }}
+      href="/ui-components/pages/detonator"
+    >
+      Detonator List
+    </Button>,
     <Typography fontSize="13px" key="3" color="#999" fontWeight={400}>
-      Corporation Donators
+      Detonator Detail
     </Typography>,
   ];
 

@@ -79,9 +79,28 @@ const ProductInfo = () => {
 
   console.log(status);
 
+  const breadcrumbs = [
+    <Button
+      key={0}
+      sx={{
+        p: 0,
+        fontSize: "13px",
+        color: "#000",
+        fontWeight: 400,
+        ":hover": { color: "blue" },
+      }}
+      href="/ui-components/pages/wallet/csr"
+    >
+      Product List
+    </Button>,
+    <Typography fontSize="13px" key="3" color="#999" fontWeight={400}>
+      Product Detail
+    </Typography>,
+  ];
+
   return (
     <>
-      <DashboardCard title="Product Detail">
+      <DashboardCard title="Product Detail" breadcrumb={breadcrumbs}>
         <>
           <Info data={data} />
           <Attachment data={data} />
