@@ -132,9 +132,9 @@ const NavItem = ({ item, index, level, pathDirect, onClick }: ItemType) => {
             </Box>
           </Button>
 
-          {item.submenu.map((t: any) => (
+          {item.submenu.map((t: any, i: any) => (
             <Collapse
-              key={index}
+              key={i}
               in={index === Index && open ? true : false}
               timeout="auto"
             >

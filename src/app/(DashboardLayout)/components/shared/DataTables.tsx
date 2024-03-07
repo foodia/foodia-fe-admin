@@ -11,7 +11,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
+import { IconArrowLeft, IconArrowRight, IconSearch } from "@tabler/icons-react";
 import React from "react";
 import DataTable from "react-data-table-component";
 import * as XLSX from "xlsx";
@@ -115,6 +115,7 @@ const DataTables: React.FC<Data> = ({
               ))}
             </Select>
             <TextField
+              id="search"
               variant="standard"
               size="small"
               placeholder="Search..."
@@ -129,7 +130,7 @@ const DataTables: React.FC<Data> = ({
                 disableUnderline: true,
                 endAdornment: (
                   <InputAdornment position="end">
-                    <Search />
+                    <IconSearch />
                   </InputAdornment>
                 ),
               }}

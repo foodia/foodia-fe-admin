@@ -1,12 +1,9 @@
-import { Button, Stack, Chip, SelectChangeEvent } from "@mui/material";
-import { IconEye } from "@tabler/icons-react";
-import moment from "moment";
+import { SelectChangeEvent, Stack } from "@mui/material";
 import Link from "next/link";
 import React, { useState } from "react";
-import DataTable, { TableColumn } from "react-data-table-component";
-import CustomStylesTable from "../shared/CustomStylesTable";
-import DataTables from "../shared/DataTables";
+import { TableColumn } from "react-data-table-component";
 import { ButtonAction, Status } from "../shared/Buttons";
+import DataTables from "../shared/DataTables";
 
 interface Meta {
   page: number;
@@ -35,7 +32,6 @@ const columns: TableColumn<Data>[] = [
   {
     name: "No",
     selector: (_row, i: any) => i + 1,
-    // sortable: true,
     width: "70px",
     // style: {
     //   paddingLeft: "30px",
@@ -44,23 +40,19 @@ const columns: TableColumn<Data>[] = [
   {
     name: "Merchant",
     cell: (row: Data) => <div>{row.merchant.oauth.fullname}</div>,
-    // sortable: true,
   },
   {
     name: "Name",
     cell: (row: Data) => <div>{row.name}</div>,
-    // sortable: true,
   },
   {
     name: "Description",
     cell: (row: Data) => <div>{row.description}</div>,
-    // sortable: true,
     width: "260px",
   },
   {
     name: "Quantity",
     cell: (row: Data) => <div>{row.qty}</div>,
-    // sortable: true,
     width: "100px",
   },
   {
@@ -74,19 +66,10 @@ const columns: TableColumn<Data>[] = [
         }).format(parseInt(row.price))}
       </div>
     ),
-    // sortable: true,
   },
-  // {
-  //   name: "Registered at",
-  //   cell: (row: Data) => (
-  //     <div>{moment(row.created_at).format("DD/MM/YYYY")}</div>
-  //   ),
-  //   // sortable: true,
-  // },
   {
     name: "Status",
     cell: (row: Data) => <Status row={row} />,
-    // sortable: true,
   },
   {
     name: "Action",
@@ -104,7 +87,6 @@ const columns: TableColumn<Data>[] = [
         </Link>
       </Stack>
     ),
-    // sortable: true,
   },
   // Add more columns as needed
 ];

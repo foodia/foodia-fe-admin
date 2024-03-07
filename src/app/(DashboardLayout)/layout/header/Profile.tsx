@@ -86,7 +86,6 @@ const Profile = () => {
         size="large"
         aria-label="menu"
         color="inherit"
-        aria-controls="msgs-menu"
         aria-haspopup="true"
         sx={{
           ...(typeof anchorEl2 === "object" && {

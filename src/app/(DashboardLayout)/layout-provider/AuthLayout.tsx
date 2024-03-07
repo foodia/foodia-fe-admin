@@ -1,9 +1,7 @@
 "use client";
-import { Box, Container, styled, useTheme, Typography } from "@mui/material";
-import { green } from "@mui/material/colors";
-import React, { useState } from "react";
-import Login from "../components/auth/login";
+import { Box, Typography, styled, useTheme } from "@mui/material";
 import { IconCopyright } from "@tabler/icons-react";
+import React, { useState } from "react";
 import Logo from "../layout/shared/logo/Logo";
 
 const MainWrapper = styled("div")(() => ({

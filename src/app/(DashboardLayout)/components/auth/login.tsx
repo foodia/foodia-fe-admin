@@ -15,7 +15,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import Link from "next/link";
+import { AlertMessage } from "../shared/Alerts";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -53,21 +53,25 @@ const Login = () => {
           router.push("/ui-components/pages/wallet/csr");
         } else {
           router.refresh();
-          // window.location.href = "/authentication/sign-in";
         }
         // setIsLoading(false);
       })
       .catch((error) => {
-        // if (error.code === "ERR_NETWORK") {
-        //   AlertMessage("Gagal", "Koneksi Bermasalah", "Coba Lagi", "error");
-        // } else {
-        //   AlertMessage(
-        //     "Gagal",
-        //     "Email atau Password Tidak Sesuai",
-        //     "Coba Lagi",
-        //     "error"
-        //   );
-        // }
+        if (error.code === "ERR_NETWORK") {
+          AlertMessage(
+            "Login Failed",
+            "Connection Failed",
+            "Try Again",
+            "error"
+          );
+        } else {
+          AlertMessage(
+            "Login Failed",
+            "Invalid Email or Password",
+            "Try Again",
+            "error"
+          );
+        }
         console.log("error");
         setIsLoading(false);
       });
@@ -89,7 +93,7 @@ const Login = () => {
         viewBox="0 0 64 64"
         fill="none"
       >
-        <g clip-path="url(#clip0_26_22)">
+        <g clipPath="url(#clip0_26_22)">
           <path
             d="M32 40C30.896 40 30 38.208 30 36C30 33.792 30.896 32 32 32C33.104 32 34 33.792 34 36C34 38.208 33.104 40 32 40Z"
             fill="#42E54E"
@@ -120,6 +124,7 @@ const Login = () => {
         Login with your account
       </Typography>
       <TextField
+        id="username"
         onChange={(e) => setEmail(e.target.value)}
         // label="Username"
         placeholder="Username"
@@ -146,6 +151,7 @@ const Login = () => {
         }}
       />
       <TextField
+        id="password"
         onChange={(e) => setPassword(e.target.value)}
         type={showPassword ? "password" : "text"}
         placeholder="Password"
@@ -196,16 +202,18 @@ const Login = () => {
           color: "#fff",
           borderRadius: "15px",
           gap: "10px",
+          display: "flex",
+          alignItems: "center",
         }}
       >
         {isLoading ? (
-          <CircularProgress size="20px" sx={{ color: "#333" }} />
+          <CircularProgress size="20px" sx={{ color: "#fff" }} />
         ) : (
           ""
         )}
         Login
       </Button>
-      <Link
+      {/* <Link
         style={{
           display: "flex",
           fontSize: "16px",
@@ -216,7 +224,7 @@ const Login = () => {
         href="/ui-components/auth/register"
       >
         Register Corporation Account
-      </Link>
+      </Link> */}
     </Box>
   );
 };

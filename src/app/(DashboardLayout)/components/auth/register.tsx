@@ -84,7 +84,7 @@ const Register = () => {
         viewBox="0 0 64 64"
         fill="none"
       >
-        <g clip-path="url(#clip0_26_22)">
+        <g clipPath="url(#clip0_26_22)">
           <path
             d="M32 40C30.896 40 30 38.208 30 36C30 33.792 30.896 32 32 32C33.104 32 34 33.792 34 36C34 38.208 33.104 40 32 40Z"
             fill="#42E54E"

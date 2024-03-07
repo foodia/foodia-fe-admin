@@ -43,6 +43,7 @@
     "react-paginate": "^8.2.0",
     "react-router-dom": "^6.20.1",
     "react-top-loading-bar": "^2.3.1",
+    "sweetalert2": "^11.10.6",
     "typescript": "5.0.4",
     "xlsx": "^0.18.5"
   },

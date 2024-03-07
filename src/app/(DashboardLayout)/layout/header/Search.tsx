@@ -14,7 +14,6 @@ const Search = () => {
       <IconButton
         aria-label="show 4 new mails"
         color="inherit"
-        aria-controls="search-menu"
         aria-haspopup="true"
         onClick={() => setShowDrawer2(true)}
         size="large"
@@ -55,4 +54,3 @@ const Search = () => {
 };
 
 export default Search;
-

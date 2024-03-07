@@ -1,10 +1,9 @@
-import axios from "axios";
+import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { getMerchant } from "../api/Merchant";
+import { useAppContext } from "../shared/Context";
 import BaseCard from "../shared/DashboardCard";
 import DataTableComponent from "./DataTable";
-import { useAppContext } from "../shared/Context";
-import { getMerchant } from "../api/Merchant";
-import { Box, SelectChangeEvent, Typography } from "@mui/material";
 
 const List = () => {
   const [data, setData] = useState([]);
