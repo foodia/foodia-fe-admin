@@ -60,7 +60,6 @@ const ImageHandler: React.FC<Url> = ({ url, width }) => {
           priority={true}
           onError={handleImageError}
           onLoad={handleImageLoading}
-          loading="lazy"
         />
       ) : (
         <Image
