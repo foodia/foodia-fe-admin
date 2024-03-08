@@ -24,7 +24,7 @@ const ImageHandler: React.FC<Url> = ({ url, width }) => {
   };
   return (
     <>
-      {/* {loadingOccurred && <CircularProgress color="secondary" />} */}
+      {loadingOccurred && <CircularProgress color="secondary" />}
       {errorOccurred ? (
         <Box
           sx={{
