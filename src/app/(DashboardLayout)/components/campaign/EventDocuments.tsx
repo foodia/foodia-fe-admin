@@ -1,8 +1,10 @@
 import { Button } from "@mui/material";
+import Image from "next/image";
 import { useState } from "react";
 import DetailCard from "../shared/DetailCard";
-import Images from "../shared/Images";
 import { ModalPopupFilesDetail } from "../shared/ModalPopup";
+import logo from "../../../../utils/notFound.png";
+import ImageHandler from "../shared/ImageHandler";
 
 interface ChildProps {
   data: {
@@ -33,6 +35,13 @@ interface ChildProps {
 const Attachment: React.FC<ChildProps> = ({ data }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [file, setFile] = useState("");
+  // const [errorOccurred, setErrorOccurred] = useState(false);
+
+  // const handleImageError = () => {
+  //   setErrorOccurred(true);
+  // };
+
+  // console.log("eventDoc", errorOccurred);
 
   const onViewImage = (file: string) => {
     setIsOpen(true);
@@ -52,7 +61,7 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
           size="small"
           sx={{ width: "210px", height: "125px", borderRadius: "10px" }}
         >
-          <Images url={`${process.env.NEXT_PUBLIC_FILE}${data.image_url}`} />
+          <ImageHandler url={data.image_url} />
         </Button>
       </DetailCard>
       <ModalPopupFilesDetail

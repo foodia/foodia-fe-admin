@@ -1,4 +1,5 @@
 import axios from "axios";
+import ErrorHandling from "./shared/ErrorHandling";
 
 export const getProduct = (setData: any, setMeta: any, page: any) => {
   axios
@@ -18,7 +19,9 @@ export const getProduct = (setData: any, setMeta: any, page: any) => {
       // // console.log(isRejectedPresent);
       // setIsUnapprovedProduct(isRejectedPresent);
     })
-    .catch((error) => {});
+    .catch((error) => {
+      ErrorHandling(error);
+    });
 };
 
 export const getProductDetail = (id: any, setData: any) => {
@@ -29,5 +32,7 @@ export const getProductDetail = (id: any, setData: any) => {
     .then((res) => {
       setData(res.data.body);
     })
-    .catch((error) => {});
+    .catch((error) => {
+      ErrorHandling(error);
+    });
 };

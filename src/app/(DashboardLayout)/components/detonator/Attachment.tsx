@@ -1,21 +1,10 @@
-import {
-  Box,
-  Button,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  Typography,
-} from "@mui/material";
-import { IconEye } from "@tabler/icons-react";
-import BaseCard from "../shared/DashboardCard";
+import { Box, Button, Typography } from "@mui/material";
 
-import { useState } from "react";
-import { ModalPopupFilesDetail } from "../shared/ModalPopup";
 import Image from "next/image";
+import { useState } from "react";
 import DetailCard from "../shared/DetailCard";
+import Images from "../shared/ImageHandler";
+import { ModalPopupFilesDetail } from "../shared/ModalPopup";
 
 interface ChildProps {
   data: {
@@ -60,11 +49,7 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
                 background: "transparent",
               }}
             >
-              <Image
-                src={`${process.env.NEXT_PUBLIC_FILE}${data.self_photo}`}
-                alt="NotFound"
-                layout="fill"
-              />
+              <Images url={data.self_photo} />
             </Button>
             <Typography>Self Photo</Typography>
           </Box>
@@ -76,7 +61,7 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
             }}
           >
             <Button
-              onClick={() => onViewImage(data.self_photo)}
+              onClick={() => onViewImage(data.ktp_photo)}
               variant="contained"
               size="small"
               sx={{
@@ -86,11 +71,7 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
                 background: "transparent",
               }}
             >
-              <Image
-                src={`${process.env.NEXT_PUBLIC_FILE}${data.ktp_photo}`}
-                alt="NotFound"
-                layout="fill"
-              />
+              <Images url={data.ktp_photo} />
             </Button>
             <Typography>KTP Photo</Typography>
           </Box>

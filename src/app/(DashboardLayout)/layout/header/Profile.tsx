@@ -1,25 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { useTheme } from "@mui/material/styles";
-import Link from "next/link";
 import {
   Box,
-  Menu,
-  Avatar,
-  Typography,
-  Divider,
   Button,
+  CircularProgress,
   IconButton,
-  ListItemButton,
   List,
-  ListItemText,
+  Menu,
+  Typography,
 } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { useEffect, useState } from "react";
 
-import { Stack } from "@mui/system";
 import {
   IconChevronDown,
   IconCreditCard,
   IconCurrencyDollar,
-  IconMail,
   IconShield,
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
@@ -27,6 +21,7 @@ import { useRouter } from "next/navigation";
 const Profile = () => {
   const [anchorEl2, setAnchorEl2] = useState(null);
   const [username, setUsername] = useState<any>("");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const handleClick2 = (event: any) => {
     setAnchorEl2(event.currentTarget);
@@ -40,6 +35,7 @@ const Profile = () => {
   }, []);
 
   const onLogout = () => {
+    setIsLoading(true);
     localStorage.clear();
     router.push("/ui-components/auth/login");
   };
@@ -159,22 +155,28 @@ const Profile = () => {
             <ListItemButton component="a" href="#">
               <ListItemText primary="Account" />
             </ListItemButton> */}
-            <ListItemButton component="a" href="#">
+            {/* <ListItemButton component="a" href="#">
               <ListItemText primary="Change Password" />
-            </ListItemButton>
+            </ListItemButton> */}
             {/* <ListItemButton component="a" href="#">
               <ListItemText primary="My Settings" />
             </ListItemButton> */}
           </List>
         </Box>
-        <Divider />
+        {/* <Divider /> */}
         <Box mt={2}>
           <Button
+            sx={{ gap: "10px", display: "flex", alignItems: "center" }}
             onClick={() => onLogout()}
             fullWidth
             variant="contained"
             color="primary"
           >
+            {isLoading ? (
+              <CircularProgress size="20px" sx={{ color: "#fff" }} />
+            ) : (
+              ""
+            )}
             Logout
           </Button>
         </Box>

@@ -1,4 +1,5 @@
 import axios from "axios";
+import ErrorHandling from "./shared/ErrorHandling";
 
 export const getMerchant = (setData: any, setMeta: any, page: any) => {
   axios
@@ -17,7 +18,9 @@ export const getMerchant = (setData: any, setMeta: any, page: any) => {
       // // console.log(isRejectedPresent);
       // setIsUnapprovedMerchant(isRejectedPresent);
     })
-    .catch((error) => {});
+    .catch((error) => {
+      ErrorHandling(error);
+    });
 };
 
 export const getMerchantDetail = (id: any, setData: any) => {
@@ -28,5 +31,7 @@ export const getMerchantDetail = (id: any, setData: any) => {
     .then((res) => {
       setData(res.data.body);
     })
-    .catch((error) => {});
+    .catch((error) => {
+      ErrorHandling(error);
+    });
 };

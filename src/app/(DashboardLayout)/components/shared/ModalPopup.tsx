@@ -1,20 +1,18 @@
-import React, { useState } from "react";
 import {
-  Card,
-  CardContent,
-  Typography,
-  Stack,
   Box,
-  Modal,
-  TextField,
   Button,
-  Select,
-  MenuItem,
-  InputLabel,
-  SelectChangeEvent,
   InputAdornment,
+  MenuItem,
+  Modal,
+  Select,
+  TextField,
+  Typography,
 } from "@mui/material";
 import Image from "next/image";
+import Images from "./ImageHandler";
+import { useState } from "react";
+import logo from "@/utils/notFound.png";
+import ImageHandler from "./ImageHandler";
 
 type Props = {
   open?: any;
@@ -398,20 +396,7 @@ export const ModalPopupFilesDetail = ({
           gap: "30px",
         }}
       >
-        <Image
-          src={`${process.env.NEXT_PUBLIC_FILE}${image_url}`}
-          alt="NotFound"
-          width={400} // Set the desired width
-          height={300} // Set the desired height
-        />
-        {/* <img
-          src={process.env.NEXT_PUBLIC_FILE + image_url}
-          style={{
-            width: "400px",
-            height: "300px",
-            borderRadius: "5px",
-          }}
-        /> */}
+        <ImageHandler width={500} url={image_url} />
         <Box sx={{ display: "flex", flexDirection: "row" }}>
           <Button onClick={handleClose}>Close</Button>
         </Box>

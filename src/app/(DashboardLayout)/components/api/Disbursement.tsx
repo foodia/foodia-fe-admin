@@ -1,4 +1,5 @@
 import axios from "axios";
+import ErrorHandling from "./shared/ErrorHandling";
 
 export const getDisbursement = (setData: any, setMeta: any, page: any) => {
   axios
@@ -54,7 +55,9 @@ export const ApprovalsDisbursement = (
             location.reload();
             setIsOpen(false);
           })
-          .catch((error) => {})
+          .catch((error) => {
+            ErrorHandling(error);
+          })
       : axios
           .post(
             process.env.NEXT_PUBLIC_BASE + `/disbursement/rejected/${id}`,
@@ -70,6 +73,8 @@ export const ApprovalsDisbursement = (
             location.reload();
             setIsOpen(false);
           })
-          .catch((error) => {});
+          .catch((error) => {
+            ErrorHandling(error);
+          });
   }
 };

@@ -1,23 +1,10 @@
-import {
-  Box,
-  Button,
-  Grid,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  Typography,
-} from "@mui/material";
-import { IconEye, IconPhone } from "@tabler/icons-react";
-import Image from "next/image";
-import BaseCard from "../shared/DashboardCard";
-
-import { useState } from "react";
-import { ModalPopupFilesDetail } from "../shared/ModalPopup";
+import { Box, Button, Typography } from "@mui/material";
+import { IconEye } from "@tabler/icons-react";
 import Link from "next/link";
+import { useState } from "react";
 import DetailCard from "../shared/DetailCard";
+import { ModalPopupFilesDetail } from "../shared/ModalPopup";
+import ImageHandler from "../shared/ImageHandler";
 
 interface ChildProps {
   data: {
@@ -116,12 +103,7 @@ const Detonator: React.FC<ChildProps> = ({ data }) => {
               size="small"
               color="primary"
             >
-              <Image
-                style={{ borderRadius: "100px" }}
-                src={`${process.env.NEXT_PUBLIC_FILE}${data.detonator.self_photo}`}
-                alt="NotFound"
-                layout="fill"
-              />
+              <ImageHandler url={data.detonator.self_photo} />
             </Button>
             <Box
               sx={{

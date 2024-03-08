@@ -1,4 +1,5 @@
 import axios from "axios";
+import ErrorHandling from "./shared/ErrorHandling";
 
 export const getCsrWalletCurrent = (setData: any, setMeta: any, page: any) => {
   axios
@@ -82,7 +83,9 @@ export const getCsrWalletMerchant = (setData: any, setMeta: any, page: any) => {
       setData(data);
       setMeta(res.data.meta);
     })
-    .catch((error) => {});
+    .catch((error) => {
+      ErrorHandling(error);
+    });
 };
 
 export const getCsrWalletBallance = (setData: any, setMeta: any) => {

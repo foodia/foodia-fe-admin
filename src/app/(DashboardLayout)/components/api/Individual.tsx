@@ -1,4 +1,5 @@
 import axios from "axios";
+import ErrorHandling from "./shared/ErrorHandling";
 
 export const getIndividual = (setData: any, setMeta: any, page: any) => {
   axios
@@ -17,7 +18,9 @@ export const getIndividual = (setData: any, setMeta: any, page: any) => {
       // );
       // setIsUnapprovedDetonator(isRejectedPresent);
     })
-    .catch((error) => {});
+    .catch((error) => {
+      ErrorHandling(error);
+    });
 };
 
 export const getIndividualDetail = (id: any, setData: any) => {
@@ -28,5 +31,7 @@ export const getIndividualDetail = (id: any, setData: any) => {
     .then((res) => {
       setData(res.data.body);
     })
-    .catch((error) => {});
+    .catch((error) => {
+      ErrorHandling(error);
+    });
 };

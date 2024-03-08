@@ -1,4 +1,5 @@
 import axios from "axios";
+import ErrorHandling from "./shared/ErrorHandling";
 
 export const Approvals = (
   id: number,
@@ -27,7 +28,9 @@ export const Approvals = (
             location.reload();
             setIsOpen(false);
           })
-          .catch((error) => {})
+          .catch((error) => {
+            ErrorHandling(error);
+          })
       : axios
           .put(
             process.env.NEXT_PUBLIC_BASE + `/${modul}/approval/${id}`,
@@ -46,6 +49,8 @@ export const Approvals = (
             location.reload();
             setIsOpen(false);
           })
-          .catch((error) => {});
+          .catch((error) => {
+            ErrorHandling(error);
+          });
   }
 };

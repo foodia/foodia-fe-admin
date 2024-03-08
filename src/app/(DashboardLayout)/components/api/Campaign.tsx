@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import ErrorHandling from "./shared/ErrorHandling";
 
 export const getCampaign = (setData: any, setMeta?: any, page?: any) => {
   axios
@@ -17,7 +18,9 @@ export const getCampaign = (setData: any, setMeta?: any, page?: any) => {
       // );
       // setIsUnapprovedCampaign(isRejectedPresent);
     })
-    .catch((error) => {});
+    .catch((error) => {
+      ErrorHandling(error);
+    });
 };
 
 export const getCampaignDetail = (id: any, setData: any) => {
@@ -28,7 +31,9 @@ export const getCampaignDetail = (id: any, setData: any) => {
     .then((res) => {
       setData(res.data.body);
     })
-    .catch((error) => {});
+    .catch((error) => {
+      ErrorHandling(error);
+    });
 };
 
 export const postCampaignPayment = (
@@ -53,5 +58,7 @@ export const postCampaignPayment = (
     .then((res) => {
       onSuccess(); // Call the onSuccess function with the response
     })
-    .catch((error) => {});
+    .catch((error) => {
+      ErrorHandling(error);
+    });
 };

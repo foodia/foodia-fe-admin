@@ -16,6 +16,7 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AlertMessage } from "../shared/Alerts";
+import ErrorHandling from "../api/shared/ErrorHandling";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -57,22 +58,13 @@ const Login = () => {
         // setIsLoading(false);
       })
       .catch((error) => {
-        if (error.code === "ERR_NETWORK") {
-          AlertMessage(
-            "Login Failed",
-            "Connection Failed",
-            "Try Again",
-            "error"
-          );
-        } else {
-          AlertMessage(
-            "Login Failed",
-            "Invalid Email or Password",
-            "Try Again",
-            "error"
-          );
-        }
-        console.log("error");
+        AlertMessage(
+          "Login Failed",
+          "Invalid Email or Password",
+          "Try Again",
+          "error"
+        );
+        ErrorHandling(error);
         setIsLoading(false);
       });
   };

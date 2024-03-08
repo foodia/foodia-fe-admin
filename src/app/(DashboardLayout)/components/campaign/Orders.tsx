@@ -1,24 +1,12 @@
-import {
-  Box,
-  Button,
-  Grid,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  Typography,
-} from "@mui/material";
-import { IconEye, IconPhone } from "@tabler/icons-react";
+import { Box, Button, Typography } from "@mui/material";
+import { IconEye } from "@tabler/icons-react";
 import Image from "next/image";
-import BaseCard from "../shared/DashboardCard";
-
-import { useState } from "react";
-import { ModalPopupFilesDetail } from "../shared/ModalPopup";
 import Link from "next/link";
+import { useState } from "react";
 import DetailCard from "../shared/DetailCard";
-import Images from "../shared/Images";
+import { ModalPopupFilesDetail } from "../shared/ModalPopup";
+import logo from "@/utils/notFound.png";
+import ImageHandler from "../shared/ImageHandler";
 
 interface ChildProps {
   data: {
@@ -46,32 +34,16 @@ interface ChildProps {
   };
 }
 
-// const products = [
-//   {
-//     id: "1",
-//     name: "Selfi.jpg",
-//     post: "2 MB",
-//     pname: "Elite Admin",
-//     priority: "Low",
-//     pbg: "primary.main",
-//     budget: "3.9",
-//     img: img1,
-//   },
-//   {
-//     id: "2",
-//     name: "KTP.jpg",
-//     post: "1 MB",
-//     pname: "Real Homes WP Theme",
-//     priority: "Medium",
-//     pbg: "secondary.main",
-//     budget: "24.5",
-//     img: img2,
-//   },
-// ];
-
 const Orders: React.FC<ChildProps> = ({ data }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [file, setFile] = useState("");
+  // const [errorOccurred, setErrorOccurred] = useState(false);
+
+  // const handleImageError = () => {
+  //   setErrorOccurred(true);
+  // };
+
+  // console.log("orderDoc", errorOccurred);
 
   const onViewImage = (file: string) => {
     setIsOpen(true);
@@ -122,8 +94,8 @@ const Orders: React.FC<ChildProps> = ({ data }) => {
                 size="small"
                 color="primary"
               >
-                <Images
-                  url={`${process.env.NEXT_PUBLIC_FILE}${orders.merchant_product.images[0].image_url}`}
+                <ImageHandler
+                  url={orders.merchant_product.images[0].image_url}
                 />
               </Button>
               <Box

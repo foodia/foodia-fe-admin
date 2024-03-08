@@ -1,7 +1,6 @@
 import { Box, Button, Typography } from "@mui/material";
 import { IconEye } from "@tabler/icons-react";
 import Image from "next/image";
-
 import Link from "next/link";
 import { useState } from "react";
 import DetailCard from "../shared/DetailCard";

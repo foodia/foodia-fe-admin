@@ -1,10 +1,9 @@
-import axios from "axios";
+import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { getDetonator } from "../api/Detonator";
+import { useAppContext } from "../shared/Context";
 import BaseCard from "../shared/DashboardCard";
 import DataTableComponent from "./DataTable";
-import { useAppContext } from "../shared/Context";
-import { getDetonator } from "../api/Detonator";
-import { Box, Typography } from "@mui/material";
 
 interface Meta {
   page: number;

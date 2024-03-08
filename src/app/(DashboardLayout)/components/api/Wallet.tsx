@@ -1,4 +1,5 @@
 import axios from "axios";
+import ErrorHandling from "./shared/ErrorHandling";
 
 export const getWalletList = (setData: any, wallet_type: any) => {
   axios
@@ -15,5 +16,7 @@ export const getWalletList = (setData: any, wallet_type: any) => {
       }
       setData(data);
     })
-    .catch((error) => {});
+    .catch((error) => {
+      ErrorHandling(error);
+    });
 };

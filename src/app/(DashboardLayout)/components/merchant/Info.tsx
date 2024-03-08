@@ -182,7 +182,7 @@ const Info: React.FC<ChildProps> = ({ data }) => {
           }}
         >
           <Field label="Fullname" value={data.oauth.fullname} />
-          <Field label="Nomor KTP" value={data.ktp_number} />
+          <Field label="KTP Number" value={data.ktp_number} />
           <Field label="Phone Number" value={data.oauth.phone} />
           <Field label="Link Aja Number" value={data.no_link_aja} />
           <Field label="Email" value={data.oauth.email} />

@@ -1,4 +1,5 @@
 import axios from "axios";
+import ErrorHandling from "./shared/ErrorHandling";
 
 export const getDetonator = (setData: any, setMeta: any, page: any) => {
   axios
@@ -17,7 +18,9 @@ export const getDetonator = (setData: any, setMeta: any, page: any) => {
       // );
       // setIsUnapprovedDetonator(isRejectedPresent);
     })
-    .catch((error) => {});
+    .catch((error: any) => {
+      ErrorHandling(error);
+    });
 };
 
 export const getDetonatorDetail = (id: any, setData: any) => {
@@ -28,5 +31,7 @@ export const getDetonatorDetail = (id: any, setData: any) => {
     .then((res) => {
       setData(res.data.body);
     })
-    .catch((error) => {});
+    .catch((error) => {
+      ErrorHandling(error);
+    });
 };

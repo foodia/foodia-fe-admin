@@ -1,23 +1,14 @@
 "use client";
+import { Approvals } from "@/app/(DashboardLayout)/components/api/Approvals";
+import { getProductDetail } from "@/app/(DashboardLayout)/components/api/Product";
 import Attachment from "@/app/(DashboardLayout)/components/product/Attachment";
 import Info from "@/app/(DashboardLayout)/components/product/Info";
-import {
-  Box,
-  Button,
-  Grid,
-  Modal,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { IconBan, IconCircleCheck, IconClock } from "@tabler/icons-react";
-import axios from "axios";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { getProductDetail } from "@/app/(DashboardLayout)/components/api/Product";
-import { Approvals } from "@/app/(DashboardLayout)/components/api/Approvals";
 import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
 import { ModalPopupApprovals } from "@/app/(DashboardLayout)/components/shared/ModalPopup";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import { IconBan, IconCircleCheck } from "@tabler/icons-react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 type Props = {
   id: number;
