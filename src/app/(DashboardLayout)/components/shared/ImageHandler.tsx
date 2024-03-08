@@ -15,6 +15,8 @@ const ImageHandler: React.FC<Url> = ({ url, width }) => {
   const [errorOccurred, setErrorOccurred] = useState(false);
   const [loadingOccurred, setLoadingOccurred] = useState(true);
 
+  console.log(url);
+
   const handleImageError = () => {
     setErrorOccurred(true);
   };
@@ -57,13 +59,12 @@ const ImageHandler: React.FC<Url> = ({ url, width }) => {
       ) : (
         <Image
           style={{ borderRadius: "10px" }}
-          src={`${process.env.NEXT_PUBLIC_FILE}/${url}`}
+          src={`${process.env.NEXT_PUBLIC_FILE}${url}`}
           alt="Not Found"
           layout="fill"
           sizes="100px"
           onError={() => handleImageError()}
           onLoad={handleImageLoading}
-          loading="lazy"
         />
       )}
     </>
