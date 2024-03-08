@@ -2,7 +2,7 @@
 
 module.exports = {
   images: {
-    domains: ["api.foodia-dev.nuncorp.id"],
+    domains: ["api-foodia-staging.cmtdepok.xyz"],
   },
   devIndicators: {
     buildActivity: false,

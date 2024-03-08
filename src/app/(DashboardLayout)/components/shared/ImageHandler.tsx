@@ -1,28 +1,33 @@
-import Image from "next/image";
 import logo from "@/utils/notFound.png";
-import { useState } from "react";
 import { Box, CircularProgress, Typography } from "@mui/material";
+import axios from "axios";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 interface Url {
-  url?: any;
-  imageError?: any;
-  handleError?: any;
+  url: any;
   width?: any;
-  height?: any;
 }
 
 const ImageHandler: React.FC<Url> = ({ url, width }) => {
   const [errorOccurred, setErrorOccurred] = useState(false);
   const [loadingOccurred, setLoadingOccurred] = useState(true);
+  const [src, setSrc] = useState("");
 
-  console.log(url);
+  console.log(errorOccurred);
+
+  useEffect(() => {
+    setSrc(`https://api-foodia-staging.cmtdepok.xyz/storage/${url}`);
+  });
 
   const handleImageError = () => {
     setErrorOccurred(true);
+    setSrc(`https://api-foodia-staging.cmtdepok.xyz/storage/${url}`);
   };
 
   const handleImageLoading = () => {
     setLoadingOccurred(false);
+    setSrc(`https://api-foodia-staging.cmtdepok.xyz/storage/${url}`);
   };
   return (
     <>
@@ -47,23 +52,25 @@ const ImageHandler: React.FC<Url> = ({ url, width }) => {
       ) : width ? (
         <Image
           style={{ borderRadius: "10px" }}
-          src={`${process.env.NEXT_PUBLIC_FILE}/${url}`}
+          src={src}
           alt="Not Found"
           width={width}
           height={width}
           sizes="100px"
-          onError={() => handleImageError()}
+          priority={true}
+          onError={handleImageError}
           onLoad={handleImageLoading}
           loading="lazy"
         />
       ) : (
         <Image
           style={{ borderRadius: "10px" }}
-          src={`${process.env.NEXT_PUBLIC_FILE}${url}`}
+          src={src}
           alt="Not Found"
           layout="fill"
           sizes="100px"
-          onError={() => handleImageError()}
+          priority={true}
+          onError={handleImageError}
           onLoad={handleImageLoading}
         />
       )}

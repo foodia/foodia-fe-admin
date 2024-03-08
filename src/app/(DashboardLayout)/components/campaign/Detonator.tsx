@@ -3,8 +3,8 @@ import { IconEye } from "@tabler/icons-react";
 import Link from "next/link";
 import { useState } from "react";
 import DetailCard from "../shared/DetailCard";
-import { ModalPopupFilesDetail } from "../shared/ModalPopup";
 import ImageHandler from "../shared/ImageHandler";
+import { ModalPopupFilesDetail } from "../shared/ModalPopup";
 
 interface ChildProps {
   data: {
@@ -62,7 +62,6 @@ const Detonator: React.FC<ChildProps> = ({ data }) => {
   const onViewImage = (file: string) => {
     setIsOpen(true);
     setFile(file);
-    console.log(file);
   };
 
   const onCloseView = () => {
