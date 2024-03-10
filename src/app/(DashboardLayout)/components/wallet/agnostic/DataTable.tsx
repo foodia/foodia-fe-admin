@@ -30,14 +30,6 @@ interface CampaignListData {
   // donations: { id: any; donations_detail: any }[];
 }
 
-interface MerchantPaymentListData {
-  id: number;
-  campaign_name: any;
-  merchants: { id: any; name: any }[];
-  payments: { id: any; amount: any }[];
-  payment_date: any;
-}
-
 interface Props {
   transactionListData: TransactionListData[];
   transactionListMeta: Meta;
@@ -46,10 +38,6 @@ interface Props {
   campaignListData: CampaignListData[];
   campaignListMeta: Meta;
   onChangePageCampaignList: any;
-
-  merchantPaymentListData: MerchantPaymentListData[];
-  merchantPaymentListMeta: Meta;
-  onChangePageMerchantPayment: any;
 }
 
 const DataTableComponent: React.FC<Props> = ({
@@ -60,12 +48,7 @@ const DataTableComponent: React.FC<Props> = ({
   campaignListData,
   campaignListMeta,
   onChangePageCampaignList,
-
-  merchantPaymentListData,
-  merchantPaymentListMeta,
-  onChangePageMerchantPayment,
 }) => {
-  const { setCampaignDonationDetails } = useAppContext();
   const [searchTextTrxData, setSearchTextTrxData] = useState<string>("");
   const [searchTextCampaign, setSearchTextCampaign] = useState<string>("");
 
@@ -223,7 +206,9 @@ const DataTableComponent: React.FC<Props> = ({
           }}
         >
           <ButtonAction
-            onClick={() => handleClick(row.details, row.total_donation)}
+            onClick={() =>
+              handleClick(row.details, row.campaign_name, row.total_donation)
+            }
             label={
               row.details?.length > 1
                 ? `View ${row.details?.length - 2} More`
@@ -237,74 +222,11 @@ const DataTableComponent: React.FC<Props> = ({
     },
   ];
 
-  const merchantPaymentListColumns: TableColumn<MerchantPaymentListData>[] = [
-    {
-      name: "No",
-      selector: (_row, i: any) => i + 1,
-      // sortable: true,
-      width: "70px",
-      // style: {
-      //   paddingLeft: "30px",
-      // },
-    },
-    {
-      name: "Nama Campaign",
-      cell: (row: MerchantPaymentListData) => <div>{row.campaign_name}</div>,
-      // sortable: true,
-    },
-    {
-      name: "Nama Merchant",
-      cell: (row: MerchantPaymentListData) => (
-        <>
-          {row.merchants?.map((value: any, i) => (
-            <div
-              key={value.id}
-              style={{ display: "flex", flexDirection: "row" }}
-            >
-              {value.name}
-              {i + 1 !== value.length && (
-                <div style={{ marginRight: "5px" }}>,</div>
-              )}
-            </div>
-          ))}
-        </>
-      ),
-      // sortable: true,
-    },
-    {
-      name: "Jumlah Pembayaran",
-      cell: (row: MerchantPaymentListData) => (
-        <>
-          {row.payments.map((value: any, i) => (
-            <div
-              key={value.id}
-              style={{ display: "flex", flexDirection: "row" }}
-            >
-              {new Intl.NumberFormat("id-ID", {
-                style: "currency",
-                currency: "IDR",
-                minimumFractionDigits: 0,
-              }).format(value.amount)}
-              {i + 1 !== row.payments?.length && (
-                <div style={{ marginRight: "5px" }}>,</div>
-              )}
-            </div>
-          ))}
-        </>
-      ),
-      // sortable: true,
-      // width: "",
-    },
-    {
-      name: "Tgl Pembayaran",
-      cell: (row: MerchantPaymentListData) => <div>{row.payment_date}</div>,
-      // sortable: true,
-      // width: "",
-    },
-  ];
-
-  const handleClick = (details: any, total_donation: any) => {
-    setCampaignDonationDetails(details);
+  const handleClick = (details: any, detailsName: any, detailsTotal: any) => {
+    const jsonArrayOfObjects = JSON.stringify(details);
+    localStorage.setItem("Details", jsonArrayOfObjects);
+    localStorage.setItem("DetailsName", detailsName);
+    localStorage.setItem("DetailsTotal", detailsTotal);
   };
 
   return (

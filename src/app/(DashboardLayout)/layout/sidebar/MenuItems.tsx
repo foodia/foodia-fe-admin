@@ -14,14 +14,8 @@ import { uniqueId } from "lodash";
 import { useAppContext } from "../../components/shared/Context";
 
 const Menuitems = () => {
-  const {
-    isUnapprovedDetonator,
-    isUnapprovedCampaign,
-    isUnapprovedMerchant,
-    isUnapprovedProduct,
-  } = useAppContext();
+  const {} = useAppContext();
 
-  console.log("role", localStorage.getItem("ROLE"));
   if (localStorage.getItem("ROLE") == "superadmin") {
     return [
       {
@@ -104,14 +98,14 @@ const Menuitems = () => {
             href: "/ui-components/pages/merchant",
             name: "List Merchant",
             icon: <IconUser />,
-            isUnapproved: isUnapprovedMerchant,
+            // isUnapproved: isUnapprovedMerchant,
           },
           {
             id: uniqueId(),
             href: "/ui-components/pages/product",
             name: "List Product",
             icon: <IconBurger />,
-            isUnapproved: isUnapprovedProduct,
+            // isUnapproved: isUnapprovedProduct,
           },
         ],
       },
@@ -125,7 +119,7 @@ const Menuitems = () => {
             href: "/ui-components/pages/disbursement",
             name: "List Disbursement",
             icon: <IconUser />,
-            isUnapproved: isUnapprovedMerchant,
+            // isUnapproved: isUnapprovedMerchant,
           },
         ],
       },

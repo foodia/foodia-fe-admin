@@ -1,10 +1,9 @@
 import { Box, Button, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { TableColumn } from "react-data-table-component";
+import { useAppContext } from "../../shared/Context";
 import DashboardCard from "../../shared/DashboardCard";
 import DataTables from "../../shared/DataTables";
-import React, { useEffect, useState } from "react";
-import { TableColumn } from "react-data-table-component";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useAppContext } from "../../shared/Context";
 
 interface Details {
   donation_by: string;
@@ -66,19 +65,29 @@ const columns: TableColumn<Props>[] = [
   // Add more columns as needed
 ];
 
-const Info: React.FC<Props> = ({ data }) => {
-  const [meta, setMeta] = useState();
-  const [page, setPage] = useState(1);
-  const router = useRouter();
+const Info = () => {
+  const [details, setDetails] = useState<Details[]>();
+  const [detailsName, setDetailsName] = useState("");
+  const [detailsTotal, setDetailsTotal] = useState("");
+  const { isLoading, setIsLoading } = useAppContext();
 
-  console.log(data);
+  useEffect(() => {
+    setIsLoading(false);
+    const retrievedJsonArrayOfObjects = localStorage.getItem("Details");
+    const retrievedArrayOfObjects: Details[] = JSON.parse(
+      retrievedJsonArrayOfObjects || "[]"
+    );
+    setDetails(retrievedArrayOfObjects);
+    setDetailsName(`${localStorage.getItem("DetailsName")}`);
+    setDetailsTotal(`${localStorage.getItem("DetailsTotal")}`);
+  }, []);
 
   return (
     <>
       <DashboardCard
-        title="Depok Jumat Berkah"
-        currentBalance={100000}
+        title={detailsName}
         breadcrumb={breadcrumbs}
+        currentBalance={detailsTotal}
       >
         <Box
           sx={{
@@ -89,7 +98,11 @@ const Info: React.FC<Props> = ({ data }) => {
           }}
         >
           <Box sx={{ width: "100%" }}>
-            <DataTables pagination={true} columns={columns} data={data} />
+            <DataTables
+              pagination={true}
+              columns={columns}
+              data={details ? details : []}
+            />
           </Box>
         </Box>
       </DashboardCard>

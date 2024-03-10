@@ -117,18 +117,13 @@ export const getCsrWalletMerchant = (
     });
 };
 
-export const getCsrWalletBallance = (
-  setData: any,
-  setMeta: any,
-  setIsLoading: any
-) => {
+export const getCsrWalletBallance = (setData: any, setIsLoading: any) => {
   axios
     .get(process.env.NEXT_PUBLIC_BASE + `/wallet/balance?wallet_type=csr`, {
       headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
     })
     .then((res) => {
       setData(res.data.body);
-      setMeta(res.data.meta);
       setIsLoading(false);
     })
     .catch((error) => {

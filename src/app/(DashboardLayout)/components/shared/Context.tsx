@@ -9,19 +9,6 @@ import React, {
 } from "react";
 
 interface AppContextProps {
-  // Define your context properties here
-  isUnapprovedDetonator: boolean;
-  setIsUnapprovedDetonator: React.Dispatch<React.SetStateAction<boolean>>;
-
-  isUnapprovedCampaign: boolean;
-  setIsUnapprovedCampaign: React.Dispatch<React.SetStateAction<boolean>>;
-
-  isUnapprovedMerchant: boolean;
-  setIsUnapprovedMerchant: React.Dispatch<React.SetStateAction<boolean>>;
-
-  isUnapprovedProduct: boolean;
-  setIsUnapprovedProduct: React.Dispatch<React.SetStateAction<boolean>>;
-
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 
@@ -29,25 +16,10 @@ interface AppContextProps {
   detonatorData: any;
   merchantData: any;
   productData: any;
-
-  campaignDonationDetails: any;
-  setCampaignDonationDetails: any;
 }
 const AppContext = createContext<AppContextProps | undefined>(undefined);
 
 const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [isUnapprovedDetonator, setIsUnapprovedDetonator] =
-    React.useState<boolean>(false);
-
-  const [isUnapprovedCampaign, setIsUnapprovedCampaign] =
-    React.useState<boolean>(false);
-
-  const [isUnapprovedMerchant, setIsUnapprovedMerchant] =
-    React.useState<boolean>(false);
-
-  const [isUnapprovedProduct, setIsUnapprovedProduct] =
-    React.useState<boolean>(false);
-
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
   const [campaignData, setCampaignData] = useState([]);
@@ -55,22 +27,7 @@ const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [merchantData, setMerchantdata] = useState([]);
   const [productData, setProductdata] = useState([]);
 
-  const [campaignDonationDetails, setCampaignDonationDetails] = useState([]);
-  const [campaignDonationTotal, setCampaignDonationTotal] = useState([]);
-
   const contextValue = {
-    isUnapprovedDetonator,
-    setIsUnapprovedDetonator,
-
-    isUnapprovedCampaign,
-    setIsUnapprovedCampaign,
-
-    isUnapprovedMerchant,
-    setIsUnapprovedMerchant,
-
-    isUnapprovedProduct,
-    setIsUnapprovedProduct,
-
     isLoading,
     setIsLoading,
 
@@ -78,11 +35,6 @@ const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     detonatorData,
     merchantData,
     productData,
-
-    campaignDonationTotal,
-    setCampaignDonationTotal,
-    campaignDonationDetails,
-    setCampaignDonationDetails,
   };
 
   useEffect(() => {

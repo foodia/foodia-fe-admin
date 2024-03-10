@@ -1,8 +1,9 @@
 import { Box, Button, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { TableColumn } from "react-data-table-component";
 import DashboardCard from "../../shared/DashboardCard";
 import DataTables from "../../shared/DataTables";
+import { useAppContext } from "../../shared/Context";
 
 interface Details {
   donation_by: string;
@@ -50,17 +51,47 @@ const columns: TableColumn<Details>[] = [
   },
   {
     name: "Amount",
-    cell: (row: Details) => <div>{row.amount}</div>,
+    cell: (row: Details) => (
+      <div>
+        {new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          minimumFractionDigits: 0,
+        }).format(row.amount)}
+      </div>
+    ),
     // sortable: true,
     width: "auto",
   },
   // Add more columns as needed
 ];
 
-const Info: React.FC<Props> = ({ data }) => {
+const Info = () => {
+  const [details, setDetails] = useState<Details[]>();
+  const [detailsName, setDetailsName] = useState("");
+  const [detailsTotal, setDetailsTotal] = useState("");
+  const { isLoading, setIsLoading } = useAppContext();
+
+  useEffect(() => {
+    setIsLoading(false);
+    const retrievedJsonArrayOfObjects = localStorage.getItem("Details");
+    const retrievedArrayOfObjects: Details[] = JSON.parse(
+      retrievedJsonArrayOfObjects || "[]"
+    );
+    setDetails(retrievedArrayOfObjects);
+    setDetailsName(`${localStorage.getItem("DetailsName")}`);
+    setDetailsTotal(`${localStorage.getItem("DetailsTotal")}`);
+  }, []);
+
+  console.log(detailsTotal);
+
   return (
     <>
-      <DashboardCard title="Campaign Donation Detail" breadcrumb={breadcrumbs}>
+      <DashboardCard
+        title={detailsName}
+        breadcrumb={breadcrumbs}
+        currentBalance={detailsTotal}
+      >
         <Box
           sx={{
             display: "flex",
@@ -73,7 +104,7 @@ const Info: React.FC<Props> = ({ data }) => {
             <DataTables
               pagination={true}
               columns={columns}
-              data={data ? data : []}
+              data={details ? details : []}
             />
           </Box>
         </Box>

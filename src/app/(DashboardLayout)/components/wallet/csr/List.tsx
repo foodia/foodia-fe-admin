@@ -4,7 +4,6 @@ import {
   getCsrWalletBallance,
   getCsrWalletCampaign,
   getCsrWalletCurrent,
-  getCsrWalletMerchant,
   getCsrWalletTrx,
 } from "../../api/CsrWallet";
 import { useAppContext } from "../../shared/Context";
@@ -17,10 +16,7 @@ type ballance = {
 };
 
 const List = () => {
-  const { productData } = useAppContext();
-  const { setIsUnapprovedProduct } = useAppContext();
   const [ballanceWalletData, setBallanceWalletData] = useState<ballance>();
-  const [ballanceWalletMeta, setBallanceWalletMeta] = useState([]);
   const [currentWalletData, setCurrentWalletData] = useState([]);
   const [currentWalletMeta, setCurrentWalletMeta] = useState({
     page: 0,
@@ -37,13 +33,6 @@ const List = () => {
   });
   const [campaignListData, setCampaignListData] = useState([]);
   const [campaignListMeta, setCampaignListMeta] = useState({
-    page: 1,
-    per_page: 5,
-    page_count: 2,
-    total: 10,
-  });
-  const [merchantPaymentListData, setMerchantPaymentListData] = useState([]);
-  const [merchantPaymentListMeta, setMerchantPaymentListMeta] = useState({
     page: 1,
     per_page: 5,
     page_count: 2,
@@ -91,19 +80,6 @@ const List = () => {
     );
   };
 
-  const handleChangePageWalletMerchant = (
-    event: React.ChangeEvent<unknown>,
-    value: number
-  ) => {
-    setPage(value);
-    getCsrWalletMerchant(
-      setMerchantPaymentListData,
-      setMerchantPaymentListMeta,
-      value,
-      setIsLoading
-    );
-  };
-
   const breadcrumbs = [
     <Typography fontSize="13px" key="3" color="#999" fontWeight={400}>
       CSR Wallet List
@@ -111,11 +87,7 @@ const List = () => {
   ];
 
   useEffect(() => {
-    getCsrWalletBallance(
-      setBallanceWalletData,
-      setBallanceWalletMeta,
-      setIsLoading
-    );
+    getCsrWalletBallance(setBallanceWalletData, setIsLoading);
     getCsrWalletCurrent(
       setCurrentWalletData,
       setCurrentWalletMeta,
@@ -134,12 +106,6 @@ const List = () => {
       page,
       setIsLoading
     );
-    getCsrWalletMerchant(
-      setMerchantPaymentListData,
-      setMerchantPaymentListMeta,
-      page,
-      setIsLoading
-    );
   }, []);
 
   return (
@@ -154,15 +120,12 @@ const List = () => {
             currentWalletMeta={currentWalletMeta}
             currentWalletData={currentWalletData}
             onChangePageWalletCurrent={handleChangePageWalletCurrent}
-            merchantPaymentListData={merchantPaymentListData}
             onChangePageWalletTrx={handleChangePageWalletTrx}
-            merchantPaymentListMeta={merchantPaymentListMeta}
             campaignListData={campaignListData}
             campaignListMeta={campaignListMeta}
             onChangePageWalletCampaign={handleChangePageWalletCampaign}
             transactionListData={transactionListData}
             transactionListMeta={transactionListMeta}
-            onChangePageWalletMerchant={handleChangePageWalletMerchant}
           />
         </Box>
       </DashboardCard>

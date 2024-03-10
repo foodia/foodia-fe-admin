@@ -39,18 +39,6 @@ interface CampaignListData {
 }
 [];
 
-interface MerchantPaymentListData {
-  campaign_id: number;
-  campaign_name: any;
-  details: {
-    merchant_id: any;
-    merchant_name: any;
-    total_amount: number;
-    payment_date: string;
-  }[];
-}
-[];
-
 interface Props {
   currentWalletData: CurrentWalletData[];
   currentWalletMeta: Meta;
@@ -63,10 +51,6 @@ interface Props {
   campaignListData: CampaignListData[];
   campaignListMeta: Meta;
   onChangePageWalletCampaign: any;
-
-  merchantPaymentListData: MerchantPaymentListData[];
-  merchantPaymentListMeta: Meta;
-  onChangePageWalletMerchant: any;
 }
 
 const DataTableComponent: React.FC<Props> = ({
@@ -81,12 +65,7 @@ const DataTableComponent: React.FC<Props> = ({
   campaignListData,
   campaignListMeta,
   onChangePageWalletCampaign,
-
-  merchantPaymentListData,
-  merchantPaymentListMeta,
-  onChangePageWalletMerchant,
 }) => {
-  const { setCampaignDonationDetails } = useAppContext();
   const [searchTextTrxData, setSearchTextTrxData] = useState<string>("");
   const [searchTextCurrWallet, setSearchTextCurrWallet] = useState<string>("");
   const [searchTextCampaign, setSearchTextCampaign] = useState<string>("");
@@ -293,14 +272,19 @@ const DataTableComponent: React.FC<Props> = ({
       cell: (row: CampaignListData, i: number) => (
         <Link
           href={{
-            pathname: "/ui-components/pages/wallet/csr/info",
+            pathname: `${
+              row.details == undefined
+                ? ""
+                : "/ui-components/pages/wallet/csr/info"
+            }`,
           }}
-          aria-disabled="true"
           tabIndex={-1}
         >
           <ButtonAction
             disabled={row.details == undefined}
-            onClick={() => handleClick(row.details, row.total_donation)}
+            onClick={() =>
+              handleClick(row.details, row.campaign_name, row.total_donation)
+            }
             label={
               row.details?.length > 2
                 ? `View ${row.details.length - 2} More`
@@ -313,111 +297,11 @@ const DataTableComponent: React.FC<Props> = ({
     },
   ];
 
-  const merchantPaymentListColumns: TableColumn<MerchantPaymentListData>[] = [
-    {
-      name: "No",
-      selector: (_row, i: any) => i + 1,
-      // sortable: true,
-      width: "70px",
-      // style: {
-      //   paddingLeft: "30px",
-      // },
-    },
-    {
-      name: "Nama Campaign",
-      cell: (row: MerchantPaymentListData) => (
-        <Link
-          href={{
-            pathname: "/ui-components/pages/campaign/info",
-            query: {
-              id: row.campaign_id,
-            },
-          }}
-        >
-          {row.campaign_name}
-        </Link>
-      ),
-      // sortable: true,
-    },
-    {
-      name: "Nama Merchant",
-      cell: (row: MerchantPaymentListData) => (
-        <>
-          {row.details?.map((value: any, i) => (
-            <Link
-              href={{
-                pathname: "/ui-components/pages/merchant/info",
-                query: {
-                  id: value.merchant_id,
-                },
-              }}
-              key={value.id}
-              style={{ display: "flex", flexDirection: "row" }}
-            >
-              {/* {value.merchant_name} */}
-              {i === 1 && value.donation_by?.length > 10
-                ? `${value.donation_by.slice(0, 10)}...`
-                : value.merchant_name}
-              {i + 1 !== row.details?.length && (
-                <div style={{ marginRight: "5px" }}>,</div>
-              )}
-            </Link>
-          ))}
-        </>
-      ),
-      // sortable: true,
-    },
-    {
-      name: "Jumlah Pembayaran",
-      cell: (row: MerchantPaymentListData) => (
-        <>
-          {row.details?.map((value: any, i) => (
-            <div
-              key={value.id}
-              style={{ display: "flex", flexDirection: "row" }}
-            >
-              {new Intl.NumberFormat("id-ID", {
-                style: "currency",
-                currency: "IDR",
-                minimumFractionDigits: 0,
-              }).format(value.total_amount)}
-              {i + 1 !== row.details?.length && (
-                <div style={{ marginRight: "5px" }}>,</div>
-              )}
-            </div>
-          ))}
-        </>
-      ),
-      // sortable: true,
-      // width: "",
-    },
-    {
-      name: "Tgl Pembayaran",
-      cell: (row: MerchantPaymentListData) => (
-        <>
-          {row.details?.map((value: any, i) => (
-            <div
-              key={value.id}
-              style={{ display: "flex", flexDirection: "row" }}
-            >
-              {/* {value.payment_date} */}
-              {i === 1 && value.donation_by?.length > 10
-                ? `${value.donation_by.slice(0, 10)}...`
-                : value.payment_date}
-              {i + 1 !== row.details?.length && (
-                <div style={{ marginRight: "5px" }}>,</div>
-              )}
-            </div>
-          ))}
-        </>
-      ),
-      // sortable: true,
-      // width: "",
-    },
-  ];
-
-  const handleClick = (details: any, total_donation: any) => {
-    setCampaignDonationDetails(details);
+  const handleClick = (details: any, detailsName: any, detailsTotal: any) => {
+    const jsonArrayOfObjects = JSON.stringify(details);
+    localStorage.setItem("Details", jsonArrayOfObjects);
+    localStorage.setItem("DetailsName", detailsName);
+    localStorage.setItem("DetailsTotal", detailsTotal);
   };
 
   return (
