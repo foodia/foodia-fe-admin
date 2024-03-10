@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from "@mui/material";
 
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { useState } from "react";
 import DetailCard from "../shared/DetailCard";
 import Images from "../shared/ImageHandler";

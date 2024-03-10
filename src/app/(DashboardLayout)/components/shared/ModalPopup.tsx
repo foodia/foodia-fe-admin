@@ -8,7 +8,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import Images from "./ImageHandler";
 import { useState } from "react";
 import logo from "@/utils/notFound.png";

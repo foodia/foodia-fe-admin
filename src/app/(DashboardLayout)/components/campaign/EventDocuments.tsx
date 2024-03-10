@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { useState } from "react";
 import DetailCard from "../shared/DetailCard";
 import { ModalPopupFilesDetail } from "../shared/ModalPopup";

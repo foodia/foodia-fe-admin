@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardContent, Typography, Button, Grid } from "@mui/material";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 import user1 from "public/images/backgrounds/u2.jpg";
 import user2 from "public/images/backgrounds/u3.jpg";

@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import BaseCard from "../shared/DashboardCard";
 import { IconEye } from "@tabler/icons-react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 import img1 from "public/images/backgrounds/u1.jpg";
 import img2 from "public/images/backgrounds/u3.jpg";

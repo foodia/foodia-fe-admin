@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { styled, Typography } from "@mui/material";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import logo from "@/utils/logo.png";
 
 const LinkStyled = styled(Link)(() => ({

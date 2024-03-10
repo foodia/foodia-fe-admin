@@ -1,6 +1,6 @@
 'use client';
 import React from "react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { Box, Button, Typography } from "@mui/material";
 import sidebarBuynowsvg from "public/images/backgrounds/sidebar-buynow-bg.svg";
 

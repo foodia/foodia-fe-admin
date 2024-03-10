@@ -1,7 +1,7 @@
 import logo from "@/utils/notFound.png";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import axios from "axios";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { useEffect, useState } from "react";
 
 interface Url {
@@ -15,17 +15,17 @@ const ImageHandler: React.FC<Url> = ({ url, width }) => {
   const [src, setSrc] = useState("");
 
   useEffect(() => {
-    setSrc(`${process.env.NEXT_PUBLIC_FILE}/${url}`);
+    setSrc(`${url}`);
   });
 
   const handleImageError = () => {
     setErrorOccurred(true);
-    setSrc(`${process.env.NEXT_PUBLIC_FILE}/${url}`);
+    setSrc(`${url}`);
   };
 
   const handleImageLoading = () => {
     setLoadingOccurred(false);
-    setSrc(`${process.env.NEXT_PUBLIC_FILE}/${url}`);
+    setSrc(`${url}`);
   };
   return (
     <>
@@ -50,7 +50,7 @@ const ImageHandler: React.FC<Url> = ({ url, width }) => {
       ) : width ? (
         <Image
           style={{ borderRadius: "10px" }}
-          src={src}
+          src={`${process.env.NEXT_PUBLIC_FILE}${src}`}
           alt="Not Found"
           width={width}
           height={width}
@@ -62,11 +62,11 @@ const ImageHandler: React.FC<Url> = ({ url, width }) => {
       ) : (
         <Image
           style={{ borderRadius: "10px" }}
-          src={src}
+          src={`${process.env.NEXT_PUBLIC_FILE}${src}`}
           alt="Not Found"
           layout="fill"
           sizes="300px"
-          priority={true}
+          // priority={true}
           onError={handleImageError}
           onLoad={handleImageLoading}
         />
