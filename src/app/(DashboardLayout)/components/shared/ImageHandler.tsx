@@ -14,8 +14,6 @@ const ImageHandler: React.FC<Url> = ({ url, width }) => {
   const [loadingOccurred, setLoadingOccurred] = useState(true);
   const [src, setSrc] = useState("");
 
-  console.log(errorOccurred);
-
   useEffect(() => {
     setSrc(`${process.env.NEXT_PUBLIC_FILE}/${url}`);
   });
@@ -56,7 +54,7 @@ const ImageHandler: React.FC<Url> = ({ url, width }) => {
           alt="Not Found"
           width={width}
           height={width}
-          sizes="100px"
+          // sizes="100px"
           priority={true}
           onError={handleImageError}
           onLoad={handleImageLoading}
@@ -67,7 +65,7 @@ const ImageHandler: React.FC<Url> = ({ url, width }) => {
           src={src}
           alt="Not Found"
           layout="fill"
-          sizes="100px"
+          sizes="300px"
           priority={true}
           onError={handleImageError}
           onLoad={handleImageLoading}
