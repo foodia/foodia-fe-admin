@@ -1,10 +1,9 @@
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { getCorporation } from "../api/Corporation";
+import { getDisbursement } from "../api/Disbursement";
 import { useAppContext } from "../shared/Context";
 import DashboardCard from "../shared/DashboardCard";
 import DataTableComponent from "./DataTable";
-import { getDisbursement } from "../api/Disbursement";
 
 interface Meta {
   page: number;
@@ -22,7 +21,6 @@ const List = () => {
     page_count: 0,
     total: 0,
   });
-  const { setIsUnapprovedDetonator } = useAppContext();
   const [page, setPage] = useState(1);
   const { isLoading, setIsLoading } = useAppContext();
 

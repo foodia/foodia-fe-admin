@@ -1,16 +1,13 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import BaseCard from "../../shared/DashboardCard";
-import DataTableComponent from "./DataTable";
-import { useAppContext } from "../../shared/Context";
-import { getProduct } from "../../api/Product";
 import { Box, Typography } from "@mui/material";
-import DashboardCard from "../../shared/DashboardCard";
+import { useEffect, useState } from "react";
 import {
   getAgnosticWalletBallance,
   getAgnosticWalletCampaign,
   getAgnosticWalletTrx,
 } from "../../api/AgnosticWallet";
+import { useAppContext } from "../../shared/Context";
+import DashboardCard from "../../shared/DashboardCard";
+import DataTableComponent from "./DataTable";
 
 type ballance = {
   wallet_name: string;
@@ -18,8 +15,6 @@ type ballance = {
 };
 
 const List = () => {
-  const { productData } = useAppContext();
-  const { setIsUnapprovedProduct } = useAppContext();
   const [balanceListData, setBalanceListData] = useState<ballance>();
   const [balanceListMeta, setBalanceListMeta] = useState({});
   const [transactionListData, setTransactionListData] = useState([]);
@@ -150,15 +145,12 @@ const List = () => {
       >
         <Box sx={{ paddingX: "40px" }}>
           <DataTableComponent
-            merchantPaymentListData={merchantPaymentListData}
-            merchantPaymentListMeta={merchantPaymentListMeta}
             onChangePageTransactionList={handleChangePagePaymentList}
             campaignListData={campaignListData}
             campaignListMeta={campaignListMeta}
             onChangePageCampaignList={handleChangePageCampaignList}
             transactionListData={transactionListData}
             transactionListMeta={transactionListMeta}
-            onChangePageMerchantPayment={handleChangePageMerchantPayment}
           />
         </Box>
       </DashboardCard>

@@ -1,10 +1,9 @@
-import axios from "axios";
+import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { getProduct } from "../api/Product";
+import { useAppContext } from "../shared/Context";
 import BaseCard from "../shared/DashboardCard";
 import DataTableComponent from "./DataTable";
-import { useAppContext } from "../shared/Context";
-import { getProduct } from "../api/Product";
-import { Box, Typography } from "@mui/material";
 
 const List = () => {
   const [data, setData] = useState([]);
@@ -15,7 +14,6 @@ const List = () => {
     page_count: 0,
     total: 0,
   });
-  const { setIsUnapprovedProduct } = useAppContext();
   const { isLoading, setIsLoading } = useAppContext();
 
   const handleChangePage = (

@@ -1,14 +1,9 @@
-import { Box, SelectChangeEvent, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getCsrWalletMerchant } from "../../api/CsrWallet";
+import { useAppContext } from "../../shared/Context";
 import DashboardCard from "../../shared/DashboardCard";
 import DataTableComponent from "./DataTable";
-import { useAppContext } from "../../shared/Context";
-
-type ballance = {
-  wallet_name: string;
-  total_balance: number;
-};
 
 const List = () => {
   const [merchantPaymentListData, setMerchantPaymentListData] = useState([]);

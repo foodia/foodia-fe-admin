@@ -14,7 +14,6 @@ const List = () => {
     page_count: 0,
     total: 0,
   });
-  const { setIsUnapprovedMerchant } = useAppContext();
   const { isLoading, setIsLoading } = useAppContext();
 
   const handleChangePage = (

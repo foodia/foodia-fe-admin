@@ -21,7 +21,6 @@ const List = () => {
     page_count: 0,
     total: 0,
   });
-  const { setIsUnapprovedDetonator } = useAppContext();
   const [page, setPage] = useState(1);
   const { isLoading, setIsLoading } = useAppContext();
 
