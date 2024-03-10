@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import DetailCard from "../shared/DetailCard";
 import { ModalPopupFilesDetail } from "../shared/ModalPopup";
+import ImageHandler from "../shared/ImageHandler";
 
 type ChildProps = {
   data: {
@@ -55,12 +56,7 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
               size="small"
               sx={{ width: "210px", height: "125px", borderRadius: "10px" }}
             >
-              <Image
-                style={{ borderRadius: "10px" }}
-                src={`${process.env.NEXT_PUBLIC_FILE}${orders.image_url}`}
-                alt="NotFound"
-                layout="fill"
-              />
+              <ImageHandler url={orders.image_url} />
             </Button>
           ))}
         </Box>
@@ -97,12 +93,7 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
               size="small"
               color="primary"
             >
-              <Image
-                style={{ borderRadius: "100px" }}
-                src={`${process.env.NEXT_PUBLIC_FILE}${data.merchant?.self_photo}`}
-                alt="NotFound"
-                layout="fill"
-              />
+              <ImageHandler url={data.merchant?.self_photo} />
             </Button>
             <Box
               sx={{

@@ -1,7 +1,13 @@
 import axios from "axios";
 import ErrorHandling from "./shared/ErrorHandling";
+import { useAppContext } from "../shared/Context";
 
-export const getAgnosticWalletTrx = (setData: any, setMeta: any, page: any) => {
+export const getAgnosticWalletTrx = (
+  setData: any,
+  setMeta: any,
+  page: any,
+  setIsLoading: any
+) => {
   axios
     .get(
       process.env.NEXT_PUBLIC_BASE +
@@ -17,14 +23,19 @@ export const getAgnosticWalletTrx = (setData: any, setMeta: any, page: any) => {
       }
       setData(data);
       setMeta(res.data.meta);
+      setIsLoading(false);
     })
-    .catch((error) => {});
+    .catch((error) => {
+      ErrorHandling(error);
+      setIsLoading(false);
+    });
 };
 
 export const getAgnosticWalletCampaign = (
   setData: any,
   setMeta: any,
-  page: any
+  page: any,
+  setIsLoading: any
 ) => {
   axios
     .get(
@@ -42,13 +53,19 @@ export const getAgnosticWalletCampaign = (
       }
       setData(data);
       setMeta(res.data.meta);
+      setIsLoading(false);
     })
     .catch((error) => {
       ErrorHandling(error);
+      setIsLoading(false);
     });
 };
 
-export const getAgnosticWalletBallance = (setData: any, setMeta: any) => {
+export const getAgnosticWalletBallance = (
+  setData: any,
+  setMeta: any,
+  setIsLoading: any
+) => {
   axios
     .get(
       process.env.NEXT_PUBLIC_BASE + `/wallet/balance?wallet_type=agnostic`,
@@ -59,8 +76,10 @@ export const getAgnosticWalletBallance = (setData: any, setMeta: any) => {
     .then((res) => {
       setData(res.data.body);
       setMeta(res.data.meta);
+      setIsLoading(false);
     })
     .catch((error) => {
       ErrorHandling(error);
+      setIsLoading(false);
     });
 };

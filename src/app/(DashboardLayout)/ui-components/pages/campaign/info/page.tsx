@@ -4,12 +4,18 @@ import {
   getCampaignDetail,
   postCampaignPayment,
 } from "@/app/(DashboardLayout)/components/api/Campaign";
-import Attachment from "@/app/(DashboardLayout)/components/campaign/EventDocuments";
+import { getWalletList } from "@/app/(DashboardLayout)/components/api/Wallet";
 import Detonator from "@/app/(DashboardLayout)/components/campaign/Detonator";
+import Attachment from "@/app/(DashboardLayout)/components/campaign/EventDocuments";
 import Info from "@/app/(DashboardLayout)/components/campaign/Info";
 import Maps from "@/app/(DashboardLayout)/components/campaign/Maps";
 import Orders from "@/app/(DashboardLayout)/components/campaign/Orders";
+import { useAppContext } from "@/app/(DashboardLayout)/components/shared/Context";
 import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
+import {
+  ModalPopupAddDonations,
+  ModalPopupApprovals,
+} from "@/app/(DashboardLayout)/components/shared/ModalPopup";
 import {
   Box,
   Button,
@@ -19,15 +25,8 @@ import {
   Typography,
 } from "@mui/material";
 import { IconBan, IconCircleCheck, IconCirclePlus } from "@tabler/icons-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import DetailCard from "@/app/(DashboardLayout)/components/shared/DetailCard";
-import {
-  ModalPopupAddDonations,
-  ModalPopupApprovals,
-} from "@/app/(DashboardLayout)/components/shared/ModalPopup";
-import { getWalletList } from "@/app/(DashboardLayout)/components/api/Wallet";
-import { toInteger } from "lodash";
 
 type Props = {
   id: number;
@@ -36,6 +35,7 @@ type Props = {
   event_type: string;
   event_time: string;
   description: string;
+  note: string;
   donation_target: any;
   donation_collected: any;
   status: string;
@@ -74,6 +74,7 @@ type Props = {
 
 const CampaignInfo = () => {
   const searchParams = useSearchParams();
+  const { isLoading, setIsLoading } = useAppContext();
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenAddDonation, setIsOpenAddDonation] = useState(false);
   const [ids, setId] = useState<number>(0);
@@ -90,6 +91,7 @@ const CampaignInfo = () => {
     event_type: "",
     event_time: "",
     description: "",
+    note: "",
     donation_target: "",
     donation_collected: "",
     status: "",
@@ -147,7 +149,7 @@ const CampaignInfo = () => {
   const onChangeWalletType = (event: SelectChangeEvent) => {
     setValueWalletType(event.target.value);
     setSelectedWallet("default");
-    getWalletList(setWalletList, event.target.value);
+    getWalletList(setWalletList, event.target.value, setIsLoading);
   };
 
   const onChangeAddDonationAmount = (event: SelectChangeEvent) => {
@@ -190,7 +192,7 @@ const CampaignInfo = () => {
   };
 
   useEffect(() => {
-    getCampaignDetail(searchParams.get("id"), setData);
+    getCampaignDetail(searchParams.get("id"), setData, setIsLoading);
   }, []);
 
   const breadcrumbs = [

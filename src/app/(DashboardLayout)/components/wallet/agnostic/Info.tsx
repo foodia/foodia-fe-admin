@@ -71,6 +71,8 @@ const Info: React.FC<Props> = ({ data }) => {
   const [page, setPage] = useState(1);
   const router = useRouter();
 
+  console.log(data);
+
   return (
     <>
       <DashboardCard

@@ -1,7 +1,12 @@
 import axios from "axios";
 import ErrorHandling from "./shared/ErrorHandling";
 
-export const getDisbursement = (setData: any, setMeta: any, page: any) => {
+export const getDisbursement = (
+  setData: any,
+  setMeta: any,
+  page: any,
+  setIsLoading: any
+) => {
   axios
     .get(
       process.env.NEXT_PUBLIC_BASE +
@@ -13,30 +18,36 @@ export const getDisbursement = (setData: any, setMeta: any, page: any) => {
     .then((res) => {
       setData(res.data.body);
       setMeta(res.data.meta);
-      // const isRejectedPresent: boolean = res.data.body.some(
-      //   (obj: any) => obj.status === "waiting" || obj.status === "rejected"
-      // );
-      // setIsUnapprovedDetonator(isRejectedPresent);
+      setIsLoading(false);
     })
     .catch((error) => {});
 };
 
-export const getDisbursementDetail = (id: any, setData: any) => {
+export const getDisbursementDetail = (
+  id: any,
+  setData: any,
+  setIsLoading: any
+) => {
   axios
     .get(process.env.NEXT_PUBLIC_BASE + `/disbursement/fetch/${id}`, {
       headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
     })
     .then((res) => {
       setData(res.data.body);
+      setIsLoading(false);
     })
-    .catch((error) => {});
+    .catch((error) => {
+      ErrorHandling(error);
+      setIsLoading(false);
+    });
 };
 
 export const ApprovalsDisbursement = (
   id: number,
   status: string,
   note: any,
-  setIsOpen: any
+  setIsOpen: any,
+  setIsLoading: any
 ) => {
   {
     status === "approved"
@@ -54,9 +65,11 @@ export const ApprovalsDisbursement = (
             // getDetonatorDetail();
             location.reload();
             setIsOpen(false);
+            setIsLoading(false);
           })
           .catch((error) => {
             ErrorHandling(error);
+            setIsLoading(false);
           })
       : axios
           .post(
@@ -72,9 +85,11 @@ export const ApprovalsDisbursement = (
             // getDetonatorDetail();
             location.reload();
             setIsOpen(false);
+            setIsLoading(false);
           })
           .catch((error) => {
             ErrorHandling(error);
+            setIsLoading(false);
           });
   }
 };

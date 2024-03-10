@@ -2,6 +2,7 @@
 import { Approvals } from "@/app/(DashboardLayout)/components/api/Approvals";
 import { getCorporationDetail } from "@/app/(DashboardLayout)/components/api/Corporation";
 import Info from "@/app/(DashboardLayout)/components/donator/Info";
+import { useAppContext } from "@/app/(DashboardLayout)/components/shared/Context";
 import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
 import { ModalPopupApprovals } from "@/app/(DashboardLayout)/components/shared/ModalPopup";
 import { Box, Button, Stack, Typography } from "@mui/material";
@@ -20,6 +21,7 @@ type Props = {
 
 const CorporationInfo = () => {
   const searchParams = useSearchParams();
+  const { isLoading, setIsLoading } = useAppContext();
   const [isOpen, setIsOpen] = useState(false);
   const [ids, setId] = useState<number>(0);
   const [status, setStatus] = useState("");
@@ -46,7 +48,7 @@ const CorporationInfo = () => {
   };
 
   useEffect(() => {
-    getCorporationDetail(searchParams.get("id"), setData);
+    getCorporationDetail(searchParams.get("id"), setData, setIsLoading);
   }, []);
 
   const breadcrumbs = [

@@ -18,6 +18,7 @@ interface ChildProps {
     event_date: string;
     event_time: string;
     description: string;
+    note: string;
     donation_target: any;
     donation_collected: any;
     province: string;
@@ -211,6 +212,7 @@ const Info: React.FC<ChildProps> = ({ data }) => {
             }).format(data.donation_collected)}
           />
           <Field label="Description" value={data.description} />
+          <Field label="Note" value={data.note} />
           <Box sx={{ paddingY: "20px" }}>{status}</Box>
         </Box>
       </DetailCard>

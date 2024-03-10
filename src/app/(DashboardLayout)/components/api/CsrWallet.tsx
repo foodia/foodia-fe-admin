@@ -1,7 +1,12 @@
 import axios from "axios";
 import ErrorHandling from "./shared/ErrorHandling";
 
-export const getCsrWalletCurrent = (setData: any, setMeta: any, page: any) => {
+export const getCsrWalletCurrent = (
+  setData: any,
+  setMeta: any,
+  page: any,
+  setIsLoading: any
+) => {
   axios
     .get(
       process.env.NEXT_PUBLIC_BASE +
@@ -17,16 +22,20 @@ export const getCsrWalletCurrent = (setData: any, setMeta: any, page: any) => {
       }
       setData(data);
       setMeta(res.data.meta);
-      // const isRejectedPresent: boolean = res.data.body.some(
-      //   (obj: any) => obj.status === "rejected" || obj.status === "waiting"
-      // );
-      // // console.log(isRejectedPresent);
-      // setIsUnapprovedProduct(isRejectedPresent);
+      setIsLoading(false);
     })
-    .catch((error) => {});
+    .catch((error) => {
+      ErrorHandling(error);
+      setIsLoading(false);
+    });
 };
 
-export const getCsrWalletTrx = (setData: any, setMeta: any, page: any) => {
+export const getCsrWalletTrx = (
+  setData: any,
+  setMeta: any,
+  page: any,
+  setIsLoading: any
+) => {
   axios
     .get(
       process.env.NEXT_PUBLIC_BASE +
@@ -42,11 +51,20 @@ export const getCsrWalletTrx = (setData: any, setMeta: any, page: any) => {
       }
       setData(data);
       setMeta(res.data.meta);
+      setIsLoading(false);
     })
-    .catch((error) => {});
+    .catch((error) => {
+      ErrorHandling(error);
+      setIsLoading(false);
+    });
 };
 
-export const getCsrWalletCampaign = (setData: any, setMeta: any, page: any) => {
+export const getCsrWalletCampaign = (
+  setData: any,
+  setMeta: any,
+  page: any,
+  setIsLoading: any
+) => {
   axios
     .get(
       process.env.NEXT_PUBLIC_BASE +
@@ -62,11 +80,20 @@ export const getCsrWalletCampaign = (setData: any, setMeta: any, page: any) => {
       }
       setData(data);
       setMeta(res.data.meta);
+      setIsLoading(false);
     })
-    .catch((error) => {});
+    .catch((error) => {
+      ErrorHandling(error);
+      setIsLoading(false);
+    });
 };
 
-export const getCsrWalletMerchant = (setData: any, setMeta: any, page: any) => {
+export const getCsrWalletMerchant = (
+  setData: any,
+  setMeta: any,
+  page: any,
+  setIsLoading: any
+) => {
   axios
     .get(
       process.env.NEXT_PUBLIC_BASE +
@@ -82,13 +109,19 @@ export const getCsrWalletMerchant = (setData: any, setMeta: any, page: any) => {
       }
       setData(data);
       setMeta(res.data.meta);
+      setIsLoading(false);
     })
     .catch((error) => {
       ErrorHandling(error);
+      setIsLoading(false);
     });
 };
 
-export const getCsrWalletBallance = (setData: any, setMeta: any) => {
+export const getCsrWalletBallance = (
+  setData: any,
+  setMeta: any,
+  setIsLoading: any
+) => {
   axios
     .get(process.env.NEXT_PUBLIC_BASE + `/wallet/balance?wallet_type=csr`, {
       headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
@@ -96,6 +129,10 @@ export const getCsrWalletBallance = (setData: any, setMeta: any) => {
     .then((res) => {
       setData(res.data.body);
       setMeta(res.data.meta);
+      setIsLoading(false);
     })
-    .catch((error) => {});
+    .catch((error) => {
+      ErrorHandling(error);
+      setIsLoading(false);
+    });
 };

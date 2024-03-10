@@ -1,7 +1,11 @@
 import axios from "axios";
 import ErrorHandling from "./shared/ErrorHandling";
 
-export const getWalletList = (setData: any, wallet_type: any) => {
+export const getWalletList = (
+  setData: any,
+  wallet_type: any,
+  setIsLoading: any
+) => {
   axios
     .get(
       process.env.NEXT_PUBLIC_BASE + `/wallet/list?wallet_type=${wallet_type}`,
@@ -15,8 +19,10 @@ export const getWalletList = (setData: any, wallet_type: any) => {
         data = res.data.body;
       }
       setData(data);
+      setIsLoading(false);
     })
     .catch((error) => {
       ErrorHandling(error);
+      setIsLoading(false);
     });
 };

@@ -24,17 +24,18 @@ const List = () => {
   });
   const { setIsUnapprovedDetonator } = useAppContext();
   const [page, setPage] = useState(1);
+  const { isLoading, setIsLoading } = useAppContext();
 
   const handleChangePage = (
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
     setPage(value);
-    getDisbursement(setData, setMeta, value);
+    getDisbursement(setData, setMeta, value, setIsLoading);
   };
 
   useEffect(() => {
-    getDisbursement(setData, setMeta, page);
+    getDisbursement(setData, setMeta, page, setIsLoading);
   }, []);
 
   const breadcrumbs = [

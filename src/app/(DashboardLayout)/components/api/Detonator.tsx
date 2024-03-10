@@ -1,7 +1,12 @@
 import axios from "axios";
 import ErrorHandling from "./shared/ErrorHandling";
 
-export const getDetonator = (setData: any, setMeta: any, page: any) => {
+export const getDetonator = (
+  setData: any,
+  setMeta: any,
+  page: any,
+  setIsLoading: any
+) => {
   axios
     .get(
       process.env.NEXT_PUBLIC_BASE +
@@ -13,25 +18,29 @@ export const getDetonator = (setData: any, setMeta: any, page: any) => {
     .then((res) => {
       setData(res.data.body);
       setMeta(res.data.meta);
-      // const isRejectedPresent: boolean = res.data.body.some(
-      //   (obj: any) => obj.status === "waiting" || obj.status === "rejected"
-      // );
-      // setIsUnapprovedDetonator(isRejectedPresent);
+      setIsLoading(false);
     })
     .catch((error: any) => {
       ErrorHandling(error);
+      setIsLoading(false);
     });
 };
 
-export const getDetonatorDetail = (id: any, setData: any) => {
+export const getDetonatorDetail = (
+  id: any,
+  setData: any,
+  setIsLoading: any
+) => {
   axios
     .get(process.env.NEXT_PUBLIC_BASE + `/detonator/fetch/${id}`, {
       headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
     })
     .then((res) => {
       setData(res.data.body);
+      setIsLoading(false);
     })
     .catch((error) => {
       ErrorHandling(error);
+      setIsLoading(false);
     });
 };

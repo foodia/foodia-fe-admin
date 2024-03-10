@@ -1,22 +1,14 @@
-import React from "react";
 import {
-  Box,
   AppBar,
-  Toolbar,
-  styled,
-  Stack,
-  IconButton,
-  Badge,
-  Button,
-  Typography,
+  Box,
   Breadcrumbs,
+  Toolbar,
+  Typography,
+  styled,
 } from "@mui/material";
-import PropTypes from "prop-types";
+import React from "react";
 
 // components
-import Profile from "./Profile";
-import Search from "./Search";
-import { IconMenu2 } from "@tabler/icons-react";
 import { KeyboardArrowRight } from "@mui/icons-material";
 
 interface ItemType {
@@ -30,9 +22,6 @@ const PageHeader: React.FC<ItemType> = ({
   breadcrumb,
   currentBalance,
 }) => {
-  // const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
-  // const lgDown = useMediaQuery((theme) => theme.breakpoints.down('lg'));
-
   const AppBarStyled = styled(AppBar)(({ theme }) => ({
     background: "#FFF",
     boxShadow: "0px 0px 12px 0px rgba(0, 38, 96, 0.08)",

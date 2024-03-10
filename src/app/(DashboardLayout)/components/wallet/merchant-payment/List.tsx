@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getCsrWalletMerchant } from "../../api/CsrWallet";
 import DashboardCard from "../../shared/DashboardCard";
 import DataTableComponent from "./DataTable";
+import { useAppContext } from "../../shared/Context";
 
 type ballance = {
   wallet_name: string;
@@ -19,6 +20,7 @@ const List = () => {
   });
   const [page, setPage] = useState(1);
   const [searchTextCampaign, setSearchTextCampaign] = useState<string>("");
+  const { isLoading, setIsLoading } = useAppContext();
 
   const handleChangePageWalletMerchant = (
     event: React.ChangeEvent<unknown>,
@@ -28,7 +30,8 @@ const List = () => {
     getCsrWalletMerchant(
       setMerchantPaymentListData,
       setMerchantPaymentListMeta,
-      value
+      value,
+      setIsLoading
     );
   };
 
@@ -42,7 +45,8 @@ const List = () => {
     getCsrWalletMerchant(
       setMerchantPaymentListData,
       setMerchantPaymentListMeta,
-      page
+      page,
+      setIsLoading
     );
   }, []);
 

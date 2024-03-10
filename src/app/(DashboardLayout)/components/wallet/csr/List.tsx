@@ -50,12 +50,19 @@ const List = () => {
     total: 10,
   });
   const [page, setPage] = useState(1);
+  const { isLoading, setIsLoading } = useAppContext();
+
   const handleChangePageWalletCurrent = (
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
     setPage(value);
-    getCsrWalletCurrent(setCurrentWalletData, setCurrentWalletMeta, value);
+    getCsrWalletCurrent(
+      setCurrentWalletData,
+      setCurrentWalletMeta,
+      value,
+      setIsLoading
+    );
   };
 
   const handleChangePageWalletTrx = (
@@ -63,7 +70,12 @@ const List = () => {
     value: number
   ) => {
     setPage(value);
-    getCsrWalletTrx(setTransactionListData, setTransactionListMeta, value);
+    getCsrWalletTrx(
+      setTransactionListData,
+      setTransactionListMeta,
+      value,
+      setIsLoading
+    );
   };
 
   const handleChangePageWalletCampaign = (
@@ -71,7 +83,12 @@ const List = () => {
     value: number
   ) => {
     setPage(value);
-    getCsrWalletCampaign(setCampaignListData, setCampaignListMeta, value);
+    getCsrWalletCampaign(
+      setCampaignListData,
+      setCampaignListMeta,
+      value,
+      setIsLoading
+    );
   };
 
   const handleChangePageWalletMerchant = (
@@ -82,7 +99,8 @@ const List = () => {
     getCsrWalletMerchant(
       setMerchantPaymentListData,
       setMerchantPaymentListMeta,
-      value
+      value,
+      setIsLoading
     );
   };
 
@@ -93,14 +111,34 @@ const List = () => {
   ];
 
   useEffect(() => {
-    getCsrWalletBallance(setBallanceWalletData, setBallanceWalletMeta);
-    getCsrWalletCurrent(setCurrentWalletData, setCurrentWalletMeta, page);
-    getCsrWalletTrx(setTransactionListData, setTransactionListMeta, page);
-    getCsrWalletCampaign(setCampaignListData, setCampaignListMeta, page);
+    getCsrWalletBallance(
+      setBallanceWalletData,
+      setBallanceWalletMeta,
+      setIsLoading
+    );
+    getCsrWalletCurrent(
+      setCurrentWalletData,
+      setCurrentWalletMeta,
+      page,
+      setIsLoading
+    );
+    getCsrWalletTrx(
+      setTransactionListData,
+      setTransactionListMeta,
+      page,
+      setIsLoading
+    );
+    getCsrWalletCampaign(
+      setCampaignListData,
+      setCampaignListMeta,
+      page,
+      setIsLoading
+    );
     getCsrWalletMerchant(
       setMerchantPaymentListData,
       setMerchantPaymentListMeta,
-      page
+      page,
+      setIsLoading
     );
   }, []);
 

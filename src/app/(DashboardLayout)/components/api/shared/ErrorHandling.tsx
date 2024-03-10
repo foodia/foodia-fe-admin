@@ -1,7 +1,7 @@
 import { AlertError401, AlertMessage } from "../../shared/Alerts";
 
-const ErrorHandling = (errCode: any) => {
-  const code = errCode.response.data.code;
+const ErrorHandling = (errCode?: any) => {
+  const code = errCode?.response?.data?.code;
   if (code == 401) {
     console.log("timeout");
     AlertError401();

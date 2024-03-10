@@ -3,6 +3,7 @@ import { Approvals } from "@/app/(DashboardLayout)/components/api/Approvals";
 import { getProductDetail } from "@/app/(DashboardLayout)/components/api/Product";
 import Attachment from "@/app/(DashboardLayout)/components/product/Attachment";
 import Info from "@/app/(DashboardLayout)/components/product/Info";
+import { useAppContext } from "@/app/(DashboardLayout)/components/shared/Context";
 import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
 import { ModalPopupApprovals } from "@/app/(DashboardLayout)/components/shared/ModalPopup";
 import { Box, Button, Stack, Typography } from "@mui/material";
@@ -30,6 +31,7 @@ type Props = {
 
 const ProductInfo = () => {
   const searchParams = useSearchParams();
+  const { isLoading, setIsLoading } = useAppContext();
   const [isOpen, setIsOpen] = useState(false);
   const [ids, setId] = useState<number>(0);
   const [status, setStatus] = useState("");
@@ -65,7 +67,7 @@ const ProductInfo = () => {
   };
 
   useEffect(() => {
-    getProductDetail(searchParams.get("id"), setData);
+    getProductDetail(searchParams.get("id"), setData, setIsLoading);
   }, []);
 
   console.log(status);

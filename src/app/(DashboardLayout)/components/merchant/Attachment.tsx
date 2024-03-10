@@ -20,6 +20,7 @@ import img1 from "public/images/backgrounds/u1.jpg";
 import img2 from "public/images/backgrounds/u3.jpg";
 import { ModalPopupFilesDetail } from "../shared/ModalPopup";
 import DetailCard from "../shared/DetailCard";
+import ImageHandler from "../shared/ImageHandler";
 
 interface ChildProps {
   data: {
@@ -81,16 +82,13 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
               variant="contained"
               size="small"
               sx={{
-                backgroundColor: "transparent",
-                border: "0.4px solid grey",
+                width: "210px",
+                height: "125px",
+                borderRadius: "10px",
+                background: "transparent",
               }}
             >
-              <Image
-                src={`${process.env.NEXT_PUBLIC_FILE}${data.self_photo}`}
-                alt="NotFound"
-                width={200} // Set the desired width
-                height={120} // Set the desired height
-              />
+              <ImageHandler url={data.self_photo} />
             </Button>
             <Typography>Self Photo</Typography>
           </Box>
@@ -106,16 +104,13 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
               variant="contained"
               size="small"
               sx={{
-                backgroundColor: "transparent",
-                border: "0.4px solid grey",
+                width: "210px",
+                height: "125px",
+                borderRadius: "10px",
+                background: "transparent",
               }}
             >
-              <Image
-                src={`${process.env.NEXT_PUBLIC_FILE}${data.ktp_photo}`}
-                alt="NotFound"
-                width={200} // Set the desired width
-                height={120} // Set the desired height
-              />
+              <ImageHandler url={data.ktp_photo} />
             </Button>
             <Typography>KTP Photo</Typography>
           </Box>

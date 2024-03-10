@@ -16,17 +16,18 @@ const List = () => {
     total: 0,
   });
   const { setIsUnapprovedProduct } = useAppContext();
+  const { isLoading, setIsLoading } = useAppContext();
 
   const handleChangePage = (
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
     setPage(value);
-    getProduct(setData, setMeta, value);
+    getProduct(setData, setMeta, value, setIsLoading);
   };
 
   useEffect(() => {
-    getProduct(setData, setMeta, page);
+    getProduct(setData, setMeta, page, setIsLoading);
   }, []);
 
   const breadcrumbs = [

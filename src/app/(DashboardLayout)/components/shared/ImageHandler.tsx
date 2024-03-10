@@ -17,17 +17,17 @@ const ImageHandler: React.FC<Url> = ({ url, width }) => {
   console.log(errorOccurred);
 
   useEffect(() => {
-    setSrc(`https://api-foodia-staging.cmtdepok.xyz/storage/${url}`);
+    setSrc(`${process.env.NEXT_PUBLIC_FILE}/${url}`);
   });
 
   const handleImageError = () => {
     setErrorOccurred(true);
-    setSrc(`https://api-foodia-staging.cmtdepok.xyz/storage/${url}`);
+    setSrc(`${process.env.NEXT_PUBLIC_FILE}/${url}`);
   };
 
   const handleImageLoading = () => {
     setLoadingOccurred(false);
-    setSrc(`https://api-foodia-staging.cmtdepok.xyz/storage/${url}`);
+    setSrc(`${process.env.NEXT_PUBLIC_FILE}/${url}`);
   };
   return (
     <>

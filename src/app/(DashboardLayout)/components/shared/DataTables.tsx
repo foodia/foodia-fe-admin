@@ -2,6 +2,7 @@ import { Search } from "@mui/icons-material";
 import {
   Box,
   Button,
+  CircularProgress,
   Input,
   InputAdornment,
   MenuItem,
@@ -16,6 +17,7 @@ import React from "react";
 import DataTable from "react-data-table-component";
 import * as XLSX from "xlsx";
 import CustomStylesTable from "./CustomStylesTable";
+import { useAppContext } from "./Context";
 
 interface Data {
   value?: any;
@@ -51,6 +53,12 @@ const DataTables: React.FC<Data> = ({
   pagination,
   page,
 }) => {
+  const { isLoading, setIsLoading } = useAppContext();
+
+  if (!data) {
+    setIsLoading(true);
+  }
+
   const downloadExcel = async (data: any) => {
     try {
       const worksheet = XLSX.utils.json_to_sheet(data);
@@ -266,14 +274,32 @@ const DataTables: React.FC<Data> = ({
           </Button>
         )}
       </Box>
-      <DataTable
-        customStyles={CustomStylesTable}
-        columns={columns}
-        data={data}
-        // pagination
-        // paginationPerPage={1}
-        // paginationRowsPerPageOptions={}
-      />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {isLoading ? (
+          <>
+            <CircularProgress />
+            <br />
+          </>
+        ) : (
+          <>
+            <DataTable
+              customStyles={CustomStylesTable}
+              columns={columns}
+              data={data}
+              // pagination
+              // paginationPerPage={1}
+              // paginationRowsPerPageOptions={}
+            />
+          </>
+        )}
+      </Box>
       {pagination ? (
         <Box
           sx={{
@@ -320,7 +346,10 @@ const DataTables: React.FC<Data> = ({
               shape="rounded"
               renderItem={(item) => (
                 <PaginationItem
-                  slots={{ previous: IconArrowLeft, next: IconArrowRight }}
+                  slots={{
+                    previous: IconArrowLeft,
+                    next: IconArrowRight,
+                  }}
                   {...item}
                 />
               )}

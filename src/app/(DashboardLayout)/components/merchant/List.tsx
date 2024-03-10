@@ -15,17 +15,18 @@ const List = () => {
     total: 0,
   });
   const { setIsUnapprovedMerchant } = useAppContext();
+  const { isLoading, setIsLoading } = useAppContext();
 
   const handleChangePage = (
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
     setPage(value);
-    getMerchant(setData, setMeta, value);
+    getMerchant(setData, setMeta, value, setIsLoading);
   };
 
   useEffect(() => {
-    getMerchant(setData, setMeta, page);
+    getMerchant(setData, setMeta, page, setIsLoading);
   }, []);
 
   const breadcrumbs = [

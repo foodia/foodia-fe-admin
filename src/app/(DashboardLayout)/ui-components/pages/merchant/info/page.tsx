@@ -19,6 +19,7 @@ import { Approvals } from "@/app/(DashboardLayout)/components/api/Approvals";
 import DetailCard from "@/app/(DashboardLayout)/components/shared/DetailCard";
 import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
 import { ModalPopupApprovals } from "@/app/(DashboardLayout)/components/shared/ModalPopup";
+import { useAppContext } from "@/app/(DashboardLayout)/components/shared/Context";
 
 type Props = {
   id: number;
@@ -57,6 +58,7 @@ const MerchantInfo = () => {
   const [name, setName] = useState("");
   const [note, setNote] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const { isLoading, setIsLoading } = useAppContext();
 
   const handleOpen = (id: number, status: string, name: string) => {
     setIsOpen(true);
@@ -70,7 +72,7 @@ const MerchantInfo = () => {
   };
 
   useEffect(() => {
-    getMerchantDetail(searchParams.get("id"), setData);
+    getMerchantDetail(searchParams.get("id"), setData, setIsLoading);
   }, []);
 
   const breadcrumbs = [

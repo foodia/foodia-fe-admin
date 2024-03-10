@@ -22,6 +22,9 @@ interface AppContextProps {
   isUnapprovedProduct: boolean;
   setIsUnapprovedProduct: React.Dispatch<React.SetStateAction<boolean>>;
 
+  isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+
   campaignData: any;
   detonatorData: any;
   merchantData: any;
@@ -45,6 +48,8 @@ const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isUnapprovedProduct, setIsUnapprovedProduct] =
     React.useState<boolean>(false);
 
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
+
   const [campaignData, setCampaignData] = useState([]);
   const [detonatorData, setDetonatorData] = useState([]);
   const [merchantData, setMerchantdata] = useState([]);
@@ -65,6 +70,9 @@ const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
     isUnapprovedProduct,
     setIsUnapprovedProduct,
+
+    isLoading,
+    setIsLoading,
 
     campaignData,
     detonatorData,

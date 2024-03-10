@@ -23,9 +23,10 @@ const List = () => {
   });
   const { setIsUnapprovedDetonator } = useAppContext();
   const [page, setPage] = useState(1);
+  const { isLoading, setIsLoading } = useAppContext();
 
   useEffect(() => {
-    getDetonator(setData, setMeta, page);
+    getDetonator(setData, setMeta, page, setIsLoading);
   }, []);
 
   const handleChangePage = (
@@ -33,7 +34,7 @@ const List = () => {
     value: number
   ) => {
     setPage(value);
-    getDetonator(setData, setMeta, value);
+    getDetonator(setData, setMeta, value, setIsLoading);
   };
 
   const breadcrumbs = [

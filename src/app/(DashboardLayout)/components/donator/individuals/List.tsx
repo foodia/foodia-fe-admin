@@ -1,11 +1,9 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import DataTableComponent from "./DataTable";
-import { useAppContext } from "../../shared/Context";
-import { getDetonator } from "../../api/Detonator";
-import DashboardCard from "../../shared/DashboardCard";
 import { Box, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import { getIndividual } from "../../api/Individual";
+import { useAppContext } from "../../shared/Context";
+import DashboardCard from "../../shared/DashboardCard";
+import DataTableComponent from "./DataTable";
 
 interface Meta {
   page: number;
@@ -25,17 +23,18 @@ const List = () => {
   });
   const { setIsUnapprovedDetonator } = useAppContext();
   const [page, setPage] = useState(1);
+  const { isLoading, setIsLoading } = useAppContext();
 
   const handleChangePage = (
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
     setPage(value);
-    getIndividual(setData, setMeta, value);
+    getIndividual(setData, setMeta, value, setIsLoading);
   };
 
   useEffect(() => {
-    getIndividual(setData, setMeta, page);
+    getIndividual(setData, setMeta, page, setIsLoading);
   }, []);
 
   const breadcrumbs = [

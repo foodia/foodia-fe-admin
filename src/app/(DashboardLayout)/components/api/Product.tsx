@@ -1,7 +1,12 @@
 import axios from "axios";
 import ErrorHandling from "./shared/ErrorHandling";
 
-export const getProduct = (setData: any, setMeta: any, page: any) => {
+export const getProduct = (
+  setData: any,
+  setMeta: any,
+  page: any,
+  setIsLoading: any
+) => {
   axios
     .get(
       process.env.NEXT_PUBLIC_BASE +
@@ -13,26 +18,25 @@ export const getProduct = (setData: any, setMeta: any, page: any) => {
     .then((res) => {
       setData(res.data.body);
       setMeta(res.data.meta);
-      // const isRejectedPresent: boolean = res.data.body.some(
-      //   (obj: any) => obj.status === "rejected" || obj.status === "waiting"
-      // );
-      // // console.log(isRejectedPresent);
-      // setIsUnapprovedProduct(isRejectedPresent);
+      setIsLoading(false);
     })
     .catch((error) => {
       ErrorHandling(error);
+      setIsLoading(false);
     });
 };
 
-export const getProductDetail = (id: any, setData: any) => {
+export const getProductDetail = (id: any, setData: any, setIsLoading: any) => {
   axios
     .get(process.env.NEXT_PUBLIC_BASE + `/merchant-product/fetch/${id}`, {
       headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
     })
     .then((res) => {
       setData(res.data.body);
+      setIsLoading(false);
     })
     .catch((error) => {
       ErrorHandling(error);
+      setIsLoading(false);
     });
 };

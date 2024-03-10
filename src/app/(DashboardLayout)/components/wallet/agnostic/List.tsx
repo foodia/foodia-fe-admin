@@ -72,13 +72,19 @@ const List = () => {
     total: 10,
   });
   const [page, setPage] = useState(1);
+  const { isLoading, setIsLoading } = useAppContext();
 
   const handleChangePagePaymentList = (
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
     setPage(value);
-    getAgnosticWalletTrx(setTransactionListData, setTransactionListMeta, value);
+    getAgnosticWalletTrx(
+      setTransactionListData,
+      setTransactionListMeta,
+      value,
+      setIsLoading
+    );
   };
 
   const handleChangePageCampaignList = (
@@ -86,7 +92,12 @@ const List = () => {
     value: number
   ) => {
     setPage(value);
-    getAgnosticWalletCampaign(setCampaignListData, setCampaignListMeta, value);
+    getAgnosticWalletCampaign(
+      setCampaignListData,
+      setCampaignListMeta,
+      value,
+      setIsLoading
+    );
   };
 
   const handleChangePageMerchantPayment = (
@@ -94,13 +105,32 @@ const List = () => {
     value: number
   ) => {
     setPage(value);
-    getAgnosticWalletCampaign(setCampaignListData, setCampaignListMeta, value);
+    getAgnosticWalletCampaign(
+      setCampaignListData,
+      setCampaignListMeta,
+      value,
+      setIsLoading
+    );
   };
 
   useEffect(() => {
-    getAgnosticWalletBallance(setBalanceListData, setBalanceListMeta);
-    getAgnosticWalletTrx(setTransactionListData, setTransactionListMeta, page);
-    getAgnosticWalletCampaign(setCampaignListData, setCampaignListMeta, page);
+    getAgnosticWalletBallance(
+      setBalanceListData,
+      setBalanceListMeta,
+      setIsLoading
+    );
+    getAgnosticWalletTrx(
+      setTransactionListData,
+      setTransactionListMeta,
+      page,
+      setIsLoading
+    );
+    getAgnosticWalletCampaign(
+      setCampaignListData,
+      setCampaignListMeta,
+      page,
+      setIsLoading
+    );
   }, []);
 
   const breadcrumbs = [

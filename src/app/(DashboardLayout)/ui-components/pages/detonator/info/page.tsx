@@ -4,6 +4,7 @@ import { getCorporationDetail } from "@/app/(DashboardLayout)/components/api/Cor
 import { getDetonatorDetail } from "@/app/(DashboardLayout)/components/api/Detonator";
 import Attachment from "@/app/(DashboardLayout)/components/detonator/Attachment";
 import Info from "@/app/(DashboardLayout)/components/detonator/Info";
+import { useAppContext } from "@/app/(DashboardLayout)/components/shared/Context";
 import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
 import { ModalPopupApprovals } from "@/app/(DashboardLayout)/components/shared/ModalPopup";
 import { Box, Button, Grid, Stack, Typography } from "@mui/material";
@@ -23,6 +24,7 @@ type Props = {
 
 const DetonatorInfo = () => {
   const searchParams = useSearchParams();
+  const { isLoading, setIsLoading } = useAppContext();
   const [isOpen, setIsOpen] = useState(false);
   const [ids, setId] = useState<number>(0);
   const [status, setStatus] = useState("");
@@ -49,7 +51,7 @@ const DetonatorInfo = () => {
   };
 
   useEffect(() => {
-    getDetonatorDetail(searchParams.get("id"), setData);
+    getDetonatorDetail(searchParams.get("id"), setData, setIsLoading);
   }, []);
 
   const breadcrumbs = [

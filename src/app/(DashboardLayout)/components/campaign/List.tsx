@@ -16,9 +16,10 @@ const List = () => {
   });
   const { setIsUnapprovedCampaign } = useAppContext();
   const [page, setPage] = useState(1);
+  const { isLoading, setIsLoading } = useAppContext();
 
   useEffect(() => {
-    getCampaign(setData, setMeta, page);
+    getCampaign(setData, setMeta, page, setIsLoading);
   }, []);
 
   const breadcrumbs = [
@@ -32,7 +33,7 @@ const List = () => {
     value: number
   ) => {
     setPage(value);
-    getCampaign(setData, setMeta, value);
+    getCampaign(setData, setMeta, value, setIsLoading);
   };
 
   return (
