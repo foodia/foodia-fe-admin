@@ -17,6 +17,7 @@ import {
   IconCircle,
 } from "@tabler/icons-react";
 import Link from "next/link";
+import { useAppContext } from "@/app/(DashboardLayout)/components/shared/Context";
 
 type NavGroup = {
   [x: string]: any;
@@ -53,6 +54,7 @@ const NavItem = ({ item, index, level, pathDirect, onClick }: ItemType) => {
   const [Index, setIndex] = useState(
     parseInt(`${localStorage.getItem("Index")}`, 10)
   );
+  const { isLoading, setIsLoading } = useAppContext();
 
   const handleClick = (index: any) => {
     setOpen((prevOpen) => (index === Index ? !prevOpen : true));
@@ -163,7 +165,9 @@ const NavItem = ({ item, index, level, pathDirect, onClick }: ItemType) => {
                 key={t.id}
                 href={t.href}
                 selected={pathDirect === t.href}
-                // onClick={() => handleClick(index)}
+                onClick={() => {
+                  pathDirect !== t.href && setIsLoading(true);
+                }}
               >
                 {/* <ListItemIcon
                   sx={{

@@ -260,6 +260,19 @@ export const ModalPopupAddDonations = ({
                     *Input amount of donation
                   </Typography>
                 )}
+                {collected_donation +
+                  parseInt(valueDonationAmount.replace(/\./g, ""), 10) >
+                  required_donation && (
+                  <Typography
+                    sx={{
+                      color: "red",
+                      fontSize: "14px",
+                      marginLeft: "1px",
+                    }}
+                  >
+                    *Amount Can't Be More Than Required
+                  </Typography>
+                )}
               </Box>
             )}
           </Box>
@@ -271,7 +284,11 @@ export const ModalPopupAddDonations = ({
                 ? { backgroundColor: "grey.100" }
                 : { backgroundColor: "primary.light" }
             }
-            disabled={valueWalletType === "default"}
+            disabled={
+              collected_donation +
+                parseInt(valueDonationAmount.replace(/\./g, ""), 10) >
+                required_donation || valueDonationAmount === ""
+            }
             onClick={handleAddDonation}
           >
             Add Donation

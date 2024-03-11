@@ -172,11 +172,12 @@ const CampaignInfo = () => {
   };
 
   const handleAddDonation = (id: any, selectedWallet: any, amount: any) => {
+    const addAmount = parseInt(amount.replace(/\./g, ""), 10);
     const onSuccess = () => {
       handleCloseAddDonation();
       location.reload();
     };
-    postCampaignPayment(id, selectedWallet, amount, onSuccess());
+    postCampaignPayment(id, selectedWallet, addAmount, onSuccess());
   };
 
   const handleOpen = (id: number, status: string, name: string) => {

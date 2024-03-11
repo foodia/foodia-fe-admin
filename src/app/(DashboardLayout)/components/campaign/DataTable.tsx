@@ -19,6 +19,8 @@ interface Data {
   event_name: string;
   event_type: string;
   description: string;
+  donation_target: number;
+  donation_collected: number;
   created_at: string;
   status: string;
   detonator: { id: number; oauth: { fullname: string } };
@@ -54,6 +56,34 @@ const columns: TableColumn<Data>[] = [
   {
     name: "Event Type",
     cell: (row: Data) => <div>{row.event_type}</div>,
+    // sortable: true,
+    width: "100px",
+  },
+  {
+    name: "Target",
+    cell: (row: Data) => (
+      <div>
+        {new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          minimumFractionDigits: 0,
+        }).format(row.donation_target)}
+      </div>
+    ),
+    // sortable: true,
+    width: "auto",
+  },
+  {
+    name: "Collected",
+    cell: (row: Data) => (
+      <div>
+        {new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          minimumFractionDigits: 0,
+        }).format(row.donation_collected)}
+      </div>
+    ),
     // sortable: true,
     width: "auto",
   },

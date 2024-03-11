@@ -51,7 +51,7 @@ export const postCampaignPayment = (
       process.env.NEXT_PUBLIC_BASE + `/campaign/payment/${id}`,
       {
         wallet_id: parseInt(wallet_id),
-        amount: parseInt(amount.replace(/\./g, ""), 10),
+        amount: amount,
       },
       {
         headers: {
