@@ -270,7 +270,7 @@ export const ModalPopupAddDonations = ({
                       marginLeft: "1px",
                     }}
                   >
-                    *Amount Can't Be More Than Required
+                    *Amount Cant Be More Than Required
                   </Typography>
                 )}
               </Box>
