@@ -229,7 +229,7 @@ const DataTableComponent: React.FC<Props> = ({
           {row.details?.slice(0, 2).map((value: any, i) => (
             <Link
               href=""
-              key={value.id}
+              key={i}
               style={{ display: "flex", flexDirection: "row" }}
             >
               {/* {value.donator} */}
@@ -249,10 +249,7 @@ const DataTableComponent: React.FC<Props> = ({
       cell: (row: CampaignListData) => (
         <>
           {row.details?.slice(0, 2).map((value: any, i) => (
-            <div
-              key={value.id}
-              style={{ display: "flex", flexDirection: "row" }}
-            >
+            <div key={i} style={{ display: "flex", flexDirection: "row" }}>
               {new Intl.NumberFormat("id-ID", {
                 style: "currency",
                 currency: "IDR",

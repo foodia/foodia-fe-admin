@@ -1,11 +1,9 @@
 import { Box, SelectChangeEvent, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { TableColumn } from "react-data-table-component";
-import DataTables from "../../shared/DataTables";
 import Link from "next/link";
+import React, { useState } from "react";
+import { TableColumn } from "react-data-table-component";
 import { ButtonAction } from "../../shared/Buttons";
-import { useRouter } from "next/navigation";
-import { useAppContext } from "../../shared/Context";
+import DataTables from "../../shared/DataTables";
 
 interface Meta {
   page: number;
@@ -160,10 +158,7 @@ const DataTableComponent: React.FC<Props> = ({
           }}
         >
           {row.details?.slice(0, 2).map((value: any, i) => (
-            <div
-              key={value.id}
-              style={{ display: "flex", flexDirection: "row" }}
-            >
+            <div key={i} style={{ display: "flex", flexDirection: "row" }}>
               {i == 1 && value.donation_by?.length > 10
                 ? `${value.donation_by.slice(0, 10)}...`
                 : value.donation_by}
@@ -180,10 +175,7 @@ const DataTableComponent: React.FC<Props> = ({
       cell: (row: CampaignListData) => (
         <div style={{ display: "flex", flexDirection: "row" }}>
           {row.details?.slice(0, 2).map((value: any, i) => (
-            <div
-              key={value.id}
-              style={{ display: "flex", flexDirection: "row" }}
-            >
+            <div key={i} style={{ display: "flex", flexDirection: "row" }}>
               {new Intl.NumberFormat("id-ID", {
                 style: "currency",
                 currency: "IDR",

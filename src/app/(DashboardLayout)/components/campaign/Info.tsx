@@ -211,8 +211,8 @@ const Info: React.FC<ChildProps> = ({ data }) => {
               minimumFractionDigits: 0,
             }).format(data.donation_collected)}
           />
-          <Field label="Description" value={data.description} />
           <Field label="Note" value={data.note} />
+          <Field label="Description" value={data.description} />
           <Box sx={{ paddingY: "20px" }}>{status}</Box>
         </Box>
       </DetailCard>

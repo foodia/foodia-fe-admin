@@ -20,7 +20,7 @@ const ImageHandler: React.FC<Url> = ({ url, width }) => {
 
   const handleImageError = () => {
     setErrorOccurred(true);
-    setSrc(`${url}`);
+    // setSrc(`${url}`);
   };
 
   const handleImageLoading = () => {
@@ -30,47 +30,50 @@ const ImageHandler: React.FC<Url> = ({ url, width }) => {
   return (
     <>
       {loadingOccurred && <CircularProgress color="secondary" />}
-      {errorOccurred ? (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Typography sx={{ color: "red" }}>Image Error</Typography>
+      {
+        // errorOccurred ? (
+        //   <Box
+        //     sx={{
+        //       display: "flex",
+        //       flexDirection: "column",
+        //       alignItems: "center",
+        //     }}
+        //   >
+        //     <Typography sx={{ color: "red" }}>Image Error</Typography>
+        //     <Image
+        //       width={70}
+        //       height={70}
+        //       src={logo}
+        //       alt="Fallback"
+        //       onLoad={handleImageLoading}
+        //     />
+        //   </Box>
+        // ) :
+        width ? (
           <Image
-            width={70}
-            height={70}
-            src={logo}
-            alt="Fallback"
+            style={{ borderRadius: "10px" }}
+            src={`${process.env.NEXT_PUBLIC_FILE}${src}`}
+            alt="Error"
+            width={width}
+            height={width}
+            // sizes="100px"
+            priority={true}
+            onError={handleImageError}
             onLoad={handleImageLoading}
           />
-        </Box>
-      ) : width ? (
-        <Image
-          style={{ borderRadius: "10px" }}
-          src={`${process.env.NEXT_PUBLIC_FILE}${src}`}
-          alt="Not Found"
-          width={width}
-          height={width}
-          // sizes="100px"
-          priority={true}
-          onError={handleImageError}
-          onLoad={handleImageLoading}
-        />
-      ) : (
-        <Image
-          style={{ borderRadius: "10px" }}
-          src={`${process.env.NEXT_PUBLIC_FILE}${src}`}
-          alt="Not Found"
-          layout="fill"
-          sizes="300px"
-          // priority={true}
-          onError={handleImageError}
-          onLoad={handleImageLoading}
-        />
-      )}
+        ) : (
+          <Image
+            style={{ borderRadius: "10px" }}
+            src={`${process.env.NEXT_PUBLIC_FILE}${src}`}
+            alt="Error"
+            layout="fill"
+            sizes="300px"
+            // priority={true}
+            onError={handleImageError}
+            onLoad={handleImageLoading}
+          />
+        )
+      }
     </>
   );
 };

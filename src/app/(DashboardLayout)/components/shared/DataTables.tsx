@@ -274,21 +274,28 @@ const DataTables: React.FC<Data> = ({
           </Button>
         )}
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        {isLoading ? (
-          <>
-            <CircularProgress />
-            <br />
-          </>
-        ) : (
-          <>
+      {isLoading ? (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <CircularProgress />
+          <br />
+        </Box>
+      ) : (
+        <>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <DataTable
               customStyles={CustomStylesTable}
               columns={columns}
@@ -297,83 +304,84 @@ const DataTables: React.FC<Data> = ({
               // paginationPerPage={1}
               // paginationRowsPerPageOptions={}
             />
-          </>
-        )}
-      </Box>
-      {pagination ? (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            // backgroundColor: "red",
-            borderRadius: "0px 0px 6px 6px",
-            border: "1px solid #CCD1D9",
-            padding: "10px",
-          }}
-        >
-          <Box
-            sx={{
-              fontSize: "13px",
-              display: "flex",
-              alignItems: "center",
-              gap: "3px",
-            }}
-          >
-            Show <Typography fontWeight={700}>1</Typography> to{" "}
-            <Typography fontWeight={700}>
-              {pageItems ? pageItems : 0}
-            </Typography>{" "}
-            of <Typography fontWeight={700}>{meta?.total}</Typography> results
           </Box>
-          <Box>
-            <Pagination
-              style={{
-                backgroundColor: "gray",
-                borderRadius: "40px",
-                padding: "4px",
-                // width: "20px",
-                background: "var(--UI-Neutral-Neutral-30, #F5F6FA)",
-              }}
-              onChange={onChange}
-              page={page}
-              count={meta?.page_count}
-              defaultPage={1}
-              siblingCount={0}
-              boundaryCount={1}
-              variant="outlined"
-              shape="rounded"
-              renderItem={(item) => (
-                <PaginationItem
-                  slots={{
-                    previous: IconArrowLeft,
-                    next: IconArrowRight,
-                  }}
-                  {...item}
-                />
-              )}
+          {pagination ? (
+            <Box
               sx={{
-                "& .MuiPaginationItem-previousNext": {
-                  color: "white",
-                  backgroundColor: "primary.main", // Customize the background color of the ul element
-                  // padding: "8px", // Add padding to the ul element for spacing
-                  borderRadius: "100%", // Optional: Customize the border radius of the ul element
-                },
-                "& .MuiPaginationItem-root": {
-                  borderRadius: "40px",
-                  "&.Mui-selected": {
-                    borderColor: "primary.main",
-                    backgroundColor: "transparent", // Customize the background color of the selected pagination item
-                    color: "primary.main", // Customize the text color of the selected pagination item
-                  },
-                },
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                // backgroundColor: "red",
+                borderRadius: "0px 0px 6px 6px",
+                border: "1px solid #CCD1D9",
+                padding: "10px",
               }}
-            />
-          </Box>
-        </Box>
-      ) : (
-        ""
+            >
+              <Box
+                sx={{
+                  fontSize: "13px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "3px",
+                }}
+              >
+                Show <Typography fontWeight={700}>1</Typography> to{" "}
+                <Typography fontWeight={700}>
+                  {pageItems ? pageItems : 0}
+                </Typography>{" "}
+                of <Typography fontWeight={700}>{meta?.total}</Typography>{" "}
+                results
+              </Box>
+              <Box>
+                <Pagination
+                  style={{
+                    backgroundColor: "gray",
+                    borderRadius: "40px",
+                    padding: "4px",
+                    // width: "20px",
+                    background: "var(--UI-Neutral-Neutral-30, #F5F6FA)",
+                  }}
+                  onChange={onChange}
+                  page={page}
+                  count={meta?.page_count}
+                  defaultPage={1}
+                  siblingCount={0}
+                  boundaryCount={1}
+                  variant="outlined"
+                  shape="rounded"
+                  renderItem={(item) => (
+                    <PaginationItem
+                      slots={{
+                        previous: IconArrowLeft,
+                        next: IconArrowRight,
+                      }}
+                      {...item}
+                    />
+                  )}
+                  sx={{
+                    "& .MuiPaginationItem-previousNext": {
+                      color: "white",
+                      backgroundColor: "primary.main", // Customize the background color of the ul element
+                      // padding: "8px", // Add padding to the ul element for spacing
+                      borderRadius: "100%", // Optional: Customize the border radius of the ul element
+                    },
+                    "& .MuiPaginationItem-root": {
+                      borderRadius: "40px",
+                      "&.Mui-selected": {
+                        borderColor: "primary.main",
+                        backgroundColor: "transparent", // Customize the background color of the selected pagination item
+                        color: "primary.main", // Customize the text color of the selected pagination item
+                      },
+                    },
+                  }}
+                />
+              </Box>
+            </Box>
+          ) : (
+            ""
+          )}
+        </>
       )}
     </>
   );
