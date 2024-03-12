@@ -68,7 +68,7 @@ const merchantPaymentListColumns: TableColumn<MerchantPaymentListData>[] = [
                 id: value.merchant_id,
               },
             }}
-            key={value.id}
+            key={i}
             style={{ display: "flex", flexDirection: "row" }}
           >
             {/* {value.merchant_name} */}
@@ -88,7 +88,7 @@ const merchantPaymentListColumns: TableColumn<MerchantPaymentListData>[] = [
     cell: (row: MerchantPaymentListData) => (
       <div style={{ display: "flex", flexDirection: "row" }}>
         {row.details?.slice(0, 2).map((value: any, i) => (
-          <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
+          <div key={i} style={{ display: "flex", flexDirection: "row" }}>
             {new Intl.NumberFormat("id-ID", {
               style: "currency",
               currency: "IDR",
@@ -108,7 +108,7 @@ const merchantPaymentListColumns: TableColumn<MerchantPaymentListData>[] = [
     cell: (row: MerchantPaymentListData) => (
       <>
         {row.details?.slice(0, 2).map((value: any, i) => (
-          <div key={value.id} style={{ display: "flex", flexDirection: "row" }}>
+          <div key={i} style={{ display: "flex", flexDirection: "row" }}>
             {value.payment_date}
             {i === 1 && `...`}
             {i == 0 && <div style={{ marginRight: "5px" }}>,</div>}
