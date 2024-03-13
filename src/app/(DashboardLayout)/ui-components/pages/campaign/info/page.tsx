@@ -222,12 +222,12 @@ const CampaignInfo = () => {
           <Grid container spacing={3}>
             <Grid item xs={6} lg={6}>
               <Info data={data} />
-              <Maps data={data} />
             </Grid>
             <Grid item xs={6} lg={6}>
               <Orders data={data} />
               <Detonator data={data} />
-              <Attachment data={data} />
+              <Maps data={data} />
+              {/* <Attachment data={data} /> */}
             </Grid>
           </Grid>
           <Box

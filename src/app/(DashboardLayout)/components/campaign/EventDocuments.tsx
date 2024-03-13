@@ -1,34 +1,12 @@
 import { Button } from "@mui/material";
-import Image from "next/legacy/image";
 import { useState } from "react";
 import DetailCard from "../shared/DetailCard";
-import { ModalPopupFilesDetail } from "../shared/ModalPopup";
-import logo from "../../../../utils/notFound.png";
 import ImageHandler from "../shared/ImageHandler";
+import { ModalPopupFilesDetail } from "../shared/ModalPopup";
 
 interface ChildProps {
   data: {
     image_url: string;
-    orders: [
-      {
-        id: number;
-        order_status: string;
-        qty: string;
-        merchant: { oauth: { fullname: string } };
-        merchant_product: {
-          id: number;
-          name: string;
-          price: string;
-          images: [{ image_url: string }];
-        };
-      }
-    ];
-    detonator: {
-      id: number;
-      status: string;
-      self_photo: string;
-      oauth: { fullname: string; email: string; phone: string };
-    };
   };
 }
 
@@ -54,21 +32,21 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
 
   return (
     <>
-      <DetailCard title="Event Documents" subTitle="Event Photo">
-        <Button
-          onClick={() => onViewImage(data.image_url)}
-          variant="contained"
-          size="small"
-          sx={{
-            padding: 0,
-            width: "250px",
-            borderRadius: "10px",
-            backgroundColor: "transparent",
-          }}
-        >
-          <ImageHandler url={data.image_url} />
-        </Button>
-      </DetailCard>
+      {/* <DetailCard title="Event Documents" subTitle="Event Photo"> */}
+      <Button
+        onClick={() => onViewImage(data.image_url)}
+        variant="contained"
+        size="small"
+        sx={{
+          padding: 0,
+          width: "250px",
+          borderRadius: "10px",
+          backgroundColor: "transparent",
+        }}
+      >
+        <ImageHandler url={data.image_url} />
+      </Button>
+      {/* </DetailCard> */}
       <ModalPopupFilesDetail
         open={isOpen}
         image_url={file}

@@ -47,7 +47,17 @@ const columns: TableColumn<Data>[] = [
   },
   {
     name: "Description",
-    cell: (row: Data) => <div>{row.description}</div>,
+    cell: (row: Data) => (
+      <div
+        style={{
+          textOverflow: "ellipsis",
+          overflow: "hidden",
+          whiteSpace: "nowrap",
+        }}
+      >
+        {row.description}
+      </div>
+    ),
     width: "260px",
   },
   {

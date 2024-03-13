@@ -17,6 +17,7 @@ interface ChildProps {
   data: {
     id: number;
     ktp_number: string;
+    merchant_name: string;
     status: string;
     no_link_aja: string;
     province: string;
@@ -51,10 +52,10 @@ export const Field = ({ value, label }: any) => {
           color: "#999",
         }}
       >
-        <Typography>{label}</Typography>
+        <Typography width="130px">{label}</Typography>
         <Typography>:</Typography>
       </Box>
-      <Box sx={{ paddingX: "10px" }}>{value}</Box>
+      <Box sx={{ paddingLeft: "40px" }}>{value}</Box>
     </Box>
   );
 };
@@ -182,6 +183,7 @@ const Info: React.FC<ChildProps> = ({ data }) => {
           }}
         >
           <Field label="Fullname" value={data.oauth.fullname} />
+          <Field label="Store Name" value={data.merchant_name} />
           <Field label="KTP Number" value={data.ktp_number} />
           <Field label="Phone Number" value={data.oauth.phone} />
           <Field label="Link Aja Number" value={data.no_link_aja} />

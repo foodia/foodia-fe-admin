@@ -9,6 +9,7 @@ import {
 import { IconBan, IconCircleCheck, IconClock } from "@tabler/icons-react";
 import { uniqueId } from "lodash";
 import DetailCard from "../shared/DetailCard";
+import Attachment from "./EventDocuments";
 
 interface ChildProps {
   data: {
@@ -18,6 +19,7 @@ interface ChildProps {
     event_date: string;
     event_time: string;
     description: string;
+    image_url: string;
     note: string;
     donation_target: any;
     donation_collected: any;
@@ -53,10 +55,10 @@ export const Field = ({ value, label }: any) => {
           color: "#999",
         }}
       >
-        <Typography>{label}</Typography>
+        <Typography width="130px">{label}</Typography>
         <Typography>:</Typography>
       </Box>
-      <Box sx={{ paddingX: "15px" }}>{value}</Box>
+      <Box sx={{ paddingLeft: "40px" }}>{value}</Box>
     </Box>
   );
 };
@@ -184,6 +186,7 @@ const Info: React.FC<ChildProps> = ({ data }) => {
             width: "100%",
           }}
         >
+          <Field label="Event Thumbnail" value={<Attachment data={data} />} />
           <Field label="Event Name" value={data.event_name} />
           <Field
             label="Event Type"

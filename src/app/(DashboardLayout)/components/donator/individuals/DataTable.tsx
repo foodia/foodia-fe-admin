@@ -63,6 +63,7 @@ const columns: TableColumn<Data>[] = [
     name: "Phone number",
     cell: (row: Data) => <div>{row.phone}</div>,
     // sortable: true,
+    width: "200px",
   },
   {
     name: "Registered at",
