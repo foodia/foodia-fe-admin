@@ -1,30 +1,21 @@
 "use client";
-import {
-  Box,
-  Button,
-  Grid,
-  Modal,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { useEffect, useState } from "react";
-import Info from "@/app/(DashboardLayout)/components/merchant/Info";
-import Attachment from "@/app/(DashboardLayout)/components/merchant/Attachment";
-import { useSearchParams } from "next/navigation";
-import axios from "axios";
-import { IconBan, IconCircleCheck, IconClock } from "@tabler/icons-react";
-import { getMerchantDetail } from "@/app/(DashboardLayout)/components/api/Merchant";
 import { Approvals } from "@/app/(DashboardLayout)/components/api/Approvals";
-import DetailCard from "@/app/(DashboardLayout)/components/shared/DetailCard";
+import { getMerchantDetail } from "@/app/(DashboardLayout)/components/api/Merchant";
+import Attachment from "@/app/(DashboardLayout)/components/merchant/Attachment";
+import Info from "@/app/(DashboardLayout)/components/merchant/Info";
+import { useAppContext } from "@/app/(DashboardLayout)/components/shared/Context";
 import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
 import { ModalPopupApprovals } from "@/app/(DashboardLayout)/components/shared/ModalPopup";
-import { useAppContext } from "@/app/(DashboardLayout)/components/shared/Context";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import { IconBan, IconCircleCheck } from "@tabler/icons-react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 type Props = {
   id: number;
   ktp_number: string;
   status: string;
+  merchant_name: string;
   no_link_aja: string;
   province: string;
   city: string;
@@ -42,6 +33,7 @@ const MerchantInfo = () => {
     id: 0,
     ktp_number: "",
     status: "",
+    merchant_name: "",
     no_link_aja: "",
     province: "",
     city: "",

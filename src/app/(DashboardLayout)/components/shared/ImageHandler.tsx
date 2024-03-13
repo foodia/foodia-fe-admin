@@ -1,4 +1,4 @@
-import { CircularProgress } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import Image from "next/legacy/image";
 import { useEffect, useState } from "react";
 
@@ -22,12 +22,23 @@ const ImageHandler: React.FC<Url> = ({ url, width }) => {
   };
 
   const handleImageLoading = () => {
+    console.log("dsadasdsafsafwf");
     setLoadingOccurred(false);
-    setSrc(`${url}`);
+    // setSrc(`${url}`);
   };
   return (
     <>
-      {loadingOccurred && <CircularProgress color="secondary" />}
+      {loadingOccurred && (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <CircularProgress color="secondary" />
+        </Box>
+      )}
       {
         // errorOccurred ? (
         //   <Box
@@ -55,7 +66,7 @@ const ImageHandler: React.FC<Url> = ({ url, width }) => {
           height={400} // Adjust height according to your container size
           objectFit="contain" // Maintain aspect ratio and cover container
           onError={handleImageError}
-          onLoad={handleImageLoading}
+          onLoadingComplete={handleImageLoading}
         />
       }
     </>
