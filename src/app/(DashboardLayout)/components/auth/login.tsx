@@ -14,20 +14,18 @@ import { IconLock, IconUserFilled } from "@tabler/icons-react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { AlertMessage } from "../shared/Alerts";
+import { useEffect, useState } from "react";
 import ErrorHandling from "../api/shared/ErrorHandling";
+import { AlertMessage } from "../shared/Alerts";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
+  const router = useRouter();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const router = useRouter();
-  const theme = useTheme();
 
   const onLogin = () => {
     setIsLoading(true);
@@ -68,6 +66,13 @@ const Login = () => {
         setIsLoading(false);
       });
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("TOKEN");
+    if (token) {
+      router.push("/ui-components/pages/donator/individuals");
+    }
+  }, []);
 
   return (
     <Box
