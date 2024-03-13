@@ -152,7 +152,7 @@ export default function AuthLayout({
                       color: "black",
                     }}
                   >
-                    <IconCopyright /> 2024, Foodia by Telkomsel
+                    <IconCopyright /> 2024, Foodia
                   </Typography>
                 </Box>
               </Box>

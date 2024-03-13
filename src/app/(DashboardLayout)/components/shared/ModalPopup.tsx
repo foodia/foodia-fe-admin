@@ -407,16 +407,22 @@ export const ModalPopupFilesDetail = ({
           borderRadius: "10px",
           flexDirection: "column",
           alignItems: "center",
-          width: "auto",
-          backgroundColor: "white",
-          padding: "35px",
-          gap: "30px",
+          width: "500px",
+          backgroundColor: "transparent",
+          paddingBottom: "20px",
+          // padding: "35px",
+          gap: "10px",
         }}
       >
-        <ImageHandler width={500} url={image_url} />
-        <Box sx={{ display: "flex", flexDirection: "row" }}>
-          <Button onClick={handleClose}>Close</Button>
+        <Box sx={{}}>
+          <ImageHandler url={image_url} />
         </Box>
+        <Button
+          sx={{ fontWeight: "bold", color: "white" }}
+          onClick={handleClose}
+        >
+          Close
+        </Button>
       </Box>
     </Modal>
   );

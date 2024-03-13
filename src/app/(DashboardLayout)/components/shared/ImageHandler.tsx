@@ -1,6 +1,4 @@
-import logo from "@/utils/notFound.png";
-import { Box, CircularProgress, Typography } from "@mui/material";
-import axios from "axios";
+import { CircularProgress } from "@mui/material";
 import Image from "next/legacy/image";
 import { useEffect, useState } from "react";
 
@@ -49,30 +47,16 @@ const ImageHandler: React.FC<Url> = ({ url, width }) => {
         //     />
         //   </Box>
         // ) :
-        width ? (
-          <Image
-            style={{ borderRadius: "10px" }}
-            src={`${process.env.NEXT_PUBLIC_FILE}${src}`}
-            alt="Error"
-            width={width}
-            height={width}
-            // sizes="100px"
-            priority={true}
-            onError={handleImageError}
-            onLoad={handleImageLoading}
-          />
-        ) : (
-          <Image
-            style={{ borderRadius: "10px" }}
-            src={`${process.env.NEXT_PUBLIC_FILE}${src}`}
-            alt="Error"
-            layout="fill"
-            sizes="300px"
-            // priority={true}
-            onError={handleImageError}
-            onLoad={handleImageLoading}
-          />
-        )
+        <Image
+          style={{ borderRadius: "10px" }}
+          src={`${process.env.NEXT_PUBLIC_FILE}${src}`}
+          alt="Error"
+          width={500} // Adjust width according to your container size
+          height={400} // Adjust height according to your container size
+          objectFit="contain" // Maintain aspect ratio and cover container
+          onError={handleImageError}
+          onLoad={handleImageLoading}
+        />
       }
     </>
   );

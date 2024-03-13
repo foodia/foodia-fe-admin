@@ -84,6 +84,7 @@ const Detonator: React.FC<ChildProps> = ({ data }) => {
             sx={{
               display: "flex",
               gap: "10px",
+              alignItems: "center",
               // border: "0.4px solid grey",
               //   boxShadow: "0px 0px 12px 0px rgba(0, 0, 0, 0.08)",
               borderRadius: "10px",
@@ -92,15 +93,17 @@ const Detonator: React.FC<ChildProps> = ({ data }) => {
           >
             <Button
               sx={{
-                width: "125px",
-                height: "90px",
-                borderRadius: "100px",
-                position: "relative",
+                width: "130px",
+                height: "100px",
+                borderRadius: "300px",
+                // position: "relative",
+                backgroundColor: "transparent",
+                border: "1px solid green",
+                padding: "10px",
               }}
-              onClick={() => onViewImage(data.detonator.self_photo)}
               variant="contained"
               size="small"
-              color="primary"
+              onClick={() => onViewImage(data.detonator.self_photo)}
             >
               <ImageHandler url={data.detonator.self_photo} />
             </Button>
@@ -132,7 +135,7 @@ const Detonator: React.FC<ChildProps> = ({ data }) => {
                 <Box
                   sx={{
                     display: "flex",
-                    flexDirection: "row",
+                    flexDirection: "column",
                     justifyContent: "space-between",
                     marginBottom: "10px",
                     gap: "10px",

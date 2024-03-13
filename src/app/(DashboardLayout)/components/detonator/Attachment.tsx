@@ -43,10 +43,10 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
               variant="contained"
               size="small"
               sx={{
-                width: "210px",
-                height: "125px",
+                padding: 0,
+                width: "250px",
                 borderRadius: "10px",
-                background: "transparent",
+                backgroundColor: "transparent",
               }}
             >
               <Images url={data.self_photo} />
@@ -65,10 +65,10 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
               variant="contained"
               size="small"
               sx={{
-                width: "210px",
-                height: "125px",
+                padding: 0,
+                width: "250px",
                 borderRadius: "10px",
-                background: "transparent",
+                backgroundColor: "transparent",
               }}
             >
               <Images url={data.ktp_photo} />

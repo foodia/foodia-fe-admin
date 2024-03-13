@@ -59,7 +59,12 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
           onClick={() => onViewImage(data.image_url)}
           variant="contained"
           size="small"
-          sx={{ width: "210px", height: "125px", borderRadius: "10px" }}
+          sx={{
+            padding: 0,
+            width: "250px",
+            borderRadius: "10px",
+            backgroundColor: "transparent",
+          }}
         >
           <ImageHandler url={data.image_url} />
         </Button>

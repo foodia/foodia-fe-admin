@@ -54,7 +54,12 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
               onClick={() => onViewImage(orders.image_url)}
               variant="contained"
               size="small"
-              sx={{ width: "210px", height: "125px", borderRadius: "10px" }}
+              sx={{
+                padding: 0,
+                width: "250px",
+                borderRadius: "10px",
+                backgroundColor: "transparent",
+              }}
             >
               <ImageHandler url={orders.image_url} />
             </Button>
@@ -82,16 +87,15 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
             }}
           >
             <Button
-              sx={{
-                width: "125px",
-                height: "115px",
-                borderRadius: "100px",
-                position: "relative",
-              }}
               onClick={() => onViewImage(data.merchant?.self_photo)}
               variant="contained"
               size="small"
-              color="primary"
+              sx={{
+                padding: 0,
+                width: "250px",
+                borderRadius: "10px",
+                backgroundColor: "transparent",
+              }}
             >
               <ImageHandler url={data.merchant?.self_photo} />
             </Button>

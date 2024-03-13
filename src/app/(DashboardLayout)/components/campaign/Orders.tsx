@@ -82,17 +82,16 @@ const Orders: React.FC<ChildProps> = ({ data }) => {
               }}
             >
               <Button
+                variant="contained"
                 sx={{
-                  width: "210px",
-                  height: "125px",
+                  padding: 0,
+                  width: "250px",
                   borderRadius: "10px",
+                  backgroundColor: "transparent",
                 }}
                 onClick={() =>
                   onViewImage(orders.merchant_product.images[0].image_url)
                 }
-                variant="contained"
-                size="small"
-                color="primary"
               >
                 <ImageHandler
                   url={orders.merchant_product.images[0].image_url}
