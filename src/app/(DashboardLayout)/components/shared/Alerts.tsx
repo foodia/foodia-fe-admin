@@ -25,18 +25,17 @@ export const AlertMessage = (
 };
 
 export const AlertError401 = () => {
-  styledSweetAlert
-    .fire({
-      title: "Your Session Ended",
-      text: "Please Re-try Login",
-      showConfirmButton: true,
-      confirmButtonText: "Login",
-      icon: "warning",
-      allowOutsideClick: false,
-    })
-    .then((result) => {
-      if (result.isConfirmed) {
-        window.location.href = "/ui-components/auth/login";
-      }
-    });
+  styledSweetAlert.fire({
+    title: "Your Session Ended",
+    text: "Please Re-try Your Login",
+    showConfirmButton: true,
+    confirmButtonText: "Close",
+    icon: "warning",
+    allowOutsideClick: false,
+  });
+  // .then((result) => {
+  //   if (result.isConfirmed) {
+  //     window.location.href = "/ui-components/auth/login";
+  //   }
+  // });
 };

@@ -16,7 +16,7 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ErrorHandling from "../api/shared/ErrorHandling";
-import { AlertMessage } from "../shared/Alerts";
+import { AlertError401, AlertMessage } from "../shared/Alerts";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -46,6 +46,7 @@ const Login = () => {
         localStorage.setItem("ROLE", role);
         localStorage.setItem("EMAIL", email);
         localStorage.setItem("USER_ID", user_id);
+        localStorage.setItem("Session", "start");
         if (role === "superadmin") {
           router.push("/ui-components/pages/donator/individuals");
         } else if (role === "corporate") {
@@ -68,9 +69,11 @@ const Login = () => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("TOKEN");
-    if (token) {
+    const token = localStorage.getItem("Session");
+    if (token === "start") {
       router.push("/ui-components/pages/donator/individuals");
+    } else if (token === "end") {
+      AlertError401();
     }
   }, []);
 
