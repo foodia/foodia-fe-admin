@@ -75,7 +75,7 @@ const Sidebar = ({
               paddingBottom: "20px",
             }}
           >
-            <IconCopyright /> 2024, Foodia by Telkomsel
+            <IconCopyright /> 2024, Foodia
           </Typography>
         </Drawer>
       </Box>

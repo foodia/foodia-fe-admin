@@ -1,14 +1,5 @@
-import Link from "next/link";
-import { styled, Typography } from "@mui/material";
-import Image from "next/legacy/image";
 import logo from "@/utils/logo.png";
-
-const LinkStyled = styled(Link)(() => ({
-  height: "40px",
-  width: "180px",
-  overflow: "hidden",
-  display: "block",
-}));
+import Image from "next/legacy/image";
 
 const Logo = () => {
   return (

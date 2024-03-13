@@ -136,11 +136,11 @@ const Profile = () => {
         keepMounted
         open={Boolean(anchorEl2)}
         onClose={handleClose2}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        // anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        // transformOrigin={{ horizontal: "right", vertical: "top" }}
         sx={{
           "& .MuiMenu-paper": {
-            width: "360px",
+            width: "200px",
             p: 2,
             pb: 2,
             pt: 0,
@@ -166,7 +166,12 @@ const Profile = () => {
         {/* <Divider /> */}
         <Box mt={2}>
           <Button
-            sx={{ gap: "10px", display: "flex", alignItems: "center" }}
+            sx={{
+              gap: "10px",
+              display: "flex",
+              alignItems: "center",
+              width: "100%",
+            }}
             onClick={() => onLogout()}
             fullWidth
             variant="contained"
