@@ -101,7 +101,7 @@ const merchantPaymentListColumns: TableColumn<MerchantPaymentListData>[] = [
       </div>
     ),
     // sortable: true,
-    width: "200px",
+    width: "180px",
   },
   {
     name: "Tgl Pembayaran",

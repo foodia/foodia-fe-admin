@@ -18,6 +18,7 @@ const ImageHandler: React.FC<Url> = ({ url, width }) => {
 
   const handleImageError = () => {
     setErrorOccurred(true);
+    setLoadingOccurred(false);
     // setSrc(`${url}`);
   };
 
@@ -60,7 +61,7 @@ const ImageHandler: React.FC<Url> = ({ url, width }) => {
         // ) :
         <Image
           style={{ borderRadius: "10px" }}
-          src={`${process.env.NEXT_PUBLIC_FILE}${src}`}
+          src={`${process.env.NEXT_PUBLIC_FILE}/${src}`}
           alt="Error"
           width={500} // Adjust width according to your container size
           height={400} // Adjust height according to your container size
