@@ -28,6 +28,7 @@ interface Data {
   columns?: any;
   data?: any;
   onChangeSearch?: any;
+  onKeyUpSearch?: any;
   onChangeSearchBy?: any;
   pageItems?: any;
   totalItems?: any;
@@ -45,6 +46,7 @@ const DataTables: React.FC<Data> = ({
   columns,
   data,
   onChangeSearch,
+  onKeyUpSearch,
   onChangeSearchBy,
   searchOption,
   meta,
@@ -127,6 +129,7 @@ const DataTables: React.FC<Data> = ({
               variant="standard"
               size="small"
               placeholder="Search..."
+              onKeyUp={onKeyUpSearch}
               // label="Search By"
               InputProps={{
                 sx: {
@@ -339,11 +342,10 @@ const DataTables: React.FC<Data> = ({
                     backgroundColor: "gray",
                     borderRadius: "40px",
                     padding: "4px",
-                    // width: "20px",
                     background: "var(--UI-Neutral-Neutral-30, #F5F6FA)",
                   }}
                   onChange={onChange}
-                  page={page}
+                  page={meta?.page}
                   count={meta?.page_count}
                   defaultPage={1}
                   siblingCount={0}

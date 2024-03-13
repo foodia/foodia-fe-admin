@@ -1,11 +1,11 @@
-import { Button, Chip, SelectChangeEvent, Stack } from "@mui/material";
-import { IconEye } from "@tabler/icons-react";
+import { SelectChangeEvent, Stack } from "@mui/material";
 import moment from "moment";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { TableColumn } from "react-data-table-component";
-import DataTables from "../shared/DataTables";
+import { getCorporation } from "../api/Corporation";
 import { ButtonAction, Status } from "../shared/Buttons";
+import { useAppContext } from "../shared/Context";
+import DataTables from "../shared/DataTables";
 
 interface Meta {
   page: number;
@@ -30,10 +30,10 @@ interface Props {
   handleChangePage: any;
 }
 
-const columns: TableColumn<Data>[] = [
+const columns = [
   {
     name: "No",
-    selector: (_row, i: any) => i + 1,
+    selector: (_row: any, i: any) => i + 1,
     // sortable: true,
     width: "70px",
     // style: {
@@ -42,35 +42,35 @@ const columns: TableColumn<Data>[] = [
   },
   {
     name: "Fullname",
-    cell: (row: Data) => <div>{row.oauth.fullname}</div>,
+    cell: (row: any) => <div>{row.oauth.fullname}</div>,
     // sortable: true,
   },
   {
     name: "Email",
-    cell: (row: Data) => <div>{row.oauth.email}</div>,
+    cell: (row: any) => <div>{row.oauth.email}</div>,
     // sortable: true,
     width: "270px",
   },
   {
     name: "Phone number",
-    cell: (row: Data) => <div>{row.oauth.phone}</div>,
+    cell: (row: any) => <div>{row.oauth.phone}</div>,
     // sortable: true,
   },
   {
     name: "Registered at",
-    cell: (row: Data) => (
+    cell: (row: any) => (
       <div>{moment(row.created_at).format("DD/MM/YYYY")}</div>
     ),
     // sortable: true,
   },
   {
     name: "Status",
-    cell: (row: Data) => <Status row={row} />,
+    cell: (row: any) => <Status row={row} />,
     // sortable: true,
   },
   {
     name: "Action",
-    cell: (row: Data) => (
+    cell: (row: any) => (
       <Stack spacing={1} direction="row">
         <Link
           href={{
@@ -89,49 +89,96 @@ const columns: TableColumn<Data>[] = [
   // Add more columns as needed
 ];
 
-const DataTableComponent: React.FC<Props> = ({
-  data,
-  meta,
-  handleChangePage,
-}) => {
-  const [filterText, setFilterText] = useState<string>("unapproved");
+const DataTableComponent = () => {
+  const [filterText, setFilterText] = useState<string>("waiting");
   const [searchBy, setSearchBy] = useState<string>("fullname");
   const [searchText, setSearchText] = useState<string>("");
+  const [data, setData] = useState([]);
+  const [meta, setMeta] = useState({
+    page: 0,
+    per_page: 0,
+    page_count: 0,
+    total: 0,
+  });
+  const [page, setPage] = useState(1);
+  const { isLoading, setIsLoading } = useAppContext();
+  const [typingTimeout, setTypingTimeout] = useState<
+    NodeJS.Timeout | undefined
+  >(undefined);
+
+  useEffect(() => {
+    setFilterText(`${localStorage.getItem("FilterStatus")}`);
+    getCorporation(setData, setMeta, page, setIsLoading);
+  }, []);
+
+  const handleChangePage = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+    setIsLoading(true);
+    getCorporation(setData, setMeta, value, setIsLoading);
+  };
+
+  useEffect(() => {
+    localStorage.setItem("FilterStatus", filterText);
+    localStorage.setItem("SearchBy", searchBy);
+    localStorage.setItem("SearchText", searchText);
+  }, []);
 
   const handleChangeSearchBy = (event: SelectChangeEvent) => {
     setSearchBy(event.target.value);
+    localStorage.setItem("SearchBy", event.target.value);
+    setIsLoading(true);
+    getCorporation(setData, setMeta, page, setIsLoading);
   };
 
-  const handleChange = (event: SelectChangeEvent) => {
+  const handleChangeFilterText = (event: SelectChangeEvent) => {
+    setIsLoading(true);
+    localStorage.setItem("FilterStatus", event.target.value);
     setFilterText(event.target.value);
+    getCorporation(setData, setMeta, page, setIsLoading);
   };
 
   const handleChangeSearch = (event: SelectChangeEvent) => {
     setSearchText(event.target.value);
+    localStorage.setItem("SearchText", event.target.value);
   };
 
-  let filteredItems: any;
-  if (filterText === "unapproved") {
-    filteredItems = data.filter(
-      (data) =>
-        data.status.toLowerCase() !== "approved" &&
-        (searchBy === "fullname"
-          ? data.oauth.fullname.toLowerCase().includes(searchText.toLowerCase())
-          : searchBy === "email"
-          ? data.oauth.email.toLowerCase().includes(searchText.toLowerCase())
-          : data.oauth.phone.toLowerCase().includes(searchText.toLowerCase()))
-    );
-  } else {
-    filteredItems = data.filter(
-      (data) =>
-        data.status.toLowerCase() === "approved" &&
-        (searchBy === "fullname"
-          ? data.oauth.fullname.toLowerCase().includes(searchText.toLowerCase())
-          : searchBy === "email"
-          ? data.oauth.email.toLowerCase().includes(searchText.toLowerCase())
-          : data.oauth.phone.toLowerCase().includes(searchText.toLowerCase()))
-    );
-  }
+  const handleKeyUp = () => {
+    if (typingTimeout) {
+      clearTimeout(typingTimeout);
+    }
+    const timeout = setTimeout(() => {
+      setIsLoading(true);
+      getCorporation(setData, setMeta, page, setIsLoading);
+      // Add your logic here
+    }, 500); // Adjust the delay as needed (in milliseconds)
+    setTypingTimeout(timeout);
+  };
+
+  // let filteredItems: any;
+  // if (filterText === "unapproved") {
+  //   filteredItems = data.filter(
+  //     (data) =>
+  //       data.status.toLowerCase() !== "approved" &&
+  //       (searchBy === "fullname"
+  //         ? data.oauth.fullname.toLowerCase().includes(searchText.toLowerCase())
+  //         : searchBy === "email"
+  //         ? data.oauth.email.toLowerCase().includes(searchText.toLowerCase())
+  //         : data.oauth.phone.toLowerCase().includes(searchText.toLowerCase()))
+  //   );
+  // } else {
+  //   filteredItems = data.filter(
+  //     (data) =>
+  //       data.status.toLowerCase() === "approved" &&
+  //       (searchBy === "fullname"
+  //         ? data.oauth.fullname.toLowerCase().includes(searchText.toLowerCase())
+  //         : searchBy === "email"
+  //         ? data.oauth.email.toLowerCase().includes(searchText.toLowerCase())
+  //         : data.oauth.phone.toLowerCase().includes(searchText.toLowerCase()))
+  //   );
+  // }
 
   const searchOption = [
     {
@@ -154,11 +201,16 @@ const DataTableComponent: React.FC<Props> = ({
   const filterOptions = [
     {
       id: 1,
-      value: "unapproved",
-      label: "Unapproved",
+      value: "waiting",
+      label: "Waiting",
     },
     {
       id: 2,
+      value: "rejected",
+      label: "Rejected",
+    },
+    {
+      id: 3,
       value: "approved",
       label: "Approved",
     },
@@ -170,15 +222,16 @@ const DataTableComponent: React.FC<Props> = ({
         value={filterText}
         searchOption={searchOption}
         valueSearchBy={searchBy}
-        onChangeFilterText={handleChange}
+        onChangeFilterText={handleChangeFilterText}
+        onKeyUpSearch={handleKeyUp}
         filterText={filterOptions}
         onChange={handleChangePage}
         onChangeSearch={handleChangeSearch}
         onChangeSearchBy={handleChangeSearchBy}
-        pageItems={filteredItems.length}
+        pageItems={data.length}
         meta={meta}
         columns={columns}
-        data={filteredItems}
+        data={data}
         pagination={true}
       />
     </>

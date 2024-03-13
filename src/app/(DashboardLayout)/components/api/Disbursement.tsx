@@ -10,7 +10,25 @@ export const getDisbursement = (
   axios
     .get(
       process.env.NEXT_PUBLIC_BASE +
-        `/disbursement/filter?page=${page}&per_page=5`,
+        `/disbursement/filter?page=${page}&per_page=5&status=${localStorage.getItem(
+          "FilterStatus"
+        )}&merchant_name=${
+          localStorage.getItem("SearchBy") === "merchant_name"
+            ? localStorage.getItem("SearchText")
+            : ""
+        }&recipient_name=${
+          localStorage.getItem("SearchBy") === "recipient_name"
+            ? localStorage.getItem("SearchText")
+            : ""
+        }&bank=${
+          localStorage.getItem("SearchBy") === "bank"
+            ? localStorage.getItem("SearchText")
+            : ""
+        }&amount=${
+          localStorage.getItem("SearchBy") === "amount"
+            ? localStorage.getItem("SearchText")
+            : ""
+        }`,
       {
         headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       }

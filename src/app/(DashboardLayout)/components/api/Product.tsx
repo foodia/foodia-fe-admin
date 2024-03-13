@@ -10,7 +10,21 @@ export const getProduct = (
   axios
     .get(
       process.env.NEXT_PUBLIC_BASE +
-        `/merchant-product/filter?page=${page}&per_page=5`,
+        `/merchant-product/filter?page=${page}&per_page=5&status=${localStorage.getItem(
+          "FilterStatus"
+        )}&name=${
+          localStorage.getItem("SearchBy") === "name"
+            ? localStorage.getItem("SearchText")
+            : ""
+        }&price=${
+          localStorage.getItem("SearchBy") === "price"
+            ? localStorage.getItem("SearchText")
+            : ""
+        }&description=${
+          localStorage.getItem("SearchBy") === "description"
+            ? localStorage.getItem("SearchText")
+            : ""
+        }`,
       {
         headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       }

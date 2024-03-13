@@ -9,7 +9,24 @@ export const getCampaign = (
 ) => {
   axios
     .get(
-      process.env.NEXT_PUBLIC_BASE + `/campaign/filter?page=${page}&per_page=5`,
+      process.env.NEXT_PUBLIC_BASE +
+        `/campaign/filter?page=${page}&per_page=5&campaign_status=${
+          localStorage.getItem("SearchBy") === "campaign_status"
+            ? localStorage.getItem("SearchText")
+            : ""
+        }&detonator_name=${
+          localStorage.getItem("SearchBy") === "detonator_name"
+            ? localStorage.getItem("SearchText")
+            : ""
+        }&event_name=${
+          localStorage.getItem("SearchBy") === "event_name"
+            ? localStorage.getItem("SearchText")
+            : ""
+        }&event_type=${
+          localStorage.getItem("SearchBy") === "event_type"
+            ? localStorage.getItem("SearchText")
+            : ""
+        }&status=${localStorage.getItem("FilterStatus")}`,
       {
         headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       }

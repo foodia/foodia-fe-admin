@@ -1,11 +1,12 @@
-import { Button, Chip, SelectChangeEvent, Stack } from "@mui/material";
-import { IconEye } from "@tabler/icons-react";
+import { SelectChangeEvent, Stack } from "@mui/material";
 import moment from "moment";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TableColumn } from "react-data-table-component";
-import DataTables from "../shared/DataTables";
 import { ButtonAction, Status } from "../shared/Buttons";
+import DataTables from "../shared/DataTables";
+import { useAppContext } from "../shared/Context";
+import { getMerchant } from "../api/Merchant";
 
 interface Meta {
   page: number;
@@ -87,49 +88,96 @@ const columns: TableColumn<Data>[] = [
   // Add more columns as needed
 ];
 
-const DataTableComponent: React.FC<Props> = ({
-  data,
-  meta,
-  handleChangePage,
-}) => {
-  const [filterText, setFilterText] = useState<string>("unapproved");
+const DataTableComponent = () => {
+  const [filterText, setFilterText] = useState<string>("waiting");
   const [searchBy, setSearchBy] = useState<string>("fullname");
   const [searchText, setSearchText] = useState<string>("");
+  const [data, setData] = useState([]);
+  const [meta, setMeta] = useState({
+    page: 0,
+    per_page: 0,
+    page_count: 0,
+    total: 0,
+  });
+  const [page, setPage] = useState(1);
+  const { isLoading, setIsLoading } = useAppContext();
+  const [typingTimeout, setTypingTimeout] = useState<
+    NodeJS.Timeout | undefined
+  >(undefined);
+
+  useEffect(() => {
+    setFilterText(`${localStorage.getItem("FilterStatus")}`);
+    getMerchant(setData, setMeta, page, setIsLoading);
+  }, []);
+
+  const handleChangePage = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+    setIsLoading(true);
+    getMerchant(setData, setMeta, value, setIsLoading);
+  };
+
+  useEffect(() => {
+    localStorage.setItem("FilterStatus", filterText);
+    localStorage.setItem("SearchBy", searchBy);
+    localStorage.setItem("SearchText", searchText);
+  }, []);
 
   const handleChangeSearchBy = (event: SelectChangeEvent) => {
     setSearchBy(event.target.value);
+    localStorage.setItem("SearchBy", event.target.value);
+    setIsLoading(true);
+    getMerchant(setData, setMeta, page, setIsLoading);
   };
 
-  const handleChange = (event: SelectChangeEvent) => {
+  const handleChangeFilterText = (event: SelectChangeEvent) => {
+    setIsLoading(true);
+    localStorage.setItem("FilterStatus", event.target.value);
     setFilterText(event.target.value);
+    getMerchant(setData, setMeta, page, setIsLoading);
   };
 
   const handleChangeSearch = (event: SelectChangeEvent) => {
     setSearchText(event.target.value);
+    localStorage.setItem("SearchText", event.target.value);
   };
 
-  let filteredItems: any;
-  if (filterText === "unapproved") {
-    filteredItems = data.filter(
-      (data) =>
-        data.status.toLowerCase() !== "approved" &&
-        (searchBy === "fullname"
-          ? data.oauth.fullname.toLowerCase().includes(searchText.toLowerCase())
-          : searchBy === "email"
-          ? data.oauth.email.toLowerCase().includes(searchText.toLowerCase())
-          : data.oauth.phone.toLowerCase().includes(searchText.toLowerCase()))
-    );
-  } else {
-    filteredItems = data.filter(
-      (data) =>
-        data.status.toLowerCase() === "approved" &&
-        (searchBy === "fullname"
-          ? data.oauth.fullname.toLowerCase().includes(searchText.toLowerCase())
-          : searchBy === "email"
-          ? data.oauth.email.toLowerCase().includes(searchText.toLowerCase())
-          : data.oauth.phone.toLowerCase().includes(searchText.toLowerCase()))
-    );
-  }
+  const handleKeyUp = () => {
+    if (typingTimeout) {
+      clearTimeout(typingTimeout);
+    }
+    const timeout = setTimeout(() => {
+      setIsLoading(true);
+      getMerchant(setData, setMeta, page, setIsLoading);
+      // Add your logic here
+    }, 500); // Adjust the delay as needed (in milliseconds)
+    setTypingTimeout(timeout);
+  };
+
+  // let filteredItems: any;
+  // if (filterText === "unapproved") {
+  //   filteredItems = data.filter(
+  //     (data) =>
+  //       data.status.toLowerCase() !== "approved" &&
+  //       (searchBy === "fullname"
+  //         ? data.oauth.fullname.toLowerCase().includes(searchText.toLowerCase())
+  //         : searchBy === "email"
+  //         ? data.oauth.email.toLowerCase().includes(searchText.toLowerCase())
+  //         : data.oauth.phone.toLowerCase().includes(searchText.toLowerCase()))
+  //   );
+  // } else {
+  //   filteredItems = data.filter(
+  //     (data) =>
+  //       data.status.toLowerCase() === "approved" &&
+  //       (searchBy === "fullname"
+  //         ? data.oauth.fullname.toLowerCase().includes(searchText.toLowerCase())
+  //         : searchBy === "email"
+  //         ? data.oauth.email.toLowerCase().includes(searchText.toLowerCase())
+  //         : data.oauth.phone.toLowerCase().includes(searchText.toLowerCase()))
+  //   );
+  // }
 
   const searchOption = [
     {
@@ -152,11 +200,16 @@ const DataTableComponent: React.FC<Props> = ({
   const filterOptions = [
     {
       id: 1,
-      value: "unapproved",
-      label: "Unapproved",
+      value: "waiting",
+      label: "Waiting",
     },
     {
       id: 2,
+      value: "rejected",
+      label: "Rejected",
+    },
+    {
+      id: 3,
       value: "approved",
       label: "Approved",
     },
@@ -168,15 +221,16 @@ const DataTableComponent: React.FC<Props> = ({
         value={filterText}
         searchOption={searchOption}
         valueSearchBy={searchBy}
-        onChangeFilterText={handleChange}
+        onChangeFilterText={handleChangeFilterText}
+        onKeyUpSearch={handleKeyUp}
         filterText={filterOptions}
         onChange={handleChangePage}
         onChangeSearch={handleChangeSearch}
         onChangeSearchBy={handleChangeSearchBy}
-        pageItems={filteredItems.length}
+        pageItems={data.length}
         meta={meta}
         columns={columns}
-        data={filteredItems}
+        data={data}
         pagination={true}
       />
     </>

@@ -1,42 +1,16 @@
-import { Button, Chip, SelectChangeEvent, Stack } from "@mui/material";
-import { IconEye } from "@tabler/icons-react";
+import { Chip, SelectChangeEvent } from "@mui/material";
 import moment from "moment";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { TableColumn } from "react-data-table-component";
-import DataTables from "../shared/DataTables";
+import { getDetonator } from "../api/Detonator";
 import { ButtonAction } from "../shared/Buttons";
+import { useAppContext } from "../shared/Context";
+import DataTables from "../shared/DataTables";
 
-interface Meta {
-  page: number;
-  per_page: number;
-  page_count: number;
-  total: number;
-}
-
-interface Data {
-  id: number;
-  status: string;
-  created_at: string;
-  oauth: { fullname: string; email: string; phone: string };
-  meta: {
-    page: number;
-    per_page: number;
-    page_count: number;
-    total: number;
-  };
-}
-
-interface Props {
-  data: Data[];
-  meta: Meta;
-  handleChange: any;
-}
-
-const columns: TableColumn<Data>[] = [
+const columns = [
   {
     name: "No",
-    selector: (_row, i: any) => i + 1,
+    selector: (_row: any, i: any) => i + 1,
     // sortable: true,
     width: "70px",
     // style: {
@@ -45,30 +19,30 @@ const columns: TableColumn<Data>[] = [
   },
   {
     name: "Fullname",
-    cell: (row: Data) => <div>{row.oauth.fullname}</div>,
+    cell: (row: any) => <div>{row.oauth.fullname}</div>,
     // sortable: true,
   },
   {
     name: "Email",
-    cell: (row: Data) => <div>{row.oauth.email}</div>,
+    cell: (row: any) => <div>{row.oauth.email}</div>,
     // sortable: true,
     width: "270px",
   },
   {
     name: "Phone number",
-    cell: (row: Data) => <div>{row.oauth.phone}</div>,
+    cell: (row: any) => <div>{row.oauth.phone}</div>,
     // sortable: true,
   },
   {
     name: "Registered at",
-    cell: (row: Data) => (
+    cell: (row: any) => (
       <div>{moment(row.created_at).format("DD/MM/YYYY")}</div>
     ),
     // sortable: true,
   },
   {
     name: "Status",
-    cell: (row: Data) => (
+    cell: (row: any) => (
       <Chip
         sx={{
           textTransform: "capitalize",
@@ -98,7 +72,7 @@ const columns: TableColumn<Data>[] = [
   },
   {
     name: "Action",
-    cell: (row: Data) => (
+    cell: (row: any) => (
       <Link
         href={{
           pathname: "/ui-components/pages/detonator/info",
@@ -115,45 +89,96 @@ const columns: TableColumn<Data>[] = [
   // Add more columns as needed
 ];
 
-const DataTableComponent: React.FC<Props> = ({ data, meta, handleChange }) => {
-  const [filterText, setFilterText] = useState<string>("unapproved");
+const DataTableComponent = () => {
+  const [filterText, setFilterText] = useState<string>("waiting");
   const [searchBy, setSearchBy] = useState<string>("fullname");
   const [searchText, setSearchText] = useState<string>("");
+  const [data, setData] = useState([]);
+  const [meta, setMeta] = useState({
+    page: 0,
+    per_page: 0,
+    page_count: 0,
+    total: 0,
+  });
+  const [page, setPage] = useState(1);
+  const { isLoading, setIsLoading } = useAppContext();
+  const [typingTimeout, setTypingTimeout] = useState<
+    NodeJS.Timeout | undefined
+  >(undefined);
+
+  useEffect(() => {
+    setFilterText(`${localStorage.getItem("FilterStatus")}`);
+    getDetonator(setData, setMeta, page, setIsLoading);
+  }, []);
+
+  const handleChangePage = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+    setIsLoading(true);
+    getDetonator(setData, setMeta, value, setIsLoading);
+  };
+
+  useEffect(() => {
+    localStorage.setItem("FilterStatus", filterText);
+    localStorage.setItem("SearchBy", searchBy);
+    localStorage.setItem("SearchText", searchText);
+  }, []);
 
   const handleChangeSearchBy = (event: SelectChangeEvent) => {
     setSearchBy(event.target.value);
+    localStorage.setItem("SearchBy", event.target.value);
+    setIsLoading(true);
+    getDetonator(setData, setMeta, page, setIsLoading);
   };
 
   const handleChangeFilterText = (event: SelectChangeEvent) => {
+    setIsLoading(true);
+    localStorage.setItem("FilterStatus", event.target.value);
     setFilterText(event.target.value);
+    getDetonator(setData, setMeta, page, setIsLoading);
   };
 
   const handleChangeSearch = (event: SelectChangeEvent) => {
     setSearchText(event.target.value);
+    localStorage.setItem("SearchText", event.target.value);
   };
 
-  let filteredItems: any;
-  if (filterText === "unapproved") {
-    filteredItems = data.filter(
-      (data) =>
-        data.status.toLowerCase() !== "approved" &&
-        (searchBy === "fullname"
-          ? data.oauth.fullname.toLowerCase().includes(searchText.toLowerCase())
-          : searchBy === "email"
-          ? data.oauth.email.toLowerCase().includes(searchText.toLowerCase())
-          : data.oauth.phone.toLowerCase().includes(searchText.toLowerCase()))
-    );
-  } else {
-    filteredItems = data.filter(
-      (data) =>
-        data.status.toLowerCase() === "approved" &&
-        (searchBy === "fullname"
-          ? data.oauth.fullname.toLowerCase().includes(searchText.toLowerCase())
-          : searchBy === "email"
-          ? data.oauth.email.toLowerCase().includes(searchText.toLowerCase())
-          : data.oauth.phone.toLowerCase().includes(searchText.toLowerCase()))
-    );
-  }
+  const handleKeyUp = () => {
+    if (typingTimeout) {
+      clearTimeout(typingTimeout);
+    }
+    const timeout = setTimeout(() => {
+      setIsLoading(true);
+      getDetonator(setData, setMeta, page, setIsLoading);
+      // Add your logic here
+    }, 500); // Adjust the delay as needed (in milliseconds)
+    setTypingTimeout(timeout);
+  };
+
+  // let filteredItems: any;
+  // if (filterText === "unapproved") {
+  //   filteredItems = data.filter(
+  //     (data) =>
+  //       data.status.toLowerCase() !== "approved" &&
+  //       (searchBy === "fullname"
+  //         ? data.oauth.fullname.toLowerCase().includes(searchText.toLowerCase())
+  //         : searchBy === "email"
+  //         ? data.oauth.email.toLowerCase().includes(searchText.toLowerCase())
+  //         : data.oauth.phone.toLowerCase().includes(searchText.toLowerCase()))
+  //   );
+  // } else {
+  //   filteredItems = data.filter(
+  //     (data) =>
+  //       data.status.toLowerCase() === "approved" &&
+  //       (searchBy === "fullname"
+  //         ? data.oauth.fullname.toLowerCase().includes(searchText.toLowerCase())
+  //         : searchBy === "email"
+  //         ? data.oauth.email.toLowerCase().includes(searchText.toLowerCase())
+  //         : data.oauth.phone.toLowerCase().includes(searchText.toLowerCase()))
+  //   );
+  // }
 
   const searchOption = [
     {
@@ -176,11 +201,16 @@ const DataTableComponent: React.FC<Props> = ({ data, meta, handleChange }) => {
   const filterOptions = [
     {
       id: 1,
-      value: "unapproved",
-      label: "Unapproved",
+      value: "waiting",
+      label: "Waiting",
     },
     {
       id: 2,
+      value: "rejected",
+      label: "Rejected",
+    },
+    {
+      id: 3,
       value: "approved",
       label: "Approved",
     },
@@ -194,13 +224,14 @@ const DataTableComponent: React.FC<Props> = ({ data, meta, handleChange }) => {
         valueSearchBy={searchBy}
         onChangeFilterText={handleChangeFilterText}
         filterText={filterOptions}
-        onChange={handleChange}
+        onChange={handleChangePage}
         onChangeSearch={handleChangeSearch}
+        onKeyUpSearch={handleKeyUp}
         onChangeSearchBy={handleChangeSearchBy}
-        pageItems={filteredItems.length}
+        pageItems={data.length}
         meta={meta}
         columns={columns}
-        data={filteredItems}
+        data={data}
         pagination={true}
       />
     </>

@@ -9,7 +9,22 @@ export const getMerchant = (
 ) => {
   axios
     .get(
-      process.env.NEXT_PUBLIC_BASE + `/merchant/filter?page=${page}&per_page=5`,
+      process.env.NEXT_PUBLIC_BASE +
+        `/merchant/filter?page=${page}&per_page=5&status=${localStorage.getItem(
+          "FilterStatus"
+        )}&fullname=${
+          localStorage.getItem("SearchBy") === "fullname"
+            ? localStorage.getItem("SearchText")
+            : ""
+        }&phone=${
+          localStorage.getItem("SearchBy") === "phone"
+            ? localStorage.getItem("SearchText")
+            : ""
+        }&email=${
+          localStorage.getItem("SearchBy") === "email"
+            ? localStorage.getItem("SearchText")
+            : ""
+        }`,
       {
         headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       }

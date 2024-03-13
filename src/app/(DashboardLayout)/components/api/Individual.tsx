@@ -10,7 +10,21 @@ export const getIndividual = (
   axios
     .get(
       process.env.NEXT_PUBLIC_BASE +
-        `/individual/filter?page=${page}&per_page=10`,
+        `/individual/filter?page=${page}&per_page=10&is_active=${localStorage.getItem(
+          "FilterStatus"
+        )}&fullname=${
+          localStorage.getItem("SearchBy") === "fullname"
+            ? localStorage.getItem("SearchText")
+            : ""
+        }&email=${
+          localStorage.getItem("SearchBy") === "email"
+            ? localStorage.getItem("SearchText")
+            : ""
+        }&phone=${
+          localStorage.getItem("SearchBy") === "phone"
+            ? localStorage.getItem("SearchText")
+            : ""
+        }`,
       {
         headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       }

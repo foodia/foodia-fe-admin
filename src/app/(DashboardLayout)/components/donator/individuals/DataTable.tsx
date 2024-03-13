@@ -1,12 +1,10 @@
-import { Box, Button, Chip, SelectChangeEvent, Stack } from "@mui/material";
-import { IconCircleCheck, IconEye } from "@tabler/icons-react";
+import { SelectChangeEvent } from "@mui/material";
+import { IconCircleCheck } from "@tabler/icons-react";
 import moment from "moment";
-import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { TableColumn } from "react-data-table-component";
-import DataTables from "../../shared/DataTables";
-import { ButtonAction, Status } from "../../shared/Buttons";
 import { getIndividual } from "../../api/Individual";
+import { useAppContext } from "../../shared/Context";
+import DataTables from "../../shared/DataTables";
 
 interface Meta {
   page: number;
@@ -38,10 +36,10 @@ interface Props {
   handleChangePage: any;
 }
 
-const columns: TableColumn<Data>[] = [
+const columns = [
   {
     name: "No",
-    selector: (_row, i: any) => i + 1,
+    selector: (_row: any, i: any) => i + 1,
     // sortable: true,
     width: "70px",
     // style: {
@@ -50,45 +48,45 @@ const columns: TableColumn<Data>[] = [
   },
   {
     name: "Fullname",
-    cell: (row: Data) => <div>{row.fullname}</div>,
+    cell: (row: any) => <div>{row.fullname}</div>,
     // sortable: true,
   },
   {
     name: "Email",
-    cell: (row: Data) => <div>{row.email}</div>,
+    cell: (row: any) => <div>{row.email}</div>,
     // sortable: true,
     width: "270px",
   },
   {
     name: "Phone number",
-    cell: (row: Data) => <div>{row.phone}</div>,
+    cell: (row: any) => <div>{row.phone}</div>,
     // sortable: true,
     width: "200px",
   },
   {
     name: "Registered at",
-    cell: (row: Data) => (
+    cell: (row: any) => (
       <div>{moment(row.created_at).format("DD/MM/YYYY")}</div>
     ),
     // sortable: true,
   },
   {
     name: "Active",
-    cell: (row: Data) => (
+    cell: (row: any) => (
       <div>{row.is_active ? <IconCircleCheck color="green" /> : ""}</div>
     ),
     // sortable: true,
   },
   {
     name: "Locked",
-    cell: (row: Data) => (
+    cell: (row: any) => (
       <div>{row.is_locked ? <IconCircleCheck color="green" /> : ""}</div>
     ),
     // sortable: true,
   },
   // {
   //   name: "Action",
-  //   cell: (row: Data) => (
+  //   cell: (row: any) => (
   //     <Stack spacing={1} direction="row">
   //       <Link
   //         href={{
@@ -107,49 +105,96 @@ const columns: TableColumn<Data>[] = [
   // Add more columns as needed
 ];
 
-const DataTableComponent: React.FC<Props> = ({
-  data,
-  meta,
-  handleChangePage,
-}) => {
-  const [filterText, setFilterText] = useState<any>(false);
+const DataTableComponent = () => {
+  const [filterText, setFilterText] = useState<any>(1);
   const [searchBy, setSearchBy] = useState<string>("fullname");
   const [searchText, setSearchText] = useState<string>("");
+  const [data, setData] = useState([]);
+  const [meta, setMeta] = useState({
+    page: 0,
+    per_page: 0,
+    page_count: 0,
+    total: 0,
+  });
+  const [page, setPage] = useState(1);
+  const { isLoading, setIsLoading } = useAppContext();
+  const [typingTimeout, setTypingTimeout] = useState<
+    NodeJS.Timeout | undefined
+  >(undefined);
+
+  useEffect(() => {
+    setFilterText(`${localStorage.getItem("FilterStatus")}`);
+    getIndividual(setData, setMeta, page, setIsLoading);
+  }, []);
+
+  const handleChangePage = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+    setIsLoading(true);
+    getIndividual(setData, setMeta, value, setIsLoading);
+  };
+
+  useEffect(() => {
+    localStorage.setItem("FilterStatus", filterText);
+    localStorage.setItem("SearchBy", searchBy);
+    localStorage.setItem("SearchText", searchText);
+  }, []);
 
   const handleChangeSearchBy = (event: SelectChangeEvent) => {
     setSearchBy(event.target.value);
+    localStorage.setItem("SearchBy", event.target.value);
+    setIsLoading(true);
+    getIndividual(setData, setMeta, page, setIsLoading);
   };
 
-  const handleChange = (event: SelectChangeEvent) => {
+  const handleChangeFilterText = (event: SelectChangeEvent) => {
+    setIsLoading(true);
+    localStorage.setItem("FilterStatus", event.target.value);
     setFilterText(event.target.value);
+    getIndividual(setData, setMeta, page, setIsLoading);
   };
 
   const handleChangeSearch = (event: SelectChangeEvent) => {
     setSearchText(event.target.value);
+    localStorage.setItem("SearchText", event.target.value);
   };
 
-  let filteredItems: any = data;
-  if (filterText == false) {
-    filteredItems = data.filter(
-      (data) =>
-        data.is_active == false &&
-        (searchBy === "fullname"
-          ? data.fullname.toLowerCase().includes(searchText.toLowerCase())
-          : searchBy === "email"
-          ? data.email.toLowerCase().includes(searchText.toLowerCase())
-          : data.phone.toLowerCase().includes(searchText.toLowerCase()))
-    );
-  } else {
-    filteredItems = data.filter(
-      (data) =>
-        data.is_active == true &&
-        (searchBy === "fullname"
-          ? data.fullname.toLowerCase().includes(searchText.toLowerCase())
-          : searchBy === "email"
-          ? data.email.toLowerCase().includes(searchText.toLowerCase())
-          : data.phone.toLowerCase().includes(searchText.toLowerCase()))
-    );
-  }
+  const handleKeyUp = () => {
+    if (typingTimeout) {
+      clearTimeout(typingTimeout);
+    }
+    const timeout = setTimeout(() => {
+      setIsLoading(true);
+      getIndividual(setData, setMeta, page, setIsLoading);
+      // Add your logic here
+    }, 500); // Adjust the delay as needed (in milliseconds)
+    setTypingTimeout(timeout);
+  };
+
+  // let filteredItems: any = data;
+  // if (filterText == false) {
+  //   filteredItems = data.filter(
+  //     (data) =>
+  //       data.is_active == false &&
+  //       (searchBy === "fullname"
+  //         ? data.fullname.toLowerCase().includes(searchText.toLowerCase())
+  //         : searchBy === "email"
+  //         ? data.email.toLowerCase().includes(searchText.toLowerCase())
+  //         : data.phone.toLowerCase().includes(searchText.toLowerCase()))
+  //   );
+  // } else {
+  //   filteredItems = data.filter(
+  //     (data) =>
+  //       data.is_active == true &&
+  //       (searchBy === "fullname"
+  //         ? data.fullname.toLowerCase().includes(searchText.toLowerCase())
+  //         : searchBy === "email"
+  //         ? data.email.toLowerCase().includes(searchText.toLowerCase())
+  //         : data.phone.toLowerCase().includes(searchText.toLowerCase()))
+  //   );
+  // }
 
   const searchOption = [
     {
@@ -172,12 +217,12 @@ const DataTableComponent: React.FC<Props> = ({
   const filterOptions = [
     {
       id: 1,
-      value: true,
+      value: 1,
       label: "Active",
     },
     {
       id: 2,
-      value: false,
+      value: 0,
       label: "Unactive",
     },
   ];
@@ -189,14 +234,15 @@ const DataTableComponent: React.FC<Props> = ({
         searchOption={searchOption}
         valueSearchBy={searchBy}
         onChange={handleChangePage}
-        onChangeFilterText={handleChange}
+        onChangeFilterText={handleChangeFilterText}
+        onKeyUpSearch={handleKeyUp}
         filterText={filterOptions}
         onChangeSearch={handleChangeSearch}
         onChangeSearchBy={handleChangeSearchBy}
-        pageItems={filteredItems.length}
+        pageItems={data.length}
         meta={meta}
         columns={columns}
-        data={filteredItems}
+        data={data}
         pagination={true}
       />
     </>
