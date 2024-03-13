@@ -80,7 +80,7 @@ const Login = () => {
         display: "flex",
         flexDirection: "column",
         gap: "15px",
-        borderRadius: "40px",
+        // borderRadius: "40px",
       }}
     >
       <svg

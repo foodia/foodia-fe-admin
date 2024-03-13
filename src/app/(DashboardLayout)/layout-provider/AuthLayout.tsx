@@ -166,15 +166,19 @@ export default function AuthLayout({
               width: "60%",
               paddingY: "60px",
               paddingRight: "120px",
+              display: "flex",
+              justifyContent: "end",
+              alignItems: "center",
             }}
           >
             <Box
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "center",
                 // alignItems: "center",
-                height: "100%",
+                height: "auto",
+                minWidth: "500px",
+                width: "100%",
                 background: "#168140",
                 padding: "50px",
                 gap: "15px",
