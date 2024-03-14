@@ -38,7 +38,10 @@ export const getDisbursement = (
       setMeta(res.data.meta);
       setIsLoading(false);
     })
-    .catch((error) => {});
+    .catch((error) => {
+      ErrorHandling(error);
+      setIsLoading(false);
+    });
 };
 
 export const getDisbursementDetail = (

@@ -2,16 +2,19 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface Coordinate {
-  lat: number;
-  long: number;
+  lat: any;
+  long: any;
 }
 
-const LeafLet: React.FC<Coordinate> = ({ lat, long }: Coordinate) => {
-  const latitude = -6.3560826;
-  const longtitude = 106.8532496;
+const LeafLet: React.FC<Coordinate> = ({ lat, long }) => {
+  const latitude = parseFloat(lat);
+  const longtitude = parseFloat(long);
+
+  console.log("lat", parseFloat(lat));
+  console.log("long", parseFloat(long));
 
   const [isMounted, setIsMounted] = useState(false);
 

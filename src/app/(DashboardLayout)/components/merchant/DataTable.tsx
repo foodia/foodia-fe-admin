@@ -28,10 +28,10 @@ interface Props {
   handleChangePage: any;
 }
 
-const columns: TableColumn<Data>[] = [
+const columns = [
   {
     name: "No",
-    selector: (_row, i: any) => i + 1,
+    selector: (_row: any, i: any) => i + 1,
     // sortable: true,
     width: "70px",
     // style: {
@@ -40,35 +40,40 @@ const columns: TableColumn<Data>[] = [
   },
   {
     name: "Fullname",
-    cell: (row: Data) => <div>{row.oauth.fullname}</div>,
+    cell: (row: any) => <div>{row.oauth.fullname}</div>,
+    // sortable: true,
+  },
+  {
+    name: "Merchant Name",
+    cell: (row: any) => <div>{row.merchant_name}</div>,
     // sortable: true,
   },
   {
     name: "Email",
-    cell: (row: Data) => <div>{row.oauth.email}</div>,
+    cell: (row: any) => <div>{row.oauth.email}</div>,
     // sortable: true,
     width: "200px",
   },
   {
     name: "Phone number",
-    cell: (row: Data) => <div>{row.oauth.phone}</div>,
+    cell: (row: any) => <div>{row.oauth.phone}</div>,
     // sortable: true,
   },
   {
     name: "Registered at",
-    cell: (row: Data) => (
+    cell: (row: any) => (
       <div>{moment(row.created_at).format("DD/MM/YYYY")}</div>
     ),
     // sortable: true,
   },
   {
     name: "Status",
-    cell: (row: Data) => <Status row={row} />,
+    cell: (row: any) => <Status row={row} />,
     // sortable: true,
   },
   {
     name: "Action",
-    cell: (row: Data) => (
+    cell: (row: any) => (
       <Stack spacing={1} direction="row">
         <Link
           href={{
