@@ -19,13 +19,15 @@ interface ChildProps {
 
 const Maps: React.FC<ChildProps> = ({ data }) => {
   const { isLoading } = useAppContext();
+
   const Map = React.useMemo(
     () => dynamic(() => import("../shared/LeafLet"), { ssr: false }),
     []
   );
 
-  // console.log("asdsa", parseFloat(data.latitude));
-  // console.log("asdsa", parseFloat(data.longitude));
+  // Ensure latitude and longitude are valid numbers
+  const isValidCoordinates =
+    !isNaN(parseFloat(data.latitude)) && !isNaN(parseFloat(data.longitude));
 
   return (
     <DetailCard title="Location">
@@ -35,7 +37,16 @@ const Maps: React.FC<ChildProps> = ({ data }) => {
             {data.address}, {data.sub_district}, {data.city}, {data.province},{" "}
             {data.postal_code}
           </Typography>
-          <Map lat={data.latitude} long={data.longitude} />
+          {isValidCoordinates ? (
+            <Map
+              lat={parseFloat(data.latitude)}
+              long={parseFloat(data.longitude)}
+            />
+          ) : (
+            <Typography variant="body2" color="error">
+              Invalid coordinates
+            </Typography>
+          )}
         </Box>
       ) : (
         <CircularProgress color="secondary" />

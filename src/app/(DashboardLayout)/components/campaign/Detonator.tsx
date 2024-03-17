@@ -99,13 +99,16 @@ const Detonator: React.FC<ChildProps> = ({ data }) => {
                 // position: "relative",
                 backgroundColor: "transparent",
                 border: "1px solid green",
-                padding: "10px",
+                padding: 0,
               }}
               variant="contained"
               size="small"
               onClick={() => onViewImage(data.detonator.self_photo)}
             >
-              <ImageHandler url={data.detonator.self_photo} />
+              <ImageHandler
+                borderRadius="100%"
+                url={data.detonator.self_photo}
+              />
             </Button>
             <Box
               sx={{

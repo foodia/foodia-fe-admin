@@ -44,7 +44,7 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
           backgroundColor: "transparent",
         }}
       >
-        <ImageHandler url={data.image_url} />
+        <ImageHandler fit url={data.image_url} />
       </Button>
       {/* </DetailCard> */}
       <ModalPopupFilesDetail

@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 
 interface Url {
   url: any;
-  width?: any;
+  borderRadius?: any;
+  fit?: any;
 }
 
-const ImageHandler: React.FC<Url> = ({ url, width }) => {
+const ImageHandler: React.FC<Url> = ({ url, borderRadius, fit }) => {
   const [errorOccurred, setErrorOccurred] = useState(false);
   const [loadingOccurred, setLoadingOccurred] = useState(true);
   const [src, setSrc] = useState("");
@@ -23,7 +24,6 @@ const ImageHandler: React.FC<Url> = ({ url, width }) => {
   };
 
   const handleImageLoading = () => {
-    console.log("dsadasdsafsafwf");
     setLoadingOccurred(false);
     // setSrc(`${url}`);
   };
@@ -60,12 +60,17 @@ const ImageHandler: React.FC<Url> = ({ url, width }) => {
         //   </Box>
         // ) :
         <Image
-          style={{ borderRadius: "10px" }}
+          style={
+            !borderRadius
+              ? { borderRadius: "10px" }
+              : { borderRadius: borderRadius }
+          }
           src={`${process.env.NEXT_PUBLIC_FILE}/${src}`}
           alt="Error"
           width={500} // Adjust width according to your container size
-          height={400} // Adjust height according to your container size
-          objectFit="contain" // Maintain aspect ratio and cover container
+          height={500} // Adjust height according to your container size
+          objectFit={!fit ? "cover" : "contain"} // Maintain aspect ratio and cover container
+          quality={100}
           onError={handleImageError}
           onLoadingComplete={handleImageLoading}
         />
