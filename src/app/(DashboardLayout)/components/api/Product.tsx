@@ -5,7 +5,8 @@ export const getProduct = (
   setData: any,
   setMeta: any,
   page: any,
-  setIsLoading: any
+  setIsLoading: any,
+  statusFilter: any
 ) => {
   axios
     .get(

@@ -3,6 +3,7 @@ import { Approvals } from "@/app/(DashboardLayout)/components/api/Approvals";
 import { getMerchantDetail } from "@/app/(DashboardLayout)/components/api/Merchant";
 import Attachment from "@/app/(DashboardLayout)/components/merchant/Attachment";
 import Info from "@/app/(DashboardLayout)/components/merchant/Info";
+import Products from "@/app/(DashboardLayout)/components/merchant/Products";
 import { useAppContext } from "@/app/(DashboardLayout)/components/shared/Context";
 import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
 import { ModalPopupApprovals } from "@/app/(DashboardLayout)/components/shared/ModalPopup";
@@ -25,6 +26,14 @@ type Props = {
   self_photo: string;
   ktp_photo: string;
   oauth: { fullname: string; email: string; phone: string };
+  products: {
+    id: number;
+    name: string;
+    description: string;
+    price: string;
+    qty: number;
+    status: string;
+  }[];
 };
 
 const MerchantInfo = () => {
@@ -43,6 +52,16 @@ const MerchantInfo = () => {
     self_photo: "",
     ktp_photo: "",
     oauth: { fullname: "", email: "", phone: "" },
+    products: [
+      {
+        id: 0,
+        name: "",
+        description: "",
+        price: "",
+        qty: 0,
+        status: "",
+      },
+    ],
   });
 
   const [ids, setId] = useState<number>(0);
@@ -92,6 +111,7 @@ const MerchantInfo = () => {
         <>
           <Info data={data} />
           <Attachment data={data} />
+          <Products data={data.products} />
           <Box
             paddingBottom="70px"
             paddingTop="20px"

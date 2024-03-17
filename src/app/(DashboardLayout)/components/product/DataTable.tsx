@@ -121,8 +121,8 @@ const DataTableComponent = () => {
   >(undefined);
 
   useEffect(() => {
-    setFilterText(`${localStorage.getItem("FilterStatus")}`);
-    getProduct(setData, setMeta, page, setIsLoading);
+    localStorage.setItem("FilterStatus", filterText);
+    getProduct(setData, setMeta, page, setIsLoading, filterText);
   }, []);
 
   const handleChangePage = (
@@ -131,11 +131,10 @@ const DataTableComponent = () => {
   ) => {
     setPage(value);
     setIsLoading(true);
-    getProduct(setData, setMeta, value, setIsLoading);
+    getProduct(setData, setMeta, value, setIsLoading, filterText);
   };
 
   useEffect(() => {
-    localStorage.setItem("FilterStatus", filterText);
     localStorage.setItem("SearchBy", searchBy);
     localStorage.setItem("SearchText", searchText);
   }, []);
@@ -144,14 +143,14 @@ const DataTableComponent = () => {
     setSearchBy(event.target.value);
     localStorage.setItem("SearchBy", event.target.value);
     setIsLoading(true);
-    getProduct(setData, setMeta, page, setIsLoading);
+    getProduct(setData, setMeta, page, setIsLoading, filterText);
   };
 
   const handleChangeFilterText = (event: SelectChangeEvent) => {
     setIsLoading(true);
     localStorage.setItem("FilterStatus", event.target.value);
     setFilterText(event.target.value);
-    getProduct(setData, setMeta, page, setIsLoading);
+    getProduct(setData, setMeta, page, setIsLoading, event.target.value);
   };
 
   const handleChangeSearch = (event: SelectChangeEvent) => {
@@ -165,7 +164,7 @@ const DataTableComponent = () => {
     }
     const timeout = setTimeout(() => {
       setIsLoading(true);
-      getProduct(setData, setMeta, page, setIsLoading);
+      getProduct(setData, setMeta, page, setIsLoading, filterText);
       // Add your logic here
     }, 500); // Adjust the delay as needed (in milliseconds)
     setTypingTimeout(timeout);

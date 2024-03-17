@@ -1,17 +1,14 @@
 import {
   Box,
-  Stack,
   Step,
   StepIconProps,
   StepLabel,
   Stepper,
-  TextField,
   Typography,
 } from "@mui/material";
-import BaseCard from "../shared/DashboardCard";
-import DetailCard from "../shared/DetailCard";
 import { IconBan, IconCircleCheck, IconClock } from "@tabler/icons-react";
 import { uniqueId } from "lodash";
+import DetailCard from "../shared/DetailCard";
 
 interface ChildProps {
   data: {

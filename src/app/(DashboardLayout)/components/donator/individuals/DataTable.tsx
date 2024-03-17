@@ -123,7 +123,7 @@ const DataTableComponent = () => {
   >(undefined);
 
   useEffect(() => {
-    setFilterText(`${localStorage.getItem("FilterStatus")}`);
+    localStorage.setItem("FilterStatus", filterText);
     getIndividual(setData, setMeta, page, setIsLoading);
   }, []);
 

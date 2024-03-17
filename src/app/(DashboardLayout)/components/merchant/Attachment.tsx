@@ -1,26 +1,9 @@
+import { Box, Button, Typography } from "@mui/material";
 import React, { useState } from "react";
-import {
-  Typography,
-  Box,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Chip,
-  TableContainer,
-  Stack,
-  Button,
-} from "@mui/material";
-import BaseCard from "../shared/DashboardCard";
-import { IconEye } from "@tabler/icons-react";
-import Image from "next/legacy/image";
 
-import img1 from "public/images/backgrounds/u1.jpg";
-import img2 from "public/images/backgrounds/u3.jpg";
-import { ModalPopupFilesDetail } from "../shared/ModalPopup";
 import DetailCard from "../shared/DetailCard";
 import ImageHandler from "../shared/ImageHandler";
+import { ModalPopupFilesDetail } from "../shared/ModalPopup";
 
 interface ChildProps {
   data: {
@@ -30,29 +13,6 @@ interface ChildProps {
     oauth: { fullname: string; email: string; phone: string };
   };
 }
-
-// const products = [
-//   {
-//     id: "1",
-//     name: "Selfi.jpg",
-//     post: "2 MB",
-//     pname: "Elite Admin",
-//     priority: "Low",
-//     pbg: "primary.main",
-//     budget: "3.9",
-//     img: img1,
-//   },
-//   {
-//     id: "2",
-//     name: "KTP.jpg",
-//     post: "1 MB",
-//     pname: "Real Homes WP Theme",
-//     priority: "Medium",
-//     pbg: "secondary.main",
-//     budget: "24.5",
-//     img: img2,
-//   },
-// ];
 
 const Attachment: React.FC<ChildProps> = ({ data }) => {
   const [isOpen, setIsOpen] = useState(false);

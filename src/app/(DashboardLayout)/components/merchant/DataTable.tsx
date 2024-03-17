@@ -39,7 +39,7 @@ const columns = [
     // },
   },
   {
-    name: "Fullname",
+    name: "User Name",
     cell: (row: any) => <div>{row.oauth.fullname}</div>,
     // sortable: true,
   },
@@ -111,8 +111,8 @@ const DataTableComponent = () => {
   >(undefined);
 
   useEffect(() => {
-    setFilterText(`${localStorage.getItem("FilterStatus")}`);
-    getMerchant(setData, setMeta, page, setIsLoading);
+    localStorage.setItem("FilterStatus", filterText);
+    getMerchant(setData, setMeta, page, setIsLoading, filterText);
   }, []);
 
   const handleChangePage = (
@@ -121,11 +121,10 @@ const DataTableComponent = () => {
   ) => {
     setPage(value);
     setIsLoading(true);
-    getMerchant(setData, setMeta, value, setIsLoading);
+    getMerchant(setData, setMeta, value, setIsLoading, filterText);
   };
 
   useEffect(() => {
-    localStorage.setItem("FilterStatus", filterText);
     localStorage.setItem("SearchBy", searchBy);
     localStorage.setItem("SearchText", searchText);
   }, []);
@@ -134,14 +133,14 @@ const DataTableComponent = () => {
     setSearchBy(event.target.value);
     localStorage.setItem("SearchBy", event.target.value);
     setIsLoading(true);
-    getMerchant(setData, setMeta, page, setIsLoading);
+    getMerchant(setData, setMeta, page, setIsLoading, filterText);
   };
 
   const handleChangeFilterText = (event: SelectChangeEvent) => {
     setIsLoading(true);
     localStorage.setItem("FilterStatus", event.target.value);
     setFilterText(event.target.value);
-    getMerchant(setData, setMeta, page, setIsLoading);
+    getMerchant(setData, setMeta, page, setIsLoading, event.target.value);
   };
 
   const handleChangeSearch = (event: SelectChangeEvent) => {
@@ -155,7 +154,7 @@ const DataTableComponent = () => {
     }
     const timeout = setTimeout(() => {
       setIsLoading(true);
-      getMerchant(setData, setMeta, page, setIsLoading);
+      getMerchant(setData, setMeta, page, setIsLoading, filterText);
       // Add your logic here
     }, 500); // Adjust the delay as needed (in milliseconds)
     setTypingTimeout(timeout);
@@ -188,7 +187,7 @@ const DataTableComponent = () => {
     {
       id: 1,
       value: "fullname",
-      label: "FullName",
+      label: "User Name",
     },
     {
       id: 2,

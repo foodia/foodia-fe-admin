@@ -111,7 +111,7 @@ const DataTableComponent = () => {
   >(undefined);
 
   useEffect(() => {
-    setFilterText(`${localStorage.getItem("FilterStatus")}`);
+    localStorage.setItem("FilterStatus", filterText);
     getDisbursement(setData, setMeta, page, setIsLoading);
   }, []);
 
@@ -125,7 +125,6 @@ const DataTableComponent = () => {
   };
 
   useEffect(() => {
-    localStorage.setItem("FilterStatus", filterText);
     localStorage.setItem("SearchBy", searchBy);
     localStorage.setItem("SearchText", searchText);
   }, []);
