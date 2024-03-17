@@ -94,7 +94,6 @@ const Orders: React.FC<ChildProps> = ({ data }) => {
                 }
               >
                 <ImageHandler
-                  fit
                   url={orders.merchant_product.images[0].image_url}
                 />
               </Button>
