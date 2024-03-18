@@ -411,7 +411,7 @@ export const ModalPopupFilesDetail = ({
         }}
       >
         <Box sx={{}}>
-          <ImageHandler fit url={image_url} />
+          <ImageHandler fit src={image_url} />
         </Box>
         <Button
           sx={{ fontWeight: "bold", color: "white" }}

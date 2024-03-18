@@ -61,7 +61,7 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
                 backgroundColor: "transparent",
               }}
             >
-              <ImageHandler url={orders.image_url} />
+              <ImageHandler src={orders.image_url} />
             </Button>
           ))}
         </Box>
@@ -100,7 +100,7 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
               >
                 <ImageHandler
                   borderRadius="100%"
-                  url={data.merchant?.self_photo}
+                  src={data.merchant?.self_photo}
                 />
               </Button>
             </Box>

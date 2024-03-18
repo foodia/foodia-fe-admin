@@ -49,7 +49,7 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
                 backgroundColor: "transparent",
               }}
             >
-              <Images url={data.self_photo} />
+              <Images src={data.self_photo} />
             </Button>
             <Typography>Self Photo</Typography>
           </Box>
@@ -71,7 +71,7 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
                 backgroundColor: "transparent",
               }}
             >
-              <Images url={data.ktp_photo} />
+              <Images src={data.ktp_photo} />
             </Button>
             <Typography>KTP Photo</Typography>
           </Box>

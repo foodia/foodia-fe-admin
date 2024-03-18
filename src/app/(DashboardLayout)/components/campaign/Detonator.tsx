@@ -107,7 +107,7 @@ const Detonator: React.FC<ChildProps> = ({ data }) => {
             >
               <ImageHandler
                 borderRadius="100%"
-                url={data.detonator.self_photo}
+                src={data.detonator.self_photo}
               />
             </Button>
             <Box

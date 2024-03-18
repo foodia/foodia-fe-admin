@@ -94,7 +94,7 @@ const Orders: React.FC<ChildProps> = ({ data }) => {
                 }
               >
                 <ImageHandler
-                  url={orders.merchant_product.images[0].image_url}
+                  src={orders.merchant_product.images[0].image_url}
                 />
               </Button>
               <Box
