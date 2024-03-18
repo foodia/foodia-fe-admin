@@ -3,19 +3,19 @@ import Image from "next/legacy/image";
 import { useEffect, useState } from "react";
 
 interface Url {
-  url: any;
+  src?: any;
   borderRadius?: any;
   fit?: any;
 }
 
-const ImageHandler: React.FC<Url> = ({ url, borderRadius, fit }) => {
+const ImageHandler: React.FC<Url> = ({ src, borderRadius, fit }) => {
   const [errorOccurred, setErrorOccurred] = useState(false);
   const [loadingOccurred, setLoadingOccurred] = useState(true);
-  const [src, setSrc] = useState("");
+  // const [src, setSrc] = useState("");
 
-  useEffect(() => {
-    setSrc(`${url}`);
-  });
+  // useEffect(() => {
+  //   setSrc(`${src}`);
+  // });
 
   const handleImageError = () => {
     setErrorOccurred(true);
