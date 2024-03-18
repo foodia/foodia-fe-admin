@@ -26,7 +26,11 @@ export const getCampaign = (
           localStorage.getItem("SearchBy") === "event_type"
             ? localStorage.getItem("SearchText")
             : ""
-        }&status=${localStorage.getItem("FilterStatus")}`,
+        }&status=${
+          localStorage.getItem("FilterStatus") !== "all"
+            ? localStorage.getItem("FilterStatus")
+            : ""
+        }`,
       {
         headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       }

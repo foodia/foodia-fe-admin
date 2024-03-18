@@ -10,9 +10,11 @@ export const getCorporation = (
   axios
     .get(
       process.env.NEXT_PUBLIC_BASE +
-        `/corporation/filter?page=${page}&per_page=10&status=${localStorage.getItem(
-          "FilterStatus"
-        )}&fullname=${
+        `/corporation/filter?page=${page}&per_page=5&status=${
+          localStorage.getItem("FilterStatus") !== "all"
+            ? localStorage.getItem("FilterStatus")
+            : ""
+        }&fullname=${
           localStorage.getItem("SearchBy") === "fullname"
             ? localStorage.getItem("SearchText")
             : ""

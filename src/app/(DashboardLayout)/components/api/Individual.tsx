@@ -10,9 +10,11 @@ export const getIndividual = (
   axios
     .get(
       process.env.NEXT_PUBLIC_BASE +
-        `/individual/filter?page=${page}&per_page=10&is_active=${localStorage.getItem(
-          "FilterStatus"
-        )}&fullname=${
+        `/individual/filter?page=${page}&per_page=5&is_active=${
+          localStorage.getItem("FilterStatus") !== "all"
+            ? localStorage.getItem("FilterStatus")
+            : ""
+        }&fullname=${
           localStorage.getItem("SearchBy") === "fullname"
             ? localStorage.getItem("SearchText")
             : ""

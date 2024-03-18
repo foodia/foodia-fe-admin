@@ -11,9 +11,11 @@ export const getMerchant = (
   axios
     .get(
       process.env.NEXT_PUBLIC_BASE +
-        `/merchant/filter?page=${page}&per_page=5&status=${localStorage.getItem(
-          "FilterStatus"
-        )}&fullname=${
+        `/merchant/filter?page=${page}&per_page=5&status=${
+          localStorage.getItem("FilterStatus") !== "all"
+            ? localStorage.getItem("FilterStatus")
+            : ""
+        }&fullname=${
           localStorage.getItem("SearchBy") === "fullname"
             ? localStorage.getItem("SearchText")
             : ""

@@ -94,7 +94,7 @@ const columns = [
 ];
 
 const DataTableComponent = () => {
-  const [filterText, setFilterText] = useState<string>("waiting");
+  const [filterText, setFilterText] = useState<string>("all");
   const [searchBy, setSearchBy] = useState<string>("merchant_name");
   const [searchText, setSearchText] = useState<string>("");
   const [data, setData] = useState([]);
@@ -140,7 +140,7 @@ const DataTableComponent = () => {
     setIsLoading(true);
     localStorage.setItem("FilterStatus", event.target.value);
     setFilterText(event.target.value);
-    getDisbursement(setData, setMeta, page, setIsLoading);
+    getDisbursement(setData, setMeta, 1, setIsLoading);
   };
 
   const handleChangeSearch = (event: SelectChangeEvent) => {
@@ -229,6 +229,11 @@ const DataTableComponent = () => {
       id: 3,
       value: "approved",
       label: "Approved",
+    },
+    {
+      id: 4,
+      value: "all",
+      label: "All",
     },
   ];
 

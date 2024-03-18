@@ -106,7 +106,7 @@ const columns = [
 ];
 
 const DataTableComponent = () => {
-  const [filterText, setFilterText] = useState<any>(1);
+  const [filterText, setFilterText] = useState<any>("all");
   const [searchBy, setSearchBy] = useState<string>("fullname");
   const [searchText, setSearchText] = useState<string>("");
   const [data, setData] = useState([]);
@@ -224,6 +224,11 @@ const DataTableComponent = () => {
       id: 2,
       value: 0,
       label: "Unactive",
+    },
+    {
+      id: 3,
+      value: "all",
+      label: "All",
     },
   ];
 

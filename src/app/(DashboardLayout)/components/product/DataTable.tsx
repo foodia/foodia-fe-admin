@@ -1,11 +1,10 @@
 import { SelectChangeEvent, Stack } from "@mui/material";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { TableColumn } from "react-data-table-component";
-import { ButtonAction, Status } from "../shared/Buttons";
-import DataTables from "../shared/DataTables";
-import { useAppContext } from "../shared/Context";
 import { getProduct } from "../api/Product";
+import { ButtonAction, Status } from "../shared/Buttons";
+import { useAppContext } from "../shared/Context";
+import DataTables from "../shared/DataTables";
 
 interface Meta {
   page: number;
@@ -60,12 +59,12 @@ const columns = [
         {row.description}
       </div>
     ),
-    width: "260px",
+    width: "200px",
   },
   {
     name: "Quantity",
     cell: (row: any) => <div>{row.qty}</div>,
-    width: "100px",
+    width: "90px",
   },
   {
     name: "Price",
@@ -82,6 +81,7 @@ const columns = [
   {
     name: "Status",
     cell: (row: any) => <Status row={row} />,
+    width: "150px",
   },
   {
     name: "Action",
@@ -104,7 +104,7 @@ const columns = [
 ];
 
 const DataTableComponent = () => {
-  const [filterText, setFilterText] = useState<string>("waiting");
+  const [filterText, setFilterText] = useState<string>("all");
   const [searchBy, setSearchBy] = useState<string>("name");
   const [searchText, setSearchText] = useState<string>("");
   const [data, setData] = useState([]);
@@ -150,7 +150,7 @@ const DataTableComponent = () => {
     setIsLoading(true);
     localStorage.setItem("FilterStatus", event.target.value);
     setFilterText(event.target.value);
-    getProduct(setData, setMeta, page, setIsLoading, event.target.value);
+    getProduct(setData, setMeta, 1, setIsLoading, event.target.value);
   };
 
   const handleChangeSearch = (event: SelectChangeEvent) => {
@@ -226,6 +226,11 @@ const DataTableComponent = () => {
       id: 3,
       value: "approved",
       label: "Approved",
+    },
+    {
+      id: 4,
+      value: "all",
+      label: "All",
     },
   ];
 

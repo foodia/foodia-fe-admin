@@ -120,7 +120,7 @@ const columns = [
 ];
 
 const DataTableComponent = () => {
-  const [filterText, setFilterText] = useState<string>("waiting");
+  const [filterText, setFilterText] = useState<string>("all");
   const [searchBy, setSearchBy] = useState<string>("detonator_name");
   const [searchText, setSearchText] = useState<string>("");
   const [data, setData] = useState([]);
@@ -166,7 +166,7 @@ const DataTableComponent = () => {
     setFilterText(event.target.value);
     localStorage.setItem("FilterStatus", event.target.value);
     setIsLoading(true);
-    getCampaign(setData, setMeta, page, setIsLoading);
+    getCampaign(setData, setMeta, 1, setIsLoading);
   };
 
   const handleChangeSearch = (event: SelectChangeEvent) => {
@@ -252,6 +252,11 @@ const DataTableComponent = () => {
       id: 3,
       value: "approved",
       label: "Approved",
+    },
+    {
+      id: 4,
+      value: "all",
+      label: "All",
     },
   ];
 

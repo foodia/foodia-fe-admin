@@ -2,11 +2,10 @@ import { SelectChangeEvent, Stack } from "@mui/material";
 import moment from "moment";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { TableColumn } from "react-data-table-component";
-import { ButtonAction, Status } from "../shared/Buttons";
-import DataTables from "../shared/DataTables";
-import { useAppContext } from "../shared/Context";
 import { getMerchant } from "../api/Merchant";
+import { ButtonAction, Status } from "../shared/Buttons";
+import { useAppContext } from "../shared/Context";
+import DataTables from "../shared/DataTables";
 
 interface Meta {
   page: number;
@@ -90,11 +89,10 @@ const columns = [
     width: "auto",
     // sortable: true,
   },
-  // Add more columns as needed
 ];
 
 const DataTableComponent = () => {
-  const [filterText, setFilterText] = useState<string>("waiting");
+  const [filterText, setFilterText] = useState<string>("all");
   const [searchBy, setSearchBy] = useState<string>("fullname");
   const [searchText, setSearchText] = useState<string>("");
   const [data, setData] = useState([]);
@@ -140,7 +138,7 @@ const DataTableComponent = () => {
     setIsLoading(true);
     localStorage.setItem("FilterStatus", event.target.value);
     setFilterText(event.target.value);
-    getMerchant(setData, setMeta, page, setIsLoading, event.target.value);
+    getMerchant(setData, setMeta, 1, setIsLoading, event.target.value);
   };
 
   const handleChangeSearch = (event: SelectChangeEvent) => {
@@ -155,7 +153,6 @@ const DataTableComponent = () => {
     const timeout = setTimeout(() => {
       setIsLoading(true);
       getMerchant(setData, setMeta, page, setIsLoading, filterText);
-      // Add your logic here
     }, 500); // Adjust the delay as needed (in milliseconds)
     setTypingTimeout(timeout);
   };
@@ -216,6 +213,11 @@ const DataTableComponent = () => {
       id: 3,
       value: "approved",
       label: "Approved",
+    },
+    {
+      id: 4,
+      value: "all",
+      label: "All",
     },
   ];
 

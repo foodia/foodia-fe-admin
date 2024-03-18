@@ -10,9 +10,11 @@ export const getDetonator = (
   axios
     .get(
       process.env.NEXT_PUBLIC_BASE +
-        `/detonator/filter?page=${page}&per_page=5&status=${localStorage.getItem(
-          "FilterStatus"
-        )}&phone=${
+        `/detonator/filter?page=${page}&per_page=5&status=${
+          localStorage.getItem("FilterStatus") !== "all"
+            ? localStorage.getItem("FilterStatus")
+            : ""
+        }&phone=${
           localStorage.getItem("SearchBy") === "phone"
             ? localStorage.getItem("SearchText")
             : ""

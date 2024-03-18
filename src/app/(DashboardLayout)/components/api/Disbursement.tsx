@@ -10,9 +10,11 @@ export const getDisbursement = (
   axios
     .get(
       process.env.NEXT_PUBLIC_BASE +
-        `/disbursement/filter?page=${page}&per_page=5&status=${localStorage.getItem(
-          "FilterStatus"
-        )}&merchant_name=${
+        `/disbursement/filter?page=${page}&per_page=5&status=${
+          localStorage.getItem("FilterStatus") !== "all"
+            ? localStorage.getItem("FilterStatus")
+            : ""
+        }&merchant_name=${
           localStorage.getItem("SearchBy") === "merchant_name"
             ? localStorage.getItem("SearchText")
             : ""
