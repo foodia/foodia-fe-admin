@@ -53,8 +53,8 @@ const Login = () => {
           router.push("/ui-components/pages/wallet/csr");
         } else {
           router.refresh();
+          setIsLoading(false);
         }
-        // setIsLoading(false);
       })
       .catch((error) => {
         AlertMessage(
@@ -69,10 +69,10 @@ const Login = () => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("Session");
-    if (token === "start") {
+    const session = localStorage.getItem("Session");
+    if (session === "start") {
       router.push("/ui-components/pages/donator/individuals");
-    } else if (token === "end") {
+    } else if (session === "end") {
       AlertError401();
     }
   }, []);
