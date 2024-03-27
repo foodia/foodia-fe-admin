@@ -35,6 +35,7 @@ const CorporationInfo = () => {
     description: "",
     oauth: { fullname: "", email: "", phone: "" },
   });
+  const [isLoadingModal, setIsLoadingModal] = useState(false);
 
   const handleOpen = (id: number, status: string, name: string) => {
     setIsOpen(true);
@@ -118,6 +119,7 @@ const CorporationInfo = () => {
         </>
       </DashboardCard>
       <ModalPopupApprovals
+        isLoading={isLoadingModal}
         open={isOpen}
         handleClose={handleClose}
         status={status}
@@ -125,7 +127,14 @@ const CorporationInfo = () => {
         note={note}
         onChange={(e: any) => setNote(e.target.value)}
         handleSubmit={() =>
-          Approvals(ids, status, note, setIsOpen, "corporation")
+          Approvals(
+            ids,
+            status,
+            note,
+            setIsOpen,
+            "corporation",
+            setIsLoadingModal
+          )
         }
       />
     </>
