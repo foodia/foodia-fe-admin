@@ -7,6 +7,7 @@ export const Approvals = (
   note: any,
   setIsOpen: any,
   modul: any,
+  setIsLoading: any,
   valueEventTypeSelect?: any
 ) => {
   {
@@ -27,9 +28,11 @@ export const Approvals = (
           .then((res) => {
             location.reload();
             setIsOpen(false);
+            setIsLoading(false);
           })
           .catch((error) => {
             ErrorHandling(error);
+            setIsLoading(false);
           })
       : axios
           .put(
@@ -48,9 +51,11 @@ export const Approvals = (
             // getDetonatorDetail();
             location.reload();
             setIsOpen(false);
+            setIsLoading(false);
           })
           .catch((error) => {
             ErrorHandling(error);
+            setIsLoading(false);
           });
   }
 };

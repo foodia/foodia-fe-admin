@@ -7,7 +7,6 @@ import {
 import { getWalletList } from "@/app/(DashboardLayout)/components/api/Wallet";
 import Detonator from "@/app/(DashboardLayout)/components/campaign/Detonator";
 import Donators from "@/app/(DashboardLayout)/components/campaign/Donators";
-import Attachment from "@/app/(DashboardLayout)/components/campaign/EventDocuments";
 import Info from "@/app/(DashboardLayout)/components/campaign/Info";
 import Maps from "@/app/(DashboardLayout)/components/campaign/Maps";
 import Orders from "@/app/(DashboardLayout)/components/campaign/Orders";
@@ -84,6 +83,7 @@ type Props = {
 const CampaignInfo = () => {
   const searchParams = useSearchParams();
   const { isLoading, setIsLoading } = useAppContext();
+  const [isLoadingModal, setIsLoadingModal] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenAddDonation, setIsOpenAddDonation] = useState(false);
   const [ids, setId] = useState<number>(0);
@@ -149,21 +149,21 @@ const CampaignInfo = () => {
   const [walletList, setWalletList] = useState([]);
   const [fieldsCsrWalletSelection, setFields] = useState([""]); // Initial state with one empty field
 
-  const handleChange = (index: any, value: any) => {
-    const newFields = [...fieldsCsrWalletSelection];
-    newFields[index] = value;
-    setFields(newFields);
-  };
+  // const handleChange = (index: any, value: any) => {
+  //   const newFields = [...fieldsCsrWalletSelection];
+  //   newFields[index] = value;
+  //   setFields(newFields);
+  // };
 
-  const addField = () => {
-    setFields([...fieldsCsrWalletSelection, ""]);
-  };
+  // const addField = () => {
+  //   setFields([...fieldsCsrWalletSelection, ""]);
+  // };
 
-  const removeField = (index: any) => {
-    const newFields = [...fieldsCsrWalletSelection];
-    newFields.splice(index, 1);
-    setFields(newFields);
-  };
+  // const removeField = (index: any) => {
+  //   const newFields = [...fieldsCsrWalletSelection];
+  //   newFields.splice(index, 1);
+  //   setFields(newFields);
+  // };
 
   const onChangeWalletType = (event: SelectChangeEvent) => {
     setValueWalletType(event.target.value);
@@ -315,22 +315,25 @@ const CampaignInfo = () => {
       />
 
       <ModalPopupApprovals
+        isLoading={isLoadingModal}
         open={isOpen}
         handleClose={handleClose}
         status={status}
         name={name}
         note={note}
         onChange={(e: any) => setNote(e.target.value)}
-        handleSubmit={() =>
+        handleSubmit={() => {
+          setIsLoadingModal(true);
           Approvals(
             ids,
             status,
             note,
             setIsOpen,
-            "campaign"
+            "campaign",
+            setIsLoadingModal
             // valueEventTypeSelect
-          )
-        }
+          );
+        }}
         // valueEventTypeSelect={valueEventTypeSelect}
         // onChangeEventType={onChangeValueEventTypeSelect}
         // disableApprove={valueEventTypeSelect === "default"}

@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  CircularProgress,
   InputAdornment,
   MenuItem,
   Modal,
@@ -9,6 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import ImageHandler from "./ImageHandler";
+import { useAppContext } from "./Context";
 
 type Props = {
   open?: any;
@@ -39,6 +41,7 @@ type Props = {
   valueDonationAmount?: any;
   onChangeAddDonationAmount?: any;
   fieldsCsrWalletSelection?: any;
+  isLoading?: any;
 };
 
 export const ModalPopupAddDonations = ({
@@ -309,6 +312,7 @@ export const ModalPopupApprovals = ({
   note,
   onChange,
   handleSubmit,
+  isLoading,
 }: // valueEventTypeSelect,
 // onChangeEventType,
 // disableApprove,
@@ -362,12 +366,17 @@ Props) => {
           </Box>
         )}
         <Box sx={{ display: "flex", flexDirection: "row", gap: "10px" }}>
-          <Button
-            disabled={status === "rejected" && note === ""}
-            onClick={handleSubmit}
+          <Box
+            sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
           >
-            {status === "approved" ? "Approve" : "Reject"}{" "}
-          </Button>
+            {isLoading && <CircularProgress size={20} />}
+            <Button
+              disabled={status === "rejected" && note === ""}
+              onClick={handleSubmit}
+            >
+              {status === "approved" ? "Approve" : "Reject"}{" "}
+            </Button>
+          </Box>
           <Button
             sx={{ backgroundColor: "primary.light" }}
             onClick={handleClose}
