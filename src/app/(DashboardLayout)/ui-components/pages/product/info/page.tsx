@@ -54,6 +54,7 @@ const ProductInfo = () => {
     },
     images: [{ id: 0, image_url: "" }],
   });
+  const [isLoadingModal, setIsLoadingModal] = useState(false);
 
   const handleOpen = (id: number, status: string, name: string) => {
     setIsOpen(true);
@@ -137,6 +138,7 @@ const ProductInfo = () => {
       </DashboardCard>
 
       <ModalPopupApprovals
+        isLoading={isLoadingModal}
         open={isOpen}
         handleClose={handleClose}
         status={status}
@@ -144,7 +146,14 @@ const ProductInfo = () => {
         note={note}
         onChange={(e: any) => setNote(e.target.value)}
         handleSubmit={() =>
-          Approvals(ids, status, note, setIsOpen, "merchant-product")
+          Approvals(
+            ids,
+            status,
+            note,
+            setIsOpen,
+            "merchant-product",
+            setIsLoadingModal
+          )
         }
       />
     </>

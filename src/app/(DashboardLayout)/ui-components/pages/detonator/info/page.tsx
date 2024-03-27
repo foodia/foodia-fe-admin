@@ -38,6 +38,7 @@ const DetonatorInfo = () => {
     ktp_photo: "",
     oauth: { fullname: "", email: "", phone: "" },
   });
+  const [isLoadingModal, setIsLoadingModal] = useState(false);
 
   const handleOpen = (id: number, status: string, name: string) => {
     setIsOpen(true);
@@ -121,6 +122,7 @@ const DetonatorInfo = () => {
         </>
       </DashboardCard>
       <ModalPopupApprovals
+        isLoading={isLoadingModal}
         open={isOpen}
         handleClose={handleClose}
         status={status}
@@ -128,7 +130,14 @@ const DetonatorInfo = () => {
         note={note}
         onChange={(e: any) => setNote(e.target.value)}
         handleSubmit={() =>
-          Approvals(ids, status, note, setIsOpen, "detonator")
+          Approvals(
+            ids,
+            status,
+            note,
+            setIsOpen,
+            "detonator",
+            setIsLoadingModal
+          )
         }
       />
     </>

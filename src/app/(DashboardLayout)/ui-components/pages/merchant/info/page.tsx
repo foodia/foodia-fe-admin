@@ -70,6 +70,7 @@ const MerchantInfo = () => {
   const [note, setNote] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const { isLoading, setIsLoading } = useAppContext();
+  const [isLoadingModal, setIsLoadingModal] = useState(false);
 
   const handleOpen = (id: number, status: string, name: string) => {
     setIsOpen(true);
@@ -150,13 +151,16 @@ const MerchantInfo = () => {
       </DashboardCard>
 
       <ModalPopupApprovals
+        isLoading={isLoadingModal}
         open={isOpen}
         handleClose={handleClose}
         status={status}
         name={name}
         note={note}
         onChange={(e: any) => setNote(e.target.value)}
-        handleSubmit={() => Approvals(ids, status, note, setIsOpen, "merchant")}
+        handleSubmit={() =>
+          Approvals(ids, status, note, setIsOpen, "merchant", setIsLoadingModal)
+        }
       />
     </>
   );
