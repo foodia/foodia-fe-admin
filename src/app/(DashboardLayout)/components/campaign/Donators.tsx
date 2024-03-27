@@ -185,7 +185,7 @@ const Donators: React.FC<Props> = ({ data }) => {
 
   return (
     <>
-      <DetailCard title="Merchant Products">
+      <DetailCard title="Donators">
         <Box sx={{ width: "100%" }}>
           <DataTables
             // value={filterText}
