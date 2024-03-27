@@ -47,9 +47,11 @@ const Login = () => {
         localStorage.setItem("USER_ID", user_id);
         localStorage.setItem("Session", "start");
         if (role === "superadmin") {
+          router.refresh();
           router.push("/ui-components/pages/donator/individuals");
           // setIsLoading(false);
         } else if (role === "corporate") {
+          router.refresh();
           router.push("/ui-components/pages/wallet/csr");
           // setIsLoading(false);
         } else {
