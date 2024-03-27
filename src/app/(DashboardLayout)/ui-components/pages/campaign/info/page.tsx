@@ -6,6 +6,7 @@ import {
 } from "@/app/(DashboardLayout)/components/api/Campaign";
 import { getWalletList } from "@/app/(DashboardLayout)/components/api/Wallet";
 import Detonator from "@/app/(DashboardLayout)/components/campaign/Detonator";
+import Donators from "@/app/(DashboardLayout)/components/campaign/Donators";
 import Attachment from "@/app/(DashboardLayout)/components/campaign/EventDocuments";
 import Info from "@/app/(DashboardLayout)/components/campaign/Info";
 import Maps from "@/app/(DashboardLayout)/components/campaign/Maps";
@@ -70,6 +71,14 @@ type Props = {
       };
     }
   ];
+  products: {
+    id: number;
+    name: string;
+    description: string;
+    price: string;
+    qty: number;
+    status: string;
+  }[];
 };
 
 const CampaignInfo = () => {
@@ -124,6 +133,16 @@ const CampaignInfo = () => {
           price: "",
           images: [{ image_url: "" }],
         },
+      },
+    ],
+    products: [
+      {
+        id: 0,
+        name: "",
+        description: "",
+        price: "",
+        qty: 0,
+        status: "",
       },
     ],
   });
@@ -222,6 +241,7 @@ const CampaignInfo = () => {
           <Grid container spacing={3}>
             <Grid item xs={6} lg={6}>
               <Info data={data} />
+              <Donators data={data.products} />
             </Grid>
             <Grid item xs={6} lg={6}>
               <Orders data={data} />

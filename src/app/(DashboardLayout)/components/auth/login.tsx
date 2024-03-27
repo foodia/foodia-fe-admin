@@ -6,7 +6,6 @@ import {
   InputAdornment,
   TextField,
   Typography,
-  useTheme,
 } from "@mui/material";
 
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -49,11 +48,13 @@ const Login = () => {
         localStorage.setItem("Session", "start");
         if (role === "superadmin") {
           router.push("/ui-components/pages/donator/individuals");
+          // setIsLoading(false);
         } else if (role === "corporate") {
           router.push("/ui-components/pages/wallet/csr");
+          // setIsLoading(false);
         } else {
           router.refresh();
-          setIsLoading(false);
+          // setIsLoading(false);
         }
       })
       .catch((error) => {
