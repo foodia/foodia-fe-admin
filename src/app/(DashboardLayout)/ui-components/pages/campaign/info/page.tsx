@@ -70,13 +70,15 @@ type Props = {
       };
     }
   ];
-  products: {
+  campaign_donation: {
     id: number;
-    name: string;
-    description: string;
-    price: string;
-    qty: number;
-    status: string;
+    transaction: {
+      sender_name: string;
+      amount: number;
+      transaction_type: string;
+      transaction_date: string;
+      transaction_status: string;
+    };
   }[];
 };
 
@@ -135,35 +137,21 @@ const CampaignInfo = () => {
         },
       },
     ],
-    products: [
+    campaign_donation: [
       {
         id: 0,
-        name: "",
-        description: "",
-        price: "",
-        qty: 0,
-        status: "",
+        transaction: {
+          sender_name: "",
+          amount: 0,
+          transaction_type: "",
+          transaction_date: "",
+          transaction_status: "",
+        },
       },
     ],
   });
   const [walletList, setWalletList] = useState([]);
   const [fieldsCsrWalletSelection, setFields] = useState([""]); // Initial state with one empty field
-
-  // const handleChange = (index: any, value: any) => {
-  //   const newFields = [...fieldsCsrWalletSelection];
-  //   newFields[index] = value;
-  //   setFields(newFields);
-  // };
-
-  // const addField = () => {
-  //   setFields([...fieldsCsrWalletSelection, ""]);
-  // };
-
-  // const removeField = (index: any) => {
-  //   const newFields = [...fieldsCsrWalletSelection];
-  //   newFields.splice(index, 1);
-  //   setFields(newFields);
-  // };
 
   const onChangeWalletType = (event: SelectChangeEvent) => {
     setValueWalletType(event.target.value);
@@ -241,7 +229,7 @@ const CampaignInfo = () => {
           <Grid container spacing={3}>
             <Grid item xs={6} lg={6}>
               <Info data={data} />
-              <Donators data={data.products} />
+              <Donators data={data.campaign_donation} />
             </Grid>
             <Grid item xs={6} lg={6}>
               <Orders data={data} />

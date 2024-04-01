@@ -1,11 +1,8 @@
-import { Box, SelectChangeEvent, Stack } from "@mui/material";
-import Link from "next/link";
+import { Box, SelectChangeEvent, Typography } from "@mui/material";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { TableColumn } from "react-data-table-component";
-import { ButtonAction, Status } from "../shared/Buttons";
-import DataTables from "../shared/DataTables";
 import { useAppContext } from "../shared/Context";
-import { getProduct } from "../api/Product";
+import DataTables from "../shared/DataTables";
 import DetailCard from "../shared/DetailCard";
 
 interface Meta {
@@ -17,11 +14,13 @@ interface Meta {
 
 interface Data {
   id: number;
-  name: string;
-  description: string;
-  price: string;
-  qty: number;
-  status: string;
+  transaction: {
+    sender_name: string;
+    amount: number;
+    transaction_type: string;
+    transaction_date: string;
+    transaction_status: string;
+  };
 }
 
 interface Props {
@@ -41,74 +40,39 @@ const columns = [
   },
   {
     name: "Name",
-    cell: (row: any) => <div>{row.name}</div>,
+    cell: (row: Data) => <div>{row.transaction.sender_name}</div>,
   },
   {
-    name: "Description",
-    cell: (row: any) => (
-      <div
-        style={{
-          textOverflow: "ellipsis",
-          overflow: "hidden",
-          whiteSpace: "nowrap",
-        }}
-      >
-        {row.description}
-      </div>
-    ),
-    width: "260px",
-  },
-  {
-    name: "Quantity",
-    cell: (row: any) => <div>{row.qty}</div>,
-    width: "100px",
-  },
-  {
-    name: "Price",
-    cell: (row: any) => (
+    name: "Amount",
+    cell: (row: Data) => (
       <div>
         {new Intl.NumberFormat("id-ID", {
           style: "currency",
           currency: "IDR",
           minimumFractionDigits: 0,
-        }).format(parseInt(row.price))}
+        }).format(row.transaction.amount)}
       </div>
     ),
+    width: "130px",
   },
   {
-    name: "Status",
-    cell: (row: any) => <Status row={row} />,
-  },
-  {
-    name: "Action",
-    cell: (row: any) => (
-      <Stack spacing={1} direction="row">
-        <Link
-          href={{
-            pathname: "/ui-components/pages/product/info",
-            query: {
-              id: row.id,
-            },
-          }}
-        >
-          <ButtonAction label="View" />
-        </Link>
-      </Stack>
+    name: "Transaction Date",
+    cell: (row: Data) => (
+      <div>
+        {moment(row.transaction.transaction_date).format("DD-MM-YYYY hh:mm")}
+      </div>
     ),
+    width: "135px",
   },
 ];
 
 const Donators: React.FC<Props> = ({ data }) => {
-  const [filterText, setFilterText] = useState<string>("waiting");
-  const [searchBy, setSearchBy] = useState<string>("name");
   const [searchText, setSearchText] = useState<string>("");
   const [page, setPage] = useState(1);
   const { isLoading, setIsLoading } = useAppContext();
 
   useEffect(() => {
     setIsLoading(false);
-    localStorage.setItem("FilterStatus", filterText);
-    localStorage.setItem("SearchBy", searchBy);
     localStorage.setItem("SearchText", searchText);
   }, []);
 
@@ -117,35 +81,13 @@ const Donators: React.FC<Props> = ({ data }) => {
     localStorage.setItem("SearchText", event.target.value);
   };
 
-  const handleChangeFilterText = (event: SelectChangeEvent) => {
-    setIsLoading(false);
-    localStorage.setItem("FilterStatus", event.target.value);
-    setFilterText(event.target.value);
-  };
-
   let filteredItems: any;
-  if (filterText === "waiting") {
-    let filteredStatus = data?.filter(
-      (data) => data?.status.toLowerCase() === "waiting"
-    );
-    filteredItems = filteredStatus?.filter((data) =>
-      data?.name.toLowerCase().includes(searchText.toLowerCase())
-    );
-  } else if (filterText === "approved") {
-    let filteredStatus = data?.filter(
-      (data) => data?.status.toLowerCase() === "approved"
-    );
-    filteredItems = filteredStatus?.filter((data) =>
-      data?.name.toLowerCase().includes(searchText.toLowerCase())
-    );
-  } else if (filterText === "rejected") {
-    let filteredStatus = data?.filter(
-      (data) => data?.status.toLowerCase() === "rejected"
-    );
-    filteredItems = filteredStatus?.filter((data) =>
-      data?.name.toLowerCase().includes(searchText.toLowerCase())
-    );
-  }
+
+  filteredItems = data?.filter((data) =>
+    data?.transaction.sender_name
+      .toLowerCase()
+      .includes(searchText.toLowerCase())
+  );
 
   const searchOption = [
     {
@@ -187,18 +129,23 @@ const Donators: React.FC<Props> = ({ data }) => {
     <>
       <DetailCard title="Donators">
         <Box sx={{ width: "100%" }}>
+          <Typography
+            sx={{ display: "flex", justifyContent: "end", alignItems: "end" }}
+          >
+            {data.length} Total Donators
+          </Typography>
           <DataTables
             // value={filterText}
             // searchOption={searchOption}
             // valueSearchBy={searchBy}
-            onChangeFilterText={handleChangeFilterText}
+            // onChangeFilterText={handleChangeFilterText}
             // onKeyUpSearch={handleKeyUp}
-            filterText={filterOptions}
+            // filterText={filterOptions}
             // onChange={handleChangePage}
             download={false}
-            // onChangeSearch={handleChangeSearch}
+            onChangeSearch={handleChangeSearch}
             // onChangeSearchBy={handleChangeSearchBy}
-            // pageItems={data.length}
+            pageItems={data.length}
             // meta={meta}
             columns={columns}
             data={filteredItems}
