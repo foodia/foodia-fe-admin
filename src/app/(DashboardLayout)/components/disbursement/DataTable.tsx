@@ -19,6 +19,7 @@ interface Data {
   bank: any;
   amount: any;
   merchant: { merchant_name: any };
+  oauth: { fullname: string; email: string };
   status: string;
 }
 

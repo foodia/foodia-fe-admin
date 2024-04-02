@@ -18,7 +18,10 @@ interface ChildProps {
     bank: any;
     amount: any;
     rekening: any;
-    merchant: { merchant_name: any };
+    merchant: {
+      merchant_name: any;
+      oauth: { fullname: string; email: string };
+    };
     payment_method: any;
     status: string;
     note: any;
@@ -179,6 +182,8 @@ const Info: React.FC<ChildProps> = ({ data }) => {
       >
         <Field label="Merchant Name" value={data.merchant.merchant_name} />
         <Field label="Recipient Name" value={data.recipient_name} />
+        <Field label="User Name" value={data.merchant.oauth.fullname} />
+        <Field label="Email" value={data.merchant.oauth.email} />
         <Field label="Bank" value={data.bank} />
         <Field label="Rekening" value={data.rekening} />
         <Field

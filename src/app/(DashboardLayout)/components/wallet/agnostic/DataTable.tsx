@@ -17,6 +17,7 @@ interface TransactionListData {
   donator_name: any;
   total_donation: any;
   trx_date: any;
+  trx_status: any;
 }
 
 interface CampaignListData {
@@ -108,6 +109,20 @@ const DataTableComponent: React.FC<Props> = ({
     {
       name: "Tanggal Transaksi",
       cell: (row: TransactionListData) => <div>{row.trx_date}</div>,
+      // sortable: true,
+      // width: "",
+    },
+    {
+      name: "Status Transaksi",
+      cell: (row: TransactionListData) => (
+        <div
+          style={
+            row.trx_status === "SUCCESS" ? { color: "green" } : { color: "red" }
+          }
+        >
+          {row.trx_status}
+        </div>
+      ),
       // sortable: true,
       // width: "",
     },
