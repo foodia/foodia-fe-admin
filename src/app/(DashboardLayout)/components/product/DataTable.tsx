@@ -29,84 +29,11 @@ interface Props {
   handleChangePage: any;
 }
 
-const columns = [
-  {
-    name: "No",
-    selector: (_row: any, i: any) => i + 1,
-    width: "70px",
-    // style: {
-    //   paddingLeft: "30px",
-    // },
-  },
-  {
-    name: "Merchant",
-    cell: (row: any) => <div>{row.merchant.oauth.fullname}</div>,
-  },
-  {
-    name: "Name",
-    cell: (row: any) => <div>{row.name}</div>,
-  },
-  {
-    name: "Description",
-    cell: (row: any) => (
-      <div
-        style={{
-          textOverflow: "ellipsis",
-          overflow: "hidden",
-          whiteSpace: "nowrap",
-        }}
-      >
-        {row.description}
-      </div>
-    ),
-    width: "200px",
-  },
-  {
-    name: "Quantity",
-    cell: (row: any) => <div>{row.qty}</div>,
-    width: "90px",
-  },
-  {
-    name: "Price",
-    cell: (row: any) => (
-      <div>
-        {new Intl.NumberFormat("id-ID", {
-          style: "currency",
-          currency: "IDR",
-          minimumFractionDigits: 0,
-        }).format(parseInt(row.price))}
-      </div>
-    ),
-  },
-  {
-    name: "Status",
-    cell: (row: any) => <Status row={row} />,
-    width: "150px",
-  },
-  {
-    name: "Action",
-    cell: (row: any) => (
-      <Stack spacing={1} direction="row">
-        <Link
-          href={{
-            pathname: "/ui-components/pages/product/info",
-            query: {
-              id: row.id,
-            },
-          }}
-        >
-          <ButtonAction label="View" />
-        </Link>
-      </Stack>
-    ),
-  },
-  // Add more columns as needed
-];
-
 const DataTableComponent = () => {
   const [filterText, setFilterText] = useState<string>("all");
   const [searchBy, setSearchBy] = useState<string>("name");
   const [searchText, setSearchText] = useState<string>("");
+  const [currentPageIndex, setCurrentPageIndex] = useState(0); // State to track current page index
   const [data, setData] = useState([]);
   const [meta, setMeta] = useState({
     page: 0,
@@ -125,11 +52,86 @@ const DataTableComponent = () => {
     getProduct(setData, setMeta, page, setIsLoading, filterText);
   }, []);
 
+  const columns = [
+    {
+      name: "No",
+      selector: (_row: any, i: any) => i + 1 + currentPageIndex * meta.per_page,
+      width: "70px",
+      // style: {
+      //   paddingLeft: "30px",
+      // },
+    },
+    {
+      name: "Merchant",
+      cell: (row: any) => <div>{row.merchant.oauth.fullname}</div>,
+    },
+    {
+      name: "Name",
+      cell: (row: any) => <div>{row.name}</div>,
+    },
+    {
+      name: "Description",
+      cell: (row: any) => (
+        <div
+          style={{
+            textOverflow: "ellipsis",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {row.description}
+        </div>
+      ),
+      width: "200px",
+    },
+    {
+      name: "Quantity",
+      cell: (row: any) => <div>{row.qty}</div>,
+      width: "90px",
+    },
+    {
+      name: "Price",
+      cell: (row: any) => (
+        <div>
+          {new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+          }).format(parseInt(row.price))}
+        </div>
+      ),
+    },
+    {
+      name: "Status",
+      cell: (row: any) => <Status row={row} />,
+      width: "150px",
+    },
+    {
+      name: "Action",
+      cell: (row: any) => (
+        <Stack spacing={1} direction="row">
+          <Link
+            href={{
+              pathname: "/ui-components/pages/product/info",
+              query: {
+                id: row.id,
+              },
+            }}
+          >
+            <ButtonAction label="View" />
+          </Link>
+        </Stack>
+      ),
+    },
+    // Add more columns as needed
+  ];
+
   const handleChangePage = (
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
     setPage(value);
+    setCurrentPageIndex(value - 1);
     setIsLoading(true);
     getProduct(setData, setMeta, value, setIsLoading, filterText);
   };
@@ -251,6 +253,7 @@ const DataTableComponent = () => {
         columns={columns}
         data={data}
         pagination={true}
+        currentPageIndex={currentPageIndex}
       />
     </>
   );

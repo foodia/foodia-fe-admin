@@ -7,89 +7,8 @@ import { ButtonAction } from "../shared/Buttons";
 import { useAppContext } from "../shared/Context";
 import DataTables from "../shared/DataTables";
 
-const columns = [
-  {
-    name: "No",
-    selector: (_row: any, i: any) => i + 1,
-    // sortable: true,
-    width: "70px",
-    // style: {
-    //   paddingLeft: "30px",
-    // },
-  },
-  {
-    name: "Fullname",
-    cell: (row: any) => <div>{row.oauth.fullname}</div>,
-    // sortable: true,
-  },
-  {
-    name: "Email",
-    cell: (row: any) => <div>{row.oauth.email}</div>,
-    // sortable: true,
-    width: "270px",
-  },
-  {
-    name: "Phone number",
-    cell: (row: any) => <div>{row.oauth.phone}</div>,
-    // sortable: true,
-  },
-  {
-    name: "Registered at",
-    cell: (row: any) => (
-      <div>{moment(row.created_at).format("DD/MM/YYYY")}</div>
-    ),
-    // sortable: true,
-  },
-  {
-    name: "Status",
-    cell: (row: any) => (
-      <Chip
-        sx={{
-          textTransform: "capitalize",
-          width: "115px",
-          fontSize: "14px",
-          fontWeight: 600,
-          borderRadius: "8px",
-          height: "32px",
-          backgroundColor:
-            row.status === "approved"
-              ? "#E9FBF0"
-              : row.status === "rejected"
-              ? "#FFF0F1"
-              : "#FFF9EB",
-          color:
-            row.status === "approved"
-              ? "#178D46"
-              : row.status === "rejected"
-              ? "#94000D"
-              : "#AB6800",
-        }}
-        size="small"
-        label={row.status}
-      />
-    ),
-    // sortable: true,
-  },
-  {
-    name: "Action",
-    cell: (row: any) => (
-      <Link
-        href={{
-          pathname: "/ui-components/pages/detonator/info",
-          query: {
-            id: row.id,
-          },
-        }}
-      >
-        <ButtonAction label="View" />
-      </Link>
-    ),
-    // sortable: true,
-  },
-  // Add more columns as needed
-];
-
 const DataTableComponent = () => {
+  const [currentPageIndex, setCurrentPageIndex] = useState(0); // State to track current page index
   const [filterText, setFilterText] = useState<string>("all");
   const [searchBy, setSearchBy] = useState<string>("fullname");
   const [searchText, setSearchText] = useState<string>("");
@@ -111,11 +30,94 @@ const DataTableComponent = () => {
     getDetonator(setData, setMeta, page, setIsLoading);
   }, []);
 
+  const columns = [
+    {
+      name: "No",
+      selector: (_row: any, i: any) => i + 1 + currentPageIndex * meta.per_page,
+      // sortable: true,
+      width: "70px",
+      // style: {
+      //   paddingLeft: "30px",
+      // },
+    },
+    {
+      name: "Fullname",
+      cell: (row: any) => <div>{row.oauth.fullname}</div>,
+      // sortable: true,
+    },
+    {
+      name: "Email",
+      cell: (row: any) => <div>{row.oauth.email}</div>,
+      // sortable: true,
+      width: "270px",
+    },
+    {
+      name: "Phone number",
+      cell: (row: any) => <div>{row.oauth.phone}</div>,
+      // sortable: true,
+    },
+    {
+      name: "Registered at",
+      cell: (row: any) => (
+        <div>{moment(row.created_at).format("DD/MM/YYYY")}</div>
+      ),
+      // sortable: true,
+    },
+    {
+      name: "Status",
+      cell: (row: any) => (
+        <Chip
+          sx={{
+            textTransform: "capitalize",
+            width: "115px",
+            fontSize: "14px",
+            fontWeight: 600,
+            borderRadius: "8px",
+            height: "32px",
+            backgroundColor:
+              row.status === "approved"
+                ? "#E9FBF0"
+                : row.status === "rejected"
+                ? "#FFF0F1"
+                : "#FFF9EB",
+            color:
+              row.status === "approved"
+                ? "#178D46"
+                : row.status === "rejected"
+                ? "#94000D"
+                : "#AB6800",
+          }}
+          size="small"
+          label={row.status}
+        />
+      ),
+      // sortable: true,
+    },
+    {
+      name: "Action",
+      cell: (row: any) => (
+        <Link
+          href={{
+            pathname: "/ui-components/pages/detonator/info",
+            query: {
+              id: row.id,
+            },
+          }}
+        >
+          <ButtonAction label="View" />
+        </Link>
+      ),
+      // sortable: true,
+    },
+    // Add more columns as needed
+  ];
+
   const handleChangePage = (
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
     setPage(value);
+    setCurrentPageIndex(value - 1);
     setIsLoading(true);
     getDetonator(setData, setMeta, value, setIsLoading);
   };
@@ -237,6 +239,7 @@ const DataTableComponent = () => {
         columns={columns}
         data={data}
         pagination={true}
+        currentPageIndex={currentPageIndex}
       />
     </>
   );

@@ -35,6 +35,7 @@ interface Data {
   searchOption?: { id?: number; value?: string; label?: string }[];
   meta?: any;
   pagination?: any;
+  currentPageIndex?: any;
   page?: any;
   download?: any;
 }
@@ -54,10 +55,17 @@ const DataTables: React.FC<Data> = ({
   pageItems,
   filterText,
   pagination,
+  currentPageIndex,
   page,
   download = true,
 }) => {
   const { isLoading, setIsLoading } = useAppContext();
+
+  const startIndex = currentPageIndex * meta?.per_page + 1;
+  const endIndex = Math.min(
+    (currentPageIndex + 1) * meta?.per_page,
+    meta?.total
+  );
 
   // if (!data) {
   //   setIsLoading(true);
@@ -333,12 +341,9 @@ const DataTables: React.FC<Data> = ({
                   gap: "3px",
                 }}
               >
-                Show <Typography fontWeight={700}>1</Typography> to{" "}
-                <Typography fontWeight={700}>
-                  {pageItems ? pageItems : 0}
-                </Typography>{" "}
-                of <Typography fontWeight={700}>{meta?.total}</Typography>{" "}
-                results
+                Showing <Typography fontWeight={700}>{startIndex}</Typography>{" "}
+                to <Typography fontWeight={700}>{endIndex}</Typography> of{" "}
+                <Typography fontWeight={700}>{meta?.total}</Typography> results
               </Box>
               <Box>
                 <Pagination

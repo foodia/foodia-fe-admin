@@ -32,20 +32,24 @@ interface Props {
   transactionListData: TransactionListData[];
   transactionListMeta: Meta;
   onChangePageTransactionList: any;
+  currentTrxIndex: any;
 
   campaignListData: CampaignListData[];
   campaignListMeta: Meta;
   onChangePageCampaignList: any;
+  currentCampaignIndex: any;
 }
 
 const DataTableComponent: React.FC<Props> = ({
   transactionListData,
   transactionListMeta,
   onChangePageTransactionList,
+  currentTrxIndex,
 
   campaignListData,
   campaignListMeta,
   onChangePageCampaignList,
+  currentCampaignIndex,
 }) => {
   const [searchTextTrxData, setSearchTextTrxData] = useState<string>("");
   const [searchTextCampaign, setSearchTextCampaign] = useState<string>("");
@@ -75,7 +79,8 @@ const DataTableComponent: React.FC<Props> = ({
   const transactionListColumns: TableColumn<TransactionListData>[] = [
     {
       name: "No",
-      selector: (_row, i: any) => i + 1,
+      selector: (_row: any, i: any) =>
+        i + 1 + currentTrxIndex * transactionListMeta.per_page,
       // sortable: true,
       width: "70px",
       // style: {
@@ -111,7 +116,8 @@ const DataTableComponent: React.FC<Props> = ({
   const campaignListColumns: TableColumn<CampaignListData>[] = [
     {
       name: "No",
-      cell: (_row, i: any) => i + 1,
+      selector: (_row: any, i: any) =>
+        i + 1 + currentCampaignIndex * campaignListMeta.per_page,
       // sortable: true,
       width: "70px",
       // style: {
@@ -245,6 +251,7 @@ const DataTableComponent: React.FC<Props> = ({
             pageItems={filteredItemsTrxData?.length}
             columns={transactionListColumns}
             data={filteredItemsTrxData}
+            currentPageIndex={currentTrxIndex}
           />
         </Box>
       </Box>
@@ -262,6 +269,7 @@ const DataTableComponent: React.FC<Props> = ({
           pageItems={filteredItemsCampaign?.length}
           columns={campaignListColumns}
           data={filteredItemsCampaign}
+          currentPageIndex={currentCampaignIndex}
         />
       </Box>
       {/* <Box>

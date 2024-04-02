@@ -13,6 +13,7 @@ const List = () => {
     page_count: 2,
     total: 10,
   });
+  const [merchantPaymentIndex, setMerchantPaymentIndex] = useState(0); // State to track current page index
   const [page, setPage] = useState(1);
   const [searchTextCampaign, setSearchTextCampaign] = useState<string>("");
   const { isLoading, setIsLoading } = useAppContext();
@@ -22,6 +23,7 @@ const List = () => {
     value: number
   ) => {
     setPage(value);
+    setMerchantPaymentIndex(value - 1);
     getCsrWalletMerchant(
       setMerchantPaymentListData,
       setMerchantPaymentListMeta,
@@ -67,6 +69,7 @@ const List = () => {
             merchantPaymentListData={merchantPaymentListData}
             merchantPaymentListMeta={merchantPaymentListMeta}
             onChangePageWalletMerchant={handleChangePageWalletMerchant}
+            merchantPaymentListIndex={merchantPaymentIndex}
           />
         </Box>
       </DashboardCard>

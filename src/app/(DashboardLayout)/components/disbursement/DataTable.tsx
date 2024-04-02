@@ -28,75 +28,11 @@ interface Props {
   handleChangePage: any;
 }
 
-const columns = [
-  {
-    name: "No",
-    selector: (_row: any, i: any) => i + 1,
-    // sortable: true,
-    width: "70px",
-    // style: {
-    //   paddingLeft: "30px",
-    // },
-  },
-  {
-    name: "Merchant Name",
-    cell: (row: any) => <div>{row.merchant.merchant_name}</div>,
-    // sortable: true,
-  },
-  {
-    name: "Recipient Name",
-    cell: (row: any) => <div>{row.recipient_name}</div>,
-    // sortable: true,
-    width: "auto",
-  },
-  {
-    name: "Bank",
-    cell: (row: any) => <div>{row.bank}</div>,
-    // sortable: true,
-  },
-  {
-    name: "Amount",
-    cell: (row: any) => (
-      <div>
-        {new Intl.NumberFormat("id-ID", {
-          style: "currency",
-          currency: "IDR",
-          minimumFractionDigits: 0,
-        }).format(row.amount)}
-      </div>
-    ),
-    // sortable: true,
-  },
-  {
-    name: "Status",
-    cell: (row: any) => <Status row={row} />,
-    // sortable: true,
-  },
-  {
-    name: "Action",
-    cell: (row: any) => (
-      <Stack spacing={1} direction="row">
-        <Link
-          href={{
-            pathname: "/ui-components/pages/disbursement/info",
-            query: {
-              id: row.id,
-            },
-          }}
-        >
-          <ButtonAction label="View" />
-        </Link>
-      </Stack>
-    ),
-    // sortable: true,
-  },
-  // Add more columns as needed
-];
-
 const DataTableComponent = () => {
   const [filterText, setFilterText] = useState<string>("all");
   const [searchBy, setSearchBy] = useState<string>("merchant_name");
   const [searchText, setSearchText] = useState<string>("");
+  const [currentPageIndex, setCurrentPageIndex] = useState(0); // State to track current page index
   const [data, setData] = useState([]);
   const [meta, setMeta] = useState({
     page: 0,
@@ -115,11 +51,77 @@ const DataTableComponent = () => {
     getDisbursement(setData, setMeta, page, setIsLoading);
   }, []);
 
+  const columns = [
+    {
+      name: "No",
+      selector: (_row: any, i: any) => i + 1 + currentPageIndex * meta.per_page,
+      // sortable: true,
+      width: "70px",
+      // style: {
+      //   paddingLeft: "30px",
+      // },
+    },
+    {
+      name: "Merchant Name",
+      cell: (row: any) => <div>{row.merchant.merchant_name}</div>,
+      // sortable: true,
+    },
+    {
+      name: "Recipient Name",
+      cell: (row: any) => <div>{row.recipient_name}</div>,
+      // sortable: true,
+      width: "auto",
+    },
+    {
+      name: "Bank",
+      cell: (row: any) => <div>{row.bank}</div>,
+      // sortable: true,
+    },
+    {
+      name: "Amount",
+      cell: (row: any) => (
+        <div>
+          {new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+          }).format(row.amount)}
+        </div>
+      ),
+      // sortable: true,
+    },
+    {
+      name: "Status",
+      cell: (row: any) => <Status row={row} />,
+      // sortable: true,
+    },
+    {
+      name: "Action",
+      cell: (row: any) => (
+        <Stack spacing={1} direction="row">
+          <Link
+            href={{
+              pathname: "/ui-components/pages/disbursement/info",
+              query: {
+                id: row.id,
+              },
+            }}
+          >
+            <ButtonAction label="View" />
+          </Link>
+        </Stack>
+      ),
+      // sortable: true,
+    },
+    // Add more columns as needed
+  ];
+
   const handleChangePage = (
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
     setPage(value);
+    setCurrentPageIndex(value - 1);
     setIsLoading(true);
     getDisbursement(setData, setMeta, value, setIsLoading);
   };
@@ -254,6 +256,7 @@ const DataTableComponent = () => {
         columns={columns}
         data={data}
         pagination={true}
+        currentPageIndex={currentPageIndex}
       />
     </>
   );

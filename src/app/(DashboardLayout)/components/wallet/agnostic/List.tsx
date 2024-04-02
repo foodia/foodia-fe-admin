@@ -24,6 +24,7 @@ const List = () => {
     page_count: 0,
     total: 0,
   });
+  const [currentTrxIndex, setCurrentTrxIndex] = useState(0); // State to track current page index
   const [campaignListData, setCampaignListData] = useState([]);
   const [campaignListMeta, setCampaignListMeta] = useState({
     page: 0,
@@ -31,6 +32,7 @@ const List = () => {
     page_count: 0,
     total: 0,
   });
+  const [currentCampaignIndex, setCurrentCampaignIndex] = useState(0); // State to track current page index
   const [merchantPaymentListData, setMerchantPaymentListData] = useState([
     {
       id: 1,
@@ -74,6 +76,7 @@ const List = () => {
     value: number
   ) => {
     setPage(value);
+    setCurrentTrxIndex(value - 1);
     getAgnosticWalletTrx(
       setTransactionListData,
       setTransactionListMeta,
@@ -87,6 +90,7 @@ const List = () => {
     value: number
   ) => {
     setPage(value);
+    setCurrentCampaignIndex(value - 1);
     getAgnosticWalletCampaign(
       setCampaignListData,
       setCampaignListMeta,
@@ -151,6 +155,8 @@ const List = () => {
             onChangePageCampaignList={handleChangePageCampaignList}
             transactionListData={transactionListData}
             transactionListMeta={transactionListMeta}
+            currentCampaignIndex={currentCampaignIndex}
+            currentTrxIndex={currentTrxIndex}
           />
         </Box>
       </DashboardCard>

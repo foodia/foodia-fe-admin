@@ -36,78 +36,10 @@ interface Props {
   handleChangePage: any;
 }
 
-const columns = [
-  {
-    name: "No",
-    selector: (_row: any, i: any) => i + 1,
-    // sortable: true,
-    width: "70px",
-    // style: {
-    //   paddingLeft: "30px",
-    // },
-  },
-  {
-    name: "Fullname",
-    cell: (row: any) => <div>{row.fullname}</div>,
-    // sortable: true,
-  },
-  {
-    name: "Email",
-    cell: (row: any) => <div>{row.email}</div>,
-    // sortable: true,
-    width: "270px",
-  },
-  {
-    name: "Phone number",
-    cell: (row: any) => <div>{row.phone}</div>,
-    // sortable: true,
-    width: "200px",
-  },
-  {
-    name: "Registered at",
-    cell: (row: any) => (
-      <div>{moment(row.created_at).format("DD/MM/YYYY")}</div>
-    ),
-    // sortable: true,
-  },
-  {
-    name: "Active",
-    cell: (row: any) => (
-      <div>{row.is_active ? <IconCircleCheck color="green" /> : ""}</div>
-    ),
-    // sortable: true,
-  },
-  {
-    name: "Locked",
-    cell: (row: any) => (
-      <div>{row.is_locked ? <IconCircleCheck color="green" /> : ""}</div>
-    ),
-    // sortable: true,
-  },
-  // {
-  //   name: "Action",
-  //   cell: (row: any) => (
-  //     <Stack spacing={1} direction="row">
-  //       <Link
-  //         href={{
-  //           pathname: "/ui-components/detonator/info",
-  //           query: {
-  //             id: row.id,
-  //           },
-  //         }}
-  //       >
-  //         <ButtonAction label="View" />
-  //       </Link>
-  //     </Stack>
-  //   ),
-  //   // sortable: true,
-  // },
-  // Add more columns as needed
-];
-
 const DataTableComponent = () => {
   const [filterText, setFilterText] = useState<any>("all");
   const [searchBy, setSearchBy] = useState<string>("fullname");
+  const [currentPageIndex, setCurrentPageIndex] = useState(0); // State to track current page index
   const [searchText, setSearchText] = useState<string>("");
   const [data, setData] = useState([]);
   const [meta, setMeta] = useState({
@@ -127,11 +59,81 @@ const DataTableComponent = () => {
     getIndividual(setData, setMeta, page, setIsLoading);
   }, []);
 
+  const columns = [
+    {
+      name: "No",
+      selector: (_row: any, i: any) => i + 1 + currentPageIndex * meta.per_page,
+      // sortable: true,
+      width: "70px",
+      // style: {
+      //   paddingLeft: "30px",
+      // },
+    },
+    {
+      name: "Fullname",
+      cell: (row: any) => <div>{row.fullname}</div>,
+      // sortable: true,
+    },
+    {
+      name: "Email",
+      cell: (row: any) => <div>{row.email}</div>,
+      // sortable: true,
+      width: "270px",
+    },
+    {
+      name: "Phone number",
+      cell: (row: any) => <div>{row.phone}</div>,
+      // sortable: true,
+      width: "200px",
+    },
+    {
+      name: "Registered at",
+      cell: (row: any) => (
+        <div>{moment(row.created_at).format("DD/MM/YYYY")}</div>
+      ),
+      // sortable: true,
+    },
+    {
+      name: "Active",
+      cell: (row: any) => (
+        <div>{row.is_active ? <IconCircleCheck color="green" /> : ""}</div>
+      ),
+      // sortable: true,
+    },
+    {
+      name: "Locked",
+      cell: (row: any) => (
+        <div>{row.is_locked ? <IconCircleCheck color="green" /> : ""}</div>
+      ),
+      // sortable: true,
+    },
+    // {
+    //   name: "Action",
+    //   cell: (row: any) => (
+    //     <Stack spacing={1} direction="row">
+    //       <Link
+    //         href={{
+    //           pathname: "/ui-components/detonator/info",
+    //           query: {
+    //             id: row.id,
+    //           },
+    //         }}
+    //       >
+    //         <ButtonAction label="View" />
+    //       </Link>
+    //     </Stack>
+    //   ),
+    //   // sortable: true,
+    // },
+    // Add more columns as needed
+  ];
+
   const handleChangePage = (
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
     setPage(value);
+    setCurrentPageIndex(value - 1);
     setIsLoading(true);
     getIndividual(setData, setMeta, value, setIsLoading);
   };
@@ -249,6 +251,7 @@ const DataTableComponent = () => {
         columns={columns}
         data={data}
         pagination={true}
+        currentPageIndex={currentPageIndex}
       />
     </>
   );

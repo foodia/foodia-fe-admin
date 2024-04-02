@@ -43,28 +43,34 @@ interface Props {
   currentWalletData: CurrentWalletData[];
   currentWalletMeta: Meta;
   onChangePageWalletCurrent: any;
+  currentWalletIndex: any;
 
   transactionListData: TransactionListData[];
   transactionListMeta: Meta;
   onChangePageWalletTrx: any;
+  currentTrxIndex: any;
 
   campaignListData: CampaignListData[];
   campaignListMeta: Meta;
   onChangePageWalletCampaign: any;
+  currentCampaignIndex: any;
 }
 
 const DataTableComponent: React.FC<Props> = ({
   currentWalletData,
   currentWalletMeta,
   onChangePageWalletCurrent,
+  currentWalletIndex,
 
   transactionListData,
   transactionListMeta,
   onChangePageWalletTrx,
+  currentTrxIndex,
 
   campaignListData,
   campaignListMeta,
   onChangePageWalletCampaign,
+  currentCampaignIndex,
 }) => {
   const [searchTextTrxData, setSearchTextTrxData] = useState<string>("");
   const [searchTextCurrWallet, setSearchTextCurrWallet] = useState<string>("");
@@ -105,7 +111,8 @@ const DataTableComponent: React.FC<Props> = ({
   const currentWalletColumns: TableColumn<CurrentWalletData>[] = [
     {
       name: "No",
-      selector: (_row, i: any) => i + 1,
+      selector: (_row: any, i: any) =>
+        i + 1 + currentWalletIndex * currentWalletMeta.per_page,
       // sortable: true,
       width: "70px",
       // style: {
@@ -149,7 +156,8 @@ const DataTableComponent: React.FC<Props> = ({
   const transactionListColumns: TableColumn<TransactionListData>[] = [
     {
       name: "No",
-      selector: (_row, i: any) => i + 1,
+      selector: (_row: any, i: any) =>
+        i + 1 + currentTrxIndex * transactionListMeta.per_page,
       // sortable: true,
       width: "70px",
       // style: {
@@ -185,7 +193,8 @@ const DataTableComponent: React.FC<Props> = ({
   const campaignListColumns: TableColumn<CampaignListData>[] = [
     {
       name: "No",
-      selector: (_row, i: any) => i + 1,
+      selector: (_row: any, i: any) =>
+        i + 1 + currentCampaignIndex * campaignListMeta.per_page,
       // sortable: true,
       width: "70px",
       // style: {
@@ -325,6 +334,7 @@ const DataTableComponent: React.FC<Props> = ({
             pageItems={filteredItemsCurrWallet?.length}
             columns={currentWalletColumns}
             data={filteredItemsCurrWallet}
+            currentPageIndex={currentWalletIndex}
           />
         </Box>
         <Box sx={{ width: "50%" }}>
@@ -341,6 +351,7 @@ const DataTableComponent: React.FC<Props> = ({
             pageItems={filteredItemsTrxData?.length}
             columns={transactionListColumns}
             data={filteredItemsTrxData}
+            currentPageIndex={currentTrxIndex}
           />
         </Box>
       </Box>
@@ -358,6 +369,7 @@ const DataTableComponent: React.FC<Props> = ({
           pageItems={filteredItemsCampaign?.length}
           columns={campaignListColumns}
           data={filteredItemsCampaign}
+          currentPageIndex={currentCampaignIndex}
         />
       </Box>
       {/* <Box>

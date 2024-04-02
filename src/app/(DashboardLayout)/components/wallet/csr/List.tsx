@@ -24,6 +24,7 @@ const List = () => {
     page_count: 0,
     total: 0,
   });
+  const [currentWalletIndex, setCurrentWalletIndex] = useState(0); // State to track current page index
   const [transactionListData, setTransactionListData] = useState([]);
   const [transactionListMeta, setTransactionListMeta] = useState({
     page: 1,
@@ -31,6 +32,7 @@ const List = () => {
     page_count: 2,
     total: 10,
   });
+  const [currentTrxIndex, setCurrentTrxIndex] = useState(0); // State to track current page index
   const [campaignListData, setCampaignListData] = useState([]);
   const [campaignListMeta, setCampaignListMeta] = useState({
     page: 1,
@@ -38,6 +40,7 @@ const List = () => {
     page_count: 2,
     total: 10,
   });
+  const [currentCampaignIndex, setCurrentCampaignIndex] = useState(0); // State to track current page index
   const [page, setPage] = useState(1);
   const { isLoading, setIsLoading } = useAppContext();
 
@@ -46,6 +49,7 @@ const List = () => {
     value: number
   ) => {
     setPage(value);
+    setCurrentWalletIndex(value - 1);
     getCsrWalletCurrent(
       setCurrentWalletData,
       setCurrentWalletMeta,
@@ -59,6 +63,7 @@ const List = () => {
     value: number
   ) => {
     setPage(value);
+    setCurrentTrxIndex(value - 1);
     getCsrWalletTrx(
       setTransactionListData,
       setTransactionListMeta,
@@ -72,6 +77,7 @@ const List = () => {
     value: number
   ) => {
     setPage(value);
+    setCurrentCampaignIndex(value - 1);
     getCsrWalletCampaign(
       setCampaignListData,
       setCampaignListMeta,
@@ -126,6 +132,9 @@ const List = () => {
             onChangePageWalletCampaign={handleChangePageWalletCampaign}
             transactionListData={transactionListData}
             transactionListMeta={transactionListMeta}
+            currentCampaignIndex={currentCampaignIndex}
+            currentTrxIndex={currentTrxIndex}
+            currentWalletIndex={currentWalletIndex}
           />
         </Box>
       </DashboardCard>
