@@ -352,6 +352,8 @@ const DataTableComponent: React.FC<Props> = ({
             columns={transactionListColumns}
             data={filteredItemsTrxData}
             currentPageIndex={currentTrxIndex}
+            walletUrl="transaction?trx_type=csr&"
+            excelfileName="CSR-Transaction-Report"
           />
         </Box>
       </Box>
@@ -370,6 +372,8 @@ const DataTableComponent: React.FC<Props> = ({
           columns={campaignListColumns}
           data={filteredItemsCampaign}
           currentPageIndex={currentCampaignIndex}
+          walletUrl="campaign?trx_type=csr&"
+          excelfileName="CSR-Campaign-Report"
         />
       </Box>
       {/* <Box>

@@ -13,11 +13,12 @@ import {
   Typography,
 } from "@mui/material";
 import { IconArrowLeft, IconArrowRight, IconSearch } from "@tabler/icons-react";
+import axios from "axios";
 import React from "react";
 import DataTable from "react-data-table-component";
 import * as XLSX from "xlsx";
-import CustomStylesTable from "./CustomStylesTable";
 import { useAppContext } from "./Context";
+import CustomStylesTable from "./CustomStylesTable";
 
 interface Data {
   value?: any;
@@ -38,6 +39,8 @@ interface Data {
   currentPageIndex?: any;
   page?: any;
   download?: any;
+  walletUrl?: any;
+  excelfileName?: any;
 }
 
 const DataTables: React.FC<Data> = ({
@@ -58,6 +61,8 @@ const DataTables: React.FC<Data> = ({
   currentPageIndex,
   page,
   download = true,
+  walletUrl,
+  excelfileName,
 }) => {
   const { isLoading, setIsLoading } = useAppContext();
 
@@ -71,14 +76,36 @@ const DataTables: React.FC<Data> = ({
   //   setIsLoading(true);
   // }
 
-  const downloadExcel = async (data: any) => {
+  const downloadExcel = async () => {
+    setIsLoading(true);
     try {
-      const worksheet = XLSX.utils.json_to_sheet(data);
+      let allData: any = [];
+      let page = 1;
+      let totalPages = Infinity; // Set to a high value initially
+
+      while (page <= totalPages) {
+        const response = await axios.get(
+          process.env.NEXT_PUBLIC_BASE + `/wallet/${walletUrl}page=${page}`,
+          {
+            headers: {
+              authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
+            },
+          }
+        );
+        allData = [...allData, ...response.data.body];
+        totalPages = response.data.meta.page_count; // Update totalPages
+        page++;
+      }
+
+      // Convert to XLSX
+      const worksheet = XLSX.utils.json_to_sheet(allData);
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-      XLSX.writeFile(workbook, "DataSheet.xlsx");
+      XLSX.writeFile(workbook, `${excelfileName}.xlsx`);
+      setIsLoading(false);
     } catch (error) {
-      console.error("Error downloading Excel file:", error);
+      setIsLoading(false);
+      console.error("Error fetching data:", error);
     }
   };
 
@@ -223,7 +250,7 @@ const DataTables: React.FC<Data> = ({
           download && (
             //-- Button Download --//
             <Button
-              onClick={() => downloadExcel(data)}
+              onClick={() => downloadExcel()}
               sx={{
                 display: "flex",
                 flexDirection: "row",

@@ -211,6 +211,8 @@ const DataTableComponent: React.FC<Props> = ({
           columns={merchantPaymentListColumns}
           data={merchantPaymentListData}
           currentPageIndex={merchantPaymentListIndex}
+          walletUrl="merchant-payment?"
+          excelfileName="Merchant-Payment-Report"
         />
       </Box>
     </Box>

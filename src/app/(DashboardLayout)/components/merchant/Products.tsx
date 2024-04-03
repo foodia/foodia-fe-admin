@@ -99,7 +99,7 @@ const columns = [
 ];
 
 const Products: React.FC<Props> = ({ data }) => {
-  const [filterText, setFilterText] = useState<string>("waiting");
+  const [filterText, setFilterText] = useState<string>("all");
   const [searchBy, setSearchBy] = useState<string>("name");
   const [searchText, setSearchText] = useState<string>("");
   const [page, setPage] = useState(1);
@@ -145,6 +145,10 @@ const Products: React.FC<Props> = ({ data }) => {
     filteredItems = filteredStatus.filter((data) =>
       data.name.toLowerCase().includes(searchText.toLowerCase())
     );
+  } else if (filterText === "all") {
+    filteredItems = data.filter((data) =>
+      data.name.toLowerCase().includes(searchText.toLowerCase())
+    );
   }
 
   const searchOption = [
@@ -180,6 +184,11 @@ const Products: React.FC<Props> = ({ data }) => {
       id: 3,
       value: "approved",
       label: "Approved",
+    },
+    {
+      id: 4,
+      value: "all",
+      label: "All",
     },
   ];
 

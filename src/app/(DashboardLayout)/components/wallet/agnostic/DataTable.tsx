@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { TableColumn } from "react-data-table-component";
 import { ButtonAction } from "../../shared/Buttons";
 import DataTables from "../../shared/DataTables";
+import { getAgnosticWalletTrx } from "../../api/AgnosticWallet";
 
 interface Meta {
   page: number;
@@ -267,6 +268,8 @@ const DataTableComponent: React.FC<Props> = ({
             columns={transactionListColumns}
             data={filteredItemsTrxData}
             currentPageIndex={currentTrxIndex}
+            walletUrl="transaction?trx_type=agnostic&"
+            excelfileName="Agnostic-Transaction-Report"
           />
         </Box>
       </Box>
@@ -285,6 +288,8 @@ const DataTableComponent: React.FC<Props> = ({
           columns={campaignListColumns}
           data={filteredItemsCampaign}
           currentPageIndex={currentCampaignIndex}
+          walletUrl="campaign-report?wallet_type=agnostic&"
+          excelfileName="Agnostic-Campaign-Report"
         />
       </Box>
       {/* <Box>
