@@ -335,6 +335,8 @@ const DataTableComponent: React.FC<Props> = ({
             columns={currentWalletColumns}
             data={filteredItemsCurrWallet}
             currentPageIndex={currentWalletIndex}
+            walletUrl="csr-current?"
+            excelfileName="CSR-CurrentWallet-Report"
           />
         </Box>
         <Box sx={{ width: "50%" }}>
