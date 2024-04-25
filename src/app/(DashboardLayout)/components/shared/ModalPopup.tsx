@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  IconButton,
   InputAdornment,
   MenuItem,
   Modal,
@@ -11,6 +12,7 @@ import {
 } from "@mui/material";
 import ImageHandler from "./ImageHandler";
 import { useAppContext } from "./Context";
+import { IconX } from "@tabler/icons-react";
 
 type Props = {
   open?: any;
@@ -42,6 +44,7 @@ type Props = {
   onChangeAddDonationAmount?: any;
   fieldsCsrWalletSelection?: any;
   isLoading?: any;
+  children?: React.ReactNode;
 };
 
 export const ModalPopupAddDonations = ({
@@ -59,6 +62,7 @@ export const ModalPopupAddDonations = ({
   valueDonationAmount,
   onChangeAddDonationAmount,
   fieldsCsrWalletSelection,
+  children,
 }: Props) => {
   return (
     <Modal
@@ -66,6 +70,7 @@ export const ModalPopupAddDonations = ({
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        overflow: "auto",
       }}
       open={open}
       onClose={handleClose}
@@ -77,43 +82,72 @@ export const ModalPopupAddDonations = ({
           display: "flex",
           borderRadius: "10px",
           flexDirection: "column",
-          alignItems: "center",
-          width: "auto",
+          width: "900px",
           backgroundColor: "white",
-          padding: "35px",
+          padding: "20px",
           gap: "30px",
         }}
       >
-        <Box>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>
           <Box
             sx={{
               display: "flex",
-              flexDirection: "column",
-              gap: "5px",
-              marginBottom: "15px",
+              justifyContent: "end",
             }}
           >
-            <Typography>Campaign Name : {campaign_name}</Typography>
-            <Typography>
-              Required Donation :{" "}
-              {new Intl.NumberFormat("id-ID", {
-                style: "currency",
-                currency: "IDR",
-                minimumFractionDigits: 0,
-              }).format(required_donation)}
-            </Typography>
-            <Typography>
-              Collected Donation :{" "}
-              {new Intl.NumberFormat("id-ID", {
-                style: "currency",
-                currency: "IDR",
-                minimumFractionDigits: 0,
-              }).format(collected_donation)}
+            <IconButton onClick={handleClose}>
+              <IconX />
+            </IconButton>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            {/* Wallet Type */}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                gap: "10px",
+                alignItems: "center",
+                justifyContent: "left",
+                width: "auto",
+              }}
+            >
+              <Typography sx={{ fontWeight: "bold", fontSize: "22px" }}>
+                Campaign Name
+              </Typography>
+            </Box>
+            <Typography sx={{ fontWeight: "bold", color: "red" }}>
+              Rp. 650.000
             </Typography>
           </Box>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
             {/* Wallet Type */}
-            <Box sx={{ display: "flex", flexDirection: "column", gap: "1px" }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                gap: "10px",
+                alignItems: "center",
+                justifyContent: "left",
+                width: "auto",
+              }}
+            >
+              <Typography sx={{ fontWeight: "medium" }}>
+                Choose Wallet
+              </Typography>
               <Select
                 variant="standard"
                 size="small"
@@ -121,9 +155,11 @@ export const ModalPopupAddDonations = ({
                 // label="Choose Event Type"
                 sx={{
                   ".MuiSelect-select": {
+                    color: `${
+                      valueWalletType === "default" ? "gray" : "black"
+                    }`,
                     padding: "10px",
-                    width: "100%",
-                    paddingLeft: "20px",
+                    width: "200px",
                     background: "rgba(63, 182, 72, 0.10)",
                     borderRadius: "12px",
                     ":focus": {
@@ -136,7 +172,7 @@ export const ModalPopupAddDonations = ({
                 onChange={onChangeWalletType}
               >
                 <MenuItem key={0} disabled value="default">
-                  Wallet Type
+                  Select One
                 </MenuItem>
                 <MenuItem key={1} value="csr">
                   CSR
@@ -145,160 +181,26 @@ export const ModalPopupAddDonations = ({
                   Agnostic
                 </MenuItem>
               </Select>
-              {valueWalletType === "default" && (
-                <Typography
-                  sx={{ color: "red", fontSize: "14px", marginLeft: "10px" }}
-                >
-                  *Choose wallet type
-                </Typography>
-              )}
             </Box>
-            {/* Wallet Recources */}
-            {valueWalletType !== "default" && (
-              <Box
-                sx={{ display: "flex", flexDirection: "column", gap: "1px" }}
-              >
-                <Select
-                  variant="standard"
-                  size="small"
-                  disableUnderline
-                  // label="Choose Event Type"
-                  sx={{
-                    ".MuiSelect-select": {
-                      padding: "10px",
-                      width: "100%",
-                      paddingLeft: "20px",
-                      background: "rgba(63, 182, 72, 0.10)",
-                      borderRadius: "12px",
-                      ":focus": {
-                        borderRadius: "12px",
-                        background: "rgba(63, 182, 72, 0.10)",
-                      },
-                    },
-                  }}
-                  value={selectedWallet}
-                  onChange={onChangeSelectedWallet}
-                >
-                  <MenuItem disabled value="default">
-                    Choose Wallet Recources
-                  </MenuItem>
-                  {walletList?.map((data) => (
-                    <MenuItem key={data.id} value={data.id}>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                          alignItems: "center",
-                          gap: "10px",
-                        }}
-                      >
-                        <Typography sx={{ fontSize: "16px" }}>Name:</Typography>
-                        <Typography sx={{ fontSize: "12px", marginTop: "3px" }}>
-                          {data.name},
-                        </Typography>
-                        <Typography sx={{ fontSize: "16px" }}>
-                          Balance:
-                        </Typography>
-                        <Typography sx={{ fontSize: "12px", marginTop: "3px" }}>
-                          {new Intl.NumberFormat("id-ID", {
-                            style: "currency",
-                            currency: "IDR",
-                            minimumFractionDigits: 0,
-                          }).format(data.balance)}
-                        </Typography>
-                      </Box>
-                    </MenuItem>
-                  ))}
-                </Select>
-                {selectedWallet === "default" && (
-                  <Typography
-                    sx={{ color: "red", fontSize: "14px", marginLeft: "10px" }}
-                  >
-                    *Choose wallet recources
-                  </Typography>
-                )}
-              </Box>
-            )}
-            {/* Donation Amount */}
-            {selectedWallet !== "default" && (
-              <Box
-                sx={{
-                  width: "100%",
-                }}
-              >
-                {/* {fieldsCsrWalletSelection.map((field, index) => ( */}
-                <TextField
-                  variant="standard"
-                  size="small"
-                  placeholder="Donation Amount"
-                  value={valueDonationAmount}
-                  type="text"
-                  sx={{
-                    ".MuiInput-input": {
-                      padding: "10px",
-                      paddingLeft: "20px",
-                      background: "rgba(63, 182, 72, 0.10)",
-                      borderRadius: "12px",
-                      width: "100%",
-                    },
-                  }}
-                  // label="Search By"
-                  InputProps={{
-                    disableUnderline: true,
-                    startAdornment: (
-                      <InputAdornment position="start">Rp.</InputAdornment>
-                    ),
-                  }}
-                  onChange={onChangeAddDonationAmount}
-                />
-                {/* ))} */}
-                {valueDonationAmount === "" && (
-                  <Typography
-                    sx={{ color: "red", fontSize: "14px", marginLeft: "1px" }}
-                  >
-                    *Input amount of donation
-                  </Typography>
-                )}
-                {collected_donation +
-                  parseInt(valueDonationAmount.replace(/\./g, ""), 10) >
-                  required_donation && (
-                  <Typography
-                    sx={{
-                      color: "red",
-                      fontSize: "14px",
-                      marginLeft: "1px",
-                    }}
-                  >
-                    *Amount Cant Be More Than Required
-                  </Typography>
-                )}
-              </Box>
-            )}
+            <Typography sx={{ fontWeight: "bold" }}>Rp. 0</Typography>
           </Box>
         </Box>
-        <Box sx={{ display: "flex", flexDirection: "row", gap: "10px" }}>
-          <Button
-            sx={
-              valueWalletType === "default"
-                ? { backgroundColor: "grey.100" }
-                : { backgroundColor: "primary.light" }
-            }
-            disabled={
-              collected_donation +
-                parseInt(valueDonationAmount.replace(/\./g, ""), 10) >
-                required_donation || valueDonationAmount === ""
-            }
-            onClick={handleAddDonation}
-          >
-            Add Donation
-          </Button>
-          <Button
-            sx={{ backgroundColor: "primary.light" }}
-            onClick={handleClose}
-          >
-            Cancel
-          </Button>
-        </Box>
+        {valueWalletType !== "default" && (
+          <>
+            {children}
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <Button
+                sx={{
+                  backgroundColor: "lightgray",
+                  width: "40%",
+                  color: "gray",
+                }}
+              >
+                Tambah Donasi
+              </Button>
+            </Box>
+          </>
+        )}
       </Box>
     </Modal>
   );

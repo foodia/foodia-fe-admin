@@ -59,7 +59,7 @@ const columns = [
     name: "Transaction Date",
     cell: (row: Data) => (
       <div>
-        {moment(row.transaction.transaction_date).format("DD-MM-YYYY hh:mm")}
+        {moment(row.transaction.transaction_date).format("DD/MM/YYYY hh:mm")}
       </div>
     ),
     width: "135px",
@@ -149,7 +149,7 @@ const Donators: React.FC<Props> = ({ data }) => {
             // meta={meta}
             columns={columns}
             data={filteredItems}
-            // pagination={true}
+            pagination={true}
           />
         </Box>
       </DetailCard>

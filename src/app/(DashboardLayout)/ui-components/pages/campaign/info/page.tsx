@@ -12,6 +12,9 @@ import Maps from "@/app/(DashboardLayout)/components/campaign/Maps";
 import Orders from "@/app/(DashboardLayout)/components/campaign/Orders";
 import { useAppContext } from "@/app/(DashboardLayout)/components/shared/Context";
 import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
+import DataTables, {
+  DataTablesManualPagination,
+} from "@/app/(DashboardLayout)/components/shared/DataTables";
 import {
   ModalPopupAddDonations,
   ModalPopupApprovals,
@@ -20,11 +23,15 @@ import {
   Box,
   Button,
   Grid,
+  Input,
+  InputAdornment,
   SelectChangeEvent,
   Stack,
+  TextField,
   Typography,
 } from "@mui/material";
 import { IconBan, IconCircleCheck, IconCirclePlus } from "@tabler/icons-react";
+import moment from "moment";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -153,13 +160,15 @@ const CampaignInfo = () => {
   const [walletList, setWalletList] = useState([]);
   const [fieldsCsrWalletSelection, setFields] = useState([""]); // Initial state with one empty field
 
+  console.log(valueWalletType);
+
   const onChangeWalletType = (event: SelectChangeEvent) => {
     setValueWalletType(event.target.value);
     setSelectedWallet("default");
     getWalletList(setWalletList, event.target.value, setIsLoading);
   };
 
-  const onChangeAddDonationAmount = (event: SelectChangeEvent) => {
+  const onChangeAddDonationAmount = (event: any) => {
     let inputVal = event.target.value;
     inputVal = inputVal.replace(/\D/g, ""); // Remove all non-numeric characters
     inputVal = inputVal.replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Add dots every 3 digits
@@ -220,6 +229,85 @@ const CampaignInfo = () => {
     <Typography fontSize="13px" key="3" color="#999" fontWeight={400}>
       Campaign Detail
     </Typography>,
+  ];
+
+  const columns = [
+    {
+      name: "No",
+      selector: (_row: any, i: any) => i + 1,
+      width: "70px",
+      // style: {
+      //   paddingLeft: "30px",
+      // },
+    },
+    {
+      name: "Nama Donator",
+      cell: (row: any) => (
+        <>
+          <Typography sx={{ fontSize: "13px" }}>{row.name}</Typography>
+        </>
+      ),
+      // sortable: true,
+    },
+    {
+      name: "Deposit",
+      cell: (row: any) => (
+        <>
+          <Typography sx={{ fontSize: "13px" }}>
+            {new Intl.NumberFormat("id-ID", {
+              style: "currency",
+              currency: "IDR",
+              minimumFractionDigits: 0,
+            }).format(row.balance)}
+          </Typography>
+        </>
+      ),
+      // sortable: true,
+    },
+    {
+      name: "Last Transaction",
+      cell: (row: any) => (
+        <>
+          <Typography sx={{ fontSize: "13px" }}>
+            {moment(row.updated).format("DD/MM/YYYY")}
+          </Typography>
+        </>
+      ),
+      // sortable: true,
+    },
+    {
+      name: "Jumlah Donasi",
+      cell: (row: any) => (
+        <>
+          <TextField
+            variant="standard"
+            size="small"
+            value={amount}
+            type="text"
+            onChange={onChangeAddDonationAmount}
+            sx={{
+              border: "1px solid lightgray",
+              padding: "5px",
+              textAlign: "center",
+              // ".MuiInput-input": {
+              //   paddingLeft: "20px",
+              //   // background: "rgba(63, 182, 72, 0.10)",
+              //   borderRadius: "12px",
+              //   width: "100%",
+              // },
+            }}
+            // label="Search By"
+            InputProps={{
+              disableUnderline: true,
+              // startAdornment: (
+              //   <InputAdornment position="start">Rp.</InputAdornment>
+              // ),
+            }}
+          />
+        </>
+      ),
+      // sortable: true,
+    },
   ];
 
   return (
@@ -300,7 +388,26 @@ const CampaignInfo = () => {
           handleAddDonation(data.id, selectedWallet, amount)
         }
         fieldsCsrWalletSelection={fieldsCsrWalletSelection}
-      />
+      >
+        <DataTablesManualPagination
+          // value={filterText}
+          // searchOption={searchOption}
+          // valueSearchBy={searchBy}
+          // onChangeFilterText={handleChangeFilterText}
+          // onKeyUpSearch={handleKeyUp}
+          // filterText={filterOptions}
+          // onChange={handleChangePage}
+          // download={false}
+          // search={false}
+          // onChangeSearch={handleChangeSearch}
+          // onChangeSearchBy={handleChangeSearchBy}
+          // pageItems={data.length}
+          // meta={meta}
+          columns={columns}
+          data={walletList}
+          pagination={true}
+        />
+      </ModalPopupAddDonations>
 
       <ModalPopupApprovals
         isLoading={isLoadingModal}
