@@ -89,6 +89,11 @@ type Props = {
   }[];
 };
 
+interface DonationAmount {
+  id: number;
+  value: string;
+}
+
 const CampaignInfo = () => {
   const searchParams = useSearchParams();
   const { isLoading, setIsLoading } = useAppContext();
@@ -159,20 +164,30 @@ const CampaignInfo = () => {
   });
   const [walletList, setWalletList] = useState([]);
   const [fieldsCsrWalletSelection, setFields] = useState([""]); // Initial state with one empty field
+  const [donationAmounts, setDonationAmounts] = useState<DonationAmount[]>([]);
 
-  console.log(valueWalletType);
+  console.log(donationAmounts);
+
+  const onChangeAddDonationAmount = (e: any, row: any) => {
+    let { value } = e.target;
+    value = value.replace(/\D/g, ""); // Remove all non-numeric characters
+    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Add dots every 3 digits
+    const updatedDonationAmounts = [...donationAmounts];
+    const existingIndex = updatedDonationAmounts.findIndex(
+      (item) => item.id === row.id
+    );
+    if (existingIndex !== -1) {
+      updatedDonationAmounts[existingIndex].value = value;
+    } else {
+      updatedDonationAmounts.push({ id: row.id, value });
+    }
+    setDonationAmounts(updatedDonationAmounts);
+  };
 
   const onChangeWalletType = (event: SelectChangeEvent) => {
     setValueWalletType(event.target.value);
     setSelectedWallet("default");
     getWalletList(setWalletList, event.target.value, setIsLoading);
-  };
-
-  const onChangeAddDonationAmount = (event: any) => {
-    let inputVal = event.target.value;
-    inputVal = inputVal.replace(/\D/g, ""); // Remove all non-numeric characters
-    inputVal = inputVal.replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Add dots every 3 digits
-    setAmount(inputVal);
   };
 
   const onChangeSelectedWallet = (event: SelectChangeEvent) => {
@@ -247,7 +262,7 @@ const CampaignInfo = () => {
           <Typography sx={{ fontSize: "13px" }}>{row.name}</Typography>
         </>
       ),
-      // sortable: true,
+      sortable: true,
     },
     {
       name: "Deposit",
@@ -278,35 +293,25 @@ const CampaignInfo = () => {
     {
       name: "Jumlah Donasi",
       cell: (row: any) => (
-        <>
-          <TextField
-            variant="standard"
-            size="small"
-            value={amount}
-            type="text"
-            onChange={onChangeAddDonationAmount}
-            sx={{
-              border: "1px solid lightgray",
-              padding: "5px",
-              textAlign: "center",
-              // ".MuiInput-input": {
-              //   paddingLeft: "20px",
-              //   // background: "rgba(63, 182, 72, 0.10)",
-              //   borderRadius: "12px",
-              //   width: "100%",
-              // },
-            }}
-            // label="Search By"
-            InputProps={{
-              disableUnderline: true,
-              // startAdornment: (
-              //   <InputAdornment position="start">Rp.</InputAdornment>
-              // ),
-            }}
-          />
-        </>
+        <TextField
+          variant="standard"
+          size="small"
+          value={
+            donationAmounts.find((item) => item.id === row.id)?.value || ""
+          }
+          type="text"
+          onChange={(e) => onChangeAddDonationAmount(e, row)}
+          sx={{
+            border: "1px solid lightgray",
+            padding: "5px",
+            textAlign: "center",
+            borderRadius: "5px",
+          }}
+          InputProps={{
+            disableUnderline: true,
+          }}
+        />
       ),
-      // sortable: true,
     },
   ];
 

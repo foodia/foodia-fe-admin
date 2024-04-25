@@ -73,7 +73,7 @@ export const ModalPopupAddDonations = ({
         overflow: "auto",
       }}
       open={open}
-      onClose={handleClose}
+      // onClose={handleClose}
       aria-labelledby="child-modal-title"
       aria-describedby="child-modal-description"
     >
