@@ -2,15 +2,8 @@ import { Box, SelectChangeEvent, Typography } from "@mui/material";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useAppContext } from "../shared/Context";
-import DataTables from "../shared/DataTables";
+import DataTables, { DataTablesManualPagination } from "../shared/DataTables";
 import DetailCard from "../shared/DetailCard";
-
-interface Meta {
-  page: number;
-  per_page: number;
-  page_count: number;
-  total: number;
-}
 
 interface Data {
   id: number;
@@ -29,47 +22,48 @@ interface Props {
   //   handleChangePage: any;
 }
 
-const columns = [
-  {
-    name: "No",
-    selector: (_row: any, i: any) => i + 1,
-    width: "70px",
-    // style: {
-    //   paddingLeft: "30px",
-    // },
-  },
-  {
-    name: "Name",
-    cell: (row: Data) => <div>{row.transaction.sender_name}</div>,
-  },
-  {
-    name: "Amount",
-    cell: (row: Data) => (
-      <div>
-        {new Intl.NumberFormat("id-ID", {
-          style: "currency",
-          currency: "IDR",
-          minimumFractionDigits: 0,
-        }).format(row.transaction.amount)}
-      </div>
-    ),
-    width: "130px",
-  },
-  {
-    name: "Transaction Date",
-    cell: (row: Data) => (
-      <div>
-        {moment(row.transaction.transaction_date).format("DD/MM/YYYY hh:mm")}
-      </div>
-    ),
-    width: "135px",
-  },
-];
-
 const Donators: React.FC<Props> = ({ data }) => {
   const [searchText, setSearchText] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState(0);
   const [page, setPage] = useState(1);
   const { isLoading, setIsLoading } = useAppContext();
+
+  const columns = [
+    {
+      name: "No",
+      selector: (_row: any, i: any) => i + 1 + currentPage * 5,
+      width: "70px",
+      // style: {
+      //   paddingLeft: "30px",
+      // },
+    },
+    {
+      name: "Name",
+      cell: (row: Data) => <div>{row.transaction.sender_name}</div>,
+    },
+    {
+      name: "Amount",
+      cell: (row: Data) => (
+        <div>
+          {new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+          }).format(row.transaction.amount)}
+        </div>
+      ),
+      width: "130px",
+    },
+    {
+      name: "Transaction Date",
+      cell: (row: Data) => (
+        <div>
+          {moment(row.transaction.transaction_date).format("DD/MM/YYYY hh:mm")}
+        </div>
+      ),
+      width: "135px",
+    },
+  ];
 
   useEffect(() => {
     setIsLoading(false);
@@ -129,24 +123,17 @@ const Donators: React.FC<Props> = ({ data }) => {
     <>
       <DetailCard title="Donators">
         <Box sx={{ width: "100%" }}>
-          <Typography
+          {/* <Typography
             sx={{ display: "flex", justifyContent: "end", alignItems: "end" }}
           >
             {data.length} Total Donators
-          </Typography>
-          <DataTables
-            // value={filterText}
-            // searchOption={searchOption}
-            // valueSearchBy={searchBy}
-            // onChangeFilterText={handleChangeFilterText}
-            // onKeyUpSearch={handleKeyUp}
-            // filterText={filterOptions}
-            // onChange={handleChangePage}
-            download={false}
-            onChangeSearch={handleChangeSearch}
-            // onChangeSearchBy={handleChangeSearchBy}
-            pageItems={data.length}
-            // meta={meta}
+          </Typography> */}
+          <DataTablesManualPagination
+            // download={false}
+            // onChangeSearch={handleChangeSearch}
+            // pageItems={data.length}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
             columns={columns}
             data={filteredItems}
             pagination={true}

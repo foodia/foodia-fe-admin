@@ -19,6 +19,7 @@ import DataTable from "react-data-table-component";
 import * as XLSX from "xlsx";
 import { useAppContext } from "./Context";
 import CustomStylesTable from "./CustomStylesTable";
+import ReactPaginate from "react-paginate";
 
 interface Data {
   value?: any;
@@ -42,6 +43,8 @@ interface Data {
   search?: any;
   walletUrl?: any;
   excelfileName?: any;
+  currentPage?: any;
+  setCurrentPage?: any;
 }
 
 const DataTables: React.FC<Data> = ({
@@ -80,6 +83,7 @@ const DataTables: React.FC<Data> = ({
 
   const downloadExcel = async () => {
     setIsLoading(true);
+
     try {
       let allData: any = [];
       let page = 1;
@@ -438,6 +442,8 @@ export const DataTablesManualPagination: React.FC<Data> = ({
   columns,
   pageItems,
   pagination,
+  currentPage,
+  setCurrentPage,
   onChange,
 }) => {
   data.sort(function (a: any, b: any) {
@@ -445,7 +451,7 @@ export const DataTablesManualPagination: React.FC<Data> = ({
   });
 
   const { isLoading, setIsLoading } = useAppContext();
-  const [currentPage, setCurrentPage] = useState(0);
+  // const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(5);
 
   // const handleItemsPerPageChange = (event: any) => {
@@ -467,6 +473,83 @@ export const DataTablesManualPagination: React.FC<Data> = ({
       pageItems === "all" ? data : data.slice(offset, offset + itemsPerPage);
     pageCount = Math.ceil(data.length / itemsPerPage);
   }
+
+  const styles = `
+        .pagination {
+            display: flex;
+            background-color: #F5F6FA;
+            justify-content: center;
+            align-items: center;
+            padding: 5px;
+            gap: 10px;
+            border-radius: 100px
+        }
+        .pagination li {
+            border-radius: 100%;
+            display: flex;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background-color: transparent;
+        }
+        .pagination li.previous, li.next {
+            background-color: #3FB648;
+            color: white;
+        }
+        .pagination li.previous.disabled, li.next.disabled {
+            background-color: gray;
+            color: white;
+        }
+        .pagination li.previous a {
+            color: white;
+        }
+        .pagination li.next a {
+            color: white;
+        }
+        .pagination li.active {
+            background-color: transparent;
+            border: 1px solid #3FB648;
+            color: #3FB648;
+        }
+        .pagination li.disabled {
+            cursor: default;
+        }
+        .pagination li a {
+            border-radius: 100%;
+            cursor: pointer;
+            color: black;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+        }
+        .pagination li.active a {
+            cursor: pointer;
+            color: #3FB648;
+        }
+        .pagination li.disabled a {
+            cursor: not-allowed;
+            color: white;
+        }
+        // .pagination li:hover{
+        //     background-color: #8F0D1E;
+        // }
+        // .pagination li:hover a{
+        //     background-color: #8F0D1E;
+        //     color: #fff;
+        // }
+        // .pagination li.disabled:hover{
+        //     background-color: transparent;
+        // }
+        // .pagination li.disabled:hover a{
+        //     background-color: transparent;
+        //     color: grey;
+        // }
+        `;
 
   const CustomStylesTable = {
     table: {
@@ -587,7 +670,7 @@ export const DataTablesManualPagination: React.FC<Data> = ({
                   // backgroundColor: "red",
                   borderRadius: "0px 0px 6px 6px",
                   border: "1px solid #CCD1D9",
-                  padding: "10px",
+                  paddingX: "10px",
                   width: "100%",
                 }}
               >
@@ -607,46 +690,34 @@ export const DataTablesManualPagination: React.FC<Data> = ({
                   results
                 </Box>
                 <Box>
-                  <Pagination
-                    style={{
-                      backgroundColor: "gray",
-                      borderRadius: "40px",
-                      padding: "4px",
-                      background: "var(--UI-Neutral-Neutral-30, #F5F6FA)",
-                    }}
-                    onChange={handlePageClick}
-                    page={currentPage}
-                    count={pageCount}
-                    defaultPage={1}
-                    siblingCount={0}
-                    boundaryCount={1}
-                    variant="outlined"
-                    shape="rounded"
-                    renderItem={(item) => (
-                      <PaginationItem
-                        slots={{
-                          previous: IconArrowLeft,
-                          next: IconArrowRight,
+                  <style>{styles}</style>
+                  <ReactPaginate
+                    previousLabel={
+                      <IconArrowLeft
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
                         }}
-                        {...item}
                       />
-                    )}
-                    sx={{
-                      "& .MuiPaginationItem-previousNext": {
-                        color: "white",
-                        backgroundColor: "primary.main", // Customize the background color of the ul element
-                        // padding: "8px", // Add padding to the ul element for spacing
-                        borderRadius: "100%", // Optional: Customize the border radius of the ul element
-                      },
-                      "& .MuiPaginationItem-root": {
-                        borderRadius: "40px",
-                        "&.Mui-selected": {
-                          borderColor: "primary.main",
-                          backgroundColor: "transparent", // Customize the background color of the selected pagination item
-                          color: "primary.main", // Customize the text color of the selected pagination item
-                        },
-                      },
-                    }}
+                    }
+                    nextLabel={
+                      <IconArrowRight
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      />
+                    }
+                    breakLabel={<a className="text-merah">...</a>}
+                    pageRangeDisplayed={5}
+                    marginPagesDisplayed={2}
+                    forcePage={currentPage}
+                    pageCount={pageCount}
+                    onPageChange={handlePageClick}
+                    containerClassName={"pagination"}
+                    activeClassName={"active"}
                   />
                 </Box>
               </Box>

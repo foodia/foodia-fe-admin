@@ -33,6 +33,7 @@ import {
 import { IconBan, IconCircleCheck, IconCirclePlus } from "@tabler/icons-react";
 import moment from "moment";
 import { useSearchParams } from "next/navigation";
+import { it } from "node:test";
 import { useEffect, useState } from "react";
 
 type Props = {
@@ -89,9 +90,15 @@ type Props = {
   }[];
 };
 
+interface ParsedDonationAmount {
+  id: number;
+  value: number;
+}
+
 interface DonationAmount {
   id: number;
   value: string;
+  value_num: number;
 }
 
 const CampaignInfo = () => {
@@ -106,7 +113,6 @@ const CampaignInfo = () => {
   const [selectedWallet, setSelectedWallet] = useState("default");
   const [name, setName] = useState("");
   const [note, setNote] = useState("");
-  const [amount, setAmount] = useState("");
   const [data, setData] = useState<Props>({
     id: 0,
     event_name: "",
@@ -163,25 +169,103 @@ const CampaignInfo = () => {
     ],
   });
   const [walletList, setWalletList] = useState([]);
-  const [fieldsCsrWalletSelection, setFields] = useState([""]); // Initial state with one empty field
+  const [fieldsCsrWalletSelection, setFields] = useState([""]);
+  const [parsedDonationAmounts, setParsedDonationAmounts] = useState<
+    ParsedDonationAmount[]
+  >([]);
   const [donationAmounts, setDonationAmounts] = useState<DonationAmount[]>([]);
+  const [totalDonations, setTotalDonations] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
 
-  console.log(donationAmounts);
+  console.log(totalDonations);
+  console.log("e", donationAmounts);
+  console.log("p", parsedDonationAmounts);
 
-  const onChangeAddDonationAmount = (e: any, row: any) => {
+  const Amounts = (e: any, row: any) => {
     let { value } = e.target;
-    value = value.replace(/\D/g, ""); // Remove all non-numeric characters
-    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Add dots every 3 digits
+    value = value.replace(/\D/g, "");
+    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     const updatedDonationAmounts = [...donationAmounts];
     const existingIndex = updatedDonationAmounts.findIndex(
       (item) => item.id === row.id
     );
-    if (existingIndex !== -1) {
-      updatedDonationAmounts[existingIndex].value = value;
+    if (
+      value !== "" &&
+      // parseInt(value.replace(/\./g, "")) <= row.balance &&
+      parseInt(value.replace(/\./g, "")) > 0
+    ) {
+      if (existingIndex !== -1) {
+        updatedDonationAmounts[existingIndex].value = value
+          ? new Intl.NumberFormat("id-ID", {
+              style: "currency",
+              currency: "IDR",
+              minimumFractionDigits: 0,
+            }).format(parseInt(value.replace(/\./g, "")))
+          : value;
+        updatedDonationAmounts[existingIndex].value_num = parseInt(
+          value.replace(/\./g, "")
+        );
+      } else {
+        updatedDonationAmounts.push({
+          id: row.id,
+          value: value
+            ? new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }).format(parseInt(value.replace(/\./g, "")))
+            : value,
+          value_num: parseInt(value.replace(/\./g, "")),
+        });
+      }
     } else {
-      updatedDonationAmounts.push({ id: row.id, value });
+      if (existingIndex !== -1 && value === "") {
+        updatedDonationAmounts.splice(existingIndex, 1);
+      }
     }
     setDonationAmounts(updatedDonationAmounts);
+  };
+
+  const onChangeAddDonationAmount = (e: any, row: any) => {
+    console.log(row.balance);
+
+    let { value } = e.target;
+    value = value.replace(/\D/g, "");
+    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    const updatedDonationAmounts = [...parsedDonationAmounts];
+    const existingIndex = updatedDonationAmounts.findIndex(
+      (item) => item.id === row.id
+    );
+    if (
+      value !== "" &&
+      parseInt(value.replace(/\./g, "")) <= row.balance &&
+      parseInt(value.replace(/\./g, "")) > 0
+    ) {
+      if (existingIndex !== -1) {
+        updatedDonationAmounts[existingIndex].value = parseInt(
+          value.replace(/\./g, "")
+        );
+      } else {
+        updatedDonationAmounts.push({
+          id: row.id,
+          // value: 2,
+          value: parseInt(value.replace(/\./g, "")),
+        });
+      }
+    } else {
+      if (existingIndex !== -1 && value === "") {
+        updatedDonationAmounts.splice(existingIndex, 1);
+      }
+    }
+
+    const initialValue = updatedDonationAmounts.reduce(
+      (acc: number, item: ParsedDonationAmount) => acc + item.value,
+      0
+    );
+
+    setTotalDonations(initialValue);
+    setParsedDonationAmounts(updatedDonationAmounts);
+    Amounts(e, row);
   };
 
   const onChangeWalletType = (event: SelectChangeEvent) => {
@@ -248,12 +332,9 @@ const CampaignInfo = () => {
 
   const columns = [
     {
-      name: "No",
-      selector: (_row: any, i: any) => i + 1,
-      width: "70px",
-      // style: {
-      //   paddingLeft: "30px",
-      // },
+      name: "#",
+      selector: (_row: any, i: any) => i + 1 + currentPage * 5,
+      width: "50px",
     },
     {
       name: "Nama Donator",
@@ -302,12 +383,28 @@ const CampaignInfo = () => {
           type="text"
           onChange={(e) => onChangeAddDonationAmount(e, row)}
           sx={{
-            border: "1px solid lightgray",
-            padding: "5px",
-            textAlign: "center",
+            border: `1px solid ${
+              row.balance <
+              (donationAmounts.find((item) => item.id === row.id)?.value_num ||
+                0)
+                ? "red"
+                : "lightgrey"
+            }
+            `,
+            paddingX: "10px",
+            paddingTop: "3px",
             borderRadius: "5px",
           }}
           InputProps={{
+            style: {
+              color: `${
+                row.balance <
+                (donationAmounts.find((item) => item.id === row.id)
+                  ?.value_num || 0)
+                  ? "red"
+                  : "black"
+              }`,
+            },
             disableUnderline: true,
           }}
         />
@@ -388,26 +485,15 @@ const CampaignInfo = () => {
         selectedWallet={selectedWallet}
         onChangeSelectedWallet={onChangeSelectedWallet}
         onChangeAddDonationAmount={onChangeAddDonationAmount}
-        valueDonationAmount={amount}
-        handleAddDonation={() =>
-          handleAddDonation(data.id, selectedWallet, amount)
-        }
+        valueDonationAmount={totalDonations}
+        // handleAddDonation={() =>
+        //   handleAddDonation(data.id, selectedWallet, amount)
+        // }
         fieldsCsrWalletSelection={fieldsCsrWalletSelection}
       >
         <DataTablesManualPagination
-          // value={filterText}
-          // searchOption={searchOption}
-          // valueSearchBy={searchBy}
-          // onChangeFilterText={handleChangeFilterText}
-          // onKeyUpSearch={handleKeyUp}
-          // filterText={filterOptions}
-          // onChange={handleChangePage}
-          // download={false}
-          // search={false}
-          // onChangeSearch={handleChangeSearch}
-          // onChangeSearchBy={handleChangeSearchBy}
-          // pageItems={data.length}
-          // meta={meta}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
           columns={columns}
           data={walletList}
           pagination={true}

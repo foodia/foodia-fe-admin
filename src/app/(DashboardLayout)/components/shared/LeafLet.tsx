@@ -13,9 +13,6 @@ const LeafLet: React.FC<Coordinate> = ({ lat, long }) => {
   const latitude = parseFloat(lat);
   const longtitude = parseFloat(long);
 
-  console.log("lat", parseFloat(lat));
-  console.log("long", parseFloat(long));
-
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {

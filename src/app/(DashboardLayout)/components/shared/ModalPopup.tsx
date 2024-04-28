@@ -119,11 +119,15 @@ export const ModalPopupAddDonations = ({
               }}
             >
               <Typography sx={{ fontWeight: "bold", fontSize: "22px" }}>
-                Campaign Name
+                {campaign_name}
               </Typography>
             </Box>
             <Typography sx={{ fontWeight: "bold", color: "red" }}>
-              Rp. 650.000
+              {new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }).format(required_donation - collected_donation)}
             </Typography>
           </Box>
           <Box
@@ -182,7 +186,19 @@ export const ModalPopupAddDonations = ({
                 </MenuItem>
               </Select>
             </Box>
-            <Typography sx={{ fontWeight: "bold" }}>Rp. 0</Typography>
+            <Typography sx={{ fontWeight: "bold" }}>
+              {!valueDonationAmount
+                ? new Intl.NumberFormat("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                    minimumFractionDigits: 0,
+                  }).format(0)
+                : new Intl.NumberFormat("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                    minimumFractionDigits: 0,
+                  }).format(valueDonationAmount)}
+            </Typography>
           </Box>
         </Box>
         {valueWalletType !== "default" && (
@@ -190,10 +206,17 @@ export const ModalPopupAddDonations = ({
             {children}
             <Box sx={{ display: "flex", justifyContent: "center" }}>
               <Button
+                disabled
                 sx={{
-                  backgroundColor: "lightgray",
-                  width: "40%",
-                  color: "gray",
+                  width: "15%",
+                  borderRadius: "10px",
+                  ":disabled": {
+                    backgroundColor: "#F5F4F8",
+                    color: "#A1A5C1",
+                  },
+                  "&:hover": {
+                    backgroundColor: "#F5F4F8",
+                  },
                 }}
               >
                 Tambah Donasi

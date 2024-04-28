@@ -25,3 +25,7 @@
   background-color: #2f8e3f; /* New background color on hover */
   cursor: pointer;
 }
+
+.manual-pagination {
+  background-color: gray;
+}
