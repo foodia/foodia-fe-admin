@@ -157,23 +157,6 @@ const Info: React.FC<ChildProps> = ({ data }) => {
     );
   };
 
-  const status = [
-    <Stepper key={uniqueId()} activeStep={activeStep()} alternativeLabel>
-      {steps.map((label, index) => (
-        <Step key={index}>
-          <StepLabel
-            key={index}
-            StepIconComponent={(props) => (
-              <CustomStepIcon stepNumber={index + 1} {...props} />
-            )}
-          >
-            {/* {label} */}
-          </StepLabel>
-        </Step>
-      ))}
-    </Stepper>,
-  ];
-
   return (
     <>
       <DetailCard title="Campaign Information">
@@ -216,7 +199,26 @@ const Info: React.FC<ChildProps> = ({ data }) => {
           />
           <Field label="Note" value={data.note} />
           <Field label="Description" value={data.description} />
-          <Box sx={{ paddingY: "20px" }}>{status}</Box>
+          <Box sx={{ paddingY: "10px", width: "100%" }}>
+            <Stepper
+              key={uniqueId()}
+              activeStep={activeStep()}
+              alternativeLabel
+            >
+              {steps.map((label, index) => (
+                <Step sx={{ width: "115px" }} key={index}>
+                  <StepLabel
+                    key={index}
+                    StepIconComponent={(props) => (
+                      <CustomStepIcon stepNumber={index + 1} {...props} />
+                    )}
+                  >
+                    {/* {label} */}
+                  </StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+          </Box>
         </Box>
       </DetailCard>
     </>

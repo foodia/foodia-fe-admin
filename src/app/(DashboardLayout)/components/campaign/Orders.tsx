@@ -16,6 +16,7 @@ interface ChildProps {
         id: number;
         order_status: string;
         qty: string;
+        total_amount: number;
         merchant: { oauth: { fullname: string } };
         merchant_product: {
           id: number;
@@ -48,7 +49,6 @@ const Orders: React.FC<ChildProps> = ({ data }) => {
   const onViewImage = (file: string) => {
     setIsOpen(true);
     setFile(file);
-    console.log(file);
   };
 
   const onCloseView = () => {
@@ -62,9 +62,8 @@ const Orders: React.FC<ChildProps> = ({ data }) => {
           sx={{
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
-            gap: "10px",
             width: "100%",
+            gap: "20px",
           }}
         >
           {data?.orders?.map((orders) => (
@@ -72,119 +71,145 @@ const Orders: React.FC<ChildProps> = ({ data }) => {
               key={orders.id}
               sx={{
                 display: "flex",
+                border: "1px solid lightgrey",
+                flexDirection: "column",
                 gap: "10px",
-                // justifyContent: "space-between",
-                // border: "0.4px solid grey",
-                boxShadow: "0px 0px 12px 0px rgba(0, 0, 0, 0.08)",
+                width: "100%",
                 borderRadius: "10px",
                 padding: "10px",
-                // width: "530px",
               }}
             >
-              <Button
-                variant="contained"
-                sx={{
-                  padding: 0,
-                  width: "250px",
-                  borderRadius: "10px",
-                  backgroundColor: "transparent",
-                }}
-                onClick={() =>
-                  onViewImage(orders.merchant_product.images[0].image_url)
-                }
-              >
-                <ImageHandler
-                  src={orders.merchant_product.images[0].image_url}
-                />
-              </Button>
               <Box
                 sx={{
                   display: "flex",
-                  flexDirection: "row",
+                  gap: "10px",
+                  alignItems: "start",
+                  borderRadius: "10px",
+                  // padding: "10px",
                   width: "100%",
-                  justifyContent: "space-between",
                 }}
               >
+                <Button
+                  sx={{
+                    width: "40%",
+                    borderRadius: "10px",
+                    backgroundColor: "transparent",
+                    padding: 0,
+                  }}
+                  variant="contained"
+                  size="small"
+                  onClick={() =>
+                    onViewImage(orders.merchant_product.images[0].image_url)
+                  }
+                >
+                  <ImageHandler
+                    borderRadius="10px"
+                    src={orders.merchant_product.images[0].image_url}
+                  />
+                </Button>
                 <Box
                   sx={{
                     display: "flex",
-                    justifyContent: "center",
-                    flexDirection: "column",
-                    width: "50%",
+                    flexDirection: "row",
+                    width: "100%",
+                    justifyContent: "space-between",
                   }}
                 >
-                  <Typography
-                    sx={{
-                      marginBottom: "10px",
-                      fontSize: "16px",
-                      fontWeight: 600,
-                    }}
-                  >
-                    {orders.merchant_product.name}
-                  </Typography>
-                  <Typography sx={{ fontSize: "12px" }}>
-                    {orders.merchant.oauth.fullname}
-                  </Typography>
                   <Box
                     sx={{
                       display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      marginBottom: "10px",
+                      justifyContent: "center",
+                      flexDirection: "column",
+                      width: "100%",
                     }}
                   >
-                    <Typography sx={{ fontSize: "12px" }}>
+                    <Typography
+                      sx={{
+                        marginBottom: "10px",
+                        fontSize: "16px",
+                        fontWeight: 600,
+                      }}
+                    >
+                      {orders.merchant_product.name}
+                    </Typography>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        // justifyContent: "space-between",
+                        marginBottom: "10px",
+                        // gap: "10px",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          fontSize: "12px",
+                          alignItems: "center",
+                          display: "flex",
+                          gap: "5px",
+                        }}
+                      >
+                        {orders.merchant.oauth.fullname}
+                      </Typography>
+                      <Typography sx={{ fontSize: "12px" }}>
+                        {new Intl.NumberFormat("id-ID", {
+                          style: "currency",
+                          currency: "IDR",
+                          minimumFractionDigits: 0,
+                        }).format(orders.merchant_product.price)}
+                      </Typography>
+                      <Typography sx={{ fontSize: "12px" }}>
+                        Qty: {orders.qty}
+                      </Typography>
+                    </Box>
+                    <Typography sx={{ fontSize: "12px", fontWeight: "bold" }}>
+                      Total:{" "}
                       {new Intl.NumberFormat("id-ID", {
                         style: "currency",
                         currency: "IDR",
                         minimumFractionDigits: 0,
-                      }).format(orders.merchant_product.price)}
+                      }).format(orders.total_amount)}
                     </Typography>
-                    <Typography sx={{ fontSize: "12px" }}>
-                      Quantity: {orders.qty}
-                    </Typography>
+                    <Link
+                      href={{
+                        pathname: "/ui-components/pages/product/info",
+                        query: {
+                          id: orders.merchant_product.id,
+                        },
+                      }}
+                    >
+                      <Button
+                        variant="contained"
+                        size="small"
+                        color="info"
+                        sx={{ padding: 0 }}
+                      >
+                        View
+                      </Button>
+                    </Link>
                   </Box>
-                  <Link
-                    href={{
-                      pathname: "/ui-components/pages/product/info",
-                      query: {
-                        id: orders.merchant_product.id,
-                      },
-                    }}
-                  >
-                    <Button variant="contained" size="small" color="info">
-                      <IconEye size={20} /> View
-                    </Button>
-                  </Link>
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "end",
-                    justifyContent: "space-between",
-                  }}
-                >
                   <Typography
                     display="flex"
                     alignItems="center"
                     justifyContent="center"
                     borderRadius="30px"
                     height="25px"
-                    padding="5px 15px"
+                    padding="5px 10px"
                     color="white"
                     sx={{
                       backgroundColor: `${
-                        orders.order_status === "incoming"
+                        data.detonator.status === "incoming"
                           ? "warning.main"
-                          : orders.order_status === "canceled"
+                          : data.detonator.status === "canceled"
                           ? "error.main"
                           : "success.main"
                       }`,
                       textTransform: "capitalize",
+                      fontSize: "10px",
+                      fontWeight: "bold",
                     }}
                   >
-                    {orders.order_status}
+                    {data.detonator.status}
                   </Typography>
                 </Box>
               </Box>

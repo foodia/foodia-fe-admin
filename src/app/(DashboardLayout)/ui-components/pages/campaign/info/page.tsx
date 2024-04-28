@@ -69,6 +69,7 @@ type Props = {
       id: number;
       order_status: string;
       qty: string;
+      total_amount: number;
       merchant: { oauth: { fullname: string } };
       merchant_product: {
         id: number;
@@ -146,6 +147,7 @@ const CampaignInfo = () => {
         id: 0,
         order_status: "",
         qty: "",
+        total_amount: 0,
         merchant: { oauth: { fullname: "" } },
         merchant_product: {
           id: 0,
@@ -269,6 +271,7 @@ const CampaignInfo = () => {
   };
 
   const onChangeWalletType = (event: SelectChangeEvent) => {
+    setCurrentPage(0);
     setValueWalletType(event.target.value);
     setSelectedWallet("default");
     getWalletList(setWalletList, event.target.value, setIsLoading);
@@ -422,8 +425,8 @@ const CampaignInfo = () => {
               <Donators data={data.campaign_donation} />
             </Grid>
             <Grid item xs={6} lg={6}>
-              <Orders data={data} />
               <Detonator data={data} />
+              <Orders data={data} />
               <Maps data={data} />
               {/* <Attachment data={data} /> */}
             </Grid>

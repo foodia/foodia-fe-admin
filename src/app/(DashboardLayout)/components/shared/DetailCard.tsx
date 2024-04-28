@@ -10,7 +10,7 @@ const DetailCard: React.FC<ChildProps> = ({ children, title, subTitle }) => {
   return (
     <>
       {/* <BaseCard title="Detonator Info" status={data.status}> */}
-      <Box sx={{ paddingLeft: "45px", paddingY: "20px" }}>
+      <Box sx={{ paddingLeft: "10px", paddingY: "20px" }}>
         <Typography sx={{ color: "#000", fontSize: "18px", fontWeight: 700 }}>
           {title}
         </Typography>

@@ -77,7 +77,6 @@ const Detonator: React.FC<ChildProps> = ({ data }) => {
             flexDirection: "column",
             gap: "10px",
             width: "100%",
-            // paddingRight: "40px",
           }}
         >
           <Box
@@ -85,20 +84,14 @@ const Detonator: React.FC<ChildProps> = ({ data }) => {
               display: "flex",
               gap: "10px",
               alignItems: "center",
-              // border: "0.4px solid grey",
-              //   boxShadow: "0px 0px 12px 0px rgba(0, 0, 0, 0.08)",
               borderRadius: "10px",
-              padding: "10px",
             }}
           >
             <Button
               sx={{
-                width: "130px",
-                height: "100px",
-                borderRadius: "300px",
-                // position: "relative",
+                width: "40%",
+                borderRadius: "100%",
                 backgroundColor: "transparent",
-                border: "1px solid green",
                 padding: 0,
               }}
               variant="contained"
@@ -208,41 +201,39 @@ const Detonator: React.FC<ChildProps> = ({ data }) => {
                     },
                   }}
                 >
-                  <Button variant="contained" size="small" color="info">
-                    <IconEye size={20} /> View
+                  <Button
+                    variant="contained"
+                    size="small"
+                    color="info"
+                    sx={{ padding: 0 }}
+                  >
+                    View
                   </Button>
                 </Link>
               </Box>
-              <Box
+              <Typography
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                borderRadius="30px"
+                height="25px"
+                padding="5px 10px"
+                color="white"
                 sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "end",
-                  justifyContent: "space-between",
+                  backgroundColor: `${
+                    data.detonator.status === "incoming"
+                      ? "warning.main"
+                      : data.detonator.status === "canceled"
+                      ? "error.main"
+                      : "success.main"
+                  }`,
+                  textTransform: "capitalize",
+                  fontSize: "10px",
+                  fontWeight: "bold",
                 }}
               >
-                <Typography
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  borderRadius="30px"
-                  height="25px"
-                  padding="5px 15px"
-                  color="white"
-                  sx={{
-                    backgroundColor: `${
-                      data.detonator.status === "incoming"
-                        ? "warning.main"
-                        : data.detonator.status === "canceled"
-                        ? "error.main"
-                        : "success.main"
-                    }`,
-                    textTransform: "capitalize",
-                  }}
-                >
-                  {data.detonator.status}
-                </Typography>
-              </Box>
+                {data.detonator.status}
+              </Typography>
             </Box>
           </Box>
         </Box>

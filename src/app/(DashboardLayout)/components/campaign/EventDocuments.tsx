@@ -39,7 +39,7 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
         size="small"
         sx={{
           padding: 0,
-          width: "250px",
+          // width: "250px",
           borderRadius: "10px",
           backgroundColor: "transparent",
         }}
