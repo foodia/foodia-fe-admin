@@ -201,29 +201,7 @@ export const ModalPopupAddDonations = ({
             </Typography>
           </Box>
         </Box>
-        {valueWalletType !== "default" && (
-          <>
-            {children}
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <Button
-                disabled
-                sx={{
-                  width: "15%",
-                  borderRadius: "10px",
-                  ":disabled": {
-                    backgroundColor: "#F5F4F8",
-                    color: "#A1A5C1",
-                  },
-                  "&:hover": {
-                    backgroundColor: "#F5F4F8",
-                  },
-                }}
-              >
-                Tambah Donasi
-              </Button>
-            </Box>
-          </>
-        )}
+        {valueWalletType !== "default" && <>{children}</>}
       </Box>
     </Modal>
   );

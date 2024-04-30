@@ -35,6 +35,7 @@ import moment from "moment";
 import { useSearchParams } from "next/navigation";
 import { it } from "node:test";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 type Props = {
   id: number;
@@ -289,13 +290,42 @@ const CampaignInfo = () => {
     setIsOpenAddDonation(false);
   };
 
-  const handleAddDonation = (id: any, selectedWallet: any, amount: any) => {
-    const addAmount = parseInt(amount.replace(/\./g, ""), 10);
-    const onSuccess = () => {
-      handleCloseAddDonation();
-      location.reload();
-    };
-    postCampaignPayment(id, selectedWallet, addAmount, onSuccess());
+  const handleAddDonation = () => {
+    setIsOpenAddDonation(false);
+    Swal.fire({
+      // position: "bottom",
+      customClass: {
+        popup: "custom-swal",
+        // icon: "custom-icon-swal",
+        title: "custom-title-swal",
+        confirmButton: "custom-confirm-button-swal",
+        cancelButton: "custom-cancel-button-swal",
+      },
+      // icon: "success",
+      title: `Anda yakin 
+      menambahkan donasi?`,
+      html: `Total tambahan donasi adalah <p>${new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        minimumFractionDigits: 0,
+      }).format(totalDonations)}</p>`,
+      width: "260px",
+      showCancelButton: true,
+      cancelButtonText: `Ya`,
+      cancelButtonColor: "#3FB648",
+      confirmButtonText: `Batal`,
+      confirmButtonColor: "#fff",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setIsOpenAddDonation(true);
+      }
+    });
+    // const addAmount = parseInt(amount.replace(/\./g, ""), 10);
+    // const onSuccess = () => {
+    //   handleCloseAddDonation();
+    //   location.reload();
+    // };
+    // postCampaignPayment(id, selectedWallet, addAmount, onSuccess());
   };
 
   const handleOpen = (id: number, status: string, name: string) => {
@@ -494,13 +524,39 @@ const CampaignInfo = () => {
         // }
         fieldsCsrWalletSelection={fieldsCsrWalletSelection}
       >
-        <DataTablesManualPagination
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          columns={columns}
-          data={walletList}
-          pagination={true}
-        />
+        <>
+          <DataTablesManualPagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            columns={columns}
+            data={walletList}
+            pagination={true}
+          />
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Button
+              onClick={() => handleAddDonation()}
+              disabled={totalDonations == 0}
+              sx={{
+                width: "15%",
+                borderRadius: "10px",
+                backgroundColor: "#3FB648",
+                color: "white",
+                ":disabled": {
+                  backgroundColor: "#F5F4F8",
+                  color: "#A1A5C1",
+                  "&:hover": {
+                    backgroundColor: "#F5F4F8",
+                  },
+                },
+                "&:hover": {
+                  backgroundColor: "#3FB648",
+                },
+              }}
+            >
+              Tambah Donasi
+            </Button>
+          </Box>
+        </>
       </ModalPopupAddDonations>
 
       <ModalPopupApprovals

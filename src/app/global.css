@@ -9,6 +9,71 @@
   background-color: transparent;
 }
 
+.swal2-html-container p {
+  margin: 0 !important;
+  /* padding: 20px !important; */
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  color: #000;
+  font-weight: bold;
+}
+
+.swal2-actions {
+  margin: 0 !important;
+  /* padding: 10px !important; */
+  padding-top: 5px !important;
+  padding-bottom: 0 !important;
+}
+
+.custom-swal {
+  padding: 0;
+  /* padding-top: 10px; */
+  font-size: small;
+  padding-bottom: 10px;
+  border-radius: 15px;
+  display: flex !important;
+  flex-direction: column;
+  gap: 0;
+}
+
+.custom-title-swal {
+  padding: 0;
+  padding-top: 10px;
+  height: 55px;
+  font-size: large;
+  color: #3fb648;
+  font-weight: bolder;
+  /* width: 210px; */
+}
+
+.custom-confirm-button-swal {
+  padding: 0;
+  height: 40px;
+  width: 100px;
+  border-radius: 12px !important;
+  border: 2px solid #3fb648 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-weight: bold;
+  color: #3fb648 !important;
+}
+
+.custom-cancel-button-swal {
+  padding: 0;
+  height: 40px;
+  width: 100px;
+  border-radius: 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-weight: bold;
+}
+
+/* .text-cancel-button {
+  
+} */
+
 .buttonAlert {
   padding-left: 20px;
   padding-right: 20px;
