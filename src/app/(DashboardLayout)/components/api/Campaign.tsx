@@ -61,18 +61,14 @@ export const getCampaignDetail = (id: any, setData: any, setIsLoading: any) => {
     });
 };
 
-export const postCampaignPayment = (
-  id: any,
-  wallet_id: any,
-  amount: any,
-  onSuccess: any
-) => {
+export const postCampaignPayment = (id: any, payments: any, onSuccess: any) => {
+  console.log("opas", payments);
+
   axios
     .post(
       process.env.NEXT_PUBLIC_BASE + `/campaign/payment/${id}`,
       {
-        wallet_id: parseInt(wallet_id),
-        amount: amount,
+        details: payments,
       },
       {
         headers: {

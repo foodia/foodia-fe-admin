@@ -93,8 +93,8 @@ type Props = {
 };
 
 interface ParsedDonationAmount {
-  id: number;
-  value: number;
+  wallet_id: number;
+  amount: number;
 }
 
 interface DonationAmount {
@@ -237,7 +237,7 @@ const CampaignInfo = () => {
     value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     const updatedDonationAmounts = [...parsedDonationAmounts];
     const existingIndex = updatedDonationAmounts.findIndex(
-      (item) => item.id === row.id
+      (item) => item.wallet_id === row.id
     );
     if (
       value !== "" &&
@@ -245,14 +245,14 @@ const CampaignInfo = () => {
       parseInt(value.replace(/\./g, "")) > 0
     ) {
       if (existingIndex !== -1) {
-        updatedDonationAmounts[existingIndex].value = parseInt(
+        updatedDonationAmounts[existingIndex].amount = parseInt(
           value.replace(/\./g, "")
         );
       } else {
         updatedDonationAmounts.push({
-          id: row.id,
+          wallet_id: row.id,
           // value: 2,
-          value: parseInt(value.replace(/\./g, "")),
+          amount: parseInt(value.replace(/\./g, "")),
         });
       }
     } else {
@@ -262,7 +262,7 @@ const CampaignInfo = () => {
     }
 
     const initialValue = updatedDonationAmounts.reduce(
-      (acc: number, item: ParsedDonationAmount) => acc + item.value,
+      (acc: number, item: ParsedDonationAmount) => acc + item.amount,
       0
     );
 
@@ -290,10 +290,33 @@ const CampaignInfo = () => {
     setIsOpenAddDonation(false);
   };
 
+  const onSuccess = () => {
+    const Toast = Swal.mixin({
+      allowOutsideClick: false,
+      toast: true,
+      position: "top",
+      customClass: {
+        popup: "toast-padding-top",
+      },
+      showConfirmButton: false,
+      timer: 3000,
+      // timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+        location.reload();
+      },
+    });
+    Toast.fire({
+      icon: "success",
+      title: "Sukses menambah donasi",
+    });
+  };
+
   const handleAddDonation = () => {
     setIsOpenAddDonation(false);
     Swal.fire({
-      // position: "bottom",
+      allowOutsideClick: false,
       customClass: {
         popup: "custom-swal",
         // icon: "custom-icon-swal",
@@ -317,7 +340,13 @@ const CampaignInfo = () => {
       confirmButtonColor: "#fff",
     }).then((result) => {
       if (result.isConfirmed) {
-        setIsOpenAddDonation(true);
+        // setIsOpenAddDonation(true);
+      } else if (result.isDismissed) {
+        postCampaignPayment(
+          searchParams.get("id"),
+          parsedDonationAmounts,
+          onSuccess
+        );
       }
     });
     // const addAmount = parseInt(amount.replace(/\./g, ""), 10);

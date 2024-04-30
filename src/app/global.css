@@ -25,6 +25,10 @@
   padding-bottom: 0 !important;
 }
 
+.toast-padding-top {
+  margin-top: 70px !important; /* Adjust as needed */
+}
+
 .custom-swal {
   padding: 0;
   /* padding-top: 10px; */
