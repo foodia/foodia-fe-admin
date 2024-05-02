@@ -459,6 +459,9 @@ export const DataTablesManualPagination: React.FC<Data> = ({
   //   setCurrentPage(0);
   // };
 
+  const startIndex = currentPage * 5 + 1;
+  const endIndex = Math.min((currentPage + 1) * 5, data.length);
+
   const handlePageClick = ({ selected }: any) => {
     setCurrentPage(selected);
     setItemsPerPage(itemsPerPage);
@@ -682,11 +685,9 @@ export const DataTablesManualPagination: React.FC<Data> = ({
                     gap: "3px",
                   }}
                 >
-                  Showing{" "}
-                  <Typography fontWeight={700}>
-                    {currentPageData.length}
-                  </Typography>{" "}
-                  of <Typography fontWeight={700}>{data.length}</Typography>{" "}
+                  Showing <Typography fontWeight={700}>{startIndex}</Typography>{" "}
+                  to <Typography fontWeight={700}>{endIndex}</Typography> of{" "}
+                  <Typography fontWeight={700}>{data.length}</Typography>{" "}
                   results
                 </Box>
                 <Box>

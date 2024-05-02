@@ -122,7 +122,24 @@ export const ModalPopupAddDonations = ({
                 {campaign_name}
               </Typography>
             </Box>
-            <Typography sx={{ fontWeight: "bold", color: "red" }}>
+            <Typography
+              sx={{
+                fontWeight: "bold",
+                color: "red",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "right",
+                alignItems: "end",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontWeight: "medium",
+                  color: "black",
+                }}
+              >
+                Jumlah Kurang Dana
+              </Typography>
               {new Intl.NumberFormat("id-ID", {
                 style: "currency",
                 currency: "IDR",
@@ -186,7 +203,23 @@ export const ModalPopupAddDonations = ({
                 </MenuItem>
               </Select>
             </Box>
-            <Typography sx={{ fontWeight: "bold" }}>
+            <Typography
+              sx={{
+                fontWeight: "bold",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "right",
+                alignItems: "end",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontWeight: "medium",
+                  color: "black",
+                }}
+              >
+                Tambahan Dana
+              </Typography>
               {!valueDonationAmount
                 ? new Intl.NumberFormat("id-ID", {
                     style: "currency",

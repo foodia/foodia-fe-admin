@@ -180,10 +180,6 @@ const CampaignInfo = () => {
   const [totalDonations, setTotalDonations] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
 
-  console.log(totalDonations);
-  console.log("e", donationAmounts);
-  console.log("p", parsedDonationAmounts);
-
   const Amounts = (e: any, row: any) => {
     let { value } = e.target;
     value = value.replace(/\D/g, "");
@@ -192,11 +188,7 @@ const CampaignInfo = () => {
     const existingIndex = updatedDonationAmounts.findIndex(
       (item) => item.id === row.id
     );
-    if (
-      value !== "" &&
-      // parseInt(value.replace(/\./g, "")) <= row.balance &&
-      parseInt(value.replace(/\./g, "")) > 0
-    ) {
+    if (value !== "" && parseInt(value.replace(/\./g, "")) > 0) {
       if (existingIndex !== -1) {
         updatedDonationAmounts[existingIndex].value = value
           ? new Intl.NumberFormat("id-ID", {
@@ -230,8 +222,6 @@ const CampaignInfo = () => {
   };
 
   const onChangeAddDonationAmount = (e: any, row: any) => {
-    console.log(row.balance);
-
     let { value } = e.target;
     value = value.replace(/\D/g, "");
     value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -259,6 +249,11 @@ const CampaignInfo = () => {
       if (existingIndex !== -1 && value === "") {
         updatedDonationAmounts.splice(existingIndex, 1);
       }
+      // else if (existingIndex !== -1 && value !== "") {
+      //   if (parseInt(value.replace(/\./g, "")) > row.balance) {
+      //     setTotalDonations(0);
+      //   }
+      // }
     }
 
     const initialValue = updatedDonationAmounts.reduce(
@@ -266,7 +261,11 @@ const CampaignInfo = () => {
       0
     );
 
-    setTotalDonations(initialValue);
+    if (parseInt(value.replace(/\./g, "")) > row.balance) {
+      setTotalDonations(0);
+    } else {
+      setTotalDonations(initialValue);
+    }
     setParsedDonationAmounts(updatedDonationAmounts);
     Amounts(e, row);
   };
@@ -340,7 +339,7 @@ const CampaignInfo = () => {
       confirmButtonColor: "#fff",
     }).then((result) => {
       if (result.isConfirmed) {
-        // setIsOpenAddDonation(true);
+        setIsOpenAddDonation(true);
       } else if (result.isDismissed) {
         postCampaignPayment(
           searchParams.get("id"),
@@ -349,12 +348,6 @@ const CampaignInfo = () => {
         );
       }
     });
-    // const addAmount = parseInt(amount.replace(/\./g, ""), 10);
-    // const onSuccess = () => {
-    //   handleCloseAddDonation();
-    //   location.reload();
-    // };
-    // postCampaignPayment(id, selectedWallet, addAmount, onSuccess());
   };
 
   const handleOpen = (id: number, status: string, name: string) => {
@@ -427,7 +420,7 @@ const CampaignInfo = () => {
       cell: (row: any) => (
         <>
           <Typography sx={{ fontSize: "13px" }}>
-            {moment(row.updated).format("DD/MM/YYYY")}
+            {moment(row.updated_at).format("DD/MM/YYYY hh:mm")}
           </Typography>
         </>
       ),
