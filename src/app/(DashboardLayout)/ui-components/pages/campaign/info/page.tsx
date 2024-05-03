@@ -179,9 +179,14 @@ const CampaignInfo = () => {
   const [donationAmounts, setDonationAmounts] = useState<DonationAmount[]>([]);
   const [totalDonations, setTotalDonations] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
+  const [theresErrorInput, setTheresErrorInput] = useState(false);
+
+  console.log(parsedDonationAmounts);
+  console.log(donationAmounts);
 
   const Amounts = (e: any, row: any) => {
     let { value } = e.target;
+
     value = value.replace(/\D/g, "");
     value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     const updatedDonationAmounts = [...donationAmounts];
@@ -222,7 +227,9 @@ const CampaignInfo = () => {
   };
 
   const onChangeAddDonationAmount = (e: any, row: any) => {
-    let { value } = e.target;
+    let { value } = e?.target;
+    console.log("add", row);
+
     value = value.replace(/\D/g, "");
     value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     const updatedDonationAmounts = [...parsedDonationAmounts];
@@ -249,11 +256,6 @@ const CampaignInfo = () => {
       if (existingIndex !== -1 && value === "") {
         updatedDonationAmounts.splice(existingIndex, 1);
       }
-      // else if (existingIndex !== -1 && value !== "") {
-      //   if (parseInt(value.replace(/\./g, "")) > row.balance) {
-      //     setTotalDonations(0);
-      //   }
-      // }
     }
 
     const initialValue = updatedDonationAmounts.reduce(
@@ -263,11 +265,68 @@ const CampaignInfo = () => {
 
     if (parseInt(value.replace(/\./g, "")) > row.balance) {
       setTotalDonations(0);
+      setTheresErrorInput(true);
     } else {
       setTotalDonations(initialValue);
+      setTheresErrorInput(false);
     }
     setParsedDonationAmounts(updatedDonationAmounts);
     Amounts(e, row);
+  };
+
+  const onSetMaxAmounts = (row: any) => {
+    const updatedDonationAmounts = [...donationAmounts];
+    const existingIndex = updatedDonationAmounts.findIndex(
+      (item) => item.id === row.id
+    );
+    if (existingIndex !== -1) {
+      updatedDonationAmounts[existingIndex].value = row.balance
+        ? new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+          }).format(row.balance)
+        : row.balance;
+      updatedDonationAmounts[existingIndex].value_num = row.balance;
+    } else {
+      updatedDonationAmounts.push({
+        id: row.id,
+        value: row.balance
+          ? new Intl.NumberFormat("id-ID", {
+              style: "currency",
+              currency: "IDR",
+              minimumFractionDigits: 0,
+            }).format(row.balance)
+          : row.balance,
+        value_num: row.balance,
+      });
+    }
+    setDonationAmounts(updatedDonationAmounts);
+  };
+
+  const onSetMax = (row: any) => {
+    console.log(row.balance);
+
+    const updatedDonationAmounts = [...parsedDonationAmounts];
+    const existingIndex = updatedDonationAmounts.findIndex(
+      (item) => item.wallet_id === row.id
+    );
+    if (existingIndex !== -1) {
+      updatedDonationAmounts[existingIndex].amount = row.balance;
+    } else {
+      updatedDonationAmounts.push({
+        wallet_id: row.id,
+        // val: 2,
+        amount: row.balance,
+      });
+    }
+    const initialValue = updatedDonationAmounts.reduce(
+      (acc: number, item: ParsedDonationAmount) => acc + item.amount,
+      0
+    );
+    setTotalDonations(initialValue);
+    setParsedDonationAmounts(updatedDonationAmounts);
+    onSetMaxAmounts(row);
   };
 
   const onChangeWalletType = (event: SelectChangeEvent) => {
@@ -429,41 +488,88 @@ const CampaignInfo = () => {
     {
       name: "Jumlah Donasi",
       cell: (row: any) => (
-        <TextField
-          variant="standard"
-          size="small"
-          value={
-            donationAmounts.find((item) => item.id === row.id)?.value || ""
-          }
-          type="text"
-          onChange={(e) => onChangeAddDonationAmount(e, row)}
-          sx={{
-            border: `1px solid ${
-              row.balance <
-              (donationAmounts.find((item) => item.id === row.id)?.value_num ||
-                0)
-                ? "red"
-                : "lightgrey"
+        <Box sx={{ display: "flex", gap: "3px" }}>
+          <TextField
+            disabled={
+              (theresErrorInput &&
+                donationAmounts.find((item) => item.id === row.id)?.id !==
+                  row.id) ||
+              (theresErrorInput &&
+                (donationAmounts.find((item) => item.id === row.id)
+                  ?.value_num || 0) <= row.balance)
             }
-            `,
-            paddingX: "10px",
-            paddingTop: "3px",
-            borderRadius: "5px",
-          }}
-          InputProps={{
-            style: {
-              color: `${
+            variant="standard"
+            size="small"
+            value={
+              donationAmounts.find((item) => item.id === row.id)?.value || ""
+            }
+            type="text"
+            onChange={(e) => onChangeAddDonationAmount(e, row)}
+            sx={{
+              border: `1px solid ${
                 row.balance <
                 (donationAmounts.find((item) => item.id === row.id)
                   ?.value_num || 0)
                   ? "red"
-                  : "black"
-              }`,
-            },
-            disableUnderline: true,
-          }}
-        />
+                  : "lightgrey"
+              }
+            `,
+              paddingX: "10px",
+              paddingTop: "3px",
+              borderRadius: "5px",
+            }}
+            InputProps={{
+              style: {
+                color: `${
+                  row.balance <
+                  (donationAmounts.find((item) => item.id === row.id)
+                    ?.value_num || 0)
+                    ? "red"
+                    : "black"
+                }`,
+              },
+              disableUnderline: true,
+            }}
+          />
+          <Button
+            disabled={
+              (theresErrorInput &&
+                donationAmounts.find((item) => item.id === row.id)?.id !==
+                  row.id) ||
+              (theresErrorInput &&
+                (donationAmounts.find((item) => item.id === row.id)
+                  ?.value_num || 0) <= row.balance) ||
+              row.balance === 0
+            }
+            variant="contained"
+            size="small"
+            onClick={() => {
+              onSetMax(row);
+            }}
+            sx={{
+              display: "flex",
+              padding: 0,
+              minHeight: 0,
+              minWidth: "48px",
+              backgroundColor: "#ffff",
+              color: "black",
+              fontSize: "12px",
+              justifyContent: "start",
+              width: "1px",
+              ":hover": {
+                boxShadow: "none",
+                backgroundColor: "#ffff",
+              },
+              ":disabled": {
+                backgroundColor: "transparent",
+              },
+            }}
+          >
+            Set Max.
+          </Button>
+        </Box>
       ),
+      width: "260px",
     },
   ];
 
