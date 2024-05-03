@@ -228,8 +228,6 @@ const CampaignInfo = () => {
 
   const onChangeAddDonationAmount = (e: any, row: any) => {
     let { value } = e?.target;
-    console.log("add", row);
-
     value = value.replace(/\D/g, "");
     value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     const updatedDonationAmounts = [...parsedDonationAmounts];
@@ -305,8 +303,6 @@ const CampaignInfo = () => {
   };
 
   const onSetMax = (row: any) => {
-    console.log(row.balance);
-
     const updatedDonationAmounts = [...parsedDonationAmounts];
     const existingIndex = updatedDonationAmounts.findIndex(
       (item) => item.wallet_id === row.id
@@ -316,7 +312,6 @@ const CampaignInfo = () => {
     } else {
       updatedDonationAmounts.push({
         wallet_id: row.id,
-        // val: 2,
         amount: row.balance,
       });
     }
@@ -357,18 +352,18 @@ const CampaignInfo = () => {
         popup: "toast-padding-top",
       },
       showConfirmButton: false,
-      timer: 3000,
+      timer: 4000,
       // timerProgressBar: true,
       didOpen: (toast) => {
         toast.onmouseenter = Swal.stopTimer;
         toast.onmouseleave = Swal.resumeTimer;
-        location.reload();
       },
     });
     Toast.fire({
       icon: "success",
       title: "Sukses menambah donasi",
     });
+    location.reload();
   };
 
   const handleAddDonation = () => {
@@ -403,7 +398,7 @@ const CampaignInfo = () => {
         postCampaignPayment(
           searchParams.get("id"),
           parsedDonationAmounts,
-          onSuccess
+          onSuccess()
         );
       }
     });

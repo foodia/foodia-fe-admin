@@ -712,8 +712,8 @@ export const DataTablesManualPagination: React.FC<Data> = ({
                       />
                     }
                     breakLabel={<a className="text-merah">...</a>}
-                    pageRangeDisplayed={5}
-                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={1}
+                    marginPagesDisplayed={1}
                     forcePage={currentPage}
                     pageCount={pageCount}
                     onPageChange={handlePageClick}
