@@ -176,13 +176,26 @@ const CampaignInfo = () => {
   const [parsedDonationAmounts, setParsedDonationAmounts] = useState<
     ParsedDonationAmount[]
   >([]);
+  const [parsedDonationAmountsCsr, setParsedDonationAmountsCsr] = useState<
+    ParsedDonationAmount[]
+  >([]);
   const [donationAmounts, setDonationAmounts] = useState<DonationAmount[]>([]);
-  const [totalDonations, setTotalDonations] = useState(0);
+  const [donationAmountsCsr, setDonationAmountsCsr] = useState<
+    DonationAmount[]
+  >([]);
+  const [totalDonationsAgnostic, setTotalDonationsAgnostic] = useState(0);
+  const [totalDonationsCsr, setTotalDonationsCsr] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [theresErrorInput, setTheresErrorInput] = useState(false);
 
-  console.log(parsedDonationAmounts);
-  console.log(donationAmounts);
+  console.log("---------------------------");
+  console.log("parsedAg", parsedDonationAmounts);
+  console.log("parsedCsr", parsedDonationAmountsCsr);
+  console.log("donAg", donationAmounts);
+  console.log("donCsr", donationAmountsCsr);
+  console.log("TotAg", totalDonationsAgnostic);
+  console.log("TotCsr", totalDonationsCsr);
+  console.log(valueWalletType);
 
   const Amounts = (e: any, row: any) => {
     let { value } = e.target;
@@ -190,40 +203,81 @@ const CampaignInfo = () => {
     value = value.replace(/\D/g, "");
     value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     const updatedDonationAmounts = [...donationAmounts];
+    const updatedDonationAmountsCsr = [...donationAmountsCsr];
+
     const existingIndex = updatedDonationAmounts.findIndex(
       (item) => item.id === row.id
     );
-    if (value !== "" && parseInt(value.replace(/\./g, "")) > 0) {
-      if (existingIndex !== -1) {
-        updatedDonationAmounts[existingIndex].value = value
-          ? new Intl.NumberFormat("id-ID", {
-              style: "currency",
-              currency: "IDR",
-              minimumFractionDigits: 0,
-            }).format(parseInt(value.replace(/\./g, "")))
-          : value;
-        updatedDonationAmounts[existingIndex].value_num = parseInt(
-          value.replace(/\./g, "")
-        );
-      } else {
-        updatedDonationAmounts.push({
-          id: row.id,
-          value: value
+
+    const existingIndexCsr = updatedDonationAmountsCsr.findIndex(
+      (item) => item.id === row.id
+    );
+
+    if (valueWalletType === "agnostic") {
+      if (value !== "" && parseInt(value.replace(/\./g, "")) > 0) {
+        if (existingIndex !== -1) {
+          updatedDonationAmounts[existingIndex].value = value
             ? new Intl.NumberFormat("id-ID", {
                 style: "currency",
                 currency: "IDR",
                 minimumFractionDigits: 0,
               }).format(parseInt(value.replace(/\./g, "")))
-            : value,
-          value_num: parseInt(value.replace(/\./g, "")),
-        });
+            : value;
+          updatedDonationAmounts[existingIndex].value_num = parseInt(
+            value.replace(/\./g, "")
+          );
+        } else {
+          updatedDonationAmounts.push({
+            id: row.id,
+            value: value
+              ? new Intl.NumberFormat("id-ID", {
+                  style: "currency",
+                  currency: "IDR",
+                  minimumFractionDigits: 0,
+                }).format(parseInt(value.replace(/\./g, "")))
+              : value,
+            value_num: parseInt(value.replace(/\./g, "")),
+          });
+        }
+      } else {
+        if (existingIndex !== -1 && value === "") {
+          updatedDonationAmounts.splice(existingIndex, 1);
+        }
       }
+      setDonationAmounts(updatedDonationAmounts);
     } else {
-      if (existingIndex !== -1 && value === "") {
-        updatedDonationAmounts.splice(existingIndex, 1);
+      if (value !== "" && parseInt(value.replace(/\./g, "")) > 0) {
+        if (existingIndexCsr !== -1) {
+          updatedDonationAmountsCsr[existingIndexCsr].value = value
+            ? new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }).format(parseInt(value.replace(/\./g, "")))
+            : value;
+          updatedDonationAmountsCsr[existingIndexCsr].value_num = parseInt(
+            value.replace(/\./g, "")
+          );
+        } else {
+          updatedDonationAmountsCsr.push({
+            id: row.id,
+            value: value
+              ? new Intl.NumberFormat("id-ID", {
+                  style: "currency",
+                  currency: "IDR",
+                  minimumFractionDigits: 0,
+                }).format(parseInt(value.replace(/\./g, "")))
+              : value,
+            value_num: parseInt(value.replace(/\./g, "")),
+          });
+        }
+      } else {
+        if (existingIndexCsr !== -1 && value === "") {
+          updatedDonationAmountsCsr.splice(existingIndexCsr, 1);
+        }
       }
+      setDonationAmountsCsr(updatedDonationAmountsCsr);
     }
-    setDonationAmounts(updatedDonationAmounts);
   };
 
   const onChangeAddDonationAmount = (e: any, row: any) => {
@@ -231,96 +285,190 @@ const CampaignInfo = () => {
     value = value.replace(/\D/g, "");
     value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     const updatedDonationAmounts = [...parsedDonationAmounts];
+    const updatedDonationAmountsCsr = [...parsedDonationAmountsCsr];
+
     const existingIndex = updatedDonationAmounts.findIndex(
       (item) => item.wallet_id === row.id
     );
-    if (
-      value !== "" &&
-      parseInt(value.replace(/\./g, "")) <= row.balance &&
-      parseInt(value.replace(/\./g, "")) > 0
-    ) {
-      if (existingIndex !== -1) {
-        updatedDonationAmounts[existingIndex].amount = parseInt(
-          value.replace(/\./g, "")
-        );
-      } else {
-        updatedDonationAmounts.push({
-          wallet_id: row.id,
-          // value: 2,
-          amount: parseInt(value.replace(/\./g, "")),
-        });
-      }
-    } else {
-      if (existingIndex !== -1 && value === "") {
-        updatedDonationAmounts.splice(existingIndex, 1);
-      }
-    }
 
-    const initialValue = updatedDonationAmounts.reduce(
-      (acc: number, item: ParsedDonationAmount) => acc + item.amount,
-      0
+    const existingIndexCsr = updatedDonationAmountsCsr.findIndex(
+      (item) => item.wallet_id === row.id
     );
 
-    if (parseInt(value.replace(/\./g, "")) > row.balance) {
-      setTotalDonations(0);
-      setTheresErrorInput(true);
+    if (valueWalletType === "agnostic") {
+      if (
+        value !== "" &&
+        parseInt(value.replace(/\./g, "")) <= row.balance &&
+        parseInt(value.replace(/\./g, "")) > 0
+      ) {
+        if (existingIndex !== -1) {
+          updatedDonationAmounts[existingIndex].amount = parseInt(
+            value.replace(/\./g, "")
+          );
+        } else {
+          updatedDonationAmounts.push({
+            wallet_id: row.id,
+            // value: 2,
+            amount: parseInt(value.replace(/\./g, "")),
+          });
+        }
+      } else {
+        if (existingIndex !== -1 && value === "") {
+          updatedDonationAmounts.splice(existingIndex, 1);
+        }
+      }
+      const initialValue = updatedDonationAmounts.reduce(
+        (acc: number, item: ParsedDonationAmount) => acc + item.amount,
+        0
+      );
+      if (parseInt(value.replace(/\./g, "")) > row.balance) {
+        // setTotalDonations(0);
+        setTheresErrorInput(true);
+      } else {
+        setTotalDonationsAgnostic(initialValue);
+        setTheresErrorInput(false);
+      }
+      setParsedDonationAmounts(updatedDonationAmounts);
     } else {
-      setTotalDonations(initialValue);
-      setTheresErrorInput(false);
+      if (
+        value !== "" &&
+        parseInt(value.replace(/\./g, "")) <= row.balance &&
+        parseInt(value.replace(/\./g, "")) > 0
+      ) {
+        if (existingIndexCsr !== -1) {
+          updatedDonationAmountsCsr[existingIndexCsr].amount = parseInt(
+            value.replace(/\./g, "")
+          );
+        } else {
+          updatedDonationAmountsCsr.push({
+            wallet_id: row.id,
+            // value: 2,
+            amount: parseInt(value.replace(/\./g, "")),
+          });
+        }
+      } else {
+        if (existingIndexCsr !== -1 && value === "") {
+          updatedDonationAmountsCsr.splice(existingIndexCsr, 1);
+        }
+      }
+      const initialValue = updatedDonationAmountsCsr.reduce(
+        (acc: number, item: ParsedDonationAmount) => acc + item.amount,
+        0
+      );
+      if (parseInt(value.replace(/\./g, "")) > row.balance) {
+        // setTotalDonations(0);
+        setTheresErrorInput(true);
+      } else {
+        setTotalDonationsCsr(initialValue);
+        setTheresErrorInput(false);
+      }
+      setParsedDonationAmountsCsr(updatedDonationAmountsCsr);
     }
-    setParsedDonationAmounts(updatedDonationAmounts);
+
     Amounts(e, row);
   };
 
   const onSetMaxAmounts = (row: any) => {
     const updatedDonationAmounts = [...donationAmounts];
+    const updatedDonationAmountsCsr = [...donationAmountsCsr];
+
     const existingIndex = updatedDonationAmounts.findIndex(
       (item) => item.id === row.id
     );
-    if (existingIndex !== -1) {
-      updatedDonationAmounts[existingIndex].value = row.balance
-        ? new Intl.NumberFormat("id-ID", {
-            style: "currency",
-            currency: "IDR",
-            minimumFractionDigits: 0,
-          }).format(row.balance)
-        : row.balance;
-      updatedDonationAmounts[existingIndex].value_num = row.balance;
-    } else {
-      updatedDonationAmounts.push({
-        id: row.id,
-        value: row.balance
+    const existingIndexCsr = updatedDonationAmountsCsr.findIndex(
+      (item) => item.id === row.id
+    );
+    if (valueWalletType === "agnostic") {
+      if (existingIndex !== -1) {
+        updatedDonationAmounts[existingIndex].value = row.balance
           ? new Intl.NumberFormat("id-ID", {
               style: "currency",
               currency: "IDR",
               minimumFractionDigits: 0,
             }).format(row.balance)
-          : row.balance,
-        value_num: row.balance,
-      });
+          : row.balance;
+        updatedDonationAmounts[existingIndex].value_num = row.balance;
+      } else {
+        updatedDonationAmounts.push({
+          id: row.id,
+          value: row.balance
+            ? new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }).format(row.balance)
+            : row.balance,
+          value_num: row.balance,
+        });
+      }
+      setDonationAmounts(updatedDonationAmounts);
+    } else {
+      if (existingIndexCsr !== -1) {
+        updatedDonationAmountsCsr[existingIndexCsr].value = row.balance
+          ? new Intl.NumberFormat("id-ID", {
+              style: "currency",
+              currency: "IDR",
+              minimumFractionDigits: 0,
+            }).format(row.balance)
+          : row.balance;
+        updatedDonationAmountsCsr[existingIndexCsr].value_num = row.balance;
+      } else {
+        updatedDonationAmountsCsr.push({
+          id: row.id,
+          value: row.balance
+            ? new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }).format(row.balance)
+            : row.balance,
+          value_num: row.balance,
+        });
+      }
+      setDonationAmountsCsr(updatedDonationAmountsCsr);
     }
-    setDonationAmounts(updatedDonationAmounts);
   };
 
   const onSetMax = (row: any) => {
     const updatedDonationAmounts = [...parsedDonationAmounts];
+    const updatedDonationAmountsCsr = [...parsedDonationAmountsCsr];
     const existingIndex = updatedDonationAmounts.findIndex(
       (item) => item.wallet_id === row.id
     );
-    if (existingIndex !== -1) {
-      updatedDonationAmounts[existingIndex].amount = row.balance;
-    } else {
-      updatedDonationAmounts.push({
-        wallet_id: row.id,
-        amount: row.balance,
-      });
-    }
-    const initialValue = updatedDonationAmounts.reduce(
-      (acc: number, item: ParsedDonationAmount) => acc + item.amount,
-      0
+    const existingIndexCsr = updatedDonationAmountsCsr.findIndex(
+      (item) => item.wallet_id === row.id
     );
-    setTotalDonations(initialValue);
-    setParsedDonationAmounts(updatedDonationAmounts);
+    if (valueWalletType === "agnostic") {
+      if (existingIndex !== -1) {
+        updatedDonationAmounts[existingIndex].amount = row.balance;
+      } else {
+        updatedDonationAmounts.push({
+          wallet_id: row.id,
+          amount: row.balance,
+        });
+      }
+      const initialValue = updatedDonationAmounts.reduce(
+        (acc: number, item: ParsedDonationAmount) => acc + item.amount,
+        0
+      );
+      setTotalDonationsAgnostic(initialValue);
+      setParsedDonationAmounts(updatedDonationAmounts);
+    } else {
+      if (existingIndexCsr !== -1) {
+        updatedDonationAmountsCsr[existingIndexCsr].amount = row.balance;
+      } else {
+        updatedDonationAmountsCsr.push({
+          wallet_id: row.id,
+          amount: row.balance,
+        });
+      }
+      const initialValue = updatedDonationAmountsCsr.reduce(
+        (acc: number, item: ParsedDonationAmount) => acc + item.amount,
+        0
+      );
+      setTotalDonationsCsr(initialValue);
+      setParsedDonationAmountsCsr(updatedDonationAmountsCsr);
+    }
     onSetMaxAmounts(row);
   };
 
@@ -384,7 +532,7 @@ const CampaignInfo = () => {
         style: "currency",
         currency: "IDR",
         minimumFractionDigits: 0,
-      }).format(totalDonations)}</p>`,
+      }).format(totalDonationsAgnostic + totalDonationsCsr)}</p>`,
       width: "260px",
       showCancelButton: true,
       cancelButtonText: `Ya`,
@@ -482,88 +630,171 @@ const CampaignInfo = () => {
     },
     {
       name: "Jumlah Donasi",
-      cell: (row: any) => (
-        <Box sx={{ display: "flex", gap: "3px" }}>
-          <TextField
-            disabled={
-              (theresErrorInput &&
-                donationAmounts.find((item) => item.id === row.id)?.id !==
-                  row.id) ||
-              (theresErrorInput &&
-                (donationAmounts.find((item) => item.id === row.id)
-                  ?.value_num || 0) <= row.balance)
-            }
-            variant="standard"
-            size="small"
-            value={
-              donationAmounts.find((item) => item.id === row.id)?.value || ""
-            }
-            type="text"
-            onChange={(e) => onChangeAddDonationAmount(e, row)}
-            sx={{
-              border: `1px solid ${
-                row.balance <
-                (donationAmounts.find((item) => item.id === row.id)
-                  ?.value_num || 0)
-                  ? "red"
-                  : "lightgrey"
+      cell: (row: any) =>
+        valueWalletType === "agnostic" ? (
+          <Box sx={{ display: "flex", gap: "3px" }}>
+            <TextField
+              disabled={
+                (theresErrorInput &&
+                  donationAmounts.find((item) => item.id === row.id)?.id !==
+                    row.id) ||
+                (theresErrorInput &&
+                  (donationAmounts.find((item) => item.id === row.id)
+                    ?.value_num || 0) <= row.balance)
               }
-            `,
-              paddingX: "10px",
-              paddingTop: "3px",
-              borderRadius: "5px",
-            }}
-            InputProps={{
-              style: {
-                color: `${
+              variant="standard"
+              size="small"
+              value={
+                donationAmounts.find((item) => item.id === row.id)?.value || ""
+              }
+              type="text"
+              onChange={(e) => onChangeAddDonationAmount(e, row)}
+              sx={{
+                border: `1px solid ${
                   row.balance <
                   (donationAmounts.find((item) => item.id === row.id)
                     ?.value_num || 0)
                     ? "red"
-                    : "black"
-                }`,
-              },
-              disableUnderline: true,
-            }}
-          />
-          <Button
-            disabled={
-              (theresErrorInput &&
-                donationAmounts.find((item) => item.id === row.id)?.id !==
-                  row.id) ||
-              (theresErrorInput &&
-                (donationAmounts.find((item) => item.id === row.id)
-                  ?.value_num || 0) <= row.balance) ||
-              row.balance === 0
-            }
-            variant="contained"
-            size="small"
-            onClick={() => {
-              onSetMax(row);
-            }}
-            sx={{
-              display: "flex",
-              padding: 0,
-              minHeight: 0,
-              minWidth: "48px",
-              backgroundColor: "#ffff",
-              color: "black",
-              fontSize: "12px",
-              justifyContent: "start",
-              width: "1px",
-              ":hover": {
-                boxShadow: "none",
+                    : "lightgrey"
+                }
+            `,
+                paddingX: "10px",
+                paddingTop: "3px",
+                borderRadius: "5px",
+              }}
+              InputProps={{
+                style: {
+                  color: `${
+                    row.balance <
+                    (donationAmounts.find((item) => item.id === row.id)
+                      ?.value_num || 0)
+                      ? "red"
+                      : "black"
+                  }`,
+                },
+                disableUnderline: true,
+              }}
+            />
+            <Button
+              disabled={
+                (theresErrorInput &&
+                  donationAmounts.find((item) => item.id === row.id)?.id !==
+                    row.id) ||
+                (theresErrorInput &&
+                  (donationAmounts.find((item) => item.id === row.id)
+                    ?.value_num || 0) <= row.balance) ||
+                row.balance === 0
+              }
+              variant="contained"
+              size="small"
+              onClick={() => {
+                onSetMax(row);
+              }}
+              sx={{
+                display: "flex",
+                padding: 0,
+                minHeight: 0,
+                minWidth: "48px",
                 backgroundColor: "#ffff",
-              },
-              ":disabled": {
-                backgroundColor: "transparent",
-              },
-            }}
-          >
-            Set Max.
-          </Button>
-        </Box>
-      ),
+                color: "black",
+                fontSize: "12px",
+                justifyContent: "start",
+                width: "1px",
+                ":hover": {
+                  boxShadow: "none",
+                  backgroundColor: "#ffff",
+                },
+                ":disabled": {
+                  backgroundColor: "transparent",
+                },
+              }}
+            >
+              Set Max.
+            </Button>
+          </Box>
+        ) : (
+          <Box sx={{ display: "flex", gap: "3px" }}>
+            <TextField
+              disabled={
+                (theresErrorInput &&
+                  donationAmountsCsr.find((item) => item.id === row.id)?.id !==
+                    row.id) ||
+                (theresErrorInput &&
+                  (donationAmountsCsr.find((item) => item.id === row.id)
+                    ?.value_num || 0) <= row.balance)
+              }
+              variant="standard"
+              size="small"
+              value={
+                donationAmountsCsr.find((item) => item.id === row.id)?.value ||
+                ""
+              }
+              type="text"
+              onChange={(e) => onChangeAddDonationAmount(e, row)}
+              sx={{
+                border: `1px solid ${
+                  row.balance <
+                  (donationAmountsCsr.find((item) => item.id === row.id)
+                    ?.value_num || 0)
+                    ? "red"
+                    : "lightgrey"
+                }
+          `,
+                paddingX: "10px",
+                paddingTop: "3px",
+                borderRadius: "5px",
+              }}
+              InputProps={{
+                style: {
+                  color: `${
+                    row.balance <
+                    (donationAmountsCsr.find((item) => item.id === row.id)
+                      ?.value_num || 0)
+                      ? "red"
+                      : "black"
+                  }`,
+                },
+                disableUnderline: true,
+              }}
+            />
+            <Button
+              disabled={
+                (theresErrorInput &&
+                  donationAmountsCsr.find((item) => item.id === row.id)?.id !==
+                    row.id) ||
+                (theresErrorInput &&
+                  (donationAmountsCsr.find((item) => item.id === row.id)
+                    ?.value_num || 0) <= row.balance) ||
+                row.balance === 0
+              }
+              variant="contained"
+              size="small"
+              onClick={() => {
+                onSetMax(row);
+              }}
+              sx={{
+                display: "flex",
+                padding: 0,
+                minHeight: 0,
+                minWidth: "48px",
+                backgroundColor: "#ffff",
+                color: "black",
+                fontSize: "12px",
+                justifyContent: "start",
+                width: "1px",
+                ":hover": {
+                  boxShadow: "none",
+                  backgroundColor: "#ffff",
+                },
+                ":disabled": {
+                  backgroundColor: "transparent",
+                },
+              }}
+            >
+              Set Max.
+            </Button>
+          </Box>
+        ),
       width: "260px",
     },
   ];
@@ -641,11 +872,12 @@ const CampaignInfo = () => {
         selectedWallet={selectedWallet}
         onChangeSelectedWallet={onChangeSelectedWallet}
         onChangeAddDonationAmount={onChangeAddDonationAmount}
-        valueDonationAmount={totalDonations}
+        valueDonationAmount={totalDonationsAgnostic + totalDonationsCsr}
         // handleAddDonation={() =>
         //   handleAddDonation(data.id, selectedWallet, amount)
         // }
         fieldsCsrWalletSelection={fieldsCsrWalletSelection}
+        theresInputError={theresErrorInput}
       >
         <>
           <DataTablesManualPagination
@@ -658,7 +890,10 @@ const CampaignInfo = () => {
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <Button
               onClick={() => handleAddDonation()}
-              disabled={totalDonations == 0}
+              disabled={
+                theresErrorInput ||
+                (totalDonationsAgnostic == 0 && totalDonationsCsr == 0)
+              }
               sx={{
                 width: "15%",
                 borderRadius: "10px",

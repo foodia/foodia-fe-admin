@@ -44,6 +44,7 @@ type Props = {
   onChangeAddDonationAmount?: any;
   fieldsCsrWalletSelection?: any;
   isLoading?: any;
+  theresInputError?: any;
   children?: React.ReactNode;
 };
 
@@ -53,16 +54,11 @@ export const ModalPopupAddDonations = ({
   campaign_name,
   required_donation,
   collected_donation,
-  walletList,
   valueWalletType,
   onChangeWalletType,
-  selectedWallet,
-  onChangeSelectedWallet,
-  handleAddDonation,
   valueDonationAmount,
-  onChangeAddDonationAmount,
-  fieldsCsrWalletSelection,
   children,
+  theresInputError,
 }: Props) => {
   return (
     <Modal
@@ -170,6 +166,7 @@ export const ModalPopupAddDonations = ({
                 Choose Wallet
               </Typography>
               <Select
+                disabled={theresInputError}
                 variant="standard"
                 size="small"
                 disableUnderline
