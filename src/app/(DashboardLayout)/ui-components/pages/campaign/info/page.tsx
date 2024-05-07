@@ -591,7 +591,7 @@ const CampaignInfo = () => {
     {
       name: "#",
       selector: (_row: any, i: any) => i + 1 + currentPage * 5,
-      width: "50px",
+      width: "65px",
     },
     {
       name: "Nama Donator",
@@ -872,10 +872,12 @@ const CampaignInfo = () => {
         selectedWallet={selectedWallet}
         onChangeSelectedWallet={onChangeSelectedWallet}
         onChangeAddDonationAmount={onChangeAddDonationAmount}
-        valueDonationAmount={totalDonationsAgnostic + totalDonationsCsr}
-        // handleAddDonation={() =>
-        //   handleAddDonation(data.id, selectedWallet, amount)
-        // }
+        valueDonationAmount={
+          valueWalletType === "agnostic"
+            ? totalDonationsAgnostic
+            : totalDonationsCsr
+        }
+        totalValueDonationAmount={totalDonationsAgnostic + totalDonationsCsr}
         fieldsCsrWalletSelection={fieldsCsrWalletSelection}
         theresInputError={theresErrorInput}
       >
@@ -892,7 +894,9 @@ const CampaignInfo = () => {
               onClick={() => handleAddDonation()}
               disabled={
                 theresErrorInput ||
-                (totalDonationsAgnostic == 0 && totalDonationsCsr == 0)
+                (totalDonationsAgnostic == 0 && totalDonationsCsr == 0) ||
+                totalDonationsAgnostic + totalDonationsCsr >
+                  data?.donation_target - data?.donation_collected
               }
               sx={{
                 width: "15%",

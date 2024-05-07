@@ -446,9 +446,9 @@ export const DataTablesManualPagination: React.FC<Data> = ({
   setCurrentPage,
   onChange,
 }) => {
-  data.sort(function (a: any, b: any) {
-    return b.id - a.id;
-  });
+  // data.sort(function (a: any, b: any) {
+  //   return b.id - a.id;
+  // });
 
   const { isLoading, setIsLoading } = useAppContext();
   // const [currentPage, setCurrentPage] = useState(0);

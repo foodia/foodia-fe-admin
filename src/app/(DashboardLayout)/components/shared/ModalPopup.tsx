@@ -40,6 +40,7 @@ type Props = {
   selectedWallet?: any;
   onChangeSelectedWallet?: any;
   handleAddDonation?: any;
+  totalValueDonationAmount?: any;
   valueDonationAmount?: any;
   onChangeAddDonationAmount?: any;
   fieldsCsrWalletSelection?: any;
@@ -57,6 +58,7 @@ export const ModalPopupAddDonations = ({
   valueWalletType,
   onChangeWalletType,
   valueDonationAmount,
+  totalValueDonationAmount,
   children,
   theresInputError,
 }: Props) => {
@@ -200,35 +202,74 @@ export const ModalPopupAddDonations = ({
                 </MenuItem>
               </Select>
             </Box>
-            <Typography
-              sx={{
-                fontWeight: "bold",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "right",
-                alignItems: "end",
-              }}
-            >
+            <Box sx={{ display: "flex", flexDirection: "row", gap: "35px" }}>
+              {valueWalletType !== "default" && (
+                <Typography
+                  sx={{
+                    fontWeight: "bold",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "right",
+                    alignItems: "end",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      textTransform: "capitalize",
+                      fontWeight: "medium",
+                      color: "black",
+                    }}
+                  >
+                    Tambahan Dana {valueWalletType}
+                  </Typography>
+                  {!valueDonationAmount
+                    ? new Intl.NumberFormat("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                        minimumFractionDigits: 0,
+                      }).format(0)
+                    : new Intl.NumberFormat("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                        minimumFractionDigits: 0,
+                      }).format(valueDonationAmount)}
+                </Typography>
+              )}
               <Typography
                 sx={{
-                  fontWeight: "medium",
-                  color: "black",
+                  fontWeight: "bold",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "right",
+                  alignItems: "end",
+                  color: `${
+                    totalValueDonationAmount >
+                    required_donation - collected_donation
+                      ? "red"
+                      : "black"
+                  }`,
                 }}
               >
-                Tambahan Dana
+                <Typography
+                  sx={{
+                    fontWeight: "medium",
+                  }}
+                >
+                  Total Tambahan Dana
+                </Typography>
+                {!totalValueDonationAmount
+                  ? new Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                      minimumFractionDigits: 0,
+                    }).format(0)
+                  : new Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                      minimumFractionDigits: 0,
+                    }).format(totalValueDonationAmount)}
               </Typography>
-              {!valueDonationAmount
-                ? new Intl.NumberFormat("id-ID", {
-                    style: "currency",
-                    currency: "IDR",
-                    minimumFractionDigits: 0,
-                  }).format(0)
-                : new Intl.NumberFormat("id-ID", {
-                    style: "currency",
-                    currency: "IDR",
-                    minimumFractionDigits: 0,
-                  }).format(valueDonationAmount)}
-            </Typography>
+            </Box>
           </Box>
         </Box>
         {valueWalletType !== "default" && <>{children}</>}
