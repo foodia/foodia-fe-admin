@@ -45,6 +45,7 @@ interface Data {
   excelfileName?: any;
   currentPage?: any;
   setCurrentPage?: any;
+  manualSorting?: any;
 }
 
 const DataTables: React.FC<Data> = ({
@@ -445,10 +446,14 @@ export const DataTablesManualPagination: React.FC<Data> = ({
   currentPage,
   setCurrentPage,
   onChange,
+  manualSorting,
 }) => {
-  // data.sort(function (a: any, b: any) {
-  //   return b.id - a.id;
-  // });
+  {
+    manualSorting &&
+      data.sort(function (a: any, b: any) {
+        return b.id - a.id;
+      });
+  }
 
   const { isLoading, setIsLoading } = useAppContext();
   // const [currentPage, setCurrentPage] = useState(0);

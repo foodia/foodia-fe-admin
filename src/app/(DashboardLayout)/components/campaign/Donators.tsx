@@ -132,6 +132,7 @@ const Donators: React.FC<Props> = ({ data }) => {
             // download={false}
             // onChangeSearch={handleChangeSearch}
             // pageItems={data.length}
+            manualSorting={true}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             columns={columns}
