@@ -7,6 +7,13 @@ const ErrorHandling = (errCode?: any) => {
     window.location.href = "/ui-components/auth/login";
   } else if (errCode.code === "ERR_NETWORK") {
     AlertMessage("Error", "Connection Failed", "Try Again", "error");
+  } else {
+    AlertMessage(
+      "Error",
+      "Something Wrong, Please Try Again",
+      "Try Again",
+      "error"
+    );
   }
 
   return null;

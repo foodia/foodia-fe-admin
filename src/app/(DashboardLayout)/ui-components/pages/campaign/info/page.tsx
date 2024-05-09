@@ -197,6 +197,12 @@ const CampaignInfo = () => {
   console.log("TotCsr", totalDonationsCsr);
   console.log(valueWalletType);
 
+  useEffect(() => {
+    if (localStorage.getItem("addDonationSucceed") === "true") {
+      onSuccess();
+    }
+  });
+
   const Amounts = (e: any, row: any) => {
     let { value } = e.target;
 
@@ -500,18 +506,18 @@ const CampaignInfo = () => {
         popup: "toast-padding-top",
       },
       showConfirmButton: false,
-      timer: 4000,
+      timer: 5000,
       // timerProgressBar: true,
       didOpen: (toast) => {
         toast.onmouseenter = Swal.stopTimer;
         toast.onmouseleave = Swal.resumeTimer;
+        localStorage.removeItem("addDonationSucceed");
       },
     });
     Toast.fire({
       icon: "success",
       title: "Sukses menambah donasi",
     });
-    location.reload();
   };
 
   const handleAddDonation = () => {
@@ -546,7 +552,7 @@ const CampaignInfo = () => {
         postCampaignPayment(
           searchParams.get("id"),
           parsedDonationAmounts,
-          onSuccess()
+          parsedDonationAmountsCsr
         );
       }
     });

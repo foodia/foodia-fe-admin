@@ -61,14 +61,18 @@ export const getCampaignDetail = (id: any, setData: any, setIsLoading: any) => {
     });
 };
 
-export const postCampaignPayment = (id: any, payments: any, onSuccess: any) => {
-  console.log("opas", payments);
+export const postCampaignPayment = (
+  id: any,
+  csrWallet: any,
+  agnosticWallet: any
+) => {
+  const mergedWallet = [...csrWallet, ...agnosticWallet];
 
   axios
     .post(
       process.env.NEXT_PUBLIC_BASE + `/campaign/payment/${id}`,
       {
-        details: payments,
+        details: mergedWallet,
       },
       {
         headers: {
@@ -77,7 +81,9 @@ export const postCampaignPayment = (id: any, payments: any, onSuccess: any) => {
       }
     )
     .then((res) => {
-      onSuccess(); // Call the onSuccess function with the response
+      location.reload();
+      localStorage.setItem("addDonationSucceed", "true");
+      // onSuccess(); // Call the onSuccess function with the response
     })
     .catch((error) => {
       ErrorHandling(error);
