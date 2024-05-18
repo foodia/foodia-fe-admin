@@ -188,15 +188,6 @@ const CampaignInfo = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [theresErrorInput, setTheresErrorInput] = useState(false);
 
-  console.log("---------------------------");
-  console.log("parsedAg", parsedDonationAmounts);
-  console.log("parsedCsr", parsedDonationAmountsCsr);
-  console.log("donAg", donationAmounts);
-  console.log("donCsr", donationAmountsCsr);
-  console.log("TotAg", totalDonationsAgnostic);
-  console.log("TotCsr", totalDonationsCsr);
-  console.log(valueWalletType);
-
   useEffect(() => {
     if (localStorage.getItem("addDonationSucceed") === "true") {
       onSuccess();
