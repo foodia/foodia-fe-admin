@@ -120,7 +120,7 @@ export const ModalPopupAddDonations = ({
                 {campaign_name}
               </Typography>
             </Box>
-            <Typography
+            <Box
               sx={{
                 fontWeight: "bold",
                 color: "red",
@@ -143,7 +143,7 @@ export const ModalPopupAddDonations = ({
                 currency: "IDR",
                 minimumFractionDigits: 0,
               }).format(required_donation - collected_donation)}
-            </Typography>
+            </Box>
           </Box>
           <Box
             sx={{

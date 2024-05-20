@@ -9,13 +9,17 @@
   background-color: transparent;
 }
 
+.swal2-html-container {
+  font-weight: bold !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+}
+
 .swal2-html-container p {
-  margin: 0 !important;
-  /* padding: 20px !important; */
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-  color: #000;
-  font-weight: bold;
+  padding-left: 10px !important;
+  font-weight: normal !important;
+  text-align: left;
 }
 
 .swal2-actions {
@@ -32,12 +36,13 @@
 .custom-swal {
   padding: 0;
   /* padding-top: 10px; */
+  width: 350px !important;
   font-size: small;
   padding-bottom: 10px;
   border-radius: 15px;
   display: flex !important;
   flex-direction: column;
-  gap: 0;
+  gap: 5px !important;
 }
 
 .custom-title-swal {

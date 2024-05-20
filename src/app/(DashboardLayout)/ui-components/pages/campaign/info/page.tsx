@@ -101,6 +101,7 @@ interface DonationAmount {
   id: number;
   value: string;
   value_num: number;
+  name: string;
 }
 
 const CampaignInfo = () => {
@@ -188,6 +189,15 @@ const CampaignInfo = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [theresErrorInput, setTheresErrorInput] = useState(false);
 
+  console.log("---------------------------");
+  console.log("parsedAg", parsedDonationAmounts);
+  console.log("parsedCsr", parsedDonationAmountsCsr);
+  console.log("donAg", donationAmounts);
+  console.log("donCsr", donationAmountsCsr);
+  console.log("TotAg", totalDonationsAgnostic);
+  console.log("TotCsr", totalDonationsCsr);
+  console.log(valueWalletType);
+
   useEffect(() => {
     if (localStorage.getItem("addDonationSucceed") === "true") {
       onSuccess();
@@ -234,6 +244,7 @@ const CampaignInfo = () => {
                 }).format(parseInt(value.replace(/\./g, "")))
               : value,
             value_num: parseInt(value.replace(/\./g, "")),
+            name: row.name,
           });
         }
       } else {
@@ -266,6 +277,7 @@ const CampaignInfo = () => {
                 }).format(parseInt(value.replace(/\./g, "")))
               : value,
             value_num: parseInt(value.replace(/\./g, "")),
+            name: row.name,
           });
         }
       } else {
@@ -305,7 +317,6 @@ const CampaignInfo = () => {
         } else {
           updatedDonationAmounts.push({
             wallet_id: row.id,
-            // value: 2,
             amount: parseInt(value.replace(/\./g, "")),
           });
         }
@@ -339,7 +350,6 @@ const CampaignInfo = () => {
         } else {
           updatedDonationAmountsCsr.push({
             wallet_id: row.id,
-            // value: 2,
             amount: parseInt(value.replace(/\./g, "")),
           });
         }
@@ -396,6 +406,7 @@ const CampaignInfo = () => {
               }).format(row.balance)
             : row.balance,
           value_num: row.balance,
+          name: row.name,
         });
       }
       setDonationAmounts(updatedDonationAmounts);
@@ -420,6 +431,7 @@ const CampaignInfo = () => {
               }).format(row.balance)
             : row.balance,
           value_num: row.balance,
+          name: row.name,
         });
       }
       setDonationAmountsCsr(updatedDonationAmountsCsr);
@@ -525,11 +537,26 @@ const CampaignInfo = () => {
       // icon: "success",
       title: `Anda yakin 
       menambahkan donasi?`,
-      html: `Total tambahan donasi adalah <p>${new Intl.NumberFormat("id-ID", {
-        style: "currency",
-        currency: "IDR",
-        minimumFractionDigits: 0,
-      }).format(totalDonationsAgnostic + totalDonationsCsr)}</p>`,
+      html: `
+        Total tambahan donasi adalah
+        <div style="max-height: 300px; width: 100%; overflow-y: auto; background-color: #f9f9f9; padding: 5px; border-radius: 5px;">
+          ${donationAmounts
+            .map(
+              (data) => `<p>${data.name} -  
+              ${new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }).format(data.value_num)}</p>`
+            )
+            .join("")}
+        </div>
+        Total Donasi ${new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          minimumFractionDigits: 0,
+        }).format(totalDonationsAgnostic + totalDonationsCsr)}
+      `,
       width: "260px",
       showCancelButton: true,
       cancelButtonText: `Ya`,
