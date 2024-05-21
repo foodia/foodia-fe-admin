@@ -36,7 +36,7 @@
 .custom-swal {
   padding: 0;
   /* padding-top: 10px; */
-  width: 350px !important;
+  width: auto !important;
   font-size: small;
   padding-bottom: 10px;
   border-radius: 15px;

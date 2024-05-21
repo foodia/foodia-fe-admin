@@ -188,6 +188,7 @@ const CampaignInfo = () => {
   const [totalDonationsCsr, setTotalDonationsCsr] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [theresErrorInput, setTheresErrorInput] = useState(false);
+  const [needed, setNeeded] = useState(0);
 
   console.log("---------------------------");
   console.log("parsedAg", parsedDonationAmounts);
@@ -197,6 +198,7 @@ const CampaignInfo = () => {
   console.log("TotAg", totalDonationsAgnostic);
   console.log("TotCsr", totalDonationsCsr);
   console.log(valueWalletType);
+  console.log("we", needed);
 
   useEffect(() => {
     if (localStorage.getItem("addDonationSucceed") === "true") {
@@ -387,52 +389,96 @@ const CampaignInfo = () => {
     );
     if (valueWalletType === "agnostic") {
       if (existingIndex !== -1) {
-        updatedDonationAmounts[existingIndex].value = row.balance
-          ? new Intl.NumberFormat("id-ID", {
+        if (needed >= row.balance) {
+          updatedDonationAmounts[existingIndex].value = new Intl.NumberFormat(
+            "id-ID",
+            {
               style: "currency",
               currency: "IDR",
               minimumFractionDigits: 0,
-            }).format(row.balance)
-          : row.balance;
-        updatedDonationAmounts[existingIndex].value_num = row.balance;
+            }
+          ).format(row.balance);
+          updatedDonationAmounts[existingIndex].value_num = row.balance;
+        } else if (needed < row.balance) {
+          updatedDonationAmounts[existingIndex].value = new Intl.NumberFormat(
+            "id-ID",
+            {
+              style: "currency",
+              currency: "IDR",
+              minimumFractionDigits: 0,
+            }
+          ).format(needed);
+          updatedDonationAmounts[existingIndex].value_num = needed;
+        }
       } else {
-        updatedDonationAmounts.push({
-          id: row.id,
-          value: row.balance
-            ? new Intl.NumberFormat("id-ID", {
-                style: "currency",
-                currency: "IDR",
-                minimumFractionDigits: 0,
-              }).format(row.balance)
-            : row.balance,
-          value_num: row.balance,
-          name: row.name,
-        });
+        if (needed >= row.balance) {
+          updatedDonationAmounts.push({
+            id: row.id,
+            value: new Intl.NumberFormat("id-ID", {
+              style: "currency",
+              currency: "IDR",
+              minimumFractionDigits: 0,
+            }).format(row.balance),
+            value_num: row.balance,
+            name: row.name,
+          });
+        } else if (needed < row.balance) {
+          updatedDonationAmounts.push({
+            id: row.id,
+            value: new Intl.NumberFormat("id-ID", {
+              style: "currency",
+              currency: "IDR",
+              minimumFractionDigits: 0,
+            }).format(needed),
+            value_num: needed,
+            name: row.name,
+          });
+        }
       }
       setDonationAmounts(updatedDonationAmounts);
     } else {
       if (existingIndexCsr !== -1) {
-        updatedDonationAmountsCsr[existingIndexCsr].value = row.balance
-          ? new Intl.NumberFormat("id-ID", {
+        if (needed >= row.balance) {
+          updatedDonationAmountsCsr[existingIndexCsr].value =
+            new Intl.NumberFormat("id-ID", {
               style: "currency",
               currency: "IDR",
               minimumFractionDigits: 0,
-            }).format(row.balance)
-          : row.balance;
-        updatedDonationAmountsCsr[existingIndexCsr].value_num = row.balance;
+            }).format(row.balance);
+          updatedDonationAmountsCsr[existingIndexCsr].value_num = row.balance;
+        } else if (needed < row.balance) {
+          updatedDonationAmountsCsr[existingIndexCsr].value =
+            new Intl.NumberFormat("id-ID", {
+              style: "currency",
+              currency: "IDR",
+              minimumFractionDigits: 0,
+            }).format(needed);
+          updatedDonationAmountsCsr[existingIndexCsr].value_num = needed;
+        }
       } else {
-        updatedDonationAmountsCsr.push({
-          id: row.id,
-          value: row.balance
-            ? new Intl.NumberFormat("id-ID", {
-                style: "currency",
-                currency: "IDR",
-                minimumFractionDigits: 0,
-              }).format(row.balance)
-            : row.balance,
-          value_num: row.balance,
-          name: row.name,
-        });
+        if (needed >= row.balance) {
+          updatedDonationAmountsCsr.push({
+            id: row.id,
+            value: new Intl.NumberFormat("id-ID", {
+              style: "currency",
+              currency: "IDR",
+              minimumFractionDigits: 0,
+            }).format(row.balance),
+            value_num: row.balance,
+            name: row.name,
+          });
+        } else if (needed < row.balance) {
+          updatedDonationAmountsCsr.push({
+            id: row.id,
+            value: new Intl.NumberFormat("id-ID", {
+              style: "currency",
+              currency: "IDR",
+              minimumFractionDigits: 0,
+            }).format(needed),
+            value_num: needed,
+            name: row.name,
+          });
+        }
       }
       setDonationAmountsCsr(updatedDonationAmountsCsr);
     }
@@ -449,12 +495,23 @@ const CampaignInfo = () => {
     );
     if (valueWalletType === "agnostic") {
       if (existingIndex !== -1) {
-        updatedDonationAmounts[existingIndex].amount = row.balance;
+        if (needed >= row.balance) {
+          updatedDonationAmounts[existingIndex].amount = row.balance;
+        } else if (needed < row.balance) {
+          updatedDonationAmounts[existingIndex].amount = needed;
+        }
       } else {
-        updatedDonationAmounts.push({
-          wallet_id: row.id,
-          amount: row.balance,
-        });
+        if (needed >= row.balance) {
+          updatedDonationAmounts.push({
+            wallet_id: row.id,
+            amount: row.balance,
+          });
+        } else if (needed < row.balance) {
+          updatedDonationAmounts.push({
+            wallet_id: row.id,
+            amount: needed,
+          });
+        }
       }
       const initialValue = updatedDonationAmounts.reduce(
         (acc: number, item: ParsedDonationAmount) => acc + item.amount,
@@ -464,12 +521,23 @@ const CampaignInfo = () => {
       setParsedDonationAmounts(updatedDonationAmounts);
     } else {
       if (existingIndexCsr !== -1) {
-        updatedDonationAmountsCsr[existingIndexCsr].amount = row.balance;
+        if (needed >= row.balance) {
+          updatedDonationAmountsCsr[existingIndexCsr].amount = row.balance;
+        } else if (needed < row.balance) {
+          updatedDonationAmountsCsr[existingIndexCsr].amount = needed;
+        }
       } else {
-        updatedDonationAmountsCsr.push({
-          wallet_id: row.id,
-          amount: row.balance,
-        });
+        if (needed >= row.balance) {
+          updatedDonationAmountsCsr.push({
+            wallet_id: row.id,
+            amount: row.balance,
+          });
+        } else if (needed < row.balance) {
+          updatedDonationAmountsCsr.push({
+            wallet_id: row.id,
+            amount: needed,
+          });
+        }
       }
       const initialValue = updatedDonationAmountsCsr.reduce(
         (acc: number, item: ParsedDonationAmount) => acc + item.amount,
@@ -539,17 +607,45 @@ const CampaignInfo = () => {
       menambahkan donasi?`,
       html: `
         Total tambahan donasi adalah
-        <div style="max-height: 300px; width: 100%; overflow-y: auto; background-color: #f9f9f9; padding: 5px; border-radius: 5px;">
-          ${donationAmounts
-            .map(
-              (data) => `<p>${data.name} -  
-              ${new Intl.NumberFormat("id-ID", {
-                style: "currency",
-                currency: "IDR",
-                minimumFractionDigits: 0,
-              }).format(data.value_num)}</p>`
-            )
-            .join("")}
+        <div style="display: flex; flex-direction: row; gap: 10px; width: 100%">
+          ${
+            donationAmountsCsr.length > 0
+              ? `<div style="display: flex; flex-direction: column; width: 100%; align-items: start">
+            <p>CSR Wallet</p>
+            <div style="max-height: 300px; width: 300px; overflow-y: auto; background-color: #f9f9f9; padding: 5px; border-radius: 5px;">
+            ${donationAmountsCsr
+              .map(
+                (data) => `<p>${data.name} -  
+                ${new Intl.NumberFormat("id-ID", {
+                  style: "currency",
+                  currency: "IDR",
+                  minimumFractionDigits: 0,
+                }).format(data.value_num)}</p>`
+              )
+              .join("")}
+            </div>
+          </div>`
+              : ``
+          }
+          ${
+            donationAmounts.length > 0
+              ? `<div style="display: flex; flex-direction: column; width: 100%; align-items: start">
+            <p>Agnostic Wallet</p>
+            <div style="max-height: 300px; width: 300px; overflow-y: auto; background-color: #f9f9f9; padding: 5px; border-radius: 5px;">
+            ${donationAmounts
+              .map(
+                (data) => `<p>${data.name} -  
+                ${new Intl.NumberFormat("id-ID", {
+                  style: "currency",
+                  currency: "IDR",
+                  minimumFractionDigits: 0,
+                }).format(data.value_num)}</p>`
+              )
+              .join("")}
+            </div>
+          </div>`
+              : ``
+          }
         </div>
         Total Donasi ${new Intl.NumberFormat("id-ID", {
           style: "currency",
@@ -589,7 +685,7 @@ const CampaignInfo = () => {
   };
 
   useEffect(() => {
-    getCampaignDetail(searchParams.get("id"), setData, setIsLoading);
+    getCampaignDetail(searchParams.get("id"), setData, setNeeded, setIsLoading);
   }, []);
 
   const breadcrumbs = [

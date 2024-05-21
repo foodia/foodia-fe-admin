@@ -46,13 +46,21 @@ export const getCampaign = (
     });
 };
 
-export const getCampaignDetail = (id: any, setData: any, setIsLoading: any) => {
+export const getCampaignDetail = (
+  id: any,
+  setData: any,
+  setNeeded: any,
+  setIsLoading: any
+) => {
   axios
     .get(process.env.NEXT_PUBLIC_BASE + `/campaign/fetch/${id}`, {
       headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
     })
     .then((res) => {
       setData(res.data.body);
+      setNeeded(
+        res.data.body.donation_target - res.data.body.donation_collected
+      );
       setIsLoading(false);
     })
     .catch((error) => {
