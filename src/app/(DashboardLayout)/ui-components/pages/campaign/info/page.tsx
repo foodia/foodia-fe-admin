@@ -716,6 +716,7 @@ const CampaignInfo = () => {
   };
 
   const onChangeWalletType = (event: SelectChangeEvent) => {
+    setIsLoading(true);
     setCurrentPage(0);
     setValueWalletType(event.target.value);
     setSelectedWallet("default");
@@ -1095,8 +1096,6 @@ const CampaignInfo = () => {
       data.name.toLowerCase().includes(searchText.toLowerCase())
     );
   }
-
-  console.log(searchText);
 
   return (
     <>
