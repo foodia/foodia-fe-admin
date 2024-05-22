@@ -189,18 +189,20 @@ const CampaignInfo = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [theresErrorInput, setTheresErrorInput] = useState(false);
   const [needed, setNeeded] = useState(0);
+  const [neededLeft, setNeededLeft] = useState(0);
 
-  console.log("---------------------------");
+  // console.log("---------------------------");
   console.log("parsedAg", parsedDonationAmounts);
   console.log("parsedCsr", parsedDonationAmountsCsr);
   console.log("donAg", donationAmounts);
   console.log("donCsr", donationAmountsCsr);
-  console.log("TotAg", totalDonationsAgnostic);
-  console.log("TotCsr", totalDonationsCsr);
-  console.log(valueWalletType);
-  console.log("we", needed);
+  // console.log("TotAg", totalDonationsAgnostic);
+  // console.log("TotCsr", totalDonationsCsr);
+  // console.log(valueWalletType);
+  // console.log("we", needed);
 
   useEffect(() => {
+    setNeededLeft(needed - (totalDonationsAgnostic + totalDonationsCsr));
     if (localStorage.getItem("addDonationSucceed") === "true") {
       onSuccess();
     }
@@ -316,11 +318,13 @@ const CampaignInfo = () => {
           updatedDonationAmounts[existingIndex].amount = parseInt(
             value.replace(/\./g, "")
           );
+          // setNeededLeft(neededLeft + parseInt(value.replace(/\./g, "")));
         } else {
           updatedDonationAmounts.push({
             wallet_id: row.id,
             amount: parseInt(value.replace(/\./g, "")),
           });
+          // setNeededLeft(neededLeft + parseInt(value.replace(/\./g, "")));
         }
       } else {
         if (existingIndex !== -1 && value === "") {
@@ -390,101 +394,216 @@ const CampaignInfo = () => {
     if (valueWalletType === "agnostic") {
       if (existingIndex !== -1) {
         if (needed >= row.balance) {
-          updatedDonationAmounts[existingIndex].value = new Intl.NumberFormat(
-            "id-ID",
-            {
-              style: "currency",
-              currency: "IDR",
-              minimumFractionDigits: 0,
-            }
-          ).format(row.balance);
-          updatedDonationAmounts[existingIndex].value_num = row.balance;
+          if (neededLeft === 0 || neededLeft > row.balance) {
+            updatedDonationAmounts[existingIndex].value = new Intl.NumberFormat(
+              "id-ID",
+              {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }
+            ).format(row.balance);
+            updatedDonationAmounts[existingIndex].value_num = row.balance;
+          } else {
+            updatedDonationAmounts[existingIndex].value = new Intl.NumberFormat(
+              "id-ID",
+              {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }
+            ).format(
+              updatedDonationAmounts[existingIndex].value_num + neededLeft
+            );
+            updatedDonationAmounts[existingIndex].value_num =
+              updatedDonationAmounts[existingIndex].value_num + neededLeft;
+          }
         } else if (needed < row.balance) {
-          updatedDonationAmounts[existingIndex].value = new Intl.NumberFormat(
-            "id-ID",
-            {
-              style: "currency",
-              currency: "IDR",
-              minimumFractionDigits: 0,
-            }
-          ).format(needed);
-          updatedDonationAmounts[existingIndex].value_num = needed;
+          if (neededLeft === 0) {
+            updatedDonationAmounts[existingIndex].value = new Intl.NumberFormat(
+              "id-ID",
+              {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }
+            ).format(needed);
+            updatedDonationAmounts[existingIndex].value_num = needed;
+          } else {
+            updatedDonationAmounts[existingIndex].value = new Intl.NumberFormat(
+              "id-ID",
+              {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }
+            ).format(
+              updatedDonationAmounts[existingIndex].value_num + neededLeft
+            );
+            updatedDonationAmounts[existingIndex].value_num =
+              updatedDonationAmounts[existingIndex].value_num + neededLeft;
+          }
         }
       } else {
         if (needed >= row.balance) {
-          updatedDonationAmounts.push({
-            id: row.id,
-            value: new Intl.NumberFormat("id-ID", {
-              style: "currency",
-              currency: "IDR",
-              minimumFractionDigits: 0,
-            }).format(row.balance),
-            value_num: row.balance,
-            name: row.name,
-          });
+          if (neededLeft === 0 || neededLeft > row.balance) {
+            updatedDonationAmounts.push({
+              id: row.id,
+              value: new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }).format(row.balance),
+              value_num: row.balance,
+              name: row.name,
+            });
+          } else {
+            updatedDonationAmounts.push({
+              id: row.id,
+              value: new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }).format(neededLeft),
+              value_num: neededLeft,
+              name: row.name,
+            });
+          }
         } else if (needed < row.balance) {
-          updatedDonationAmounts.push({
-            id: row.id,
-            value: new Intl.NumberFormat("id-ID", {
-              style: "currency",
-              currency: "IDR",
-              minimumFractionDigits: 0,
-            }).format(needed),
-            value_num: needed,
-            name: row.name,
-          });
+          if (neededLeft === 0) {
+            updatedDonationAmounts.push({
+              id: row.id,
+              value: new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }).format(needed),
+              value_num: needed,
+              name: row.name,
+            });
+          } else {
+            updatedDonationAmounts.push({
+              id: row.id,
+              value: new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }).format(neededLeft),
+              value_num: neededLeft,
+              name: row.name,
+            });
+          }
         }
       }
       setDonationAmounts(updatedDonationAmounts);
     } else {
       if (existingIndexCsr !== -1) {
         if (needed >= row.balance) {
-          updatedDonationAmountsCsr[existingIndexCsr].value =
-            new Intl.NumberFormat("id-ID", {
-              style: "currency",
-              currency: "IDR",
-              minimumFractionDigits: 0,
-            }).format(row.balance);
-          updatedDonationAmountsCsr[existingIndexCsr].value_num = row.balance;
+          if (neededLeft === 0 || neededLeft > row.balance) {
+            updatedDonationAmountsCsr[existingIndexCsr].value =
+              new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }).format(row.balance);
+            updatedDonationAmountsCsr[existingIndexCsr].value_num = row.balance;
+          } else {
+            updatedDonationAmountsCsr[existingIndexCsr].value =
+              new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }).format(
+                updatedDonationAmountsCsr[existingIndexCsr].value_num +
+                  neededLeft
+              );
+            updatedDonationAmountsCsr[existingIndexCsr].value_num =
+              updatedDonationAmountsCsr[existingIndexCsr].value_num +
+              neededLeft;
+          }
         } else if (needed < row.balance) {
-          updatedDonationAmountsCsr[existingIndexCsr].value =
-            new Intl.NumberFormat("id-ID", {
-              style: "currency",
-              currency: "IDR",
-              minimumFractionDigits: 0,
-            }).format(needed);
-          updatedDonationAmountsCsr[existingIndexCsr].value_num = needed;
+          if (neededLeft === 0) {
+            updatedDonationAmountsCsr[existingIndexCsr].value =
+              new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }).format(needed);
+            updatedDonationAmountsCsr[existingIndexCsr].value_num = needed;
+          } else {
+            updatedDonationAmountsCsr[existingIndexCsr].value =
+              new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }).format(
+                updatedDonationAmountsCsr[existingIndexCsr].value_num +
+                  neededLeft
+              );
+            updatedDonationAmountsCsr[existingIndexCsr].value_num =
+              updatedDonationAmountsCsr[existingIndexCsr].value_num +
+              neededLeft;
+          }
         }
       } else {
         if (needed >= row.balance) {
-          updatedDonationAmountsCsr.push({
-            id: row.id,
-            value: new Intl.NumberFormat("id-ID", {
-              style: "currency",
-              currency: "IDR",
-              minimumFractionDigits: 0,
-            }).format(row.balance),
-            value_num: row.balance,
-            name: row.name,
-          });
+          if (neededLeft === 0 || neededLeft > row.balance) {
+            updatedDonationAmountsCsr.push({
+              id: row.id,
+              value: new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }).format(row.balance),
+              value_num: row.balance,
+              name: row.name,
+            });
+          } else {
+            updatedDonationAmountsCsr.push({
+              id: row.id,
+              value: new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }).format(neededLeft),
+              value_num: neededLeft,
+              name: row.name,
+            });
+          }
         } else if (needed < row.balance) {
-          updatedDonationAmountsCsr.push({
-            id: row.id,
-            value: new Intl.NumberFormat("id-ID", {
-              style: "currency",
-              currency: "IDR",
-              minimumFractionDigits: 0,
-            }).format(needed),
-            value_num: needed,
-            name: row.name,
-          });
+          if (neededLeft === 0) {
+            updatedDonationAmountsCsr.push({
+              id: row.id,
+              value: new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }).format(needed),
+              value_num: needed,
+              name: row.name,
+            });
+          } else {
+            updatedDonationAmountsCsr.push({
+              id: row.id,
+              value: new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }).format(neededLeft),
+              value_num: neededLeft,
+              name: row.name,
+            });
+          }
         }
       }
       setDonationAmountsCsr(updatedDonationAmountsCsr);
     }
   };
 
+  console.log("needed", neededLeft);
+
   const onSetMax = (row: any) => {
+    setTheresErrorInput(false);
     const updatedDonationAmounts = [...parsedDonationAmounts];
     const updatedDonationAmountsCsr = [...parsedDonationAmountsCsr];
     const existingIndex = updatedDonationAmounts.findIndex(
@@ -496,21 +615,45 @@ const CampaignInfo = () => {
     if (valueWalletType === "agnostic") {
       if (existingIndex !== -1) {
         if (needed >= row.balance) {
-          updatedDonationAmounts[existingIndex].amount = row.balance;
+          if (neededLeft === 0 || neededLeft > row.balance) {
+            updatedDonationAmounts[existingIndex].amount = row.balance;
+          } else {
+            updatedDonationAmounts[existingIndex].amount =
+              updatedDonationAmounts[existingIndex].amount + neededLeft;
+          }
         } else if (needed < row.balance) {
-          updatedDonationAmounts[existingIndex].amount = needed;
+          if (neededLeft === 0) {
+            updatedDonationAmounts[existingIndex].amount = needed;
+          } else {
+            updatedDonationAmounts[existingIndex].amount =
+              updatedDonationAmounts[existingIndex].amount + neededLeft;
+          }
         }
       } else {
         if (needed >= row.balance) {
-          updatedDonationAmounts.push({
-            wallet_id: row.id,
-            amount: row.balance,
-          });
+          if (neededLeft === 0 || neededLeft > row.balance) {
+            updatedDonationAmounts.push({
+              wallet_id: row.id,
+              amount: row.balance,
+            });
+          } else {
+            updatedDonationAmounts.push({
+              wallet_id: row.id,
+              amount: neededLeft,
+            });
+          }
         } else if (needed < row.balance) {
-          updatedDonationAmounts.push({
-            wallet_id: row.id,
-            amount: needed,
-          });
+          if (neededLeft === 0) {
+            updatedDonationAmounts.push({
+              wallet_id: row.id,
+              amount: needed,
+            });
+          } else {
+            updatedDonationAmounts.push({
+              wallet_id: row.id,
+              amount: neededLeft,
+            });
+          }
         }
       }
       const initialValue = updatedDonationAmounts.reduce(
@@ -522,21 +665,45 @@ const CampaignInfo = () => {
     } else {
       if (existingIndexCsr !== -1) {
         if (needed >= row.balance) {
-          updatedDonationAmountsCsr[existingIndexCsr].amount = row.balance;
+          if (neededLeft === 0 || neededLeft > row.balance) {
+            updatedDonationAmountsCsr[existingIndexCsr].amount = row.balance;
+          } else {
+            updatedDonationAmountsCsr[existingIndexCsr].amount =
+              updatedDonationAmountsCsr[existingIndexCsr].amount + neededLeft;
+          }
         } else if (needed < row.balance) {
-          updatedDonationAmountsCsr[existingIndexCsr].amount = needed;
+          if (neededLeft === 0) {
+            updatedDonationAmountsCsr[existingIndexCsr].amount = needed;
+          } else {
+            updatedDonationAmountsCsr[existingIndexCsr].amount =
+              updatedDonationAmountsCsr[existingIndexCsr].amount + neededLeft;
+          }
         }
       } else {
         if (needed >= row.balance) {
-          updatedDonationAmountsCsr.push({
-            wallet_id: row.id,
-            amount: row.balance,
-          });
+          if (neededLeft === 0 || neededLeft > row.balance) {
+            updatedDonationAmountsCsr.push({
+              wallet_id: row.id,
+              amount: row.balance,
+            });
+          } else {
+            updatedDonationAmountsCsr.push({
+              wallet_id: row.id,
+              amount: neededLeft,
+            });
+          }
         } else if (needed < row.balance) {
-          updatedDonationAmountsCsr.push({
-            wallet_id: row.id,
-            amount: needed,
-          });
+          if (neededLeft === 0) {
+            updatedDonationAmountsCsr.push({
+              wallet_id: row.id,
+              amount: needed,
+            });
+          } else {
+            updatedDonationAmountsCsr.push({
+              wallet_id: row.id,
+              amount: neededLeft,
+            });
+          }
         }
       }
       const initialValue = updatedDonationAmountsCsr.reduce(
@@ -803,7 +970,10 @@ const CampaignInfo = () => {
                 (theresErrorInput &&
                   (donationAmounts.find((item) => item.id === row.id)
                     ?.value_num || 0) <= row.balance) ||
-                row.balance === 0
+                row.balance === 0 ||
+                totalDonationsAgnostic + totalDonationsCsr >= needed ||
+                donationAmounts.find((item) => item.id === row.id)
+                  ?.value_num === row.balance
               }
               variant="contained"
               size="small"
@@ -885,7 +1055,8 @@ const CampaignInfo = () => {
                 (theresErrorInput &&
                   (donationAmountsCsr.find((item) => item.id === row.id)
                     ?.value_num || 0) <= row.balance) ||
-                row.balance === 0
+                row.balance === 0 ||
+                totalDonationsAgnostic + totalDonationsCsr >= needed
               }
               variant="contained"
               size="small"
