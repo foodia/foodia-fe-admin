@@ -447,6 +447,8 @@ export const DataTablesManualPagination: React.FC<Data> = ({
   setCurrentPage,
   onChange,
   manualSorting,
+  search,
+  onChangeSearch,
 }) => {
   {
     manualSorting &&
@@ -638,6 +640,41 @@ export const DataTablesManualPagination: React.FC<Data> = ({
 
   return (
     <>
+      {search ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            height: "60px",
+            // alignItems: "center",
+            gap: "10px",
+          }}
+        >
+          <Input
+            disableUnderline
+            size="small"
+            placeholder="Search Nama Donator"
+            sx={{
+              background: "rgba(63, 182, 72, 0.10)",
+              padding: "10px 18px",
+              paddingRight: "18px",
+              borderRadius: "15px",
+              ".MuiInput-input": {
+                padding: 0,
+              },
+            }}
+            startAdornment={
+              <InputAdornment sx={{ color: "primary.main" }} position="start">
+                <Search />
+              </InputAdornment>
+            }
+            onChange={onChangeSearch}
+          />
+        </Box>
+      ) : (
+        ""
+      )}
       {isLoading ? (
         <Box
           sx={{

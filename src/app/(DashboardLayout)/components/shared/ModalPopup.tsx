@@ -69,6 +69,8 @@ export const ModalPopupAddDonations = ({
         justifyContent: "center",
         alignItems: "center",
         overflow: "auto",
+        paddingTop: "60px",
+        paddingBottom: "10px",
       }}
       open={open}
       // onClose={handleClose}
@@ -83,7 +85,7 @@ export const ModalPopupAddDonations = ({
           width: "900px",
           backgroundColor: "white",
           padding: "20px",
-          gap: "30px",
+          gap: "10px",
         }}
       >
         <Box sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>

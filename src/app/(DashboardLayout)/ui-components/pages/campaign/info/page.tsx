@@ -190,12 +190,13 @@ const CampaignInfo = () => {
   const [theresErrorInput, setTheresErrorInput] = useState(false);
   const [needed, setNeeded] = useState(0);
   const [neededLeft, setNeededLeft] = useState(0);
+  const [searchText, setSearchText] = useState("");
 
   // console.log("---------------------------");
-  console.log("parsedAg", parsedDonationAmounts);
-  console.log("parsedCsr", parsedDonationAmountsCsr);
-  console.log("donAg", donationAmounts);
-  console.log("donCsr", donationAmountsCsr);
+  // console.log("parsedAg", parsedDonationAmounts);
+  // console.log("parsedCsr", parsedDonationAmountsCsr);
+  // console.log("donAg", donationAmounts);
+  // console.log("donCsr", donationAmountsCsr);
   // console.log("TotAg", totalDonationsAgnostic);
   // console.log("TotCsr", totalDonationsCsr);
   // console.log(valueWalletType);
@@ -599,8 +600,6 @@ const CampaignInfo = () => {
       setDonationAmountsCsr(updatedDonationAmountsCsr);
     }
   };
-
-  console.log("needed", neededLeft);
 
   const onSetMax = (row: any) => {
     setTheresErrorInput(false);
@@ -1090,6 +1089,15 @@ const CampaignInfo = () => {
     },
   ];
 
+  let filteredItems = walletList;
+  if (walletList) {
+    filteredItems = walletList.filter((data: any) =>
+      data.name.toLowerCase().includes(searchText.toLowerCase())
+    );
+  }
+
+  console.log(searchText);
+
   return (
     <>
       <DashboardCard title="Campaign Detail" breadcrumb={breadcrumbs}>
@@ -1177,8 +1185,10 @@ const CampaignInfo = () => {
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             columns={columns}
-            data={walletList}
+            data={filteredItems}
             pagination={true}
+            search={true}
+            onChangeSearch={(e: any) => setSearchText(e.target.value)}
           />
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <Button
