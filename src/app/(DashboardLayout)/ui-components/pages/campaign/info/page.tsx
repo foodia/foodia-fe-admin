@@ -876,44 +876,51 @@ const CampaignInfo = () => {
 
   const columns = [
     {
+      id: "number",
       name: "#",
-      selector: (_row: any, i: any) => i + 1 + currentPage * 5,
+      selector: (row: any) => row.id,
+      cell: (_row: any, i: any) => i + 1 + currentPage * 5,
       width: "65px",
+      // sortable: true,
+      // sortFunction: () => handleSort("number"),
     },
     {
+      id: "name",
       name: "Nama Donator",
+      selector: (row: any) => row.name,
       cell: (row: any) => (
-        <>
-          <Typography sx={{ fontSize: "13px" }}>{row.name}</Typography>
-        </>
+        <Typography sx={{ fontSize: "13px" }}>{row.name}</Typography>
       ),
       sortable: true,
+      sortFunction: () => handleSort("name"),
     },
     {
+      id: "deposit",
       name: "Deposit",
+      selector: (row: any) => row.balance,
       cell: (row: any) => (
-        <>
-          <Typography sx={{ fontSize: "13px" }}>
-            {new Intl.NumberFormat("id-ID", {
-              style: "currency",
-              currency: "IDR",
-              minimumFractionDigits: 0,
-            }).format(row.balance)}
-          </Typography>
-        </>
+        <Typography sx={{ fontSize: "13px" }}>
+          {new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+          }).format(row.balance)}
+        </Typography>
       ),
-      // sortable: true,
+      sortable: true,
+      sortFunction: () => handleSort("deposit"),
     },
     {
+      id: "lastTrx",
       name: "Last Transaction",
+      selector: (row: any) => new Date(row.updated_at).getTime(),
       cell: (row: any) => (
-        <>
-          <Typography sx={{ fontSize: "13px" }}>
-            {moment(row.updated_at).format("DD/MM/YYYY hh:mm")}
-          </Typography>
-        </>
+        <Typography sx={{ fontSize: "13px" }}>
+          {moment(row.updated_at).format("DD/MM/YYYY hh:mm")}
+        </Typography>
       ),
-      // sortable: true,
+      sortable: true,
+      sortFunction: () => handleSort("lastTrx"),
     },
     {
       name: "Jumlah Donasi",
@@ -943,8 +950,7 @@ const CampaignInfo = () => {
                     ?.value_num || 0)
                     ? "red"
                     : "lightgrey"
-                }
-            `,
+                }`,
                 paddingX: "10px",
                 paddingTop: "3px",
                 borderRadius: "5px",
@@ -1028,8 +1034,7 @@ const CampaignInfo = () => {
                     ?.value_num || 0)
                     ? "red"
                     : "lightgrey"
-                }
-          `,
+                }`,
                 paddingX: "10px",
                 paddingTop: "3px",
                 borderRadius: "5px",
@@ -1087,6 +1092,7 @@ const CampaignInfo = () => {
           </Box>
         ),
       width: "260px",
+      sortable: false,
     },
   ];
 
@@ -1096,6 +1102,46 @@ const CampaignInfo = () => {
       data.name.toLowerCase().includes(searchText.toLowerCase())
     );
   }
+
+  const [sortField, setSortField] = useState("deposit");
+  const [sortAsc, setSortAsc] = useState(true);
+  const [sortedData, setSortedData] = useState([]);
+
+  console.log(sortField);
+  console.log(sortAsc);
+
+  const onSort = (column: any) => {
+    const sorted = filteredItems.sort((a: any, b: any) => {
+      // if (column === "number") {
+      //   return sortAsc ? a.id - b.id : b.id - a.id; // Adjust based on actual field
+      // }
+      if (column === "name") {
+        return sortAsc
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name);
+      }
+      if (column === "deposit") {
+        return sortAsc ? a.balance - b.balance : b.balance - a.balance;
+      }
+      if (column === "lastTrx") {
+        return sortAsc
+          ? new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
+          : new Date(a.updated_at).getTime() - new Date(b.updated_at).getTime();
+      }
+      return 0;
+    });
+    setSortedData(sorted);
+  };
+
+  useEffect(() => {
+    onSort(sortField);
+  }, [walletList]);
+
+  const handleSort = (column: any) => {
+    onSort(column);
+    setSortField(column);
+    setSortAsc(!sortAsc);
+  };
 
   return (
     <>
@@ -1184,10 +1230,11 @@ const CampaignInfo = () => {
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             columns={columns}
-            data={filteredItems}
+            data={sortedData}
             pagination={true}
             search={true}
             onChangeSearch={(e: any) => setSearchText(e.target.value)}
+            // handleSort={handleSort}
           />
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <Button

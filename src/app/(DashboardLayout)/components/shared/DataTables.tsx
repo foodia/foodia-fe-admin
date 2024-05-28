@@ -46,6 +46,7 @@ interface Data {
   currentPage?: any;
   setCurrentPage?: any;
   manualSorting?: any;
+  handleSort?: any;
 }
 
 const DataTables: React.FC<Data> = ({
@@ -449,6 +450,7 @@ export const DataTablesManualPagination: React.FC<Data> = ({
   manualSorting,
   search,
   onChangeSearch,
+  handleSort,
 }) => {
   {
     manualSorting &&
@@ -479,8 +481,7 @@ export const DataTablesManualPagination: React.FC<Data> = ({
   let pageCount = 0;
 
   if (data !== null) {
-    currentPageData =
-      pageItems === "all" ? data : data.slice(offset, offset + itemsPerPage);
+    currentPageData = data.slice(offset, offset + itemsPerPage);
     pageCount = Math.ceil(data.length / itemsPerPage);
   }
 
@@ -701,6 +702,9 @@ export const DataTablesManualPagination: React.FC<Data> = ({
               customStyles={CustomStylesTable}
               columns={columns}
               data={currentPageData}
+              defaultSortFieldId="deposit"
+              defaultSortAsc={true}
+              onSort={handleSort}
               // pagination
               // paginationPerPage={1}
               // paginationRowsPerPageOptions={}
