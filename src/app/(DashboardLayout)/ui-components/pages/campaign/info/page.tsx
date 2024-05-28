@@ -191,6 +191,9 @@ const CampaignInfo = () => {
   const [needed, setNeeded] = useState(0);
   const [neededLeft, setNeededLeft] = useState(0);
   const [searchText, setSearchText] = useState("");
+  const [sortField, setSortField] = useState("deposit");
+  const [sortAsc, setSortAsc] = useState(true);
+  const [sortedData, setSortedData] = useState([]);
 
   // console.log("---------------------------");
   // console.log("parsedAg", parsedDonationAmounts);
@@ -717,6 +720,8 @@ const CampaignInfo = () => {
 
   const onChangeWalletType = (event: SelectChangeEvent) => {
     setIsLoading(true);
+    setSortAsc(true);
+    setSortField("deposit");
     setCurrentPage(0);
     setValueWalletType(event.target.value);
     setSelectedWallet("default");
@@ -1096,41 +1101,55 @@ const CampaignInfo = () => {
     },
   ];
 
-  let filteredItems = walletList;
-  if (walletList) {
-    filteredItems = walletList.filter((data: any) =>
+  let filteredItems = sortedData;
+  if (sortedData) {
+    filteredItems = sortedData.filter((data: any) =>
       data.name.toLowerCase().includes(searchText.toLowerCase())
     );
   }
 
-  const [sortField, setSortField] = useState("deposit");
-  const [sortAsc, setSortAsc] = useState(true);
-  const [sortedData, setSortedData] = useState([]);
-
-  console.log(sortField);
-  console.log(sortAsc);
-
   const onSort = (column: any) => {
-    const sorted = filteredItems.sort((a: any, b: any) => {
-      // if (column === "number") {
-      //   return sortAsc ? a.id - b.id : b.id - a.id; // Adjust based on actual field
-      // }
-      if (column === "name") {
-        return sortAsc
-          ? a.name.localeCompare(b.name)
-          : b.name.localeCompare(a.name);
-      }
-      if (column === "deposit") {
-        return sortAsc ? a.balance - b.balance : b.balance - a.balance;
-      }
-      if (column === "lastTrx") {
-        return sortAsc
-          ? new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
-          : new Date(a.updated_at).getTime() - new Date(b.updated_at).getTime();
-      }
-      return 0;
-    });
-    setSortedData(sorted);
+    if (sortField === column) {
+      setSortAsc(!sortAsc);
+      const sorted = walletList.sort((a: any, b: any) => {
+        if (column === "name") {
+          return sortAsc
+            ? a.name.localeCompare(b.name)
+            : b.name.localeCompare(a.name);
+        }
+        if (column === "deposit") {
+          return sortAsc ? a.balance - b.balance : b.balance - a.balance;
+        }
+        if (column === "lastTrx") {
+          return sortAsc
+            ? new Date(a.updated_at).getTime() -
+                new Date(b.updated_at).getTime()
+            : new Date(b.updated_at).getTime() -
+                new Date(a.updated_at).getTime();
+        }
+      });
+      setSortedData(sorted);
+    } else {
+      setSortAsc(sortAsc);
+      const sorted = walletList.sort((a: any, b: any) => {
+        if (column === "name") {
+          return !sortAsc
+            ? a.name.localeCompare(b.name)
+            : b.name.localeCompare(a.name);
+        }
+        if (column === "deposit") {
+          return !sortAsc ? a.balance - b.balance : b.balance - a.balance;
+        }
+        if (column === "lastTrx") {
+          return !sortAsc
+            ? new Date(a.updated_at).getTime() -
+                new Date(b.updated_at).getTime()
+            : new Date(b.updated_at).getTime() -
+                new Date(a.updated_at).getTime();
+        }
+      });
+      setSortedData(sorted);
+    }
   };
 
   useEffect(() => {
@@ -1138,9 +1157,13 @@ const CampaignInfo = () => {
   }, [walletList]);
 
   const handleSort = (column: any) => {
-    onSort(column);
+    if (sortField === column) {
+      setSortAsc(!sortAsc);
+    } else {
+      setSortAsc(sortAsc);
+    }
     setSortField(column);
-    setSortAsc(!sortAsc);
+    onSort(column);
   };
 
   return (
@@ -1230,7 +1253,7 @@ const CampaignInfo = () => {
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             columns={columns}
-            data={sortedData}
+            data={filteredItems}
             pagination={true}
             search={true}
             onChangeSearch={(e: any) => setSearchText(e.target.value)}
