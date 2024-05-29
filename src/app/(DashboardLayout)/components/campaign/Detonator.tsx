@@ -13,7 +13,7 @@ interface ChildProps {
       {
         id: number;
         order_status: string;
-        qty: string;
+        qty: number;
         merchant: { oauth: { fullname: string } };
         merchant_product: {
           id: number;

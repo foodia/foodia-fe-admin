@@ -69,8 +69,9 @@ type Props = {
     {
       id: number;
       order_status: string;
-      qty: string;
+      qty: number;
       total_amount: number;
+      total_tax: number;
       merchant: { oauth: { fullname: string } };
       merchant_product: {
         id: number;
@@ -148,8 +149,9 @@ const CampaignInfo = () => {
       {
         id: 0,
         order_status: "",
-        qty: "",
+        qty: 0,
         total_amount: 0,
+        total_tax: 0,
         merchant: { oauth: { fullname: "" } },
         merchant_product: {
           id: 0,
