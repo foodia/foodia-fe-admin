@@ -15,8 +15,9 @@ interface ChildProps {
       {
         id: number;
         order_status: string;
-        qty: string;
+        qty: number;
         total_amount: number;
+        total_tax: number;
         merchant: { oauth: { fullname: string } };
         merchant_product: {
           id: number;
@@ -151,13 +152,38 @@ const Orders: React.FC<ChildProps> = ({ data }) => {
                       >
                         {orders.merchant.oauth.fullname}
                       </Typography>
-                      <Typography sx={{ fontSize: "12px" }}>
-                        {new Intl.NumberFormat("id-ID", {
-                          style: "currency",
-                          currency: "IDR",
-                          minimumFractionDigits: 0,
-                        }).format(orders.merchant_product.price)}
-                      </Typography>
+                      <Box
+                        sx={{
+                          fontSize: "2px",
+                          display: "flex",
+                          alignItems: "center",
+                          fontWeight: "bold",
+                          gap: "2px",
+                        }}
+                      >
+                        <Typography sx={{ fontSize: "12px" }}>
+                          {new Intl.NumberFormat("id-ID", {
+                            style: "currency",
+                            currency: "IDR",
+                            minimumFractionDigits: 0,
+                          }).format(orders.merchant_product.price)}
+                        </Typography>
+                        <Typography
+                          sx={{ fontSize: "12px", color: "#1D5882" }}
+                        >{`(`}</Typography>
+                        <Typography sx={{ fontSize: "12px", color: "#1D5882" }}>
+                          +{" "}
+                          {new Intl.NumberFormat("id-ID", {
+                            style: "currency",
+                            currency: "IDR",
+                            minimumFractionDigits: 0,
+                          }).format(orders.total_tax)}{" "}
+                          - Biaya Platform
+                        </Typography>
+                        <Typography
+                          sx={{ fontSize: "12px", color: "#1D5882" }}
+                        >{`)`}</Typography>
+                      </Box>
                       <Typography sx={{ fontSize: "12px" }}>
                         Qty: {orders.qty}
                       </Typography>
