@@ -48,6 +48,7 @@ type Props = {
   donation_target: any;
   donation_collected: any;
   status: string;
+  campaign_status: string;
   order_status: string;
   image_url: string;
   food_required: number;
@@ -128,6 +129,7 @@ const CampaignInfo = () => {
     donation_target: "",
     donation_collected: "",
     status: "",
+    campaign_status: "",
     order_status: "",
     image_url: "",
     food_required: 0,
@@ -1200,7 +1202,8 @@ const CampaignInfo = () => {
                 color="success"
                 disabled={
                   data.donation_collected >= data.donation_target ||
-                  data.status !== "approved"
+                  data.status !== "approved" ||
+                  data.campaign_status === "FINISHED"
                 }
                 onClick={() => handleOpenAddDonation()}
               >
