@@ -17,6 +17,7 @@ interface ChildProps {
     recipient_name: any;
     bank: any;
     amount: any;
+    admin_fee: any;
     rekening: any;
     merchant: {
       merchant_name: any;
@@ -193,6 +194,14 @@ const Info: React.FC<ChildProps> = ({ data }) => {
             currency: "IDR",
             minimumFractionDigits: 0,
           }).format(data.amount)}
+        />
+        <Field
+          label="Admin Fee"
+          value={new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+          }).format(data.admin_fee)}
         />
         <Field label="Payment Method" value={data.payment_method} />
         <Field label="Note" value={data.note} />

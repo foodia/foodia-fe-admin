@@ -19,6 +19,7 @@ type Props = {
   recipient_name: any;
   bank: any;
   amount: any;
+  admin_fee: any;
   rekening: any;
   merchant: {
     merchant_name: any;
@@ -42,6 +43,7 @@ const DisbursementInfo = () => {
     recipient_name: "",
     bank: "",
     amount: 0,
+    admin_fee: 0,
     rekening: "",
     merchant: { merchant_name: "", oauth: { fullname: "", email: "" } },
     payment_method: "",
