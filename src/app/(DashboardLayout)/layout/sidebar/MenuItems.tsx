@@ -20,6 +20,12 @@ const Menuitems = () => {
     return [
       {
         id: uniqueId(),
+        title: "Dashboard",
+        href: "/ui-components/pages/dashboard",
+        icon: IconWallet,
+      },
+      {
+        id: uniqueId(),
         title: "Wallet",
         icon: IconWallet,
         submenu: [
@@ -40,7 +46,14 @@ const Menuitems = () => {
           {
             id: uniqueId(),
             href: "/ui-components/pages/wallet/merchant-payments",
-            name: "Merchant Payments",
+            name: "Merchant Wallet",
+            icon: <IconWallet />,
+            // isUnapproved: isUnapprovedProduct,
+          },
+          {
+            id: uniqueId(),
+            href: "/ui-components/pages/wallet/coupon",
+            name: "Coupon Wallet",
             icon: <IconWallet />,
             // isUnapproved: isUnapprovedProduct,
           },
@@ -69,13 +82,13 @@ const Menuitems = () => {
       },
       {
         id: uniqueId(),
-        title: "Detonator",
+        title: "Volunteer",
         icon: IconUsers,
         submenu: [
           {
             id: uniqueId(),
             href: "/ui-components/pages/detonator",
-            name: "List Detonator",
+            name: "List Volunteer",
             icon: <IconUser />,
             // isUnapproved: isUnapprovedDetonator,
           },

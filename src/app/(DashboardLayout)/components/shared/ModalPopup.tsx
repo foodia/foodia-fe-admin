@@ -138,7 +138,9 @@ export const ModalPopupAddDonations = ({
                   color: "black",
                 }}
               >
-                Jumlah Kurang Dana
+                {campaign_name === "Coupon Wallet"
+                  ? "Coupon Wallet Balance"
+                  : "Jumlah Kurang Dana"}
               </Typography>
               {new Intl.NumberFormat("id-ID", {
                 style: "currency",

@@ -15,6 +15,7 @@ import {
   IconChevronDown,
   IconChevronUp,
   IconCircle,
+  IconCircleFilled,
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { useAppContext } from "@/app/(DashboardLayout)/components/shared/Context";
@@ -114,23 +115,33 @@ const NavItem = ({ item, index, level, pathDirect, onClick }: ItemType) => {
                   alignItems: "center",
                 }}
               >
-                <ListItemIcon
+                {/* <ListItemIcon
                   sx={{
                     color: "white",
                     minWidth: 0,
                   }}
                 >
                   {itemIcon}
-                </ListItemIcon>
+                </ListItemIcon> */}
                 <ListItemText sx={{ marginLeft: "20px" }}>
                   {item.title}
                 </ListItemText>
               </Box>
-              {index === Index && open ? (
-                <IconChevronUp />
-              ) : (
-                <IconChevronDown />
-              )}
+              <Box sx={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                <IconCircleFilled
+                  size={10}
+                  style={{
+                    backgroundColor: "red",
+                    color: "transparent",
+                    borderRadius: "100%",
+                  }}
+                />
+                {index === Index && open ? (
+                  <IconChevronUp />
+                ) : (
+                  <IconChevronDown />
+                )}
+              </Box>
             </Box>
           </Button>
 
@@ -186,34 +197,76 @@ const NavItem = ({ item, index, level, pathDirect, onClick }: ItemType) => {
                 ) : (
                   ""
                 )}
+                <IconCircleFilled
+                  size={10}
+                  style={{
+                    backgroundColor: "red",
+                    color: "transparent",
+                    borderRadius: "100%",
+                    marginRight: "27px",
+                  }}
+                />
               </ListItemButton>
             </Collapse>
           ))}
         </>
       ) : (
-        <ListItemStyled>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            marginLeft: "8px",
+            justifyContent: "space-between",
+            width: "100%", // Added width to take up the full width
+          }}
+        >
           <ListItemButton
+            sx={{
+              display: "flex",
+              padding: "5px 0px",
+              borderRadius: "9px",
+              ":hover": {
+                color: "black",
+                backgroundColor: "#E9FBF0",
+              },
+              "&.Mui-selected": {
+                backgroundColor: "#E9FBF0",
+                color: "black",
+                ":hover": {
+                  backgroundColor: "#E9FBF0",
+                },
+              },
+            }}
             component={Link}
             href={item.href}
-            disabled={item.disabled}
             selected={pathDirect === item.href}
-            target={item.external ? "_blank" : ""}
-            onClick={onClick}
+            onClick={() => {
+              pathDirect !== item.href && setIsLoading(true);
+            }}
           >
-            <ListItemIcon
-              sx={{
-                minWidth: "36px",
-                p: "3px 0",
-                color: "inherit",
-              }}
-            >
-              {itemIcon}
-            </ListItemIcon>
-            <ListItemText>
-              <>{item.title}</>
+            {/* <ListItemIcon
+                sx={{
+                  color: "white",
+                  minWidth: 0,
+                }}
+              >
+                {itemIcon}
+              </ListItemIcon> */}
+            <ListItemText sx={{ marginLeft: "20px" }}>
+              {item.title}
             </ListItemText>
+            <IconCircleFilled
+              size={10}
+              style={{
+                backgroundColor: "red",
+                color: "transparent",
+                borderRadius: "100%",
+                marginRight: "45px",
+              }}
+            />
           </ListItemButton>
-        </ListItemStyled>
+        </Box>
       )}
     </List>
   );

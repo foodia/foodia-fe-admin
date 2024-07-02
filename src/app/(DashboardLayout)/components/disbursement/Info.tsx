@@ -22,6 +22,9 @@ interface ChildProps {
     merchant: {
       merchant_name: any;
       oauth: { fullname: string; email: string };
+      wallet: {
+        balance: any;
+      };
     };
     payment_method: any;
     status: string;
@@ -171,7 +174,14 @@ const Info: React.FC<ChildProps> = ({ data }) => {
   ];
 
   return (
-    <DetailCard title="Disbursement Information">
+    <DetailCard
+      title="Disbursement Information"
+      subTitle={new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        minimumFractionDigits: 0,
+      }).format(data.merchant.wallet.balance)}
+    >
       <Box
         sx={{
           display: "flex",
@@ -193,7 +203,7 @@ const Info: React.FC<ChildProps> = ({ data }) => {
             style: "currency",
             currency: "IDR",
             minimumFractionDigits: 0,
-          }).format(data.amount)}
+          }).format(data.amount - data.admin_fee)}
         />
         <Field
           label="Admin Fee"

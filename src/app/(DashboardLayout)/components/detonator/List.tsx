@@ -11,7 +11,7 @@ const List = () => {
 
   return (
     <>
-      <BaseCard title="Detonator Management" breadcrumb={breadcrumbs}>
+      <BaseCard title="Volunteer Management" breadcrumb={breadcrumbs}>
         <Box sx={{ paddingX: "30px" }}>
           <DataTableComponent />
         </Box>

@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   CircularProgress,
@@ -11,7 +12,11 @@ import { useTheme } from "@mui/material/styles";
 import { useEffect, useState } from "react";
 
 import {
+  IconBell,
   IconChevronDown,
+  IconCircle,
+  IconCircle9Filled,
+  IconCircleFilled,
   IconCreditCard,
   IconCurrencyDollar,
   IconShield,
@@ -78,6 +83,31 @@ const Profile = () => {
 
   return (
     <Box>
+      {/* <IconButton
+        size="large"
+        aria-label="menu"
+        color="inherit"
+        aria-haspopup="true"
+        sx={{
+          ...(typeof anchorEl2 === "object" && {
+            borderRadius: "9px",
+          }),
+        }}
+        // onClick={handleClick2}
+      >
+        <IconBell />
+        <IconCircleFilled
+          size={10}
+          style={{
+            backgroundColor: "red",
+            color: "transparent",
+            borderRadius: "100%",
+            position: "absolute",
+            marginLeft: "15px",
+            marginBottom: "15px",
+          }}
+        />
+      </IconButton> */}
       <IconButton
         size="large"
         aria-label="menu"
@@ -90,14 +120,14 @@ const Profile = () => {
         }}
         onClick={handleClick2}
       >
-        {/* <Avatar
+        <Avatar
           src={"/images/users/user2.jpg"}
           alt={"ProfileImg"}
           sx={{
             width: 30,
             height: 30,
           }}
-        /> */}
+        />
         <Box
           sx={{
             display: {

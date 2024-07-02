@@ -10,17 +10,20 @@ import React from "react";
 
 // components
 import { KeyboardArrowRight } from "@mui/icons-material";
+import moment from "moment";
 
 interface ItemType {
   title?: any;
   breadcrumb?: any;
   currentBalance?: any;
+  lastUpdate?: any;
 }
 
 const PageHeader: React.FC<ItemType> = ({
   title,
   breadcrumb,
   currentBalance,
+  lastUpdate,
 }) => {
   const AppBarStyled = styled(AppBar)(({ theme }) => ({
     background: "#FFF",
@@ -45,6 +48,7 @@ const PageHeader: React.FC<ItemType> = ({
         <Box
           sx={{
             display: "flex",
+            alignItems: "center",
             flexDirection: "row",
             justifyContent: "space-between",
             paddingX: "20px",
@@ -68,6 +72,13 @@ const PageHeader: React.FC<ItemType> = ({
               ""
             )}
           </Box>
+          {lastUpdate ? (
+            <Typography sx={{ fontSize: "14px" }}>
+              Last Updated {moment(lastUpdate).format("DD-MM-yyyy hh:mm:ss")}
+            </Typography>
+          ) : (
+            ""
+          )}
           {currentBalance ? (
             <>
               <Box

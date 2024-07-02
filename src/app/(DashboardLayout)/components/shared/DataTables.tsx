@@ -41,12 +41,17 @@ interface Data {
   page?: any;
   download?: any;
   search?: any;
+  searchable?: any;
   walletUrl?: any;
   excelfileName?: any;
   currentPage?: any;
   setCurrentPage?: any;
   manualSorting?: any;
   handleSort?: any;
+  filterPeriode?: any;
+  valueFilterPeriode?: any;
+  onChangeFilterPeriode?: any;
+  filterPeriodeOption?: { id?: number; value?: string; label?: string }[];
 }
 
 const DataTables: React.FC<Data> = ({
@@ -68,8 +73,13 @@ const DataTables: React.FC<Data> = ({
   page,
   download = true,
   search = true,
+  searchable = true,
   walletUrl,
   excelfileName,
+  filterPeriode,
+  filterPeriodeOption,
+  valueFilterPeriode,
+  onChangeFilterPeriode,
 }) => {
   const { isLoading, setIsLoading } = useAppContext();
 
@@ -131,6 +141,37 @@ const DataTables: React.FC<Data> = ({
             gap: "10px",
           }}
         >
+          {filterPeriode ? (
+            <Select
+              variant="standard"
+              size="small"
+              disableUnderline
+              sx={{
+                ".MuiSelect-select": {
+                  padding: "5px",
+                  width: "70px",
+                  fontSize: "14px",
+                  border: "1px solid gray",
+                  // background: "rgba(63, 182, 72, 0.10)",
+                  borderRadius: "5px",
+                  ":focus": {
+                    borderRadius: "5px",
+                    // background: "rgba(63, 182, 72, 0.10)",
+                  },
+                },
+              }}
+              value={valueFilterPeriode}
+              onChange={onChangeFilterPeriode}
+            >
+              {filterPeriodeOption?.map((data) => (
+                <MenuItem key={data.id} value={data.value}>
+                  {data.label}
+                </MenuItem>
+              ))}
+            </Select>
+          ) : (
+            ""
+          )}
           {searchOption ? (
             //-- Filter Columns --//
             <Box
@@ -195,25 +236,30 @@ const DataTables: React.FC<Data> = ({
               />
             </Box>
           ) : (
-            <Input
-              disableUnderline
-              size="small"
-              placeholder="Search Name"
-              sx={{
-                background: "rgba(63, 182, 72, 0.10)",
-                padding: "10px 16px",
-                borderRadius: "15px",
-                ".MuiInput-input": {
-                  padding: 0,
-                },
-              }}
-              startAdornment={
-                <InputAdornment sx={{ color: "primary.main" }} position="start">
-                  <Search />
-                </InputAdornment>
-              }
-              onChange={onChangeSearch}
-            />
+            searchable && (
+              <Input
+                disableUnderline
+                size="small"
+                placeholder="Search Name"
+                sx={{
+                  background: "rgba(63, 182, 72, 0.10)",
+                  padding: "10px 16px",
+                  borderRadius: "15px",
+                  ".MuiInput-input": {
+                    padding: 0,
+                  },
+                }}
+                startAdornment={
+                  <InputAdornment
+                    sx={{ color: "primary.main" }}
+                    position="start"
+                  >
+                    <Search />
+                  </InputAdornment>
+                }
+                onChange={onChangeSearch}
+              />
+            )
           )}
           {value != undefined ? (
             //-- Filter Status Approval --//
@@ -348,6 +394,7 @@ const DataTables: React.FC<Data> = ({
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
+              width: "100%",
             }}
           >
             <DataTable

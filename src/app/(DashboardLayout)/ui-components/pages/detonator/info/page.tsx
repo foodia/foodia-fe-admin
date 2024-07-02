@@ -76,7 +76,7 @@ const DetonatorInfo = () => {
 
   return (
     <>
-      <DashboardCard title="Detonator Detail" breadcrumb={breadcrumbs}>
+      <DashboardCard title="Volunteer Detail" breadcrumb={breadcrumbs}>
         <>
           <Info data={data} />
           <Attachment data={data} />

@@ -1,10 +1,10 @@
 import { SelectChangeEvent, Stack } from "@mui/material";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { getProduct } from "../api/Product";
 import { ButtonAction, Status } from "../shared/Buttons";
 import { useAppContext } from "../shared/Context";
 import DataTables from "../shared/DataTables";
-import { getDisbursement } from "../api/Disbursement";
 
 interface Meta {
   page: number;
@@ -15,12 +15,12 @@ interface Meta {
 
 interface Data {
   id: number;
-  recipient_name: any;
-  bank: any;
-  amount: any;
-  merchant: { merchant_name: any };
-  oauth: { fullname: string; email: string };
+  name: string;
+  description: string;
+  price: string;
+  qty: number;
   status: string;
+  merchant: { oauth: { fullname: string } };
 }
 
 interface Props {
@@ -31,7 +31,7 @@ interface Props {
 
 const DataTableComponent = () => {
   const [filterText, setFilterText] = useState<string>("all");
-  const [searchBy, setSearchBy] = useState<string>("merchant_name");
+  const [searchBy, setSearchBy] = useState<string>("name");
   const [searchText, setSearchText] = useState<string>("");
   const [currentPageIndex, setCurrentPageIndex] = useState(0); // State to track current page index
   const [data, setData] = useState([]);
@@ -49,52 +49,64 @@ const DataTableComponent = () => {
 
   useEffect(() => {
     localStorage.setItem("FilterStatus", filterText);
-    getDisbursement(setData, setMeta, page, setIsLoading);
+    // getProduct(setData, setMeta, page, setIsLoading, filterText);
   }, []);
 
   const columns = [
     {
       name: "No",
       selector: (_row: any, i: any) => i + 1 + currentPageIndex * meta.per_page,
-      // sortable: true,
       width: "70px",
       // style: {
       //   paddingLeft: "30px",
       // },
     },
     {
-      name: "Merchant Name",
-      cell: (row: any) => <div>{row.merchant.merchant_name}</div>,
-      // sortable: true,
+      name: "Merchant",
+      cell: (row: any) => <div>{row.merchant.oauth.fullname}</div>,
+      width: "150px",
     },
     {
-      name: "Recipient Name",
-      cell: (row: any) => <div>{row.recipient_name}</div>,
-      // sortable: true,
-      width: "auto",
+      name: "Name",
+      cell: (row: any) => <div>{row.name}</div>,
+      width: "150px",
     },
     {
-      name: "Bank",
-      cell: (row: any) => <div>{row.bank}</div>,
-      // sortable: true,
+      name: "Description",
+      cell: (row: any) => (
+        <div
+          style={{
+            textOverflow: "ellipsis",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {row.description}
+        </div>
+      ),
+      width: "250px",
     },
     {
-      name: "Amount",
+      name: "Quantity",
+      cell: (row: any) => <div>{row.qty}</div>,
+      width: "90px",
+    },
+    {
+      name: "Price",
       cell: (row: any) => (
         <div>
           {new Intl.NumberFormat("id-ID", {
             style: "currency",
             currency: "IDR",
             minimumFractionDigits: 0,
-          }).format(row.amount - row.admin_fee)}
+          }).format(parseInt(row.price))}
         </div>
       ),
-      // sortable: true,
     },
     {
       name: "Status",
       cell: (row: any) => <Status row={row} />,
-      // sortable: true,
+      width: "150px",
     },
     {
       name: "Action",
@@ -102,7 +114,7 @@ const DataTableComponent = () => {
         <Stack spacing={1} direction="row">
           <Link
             href={{
-              pathname: "/ui-components/pages/disbursement/info",
+              pathname: "/ui-components/pages/product/info",
               query: {
                 id: row.id,
               },
@@ -112,7 +124,7 @@ const DataTableComponent = () => {
           </Link>
         </Stack>
       ),
-      // sortable: true,
+      width: "120px",
     },
     // Add more columns as needed
   ];
@@ -124,7 +136,7 @@ const DataTableComponent = () => {
     setPage(value);
     setCurrentPageIndex(value - 1);
     setIsLoading(true);
-    getDisbursement(setData, setMeta, value, setIsLoading);
+    // getProduct(setData, setMeta, value, setIsLoading, filterText);
   };
 
   useEffect(() => {
@@ -136,14 +148,14 @@ const DataTableComponent = () => {
     setSearchBy(event.target.value);
     localStorage.setItem("SearchBy", event.target.value);
     setIsLoading(true);
-    getDisbursement(setData, setMeta, page, setIsLoading);
+    // getProduct(setData, setMeta, page, setIsLoading, filterText);
   };
 
   const handleChangeFilterText = (event: SelectChangeEvent) => {
     setIsLoading(true);
     localStorage.setItem("FilterStatus", event.target.value);
     setFilterText(event.target.value);
-    getDisbursement(setData, setMeta, 1, setIsLoading);
+    // getProduct(setData, setMeta, 1, setIsLoading, event.target.value);
   };
 
   const handleChangeSearch = (event: SelectChangeEvent) => {
@@ -157,63 +169,27 @@ const DataTableComponent = () => {
     }
     const timeout = setTimeout(() => {
       setIsLoading(true);
-      getDisbursement(setData, setMeta, page, setIsLoading);
+      // getProduct(setData, setMeta, page, setIsLoading, filterText);
       // Add your logic here
     }, 500); // Adjust the delay as needed (in milliseconds)
     setTypingTimeout(timeout);
   };
 
-  // let filteredItems: any = data;
-  // if (filterText === "unapproved") {
-  //   filteredItems = data.filter(
-  //     (data) =>
-  //       data.status.toLowerCase() !== "approved" &&
-  //       (searchBy === "merchant_name"
-  //         ? data.merchant.merchant_name
-  //             .toLowerCase()
-  //             .includes(searchText.toLowerCase())
-  //         : searchBy === "recipient_name"
-  //         ? data.recipient_name.toLowerCase().includes(searchText.toLowerCase())
-  //         : searchBy === "bank"
-  //         ? data.bank.toLowerCase().includes(searchText.toLowerCase())
-  //         : data.amount.toLowerCase().includes(searchText.toLowerCase()))
-  //   );
-  // } else {
-  //   filteredItems = data.filter(
-  //     (data) =>
-  //       data.status.toLowerCase() === "approved" &&
-  //       (searchBy === "merchant_name"
-  //         ? data.merchant.merchant_name
-  //             .toLowerCase()
-  //             .includes(searchText.toLowerCase())
-  //         : searchBy === "recipient_name"
-  //         ? data.recipient_name.toLowerCase().includes(searchText.toLowerCase())
-  //         : searchBy === "bank"
-  //         ? data.bank.toLowerCase().includes(searchText.toLowerCase())
-  //         : data.amount.toLowerCase().includes(searchText.toLowerCase()))
-  //   );
-  // }
-
   const searchOption = [
     {
       id: 1,
-      value: "merchant_name",
-      label: "Merchant Name",
+      value: "name",
+      label: "Product Name",
     },
     {
       id: 2,
-      value: "recipient_name",
-      label: "Recipient Name",
+      value: "price",
+      label: "Price",
     },
     {
       id: 3,
-      value: "bank",
-      label: "Bank",
-    },
-    {
-      id: 4,
-      value: "amount",
-      label: "Amount",
+      value: "description",
+      label: "Description",
     },
   ];
 
@@ -243,15 +219,16 @@ const DataTableComponent = () => {
   return (
     <>
       <DataTables
-        value={filterText}
-        searchOption={searchOption}
-        valueSearchBy={searchBy}
-        onChangeFilterText={handleChangeFilterText}
-        onKeyUpSearch={handleKeyUp}
-        filterText={filterOptions}
+        search={false}
+        // value={filterText}
+        // searchOption={searchOption}
+        // valueSearchBy={searchBy}
+        // onChangeFilterText={handleChangeFilterText}
+        // onKeyUpSearch={handleKeyUp}
+        // filterText={filterOptions}
         onChange={handleChangePage}
-        onChangeSearch={handleChangeSearch}
-        onChangeSearchBy={handleChangeSearchBy}
+        // onChangeSearch={handleChangeSearch}
+        // onChangeSearchBy={handleChangeSearchBy}
         pageItems={data.length}
         meta={meta}
         columns={columns}

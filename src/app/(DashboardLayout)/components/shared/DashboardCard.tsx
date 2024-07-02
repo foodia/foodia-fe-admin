@@ -16,6 +16,7 @@ type Props = {
   status?: string;
   currentBalance?: any;
   breadcrumb?: any;
+  lastUpdate?: any;
 };
 
 interface CustomStepIconProps extends StepIconProps {
@@ -35,6 +36,7 @@ const DashboardCard = ({
   status,
   currentBalance,
   breadcrumb,
+  lastUpdate,
 }: Props) => {
   const steps = ["Waiting", "Rejected", "Approved"];
   const activeStep = () => {
@@ -143,6 +145,7 @@ const DashboardCard = ({
         title={title}
         breadcrumb={breadcrumb}
         currentBalance={currentBalance}
+        lastUpdate={lastUpdate}
       />
       <Box sx={{ paddingX: "24px", paddingY: "12px" }}>{children}</Box>
     </Card>

@@ -1,7 +1,8 @@
 const CustomStylesTable = {
   table: {
     style: {
-      maxWidth: "auto", // set the width of the table wrapper
+      width: "100%",
+      // maxWidth: "auto", // set the width of the table wrapper
       border: "1px solid #CCD1D9",
       borderRadius: "6px 6px 0px 0px",
     },

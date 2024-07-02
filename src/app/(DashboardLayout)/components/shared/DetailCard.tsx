@@ -10,13 +10,41 @@ const DetailCard: React.FC<ChildProps> = ({ children, title, subTitle }) => {
   return (
     <>
       {/* <BaseCard title="Detonator Info" status={data.status}> */}
-      <Box sx={{ paddingLeft: "10px", paddingY: "20px" }}>
-        <Typography sx={{ color: "#000", fontSize: "18px", fontWeight: 700 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          paddingY: "20px",
+          paddingX: "10px",
+        }}
+      >
+        <Typography
+          sx={{
+            color: "#000",
+            fontSize: "18px",
+            fontWeight: 700,
+          }}
+        >
           {title}
         </Typography>
-        <Typography sx={{ color: "#333", fontSize: "13px", fontWeight: 400 }}>
-          {subTitle}
-        </Typography>
+        {subTitle && (
+          <Box
+            sx={{ display: "flex", flexDirection: "column", alignItems: "end" }}
+          >
+            <Typography
+              sx={{ color: "red", fontSize: "18px", fontWeight: "bold" }}
+            >
+              Saldo
+            </Typography>
+            <Typography
+              sx={{ color: "red", fontSize: "18px", fontWeight: "bold" }}
+            >
+              {subTitle}
+            </Typography>
+          </Box>
+        )}
       </Box>
       <Box
         sx={{
