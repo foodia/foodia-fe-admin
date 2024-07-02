@@ -86,7 +86,7 @@ const DataTableComponent = () => {
             style: "currency",
             currency: "IDR",
             minimumFractionDigits: 0,
-          }).format(row.amount)}
+          }).format(row.amount - row.admin_fee)}
         </div>
       ),
       // sortable: true,
