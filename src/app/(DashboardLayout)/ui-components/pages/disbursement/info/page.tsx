@@ -4,8 +4,8 @@ import {
   ApprovalsDisbursement,
   getDisbursementDetail,
 } from "@/app/(DashboardLayout)/components/api/Disbursement";
-// import Attachment from "@/app/(DashboardLayout)/components/disbursement/Attachment";
 import Info from "@/app/(DashboardLayout)/components/disbursement/Info";
+// import Attachment from "@/app/(DashboardLayout)/components/disbursement/Attachment";
 import { useAppContext } from "@/app/(DashboardLayout)/components/shared/Context";
 import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
 import { ModalPopupApprovals } from "@/app/(DashboardLayout)/components/shared/ModalPopup";
@@ -24,6 +24,9 @@ type Props = {
   merchant: {
     merchant_name: any;
     oauth: { fullname: string; email: string };
+    wallet: {
+      balance: any;
+    };
   };
   payment_method: any;
   status: string;
@@ -45,7 +48,11 @@ const DisbursementInfo = () => {
     amount: 0,
     admin_fee: 0,
     rekening: "",
-    merchant: { merchant_name: "", oauth: { fullname: "", email: "" } },
+    merchant: {
+      merchant_name: "",
+      oauth: { fullname: "", email: "" },
+      wallet: { balance: "" },
+    },
     payment_method: "",
     status: "",
     note: "",
