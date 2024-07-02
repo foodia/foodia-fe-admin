@@ -12,9 +12,19 @@ import {
 } from "@tabler/icons-react";
 import { uniqueId } from "lodash";
 import { useAppContext } from "../../components/shared/Context";
+import { useEffect, useState } from "react";
+import { getNotifications } from "../../components/api/Notifications";
 
 const Menuitems = () => {
   const {} = useAppContext();
+  const { isLoading, setIsLoading } = useAppContext();
+  const [notifData, setNotifData] = useState<any>({});
+
+  useEffect(() => {
+    getNotifications(setNotifData, setIsLoading);
+  }, []);
+
+  console.log("notif", notifData.disbursement);
 
   if (localStorage.getItem("ROLE") == "superadmin") {
     return [
@@ -34,28 +44,24 @@ const Menuitems = () => {
             href: "/ui-components/pages/wallet/csr",
             name: "CSR Wallet",
             icon: <IconWallet />,
-            // isUnapproved: isUnapprovedMerchant,
           },
           {
             id: uniqueId(),
             href: "/ui-components/pages/wallet/agnostic",
             name: "Agnostic Wallet",
             icon: <IconWallet />,
-            // isUnapproved: isUnapprovedProduct,
           },
           {
             id: uniqueId(),
             href: "/ui-components/pages/wallet/merchant-payments",
             name: "Merchant Wallet",
             icon: <IconWallet />,
-            // isUnapproved: isUnapprovedProduct,
           },
           {
             id: uniqueId(),
             href: "/ui-components/pages/wallet/coupon",
             name: "Coupon Wallet",
             icon: <IconWallet />,
-            // isUnapproved: isUnapprovedProduct,
           },
         ],
       },
@@ -69,14 +75,12 @@ const Menuitems = () => {
             href: "/ui-components/pages/donator",
             name: "Corporations",
             icon: <IconBusinessplan />,
-            // isUnapproved: isUnapprovedProduct,
           },
           {
             id: uniqueId(),
             href: "/ui-components/pages/donator/individuals",
             name: "Individuals",
             icon: <IconUser />,
-            // isUnapproved: isUnapprovedMerchant,
           },
         ],
       },
@@ -89,15 +93,14 @@ const Menuitems = () => {
             id: uniqueId(),
             href: "/ui-components/pages/detonator",
             name: "List Volunteer",
+            isShowBadge: notifData.detonator,
             icon: <IconUser />,
-            // isUnapproved: isUnapprovedDetonator,
           },
           {
             id: uniqueId(),
             href: "/ui-components/pages/campaign",
             name: "List Campaign",
             icon: <IconSpeakerphone />,
-            // isUnapproved: isUnapprovedCampaign,
           },
         ],
       },
@@ -110,15 +113,14 @@ const Menuitems = () => {
             id: uniqueId(),
             href: "/ui-components/pages/merchant",
             name: "List Merchant",
+            isShowBadge: notifData.merchant,
             icon: <IconUser />,
-            // isUnapproved: isUnapprovedMerchant,
           },
           {
             id: uniqueId(),
             href: "/ui-components/pages/product",
             name: "List Product",
             icon: <IconBurger />,
-            // isUnapproved: isUnapprovedProduct,
           },
         ],
       },
@@ -131,8 +133,8 @@ const Menuitems = () => {
             id: uniqueId(),
             href: "/ui-components/pages/disbursement",
             name: "List Disbursement",
+            isShowBadge: notifData.disbursement,
             icon: <IconUser />,
-            // isUnapproved: isUnapprovedMerchant,
           },
         ],
       },
@@ -149,21 +151,18 @@ const Menuitems = () => {
             href: "/ui-components/pages/wallet/csr",
             name: "CSR Wallet",
             icon: <IconWallet />,
-            // isUnapproved: isUnapprovedMerchant,
           },
           {
             id: uniqueId(),
             href: "/ui-components/pages/wallet/agnostic",
             name: "Agnostic Wallet",
             icon: <IconWallet />,
-            // isUnapproved: isUnapprovedProduct,
           },
           {
             id: uniqueId(),
             href: "/ui-components/pages/wallet/merchant-payments",
             name: "Merchant Payments",
             icon: <IconWallet />,
-            // isUnapproved: isUnapprovedProduct,
           },
         ],
       },

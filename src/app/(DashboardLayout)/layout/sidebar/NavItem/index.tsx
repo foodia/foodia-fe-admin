@@ -8,6 +8,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Typography,
   styled,
   useTheme,
 } from "@mui/material";
@@ -19,6 +20,7 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { useAppContext } from "@/app/(DashboardLayout)/components/shared/Context";
+import { getNotifications } from "@/app/(DashboardLayout)/components/api/Notifications";
 
 type NavGroup = {
   [x: string]: any;
@@ -42,6 +44,7 @@ interface ItemType {
   item: NavGroup;
   onClick: (event: React.MouseEvent<HTMLElement>) => void;
   hideMenu?: any;
+  isShowBadge?: any;
   level?: number | any;
   pathDirect: string;
   index?: any;
@@ -128,14 +131,17 @@ const NavItem = ({ item, index, level, pathDirect, onClick }: ItemType) => {
                 </ListItemText>
               </Box>
               <Box sx={{ display: "flex", alignItems: "center", gap: "5px" }}>
-                <IconCircleFilled
-                  size={10}
-                  style={{
-                    backgroundColor: "red",
-                    color: "transparent",
-                    borderRadius: "100%",
-                  }}
-                />
+                {item.submenu[0].isShowBadge && (
+                  <IconCircleFilled
+                    size={10}
+                    style={{
+                      backgroundColor: "red",
+                      color: "transparent",
+                      borderRadius: "100%",
+                      marginRight: "27px",
+                    }}
+                  />
+                )}
                 {index === Index && open ? (
                   <IconChevronUp />
                 ) : (
@@ -190,22 +196,23 @@ const NavItem = ({ item, index, level, pathDirect, onClick }: ItemType) => {
                   {t.icon}
                 </ListItemIcon> */}
                 <ListItemText primary={t.name} />
-                {t.isUnapproved ? (
-                  <ListItemText>
-                    <IconCircle color="red" fill="red" size={10} />
-                  </ListItemText>
-                ) : (
-                  ""
+                {t.isShowBadge && (
+                  <Typography
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "10px",
+                      backgroundColor: "red",
+                      width: "25px",
+                      padding: "5px",
+                      color: "white",
+                      borderRadius: "100%",
+                    }}
+                  >
+                    {t.isShowBadge}
+                  </Typography>
                 )}
-                <IconCircleFilled
-                  size={10}
-                  style={{
-                    backgroundColor: "red",
-                    color: "transparent",
-                    borderRadius: "100%",
-                    marginRight: "27px",
-                  }}
-                />
               </ListItemButton>
             </Collapse>
           ))}
@@ -256,7 +263,7 @@ const NavItem = ({ item, index, level, pathDirect, onClick }: ItemType) => {
             <ListItemText sx={{ marginLeft: "20px" }}>
               {item.title}
             </ListItemText>
-            <IconCircleFilled
+            {/* <IconCircleFilled
               size={10}
               style={{
                 backgroundColor: "red",
@@ -264,7 +271,7 @@ const NavItem = ({ item, index, level, pathDirect, onClick }: ItemType) => {
                 borderRadius: "100%",
                 marginRight: "45px",
               }}
-            />
+            /> */}
           </ListItemButton>
         </Box>
       )}
