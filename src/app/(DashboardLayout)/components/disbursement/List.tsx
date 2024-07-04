@@ -11,16 +11,19 @@ const List = () => {
 
   const cards = [
     {
+      id: 1,
       title: "Waiting",
       amount: "Rp 20.455.000",
       borderColor: "#FFB444",
     },
     {
+      id: 2,
       title: "Rejected",
       amount: "Rp 3.500.000",
       borderColor: "#DE0606",
     },
     {
+      id: 3,
       title: "Approved",
       amount: "Rp 2.000.000",
       borderColor: "#3FB648",
@@ -71,6 +74,7 @@ const List = () => {
           >
             {cards.map((items) => (
               <Box
+                key={items.id}
                 sx={{
                   padding: "15px",
                   borderRadius: "10px",

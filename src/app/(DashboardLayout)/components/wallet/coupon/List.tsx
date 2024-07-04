@@ -19,6 +19,7 @@ import { useAppContext } from "../../shared/Context";
 import { getWalletList } from "../../api/Wallet";
 import Swal from "sweetalert2";
 import { getCampaignDetail, postCampaignPayment } from "../../api/Campaign";
+import { getCouponWalletDetail } from "../../api/Coupon";
 
 type Props = {
   id: number;
@@ -175,6 +176,11 @@ const List = () => {
   const [sortField, setSortField] = useState("deposit");
   const [sortAsc, setSortAsc] = useState(true);
   const [sortedData, setSortedData] = useState([]);
+  const [couponWalletDetail, setCouponWalletDetail] = useState<any>({});
+
+  // useEffect(() => {
+  //   getCouponWalletDetail(setCouponWalletDetail, setIsLoading);
+  // }, []);
 
   const breadcrumbs = [
     <Typography fontSize="13px" key="3" color="#999" fontWeight={400}>
@@ -184,18 +190,22 @@ const List = () => {
 
   const cards = [
     {
+      id: 1,
       title: "Reserved",
       bgcolor: "linear-gradient(to bottom, #47CBC3, #5A689A)",
     },
     {
+      id: 2,
       title: "Expired",
       bgcolor: "linear-gradient(to bottom, #CB4747, #9A5A5A)",
     },
     {
+      id: 3,
       title: "Active",
       bgcolor: "linear-gradient(to bottom, #B847CB, #765A9A)",
     },
     {
+      id: 4,
       title: "Claimed",
       bgcolor: "linear-gradient(to bottom, #4ACB47, #5A9A70)",
     },
@@ -1371,6 +1381,7 @@ const List = () => {
           >
             {cards.map((items) => (
               <Box
+                key={items.id}
                 sx={{
                   padding: "14px",
                   borderRadius: "10px",
