@@ -97,7 +97,7 @@ const NavItem = ({ item, index, level, pathDirect, onClick }: ItemType) => {
               flexDirection: "row",
               justifyContent: "left",
               width: "100%",
-              color: "white",
+              color: "black",
               marginBottom: "5px",
             }}
             onClick={() => handleClick(index)}
@@ -126,11 +126,23 @@ const NavItem = ({ item, index, level, pathDirect, onClick }: ItemType) => {
                 >
                   {itemIcon}
                 </ListItemIcon> */}
-                <ListItemText sx={{ marginLeft: "20px" }}>
+                <Typography
+                  fontWeight={900}
+                  sx={{
+                    marginLeft: "20px",
+                  }}
+                >
                   {item.title}
-                </ListItemText>
+                </Typography>
               </Box>
-              <Box sx={{ display: "flex", alignItems: "center", gap: "5px" }}>
+              <Box
+                sx={{
+                  fontWeight: "bold",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "5px",
+                }}
+              >
                 {item.submenu[0].isShowBadge && (
                   <IconCircleFilled
                     size={10}
@@ -163,7 +175,7 @@ const NavItem = ({ item, index, level, pathDirect, onClick }: ItemType) => {
                   marginBottom: "8px",
                   marginLeft: "40px",
                   padding: "8px 10px",
-                  borderRadius: "9px",
+                  // borderRadius: "9px",
                   // color: theme.palette.text.secondary,
                   paddingLeft: "10px",
                   ":hover": {
@@ -171,7 +183,8 @@ const NavItem = ({ item, index, level, pathDirect, onClick }: ItemType) => {
                     backgroundColor: "#E9FBF0",
                   },
                   "&.Mui-selected": {
-                    backgroundColor: "#E9FBF0",
+                    backgroundColor: "transparent",
+                    borderLeft: "5px solid #3FB648",
                     color: "black",
                     ":hover": {
                       backgroundColor: "#E9FBF0",
@@ -195,24 +208,35 @@ const NavItem = ({ item, index, level, pathDirect, onClick }: ItemType) => {
                   >
                   {t.icon}
                 </ListItemIcon> */}
-                <ListItemText primary={t.name} />
-                {t.isShowBadge && (
-                  <Typography
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: "10px",
-                      backgroundColor: "red",
-                      width: "25px",
-                      padding: "5px",
-                      color: "white",
-                      borderRadius: "100%",
-                    }}
-                  >
-                    {t.isShowBadge}
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    width: "100%",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Typography fontSize={"14px"} fontWeight={500}>
+                    {t.name}
                   </Typography>
-                )}
+                  {t.isShowBadge && (
+                    <Typography
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "10px",
+                        backgroundColor: "red",
+                        width: "25px",
+                        padding: "5px",
+                        color: "white",
+                        borderRadius: "100%",
+                      }}
+                    >
+                      {t.isShowBadge}
+                    </Typography>
+                  )}
+                </Box>
               </ListItemButton>
             </Collapse>
           ))}
@@ -232,13 +256,14 @@ const NavItem = ({ item, index, level, pathDirect, onClick }: ItemType) => {
             sx={{
               display: "flex",
               padding: "5px 0px",
-              borderRadius: "9px",
+              // borderRadius: "9px",
               ":hover": {
                 color: "black",
                 backgroundColor: "#E9FBF0",
               },
               "&.Mui-selected": {
-                backgroundColor: "#E9FBF0",
+                backgroundColor: "transparent",
+                borderLeft: "5px solid #3FB648",
                 color: "black",
                 ":hover": {
                   backgroundColor: "#E9FBF0",
@@ -260,9 +285,9 @@ const NavItem = ({ item, index, level, pathDirect, onClick }: ItemType) => {
               >
                 {itemIcon}
               </ListItemIcon> */}
-            <ListItemText sx={{ marginLeft: "20px" }}>
+            <Typography fontWeight={900} sx={{ marginLeft: "20px" }}>
               {item.title}
-            </ListItemText>
+            </Typography>
             {/* <IconCircleFilled
               size={10}
               style={{

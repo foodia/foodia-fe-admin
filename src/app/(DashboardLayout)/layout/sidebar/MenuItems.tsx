@@ -24,8 +24,6 @@ const Menuitems = () => {
     getNotifications(setNotifData, setIsLoading);
   }, []);
 
-  console.log("notif", notifData.disbursement);
-
   if (localStorage.getItem("ROLE") == "superadmin") {
     return [
       {

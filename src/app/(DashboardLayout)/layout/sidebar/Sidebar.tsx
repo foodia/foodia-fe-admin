@@ -38,8 +38,8 @@ const Sidebar = ({
             sx: {
               display: "flex",
               justifyContent: "space-between",
-              color: "white",
-              backgroundColor: "#168140",
+              color: "back",
+              backgroundColor: "white",
               width: sidebarWidth,
               boxSizing: "border-box",
               border: "0",
@@ -54,7 +54,7 @@ const Sidebar = ({
             {/* ------------------------------------------- */}
             {/* Logo */}
             {/* ------------------------------------------- */}
-            <Box py={7.5} justifyContent={"center"} display={"flex"}>
+            <Box py={5} justifyContent={"center"} display={"flex"}>
               <Logo />
             </Box>
             {/* ------------------------------------------- */}
@@ -67,7 +67,7 @@ const Sidebar = ({
           <Typography
             sx={{
               fontSize: "14px",
-              fontWeight: 400,
+              fontWeight: 900,
               display: "flex",
               alignItems: "center",
               gap: "5px",
@@ -98,7 +98,7 @@ const Sidebar = ({
       {/* ------------------------------------------- */}
       {/* Logo */}
       {/* ------------------------------------------- */}
-      <Box px={2} py={2}>
+      <Box py={5} justifyContent={"center"} display={"flex"}>
         <Logo />
       </Box>
       {/* ------------------------------------------- */}

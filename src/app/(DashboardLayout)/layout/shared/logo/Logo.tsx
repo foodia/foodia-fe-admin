@@ -6,8 +6,8 @@ const Logo = () => {
     <Image
       src={logo}
       alt="NotFound"
-      width={150} // Set the desired width
-      height={32.927} // Set the desired height
+      width={120} // Set the desired width
+      height={26} // Set the desired height
     />
   );
 };
