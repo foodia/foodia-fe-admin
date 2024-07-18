@@ -187,7 +187,7 @@ const DataTableComponent: React.FC<Props> = ({
           ))} */}
           <div style={{ display: "flex", flexDirection: "column" }}>
             {row.details?.map((value: any, i) => (
-              <p style={{ display: "flex", flexDirection: "row" }}>
+              <p key={i} style={{ display: "flex", flexDirection: "row" }}>
                 {new Intl.NumberFormat("id-ID", {
                   style: "currency",
                   currency: "IDR",
