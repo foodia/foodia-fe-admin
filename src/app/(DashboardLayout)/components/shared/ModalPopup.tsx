@@ -3,18 +3,19 @@ import {
   Button,
   CircularProgress,
   IconButton,
-  InputAdornment,
   MenuItem,
   Modal,
   Select,
   TextField,
   Typography,
 } from "@mui/material";
+import { IconX } from "@tabler/icons-react";
 import ImageHandler from "./ImageHandler";
 import { useAppContext } from "./Context";
-import { IconX } from "@tabler/icons-react";
 
 type Props = {
+  onClick?: any;
+  value?: any;
   open?: any;
   handleClose?: any;
   walletList?: {
@@ -47,6 +48,7 @@ type Props = {
   isLoading?: any;
   theresInputError?: any;
   children?: React.ReactNode;
+  couponWalletBalance?: any;
 };
 
 export const ModalPopupAddDonations = ({
@@ -138,9 +140,7 @@ export const ModalPopupAddDonations = ({
                   color: "black",
                 }}
               >
-                {campaign_name === "Coupon Wallet"
-                  ? "Coupon Wallet Balance"
-                  : "Jumlah Kurang Dana"}
+                Jumlah Kurang Dana
               </Typography>
               {new Intl.NumberFormat("id-ID", {
                 style: "currency",
@@ -252,6 +252,230 @@ export const ModalPopupAddDonations = ({
                       ? "red"
                       : "black"
                   }`,
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontWeight: "medium",
+                  }}
+                >
+                  Total Tambahan Dana
+                </Typography>
+                {!totalValueDonationAmount
+                  ? new Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                      minimumFractionDigits: 0,
+                    }).format(0)
+                  : new Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                      minimumFractionDigits: 0,
+                    }).format(totalValueDonationAmount)}
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+        {valueWalletType !== "default" && <>{children}</>}
+      </Box>
+    </Modal>
+  );
+};
+
+export const ModalPopupCouponTopup = ({
+  open,
+  handleClose,
+  campaign_name,
+  couponWalletBalance,
+  valueWalletType,
+  onChangeWalletType,
+  valueDonationAmount,
+  totalValueDonationAmount,
+  children,
+  theresInputError,
+}: Props) => {
+  return (
+    <Modal
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        overflow: "auto",
+        paddingTop: "60px",
+        paddingBottom: "10px",
+      }}
+      open={open}
+      // onClose={handleClose}
+      aria-labelledby="child-modal-title"
+      aria-describedby="child-modal-description"
+    >
+      <Box
+        sx={{
+          display: "flex",
+          borderRadius: "10px",
+          flexDirection: "column",
+          width: "900px",
+          backgroundColor: "white",
+          padding: "20px",
+          gap: "10px",
+        }}
+      >
+        <Box sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "end",
+            }}
+          >
+            <IconButton onClick={handleClose}>
+              <IconX />
+            </IconButton>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            {/* Wallet Type */}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                gap: "10px",
+                alignItems: "center",
+                justifyContent: "left",
+                width: "auto",
+              }}
+            >
+              <Typography sx={{ fontWeight: "bold", fontSize: "22px" }}>
+                {campaign_name}
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                fontWeight: "bold",
+                color: "green",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "right",
+                alignItems: "end",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontWeight: "medium",
+                  color: "black",
+                }}
+              >
+                Coupon Wallet Balance
+              </Typography>
+              {new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+              }).format(couponWalletBalance)}
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            {/* Wallet Type */}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                gap: "10px",
+                alignItems: "center",
+                justifyContent: "left",
+                width: "auto",
+              }}
+            >
+              <Typography sx={{ fontWeight: "medium" }}>
+                Choose Wallet
+              </Typography>
+              <Select
+                disabled={theresInputError}
+                variant="standard"
+                size="small"
+                disableUnderline
+                // label="Choose Event Type"
+                sx={{
+                  ".MuiSelect-select": {
+                    color: `${
+                      valueWalletType === "default" ? "gray" : "black"
+                    }`,
+                    padding: "10px",
+                    width: "200px",
+                    background: "rgba(63, 182, 72, 0.10)",
+                    borderRadius: "12px",
+                    ":focus": {
+                      borderRadius: "12px",
+                      background: "rgba(63, 182, 72, 0.10)",
+                    },
+                  },
+                }}
+                value={valueWalletType}
+                onChange={onChangeWalletType}
+              >
+                <MenuItem key={0} disabled value="default">
+                  Select One
+                </MenuItem>
+                <MenuItem key={1} value="csr">
+                  CSR
+                </MenuItem>
+                <MenuItem key={2} value="agnostic">
+                  Agnostic
+                </MenuItem>
+              </Select>
+            </Box>
+            <Box sx={{ display: "flex", flexDirection: "row", gap: "35px" }}>
+              {valueWalletType !== "default" && (
+                <Typography
+                  sx={{
+                    fontWeight: "bold",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "right",
+                    alignItems: "end",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      textTransform: "capitalize",
+                      fontWeight: "medium",
+                      color: "black",
+                    }}
+                  >
+                    Tambahan Dana {valueWalletType}
+                  </Typography>
+                  {!valueDonationAmount
+                    ? new Intl.NumberFormat("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                        minimumFractionDigits: 0,
+                      }).format(0)
+                    : new Intl.NumberFormat("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                        minimumFractionDigits: 0,
+                      }).format(valueDonationAmount)}
+                </Typography>
+              )}
+              <Typography
+                sx={{
+                  fontWeight: "bold",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "right",
+                  alignItems: "end",
                 }}
               >
                 <Typography
@@ -406,6 +630,131 @@ export const ModalPopupFilesDetail = ({
         >
           Close
         </Button>
+      </Box>
+    </Modal>
+  );
+};
+
+export const ModalPopupCouponPrice = ({
+  open,
+  onClick,
+  handleClose,
+  onChange,
+  value,
+}: Props) => {
+  const { isLoading, setIsLoading } = useAppContext();
+  return (
+    <Modal
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        overflow: "auto",
+        paddingTop: "60px",
+        paddingBottom: "10px",
+      }}
+      open={open}
+      // onClose={handleClose}
+      aria-labelledby="child-modal-title"
+      aria-describedby="child-modal-description"
+    >
+      <Box
+        sx={{
+          display: "flex",
+          borderRadius: "10px",
+          flexDirection: "column",
+          width: "380px",
+          backgroundColor: "white",
+          padding: "20px",
+          gap: "10px",
+        }}
+      >
+        <Box sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "end",
+            }}
+          >
+            <IconButton onClick={handleClose}>
+              <IconX />
+            </IconButton>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "25px",
+            }}
+          >
+            <Box
+              sx={{
+                width: "100%",
+                alignItems: "center",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Typography sx={{ fontWeight: "bold" }}>COUPON PRICE</Typography>
+              <TextField
+                variant="standard"
+                size="small"
+                value={value}
+                type="text"
+                onChange={onChange}
+                sx={{
+                  border: `1px solid lightgrey`,
+                  paddingX: "10px",
+                  paddingTop: "3px",
+                  borderRadius: "5px",
+                  width: "200px",
+                }}
+                InputProps={{
+                  // style: {
+                  //   color: `${
+                  //     row.balance <
+                  //     (donationAmountsCsr.find((item) => item.id === row.id)
+                  //       ?.value_num || 0)
+                  //       ? "red"
+                  //       : "black"
+                  //   }`,
+                  // },
+                  disableUnderline: true,
+                }}
+              />
+            </Box>
+            <button
+              onClick={onClick}
+              style={{
+                display: "flex",
+                backgroundColor: "#3FB648",
+                gap: "10px",
+                padding: "8px",
+                border: 0,
+                cursor: "pointer",
+                borderRadius: "10px",
+                width: "140px",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {isLoading && (
+                <CircularProgress size="15px" sx={{ color: "white" }} />
+              )}
+              <Typography
+                sx={{
+                  fontSize: "14px",
+                  fontWeight: "medium",
+                  color: "white",
+                }}
+              >
+                Update Price
+              </Typography>
+            </button>
+          </Box>
+        </Box>
       </Box>
     </Modal>
   );

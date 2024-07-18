@@ -59,6 +59,7 @@ const Menuitems = () => {
             id: uniqueId(),
             href: "/ui-components/pages/wallet/coupon",
             name: "Coupon Wallet",
+            isShowBadge: notifData.detonator,
             icon: <IconWallet />,
           },
         ],

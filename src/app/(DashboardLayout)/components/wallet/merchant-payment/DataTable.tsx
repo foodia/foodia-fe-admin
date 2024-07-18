@@ -124,7 +124,7 @@ const DataTableComponent: React.FC<Props> = ({
       name: "Nama Merchant",
       cell: (row: MerchantPaymentListData) => (
         <>
-          {row.details?.slice(0, 2).map((value: any, i) => (
+          {/* {row.details?.slice(0, 2).map((value: any, i) => (
             <Link
               href={{
                 pathname: "/ui-components/pages/merchant/info",
@@ -135,23 +135,46 @@ const DataTableComponent: React.FC<Props> = ({
               key={i}
               style={{ display: "flex", flexDirection: "row" }}
             >
-              {/* {value.merchant_name} */}
               {i === 1 && value.merchant_name?.length > 10
                 ? `${value.merchant_name.slice(0, 10)}...`
                 : value.merchant_name}
               {i == 0 && <div style={{ marginRight: "5px" }}>,</div>}
             </Link>
-          ))}
+          ))} */}
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "25px" }}
+          >
+            {row.details?.map((value: any, i) => (
+              <Link
+                href={{
+                  pathname: "/ui-components/pages/merchant/info",
+                  query: {
+                    id: value.merchant_id,
+                  },
+                }}
+                key={i}
+                style={{ display: "flex", flexDirection: "row" }}
+              >
+                {value.merchant_name}
+                {/* {i === 1 && value.merchant_name?.length > 10
+                  ? `${value.merchant_name.slice(0, 10)}...`
+                  : value.merchant_name} */}
+                {i + 1 !== row.details.length && (
+                  <div style={{ marginRight: "5px" }}>,</div>
+                )}
+              </Link>
+            ))}
+          </div>
         </>
       ),
       // sortable: true,
-      width: "220px",
+      width: "190px",
     },
     {
       name: "Jumlah Pembayaran",
       cell: (row: MerchantPaymentListData) => (
         <div style={{ display: "flex", flexDirection: "row" }}>
-          {row.details?.slice(0, 2).map((value: any, i) => (
+          {/* {row.details?.slice(0, 2).map((value: any, i) => (
             <div key={i} style={{ display: "flex", flexDirection: "row" }}>
               {new Intl.NumberFormat("id-ID", {
                 style: "currency",
@@ -161,7 +184,21 @@ const DataTableComponent: React.FC<Props> = ({
               {i === 1 && `...`}
               {i == 0 && <div style={{ marginRight: "5px" }}>,</div>}
             </div>
-          ))}
+          ))} */}
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            {row.details?.map((value: any, i) => (
+              <p style={{ display: "flex", flexDirection: "row" }}>
+                {new Intl.NumberFormat("id-ID", {
+                  style: "currency",
+                  currency: "IDR",
+                  minimumFractionDigits: 0,
+                }).format(value.total_amount)}
+                {i + 1 !== row.details.length && (
+                  <div style={{ marginRight: "5px" }}>,</div>
+                )}
+              </p>
+            ))}
+          </div>
         </div>
       ),
       // sortable: true,
@@ -171,28 +208,38 @@ const DataTableComponent: React.FC<Props> = ({
       name: "Tgl Pembayaran",
       cell: (row: MerchantPaymentListData) => (
         <>
-          {row.details?.slice(0, 2).map((value: any, i) => (
+          {/* {row.details?.slice(0, 2).map((value: any, i) => (
             <div key={i} style={{ display: "flex", flexDirection: "row" }}>
               {value.payment_date}
               {i === 1 && `...`}
               {i == 0 && <div style={{ marginRight: "5px" }}>,</div>}
             </div>
-          ))}
+          ))} */}
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            {row.details?.map((value: any, i) => (
+              <p style={{ display: "flex", flexDirection: "row" }}>
+                {value.payment_date}
+                {i + 1 !== row.details.length && (
+                  <div style={{ marginRight: "5px" }}>,</div>
+                )}
+              </p>
+            ))}
+          </div>
         </>
       ),
       // sortable: true,
-      width: "240px",
+      width: "190px",
     },
-    {
-      name: "Action",
-      cell: (row: MerchantPaymentListData, i: number) => (
-        <Link href="">
-          <ButtonAction label="View" />
-        </Link>
-      ),
-      // sortable: true,
-      width: "150px",
-    },
+    // {
+    //   name: "Action",
+    //   cell: (row: MerchantPaymentListData, i: number) => (
+    //     <Link href="">
+    //       <ButtonAction label="View" />
+    //     </Link>
+    //   ),
+    //   // sortable: true,
+    //   width: "150px",
+    // },
   ];
 
   return (

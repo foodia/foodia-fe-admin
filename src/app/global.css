@@ -31,6 +31,11 @@
 
 .toast-padding-top {
   margin-top: 70px !important; /* Adjust as needed */
+  height: 80px !important;
+  width: auto !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
 }
 
 .custom-swal {

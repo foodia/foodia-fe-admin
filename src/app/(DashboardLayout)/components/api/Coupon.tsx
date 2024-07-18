@@ -2,19 +2,53 @@ import axios from "axios";
 import ErrorHandling from "./shared/ErrorHandling";
 
 export const postCouponWalletTopup = (
-  setData: any,
-  setIsLoading: any,
-  data: any
+  id: any,
+  csrWallet: any,
+  agnosticWallet: any
 ) => {
+  const mergedWallet = [...csrWallet, ...agnosticWallet];
+
   axios
-    .post(process.env.NEXT_PUBLIC_BASE + `/coupon-wallet/topup`, data, {
-      headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
+    .post(
+      process.env.NEXT_PUBLIC_BASE + `/coupon-wallet/topup`,
+      {
+        details: mergedWallet,
+      },
+      {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
+        },
+      }
+    )
+    .then((res) => {
+      location.reload();
+      localStorage.setItem("topupSucceed", "true");
+      // onSuccess(); // Call the onSuccess function with the response
     })
+    .catch((error) => {
+      ErrorHandling(error);
+    });
+};
+
+export const updateCouponWalletPrice = (price: any) => {
+  axios
+    .put(
+      process.env.NEXT_PUBLIC_BASE + `/coupon-wallet/update`,
+      {
+        price: price,
+      },
+      {
+        headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
+      }
+    )
     .then(() => {
-      setIsLoading(false);
+      location.reload();
+      localStorage.setItem("changeCouponSucceed", "true");
+      // setIsLoading(false);
     })
-    .catch(() => {
-      setIsLoading(false);
+    .catch((err) => {
+      ErrorHandling(err);
+      // setIsLoading(false);
     });
 };
 

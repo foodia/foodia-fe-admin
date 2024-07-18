@@ -22,6 +22,7 @@ const List = () => {
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
+    setIsLoading(true);
     setPage(value);
     setMerchantPaymentIndex(value - 1);
     getCsrWalletMerchant(

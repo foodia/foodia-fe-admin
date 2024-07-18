@@ -10,7 +10,11 @@ import BaseCard from "../../shared/DashboardCard";
 import Charts from "./Chart";
 import { IconEdit, IconWallet } from "@tabler/icons-react";
 import DataTableComponent from "./DataTable";
-import { ModalPopupAddDonations } from "../../shared/ModalPopup";
+import {
+  ModalPopupAddDonations,
+  ModalPopupCouponPrice,
+  ModalPopupCouponTopup,
+} from "../../shared/ModalPopup";
 import { useEffect, useState } from "react";
 import { DataTablesManualPagination } from "../../shared/DataTables";
 import moment from "moment";
@@ -19,7 +23,12 @@ import { useAppContext } from "../../shared/Context";
 import { getWalletList } from "../../api/Wallet";
 import Swal from "sweetalert2";
 import { getCampaignDetail, postCampaignPayment } from "../../api/Campaign";
-import { getCouponWalletDetail } from "../../api/Coupon";
+import {
+  getCouponWalletDetail,
+  getCouponWalletSummary,
+  postCouponWalletTopup,
+  updateCouponWalletPrice,
+} from "../../api/Coupon";
 
 type Props = {
   id: number;
@@ -94,8 +103,11 @@ const List = () => {
   const searchParams = useSearchParams();
   const { isLoading, setIsLoading } = useAppContext();
   const [isOpenAddDonation, setIsOpenAddDonation] = useState(false);
+  const [isOpenCouponPrice, setIsOpenCouponPrice] = useState(false);
   const [valueWalletType, setValueWalletType] = useState("default");
   const [selectedWallet, setSelectedWallet] = useState("default");
+  const [couponPriceChanges, setCouponPriceChanges] = useState("");
+  const [walletSummaryData, setWalletSummaryData] = useState<any>({});
   const [data, setData] = useState<Props>({
     id: 0,
     event_name: "",
@@ -174,13 +186,14 @@ const List = () => {
   const [neededLeft, setNeededLeft] = useState(0);
   const [searchText, setSearchText] = useState("");
   const [sortField, setSortField] = useState("deposit");
-  const [sortAsc, setSortAsc] = useState(true);
+  const [sortAsc, setSortAsc] = useState(false);
   const [sortedData, setSortedData] = useState([]);
   const [couponWalletDetail, setCouponWalletDetail] = useState<any>({});
 
-  // useEffect(() => {
-  //   getCouponWalletDetail(setCouponWalletDetail, setIsLoading);
-  // }, []);
+  useEffect(() => {
+    getCouponWalletDetail(setCouponWalletDetail, setIsLoading);
+    // getCouponWalletSummary(setWalletSummaryData, setIsLoading);
+  }, []);
 
   const breadcrumbs = [
     <Typography fontSize="13px" key="3" color="#999" fontWeight={400}>
@@ -191,22 +204,26 @@ const List = () => {
   const cards = [
     {
       id: 1,
-      title: "Reserved",
+      title: "reserved",
+      // total_amount: walletSummaryData?.status?.reserved,
       bgcolor: "linear-gradient(to bottom, #47CBC3, #5A689A)",
     },
     {
       id: 2,
-      title: "Expired",
+      title: "expired",
+      // total_amount: walletSummaryData?.status?.expired,
       bgcolor: "linear-gradient(to bottom, #CB4747, #9A5A5A)",
     },
     {
       id: 3,
-      title: "Active",
+      title: "active",
+      // total_amount: walletSummaryData?.status?.active,
       bgcolor: "linear-gradient(to bottom, #B847CB, #765A9A)",
     },
     {
       id: 4,
-      title: "Claimed",
+      title: "claimed",
+      // total_amount: walletSummaryData?.status?.claimed,
       bgcolor: "linear-gradient(to bottom, #4ACB47, #5A9A70)",
     },
   ];
@@ -289,8 +306,11 @@ const List = () => {
 
   useEffect(() => {
     setNeededLeft(needed - (totalDonationsAgnostic + totalDonationsCsr));
-    if (localStorage.getItem("addDonationSucceed") === "true") {
+    if (localStorage.getItem("topupSucceed") === "true") {
       onSuccess();
+    }
+    if (localStorage.getItem("changeCouponSucceed") === "true") {
+      onSuccessChangePrice();
     }
   });
 
@@ -467,6 +487,13 @@ const List = () => {
     Amounts(e, row);
   };
 
+  const onChangeChangeCouponPrice = (e: any) => {
+    let value = e.target.value;
+    value = value.replace(/\D/g, "");
+    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    setCouponPriceChanges(value);
+  };
+
   const onSetMaxAmounts = (row: any) => {
     const updatedDonationAmounts = [...donationAmounts];
     const updatedDonationAmountsCsr = [...donationAmountsCsr];
@@ -479,208 +506,208 @@ const List = () => {
     );
     if (valueWalletType === "agnostic") {
       if (existingIndex !== -1) {
-        if (needed >= row.balance) {
-          if (neededLeft === 0 || neededLeft > row.balance) {
-            updatedDonationAmounts[existingIndex].value = new Intl.NumberFormat(
-              "id-ID",
-              {
-                style: "currency",
-                currency: "IDR",
-                minimumFractionDigits: 0,
-              }
-            ).format(row.balance);
-            updatedDonationAmounts[existingIndex].value_num = row.balance;
-          } else {
-            updatedDonationAmounts[existingIndex].value = new Intl.NumberFormat(
-              "id-ID",
-              {
-                style: "currency",
-                currency: "IDR",
-                minimumFractionDigits: 0,
-              }
-            ).format(
-              updatedDonationAmounts[existingIndex].value_num + neededLeft
-            );
-            updatedDonationAmounts[existingIndex].value_num =
-              updatedDonationAmounts[existingIndex].value_num + neededLeft;
+        updatedDonationAmounts[existingIndex].value = new Intl.NumberFormat(
+          "id-ID",
+          {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
           }
-        } else if (needed < row.balance) {
-          if (neededLeft === 0) {
-            updatedDonationAmounts[existingIndex].value = new Intl.NumberFormat(
-              "id-ID",
-              {
-                style: "currency",
-                currency: "IDR",
-                minimumFractionDigits: 0,
-              }
-            ).format(needed);
-            updatedDonationAmounts[existingIndex].value_num = needed;
-          } else {
-            updatedDonationAmounts[existingIndex].value = new Intl.NumberFormat(
-              "id-ID",
-              {
-                style: "currency",
-                currency: "IDR",
-                minimumFractionDigits: 0,
-              }
-            ).format(
-              updatedDonationAmounts[existingIndex].value_num + neededLeft
-            );
-            updatedDonationAmounts[existingIndex].value_num =
-              updatedDonationAmounts[existingIndex].value_num + neededLeft;
-          }
-        }
+        ).format(row.balance);
+        updatedDonationAmounts[existingIndex].value_num = row.balance;
+        // if (needed >= row.balance) {
+        //   if (neededLeft === 0 || neededLeft > row.balance) {
+        //   } else {
+        //     updatedDonationAmounts[existingIndex].value = new Intl.NumberFormat(
+        //       "id-ID",
+        //       {
+        //         style: "currency",
+        //         currency: "IDR",
+        //         minimumFractionDigits: 0,
+        //       }
+        //     ).format(
+        //       updatedDonationAmounts[existingIndex].value_num + neededLeft
+        //     );
+        //     updatedDonationAmounts[existingIndex].value_num =
+        //       updatedDonationAmounts[existingIndex].value_num + neededLeft;
+        //   }
+        // } else if (needed < row.balance) {
+        //   if (neededLeft === 0) {
+        //     updatedDonationAmounts[existingIndex].value = new Intl.NumberFormat(
+        //       "id-ID",
+        //       {
+        //         style: "currency",
+        //         currency: "IDR",
+        //         minimumFractionDigits: 0,
+        //       }
+        //     ).format(needed);
+        //     updatedDonationAmounts[existingIndex].value_num = needed;
+        //   } else {
+        //     updatedDonationAmounts[existingIndex].value = new Intl.NumberFormat(
+        //       "id-ID",
+        //       {
+        //         style: "currency",
+        //         currency: "IDR",
+        //         minimumFractionDigits: 0,
+        //       }
+        //     ).format(
+        //       updatedDonationAmounts[existingIndex].value_num + neededLeft
+        //     );
+        //     updatedDonationAmounts[existingIndex].value_num =
+        //       updatedDonationAmounts[existingIndex].value_num + neededLeft;
+        //   }
+        // }
       } else {
-        if (needed >= row.balance) {
-          if (neededLeft === 0 || neededLeft > row.balance) {
-            updatedDonationAmounts.push({
-              id: row.id,
-              value: new Intl.NumberFormat("id-ID", {
-                style: "currency",
-                currency: "IDR",
-                minimumFractionDigits: 0,
-              }).format(row.balance),
-              value_num: row.balance,
-              name: row.name,
-            });
-          } else {
-            updatedDonationAmounts.push({
-              id: row.id,
-              value: new Intl.NumberFormat("id-ID", {
-                style: "currency",
-                currency: "IDR",
-                minimumFractionDigits: 0,
-              }).format(neededLeft),
-              value_num: neededLeft,
-              name: row.name,
-            });
-          }
-        } else if (needed < row.balance) {
-          if (neededLeft === 0) {
-            updatedDonationAmounts.push({
-              id: row.id,
-              value: new Intl.NumberFormat("id-ID", {
-                style: "currency",
-                currency: "IDR",
-                minimumFractionDigits: 0,
-              }).format(needed),
-              value_num: needed,
-              name: row.name,
-            });
-          } else {
-            updatedDonationAmounts.push({
-              id: row.id,
-              value: new Intl.NumberFormat("id-ID", {
-                style: "currency",
-                currency: "IDR",
-                minimumFractionDigits: 0,
-              }).format(neededLeft),
-              value_num: neededLeft,
-              name: row.name,
-            });
-          }
-        }
+        updatedDonationAmounts.push({
+          id: row.id,
+          value: new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+          }).format(row.balance),
+          value_num: row.balance,
+          name: row.name,
+        });
+        // if (needed >= row.balance) {
+        //   if (neededLeft === 0 || neededLeft > row.balance) {
+        //   } else {
+        //     updatedDonationAmounts.push({
+        //       id: row.id,
+        //       value: new Intl.NumberFormat("id-ID", {
+        //         style: "currency",
+        //         currency: "IDR",
+        //         minimumFractionDigits: 0,
+        //       }).format(neededLeft),
+        //       value_num: neededLeft,
+        //       name: row.name,
+        //     });
+        //   }
+        // } else if (needed < row.balance) {
+        //   if (neededLeft === 0) {
+        //     updatedDonationAmounts.push({
+        //       id: row.id,
+        //       value: new Intl.NumberFormat("id-ID", {
+        //         style: "currency",
+        //         currency: "IDR",
+        //         minimumFractionDigits: 0,
+        //       }).format(needed),
+        //       value_num: needed,
+        //       name: row.name,
+        //     });
+        //   } else {
+        //     updatedDonationAmounts.push({
+        //       id: row.id,
+        //       value: new Intl.NumberFormat("id-ID", {
+        //         style: "currency",
+        //         currency: "IDR",
+        //         minimumFractionDigits: 0,
+        //       }).format(neededLeft),
+        //       value_num: neededLeft,
+        //       name: row.name,
+        //     });
+        //   }
+        // }
       }
       setDonationAmounts(updatedDonationAmounts);
     } else {
       if (existingIndexCsr !== -1) {
-        if (needed >= row.balance) {
-          if (neededLeft === 0 || neededLeft > row.balance) {
-            updatedDonationAmountsCsr[existingIndexCsr].value =
-              new Intl.NumberFormat("id-ID", {
-                style: "currency",
-                currency: "IDR",
-                minimumFractionDigits: 0,
-              }).format(row.balance);
-            updatedDonationAmountsCsr[existingIndexCsr].value_num = row.balance;
-          } else {
-            updatedDonationAmountsCsr[existingIndexCsr].value =
-              new Intl.NumberFormat("id-ID", {
-                style: "currency",
-                currency: "IDR",
-                minimumFractionDigits: 0,
-              }).format(
-                updatedDonationAmountsCsr[existingIndexCsr].value_num +
-                  neededLeft
-              );
-            updatedDonationAmountsCsr[existingIndexCsr].value_num =
-              updatedDonationAmountsCsr[existingIndexCsr].value_num +
-              neededLeft;
-          }
-        } else if (needed < row.balance) {
-          if (neededLeft === 0) {
-            updatedDonationAmountsCsr[existingIndexCsr].value =
-              new Intl.NumberFormat("id-ID", {
-                style: "currency",
-                currency: "IDR",
-                minimumFractionDigits: 0,
-              }).format(needed);
-            updatedDonationAmountsCsr[existingIndexCsr].value_num = needed;
-          } else {
-            updatedDonationAmountsCsr[existingIndexCsr].value =
-              new Intl.NumberFormat("id-ID", {
-                style: "currency",
-                currency: "IDR",
-                minimumFractionDigits: 0,
-              }).format(
-                updatedDonationAmountsCsr[existingIndexCsr].value_num +
-                  neededLeft
-              );
-            updatedDonationAmountsCsr[existingIndexCsr].value_num =
-              updatedDonationAmountsCsr[existingIndexCsr].value_num +
-              neededLeft;
-          }
-        }
+        updatedDonationAmountsCsr[existingIndexCsr].value =
+          new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+          }).format(row.balance);
+        updatedDonationAmountsCsr[existingIndexCsr].value_num = row.balance;
+        // if (needed >= row.balance) {
+        //   if (neededLeft === 0 || neededLeft > row.balance) {
+        //   } else {
+        //     updatedDonationAmountsCsr[existingIndexCsr].value =
+        //       new Intl.NumberFormat("id-ID", {
+        //         style: "currency",
+        //         currency: "IDR",
+        //         minimumFractionDigits: 0,
+        //       }).format(
+        //         updatedDonationAmountsCsr[existingIndexCsr].value_num +
+        //           neededLeft
+        //       );
+        //     updatedDonationAmountsCsr[existingIndexCsr].value_num =
+        //       updatedDonationAmountsCsr[existingIndexCsr].value_num +
+        //       neededLeft;
+        //   }
+        // } else if (needed < row.balance) {
+        //   if (neededLeft === 0) {
+        //     updatedDonationAmountsCsr[existingIndexCsr].value =
+        //       new Intl.NumberFormat("id-ID", {
+        //         style: "currency",
+        //         currency: "IDR",
+        //         minimumFractionDigits: 0,
+        //       }).format(needed);
+        //     updatedDonationAmountsCsr[existingIndexCsr].value_num = needed;
+        //   } else {
+        //     updatedDonationAmountsCsr[existingIndexCsr].value =
+        //       new Intl.NumberFormat("id-ID", {
+        //         style: "currency",
+        //         currency: "IDR",
+        //         minimumFractionDigits: 0,
+        //       }).format(
+        //         updatedDonationAmountsCsr[existingIndexCsr].value_num +
+        //           neededLeft
+        //       );
+        //     updatedDonationAmountsCsr[existingIndexCsr].value_num =
+        //       updatedDonationAmountsCsr[existingIndexCsr].value_num +
+        //       neededLeft;
+        //   }
+        // }
       } else {
-        if (needed >= row.balance) {
-          if (neededLeft === 0 || neededLeft > row.balance) {
-            updatedDonationAmountsCsr.push({
-              id: row.id,
-              value: new Intl.NumberFormat("id-ID", {
-                style: "currency",
-                currency: "IDR",
-                minimumFractionDigits: 0,
-              }).format(row.balance),
-              value_num: row.balance,
-              name: row.name,
-            });
-          } else {
-            updatedDonationAmountsCsr.push({
-              id: row.id,
-              value: new Intl.NumberFormat("id-ID", {
-                style: "currency",
-                currency: "IDR",
-                minimumFractionDigits: 0,
-              }).format(neededLeft),
-              value_num: neededLeft,
-              name: row.name,
-            });
-          }
-        } else if (needed < row.balance) {
-          if (neededLeft === 0) {
-            updatedDonationAmountsCsr.push({
-              id: row.id,
-              value: new Intl.NumberFormat("id-ID", {
-                style: "currency",
-                currency: "IDR",
-                minimumFractionDigits: 0,
-              }).format(needed),
-              value_num: needed,
-              name: row.name,
-            });
-          } else {
-            updatedDonationAmountsCsr.push({
-              id: row.id,
-              value: new Intl.NumberFormat("id-ID", {
-                style: "currency",
-                currency: "IDR",
-                minimumFractionDigits: 0,
-              }).format(neededLeft),
-              value_num: neededLeft,
-              name: row.name,
-            });
-          }
-        }
+        updatedDonationAmountsCsr.push({
+          id: row.id,
+          value: new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+          }).format(row.balance),
+          value_num: row.balance,
+          name: row.name,
+        });
+        // if (needed >= row.balance) {
+        //   if (neededLeft === 0 || neededLeft > row.balance) {
+        //   } else {
+        //     updatedDonationAmountsCsr.push({
+        //       id: row.id,
+        //       value: new Intl.NumberFormat("id-ID", {
+        //         style: "currency",
+        //         currency: "IDR",
+        //         minimumFractionDigits: 0,
+        //       }).format(neededLeft),
+        //       value_num: neededLeft,
+        //       name: row.name,
+        //     });
+        //   }
+        // } else if (needed < row.balance) {
+        //   if (neededLeft === 0) {
+        //     updatedDonationAmountsCsr.push({
+        //       id: row.id,
+        //       value: new Intl.NumberFormat("id-ID", {
+        //         style: "currency",
+        //         currency: "IDR",
+        //         minimumFractionDigits: 0,
+        //       }).format(needed),
+        //       value_num: needed,
+        //       name: row.name,
+        //     });
+        //   } else {
+        //     updatedDonationAmountsCsr.push({
+        //       id: row.id,
+        //       value: new Intl.NumberFormat("id-ID", {
+        //         style: "currency",
+        //         currency: "IDR",
+        //         minimumFractionDigits: 0,
+        //       }).format(neededLeft),
+        //       value_num: neededLeft,
+        //       name: row.name,
+        //     });
+        //   }
+        // }
       }
       setDonationAmountsCsr(updatedDonationAmountsCsr);
     }
@@ -698,47 +725,47 @@ const List = () => {
     );
     if (valueWalletType === "agnostic") {
       if (existingIndex !== -1) {
-        if (needed >= row.balance) {
-          if (neededLeft === 0 || neededLeft > row.balance) {
-            updatedDonationAmounts[existingIndex].amount = row.balance;
-          } else {
-            updatedDonationAmounts[existingIndex].amount =
-              updatedDonationAmounts[existingIndex].amount + neededLeft;
-          }
-        } else if (needed < row.balance) {
-          if (neededLeft === 0) {
-            updatedDonationAmounts[existingIndex].amount = needed;
-          } else {
-            updatedDonationAmounts[existingIndex].amount =
-              updatedDonationAmounts[existingIndex].amount + neededLeft;
-          }
-        }
+        updatedDonationAmounts[existingIndex].amount = row.balance;
+        // if (needed >= row.balance) {
+        //   if (neededLeft === 0 || neededLeft > row.balance) {
+        //   } else {
+        //     updatedDonationAmounts[existingIndex].amount =
+        //       updatedDonationAmounts[existingIndex].amount + neededLeft;
+        //   }
+        // } else if (needed < row.balance) {
+        //   if (neededLeft === 0) {
+        //     updatedDonationAmounts[existingIndex].amount = needed;
+        //   } else {
+        //     updatedDonationAmounts[existingIndex].amount =
+        //       updatedDonationAmounts[existingIndex].amount + neededLeft;
+        //   }
+        // }
       } else {
-        if (needed >= row.balance) {
-          if (neededLeft === 0 || neededLeft > row.balance) {
-            updatedDonationAmounts.push({
-              wallet_id: row.id,
-              amount: row.balance,
-            });
-          } else {
-            updatedDonationAmounts.push({
-              wallet_id: row.id,
-              amount: neededLeft,
-            });
-          }
-        } else if (needed < row.balance) {
-          if (neededLeft === 0) {
-            updatedDonationAmounts.push({
-              wallet_id: row.id,
-              amount: needed,
-            });
-          } else {
-            updatedDonationAmounts.push({
-              wallet_id: row.id,
-              amount: neededLeft,
-            });
-          }
-        }
+        updatedDonationAmounts.push({
+          wallet_id: row.id,
+          amount: row.balance,
+        });
+        // if (needed >= row.balance) {
+        //   if (neededLeft === 0 || neededLeft > row.balance) {
+        //   } else {
+        //     updatedDonationAmounts.push({
+        //       wallet_id: row.id,
+        //       amount: neededLeft,
+        //     });
+        //   }
+        // } else if (needed < row.balance) {
+        //   if (neededLeft === 0) {
+        //     updatedDonationAmounts.push({
+        //       wallet_id: row.id,
+        //       amount: needed,
+        //     });
+        //   } else {
+        //     updatedDonationAmounts.push({
+        //       wallet_id: row.id,
+        //       amount: neededLeft,
+        //     });
+        //   }
+        // }
       }
       const initialValue = updatedDonationAmounts.reduce(
         (acc: number, item: ParsedDonationAmount) => acc + item.amount,
@@ -748,47 +775,47 @@ const List = () => {
       setParsedDonationAmounts(updatedDonationAmounts);
     } else {
       if (existingIndexCsr !== -1) {
-        if (needed >= row.balance) {
-          if (neededLeft === 0 || neededLeft > row.balance) {
-            updatedDonationAmountsCsr[existingIndexCsr].amount = row.balance;
-          } else {
-            updatedDonationAmountsCsr[existingIndexCsr].amount =
-              updatedDonationAmountsCsr[existingIndexCsr].amount + neededLeft;
-          }
-        } else if (needed < row.balance) {
-          if (neededLeft === 0) {
-            updatedDonationAmountsCsr[existingIndexCsr].amount = needed;
-          } else {
-            updatedDonationAmountsCsr[existingIndexCsr].amount =
-              updatedDonationAmountsCsr[existingIndexCsr].amount + neededLeft;
-          }
-        }
+        updatedDonationAmountsCsr[existingIndexCsr].amount = row.balance;
+        // if (needed >= row.balance) {
+        //   if (neededLeft === 0 || neededLeft > row.balance) {
+        //   } else {
+        //     updatedDonationAmountsCsr[existingIndexCsr].amount =
+        //       updatedDonationAmountsCsr[existingIndexCsr].amount + neededLeft;
+        //   }
+        // } else if (needed < row.balance) {
+        //   if (neededLeft === 0) {
+        //     updatedDonationAmountsCsr[existingIndexCsr].amount = needed;
+        //   } else {
+        //     updatedDonationAmountsCsr[existingIndexCsr].amount =
+        //       updatedDonationAmountsCsr[existingIndexCsr].amount + neededLeft;
+        //   }
+        // }
       } else {
-        if (needed >= row.balance) {
-          if (neededLeft === 0 || neededLeft > row.balance) {
-            updatedDonationAmountsCsr.push({
-              wallet_id: row.id,
-              amount: row.balance,
-            });
-          } else {
-            updatedDonationAmountsCsr.push({
-              wallet_id: row.id,
-              amount: neededLeft,
-            });
-          }
-        } else if (needed < row.balance) {
-          if (neededLeft === 0) {
-            updatedDonationAmountsCsr.push({
-              wallet_id: row.id,
-              amount: needed,
-            });
-          } else {
-            updatedDonationAmountsCsr.push({
-              wallet_id: row.id,
-              amount: neededLeft,
-            });
-          }
-        }
+        updatedDonationAmountsCsr.push({
+          wallet_id: row.id,
+          amount: row.balance,
+        });
+        // if (needed >= row.balance) {
+        //   if (neededLeft === 0 || neededLeft > row.balance) {
+        //   } else {
+        //     updatedDonationAmountsCsr.push({
+        //       wallet_id: row.id,
+        //       amount: neededLeft,
+        //     });
+        //   }
+        // } else if (needed < row.balance) {
+        //   if (neededLeft === 0) {
+        //     updatedDonationAmountsCsr.push({
+        //       wallet_id: row.id,
+        //       amount: needed,
+        //     });
+        //   } else {
+        //     updatedDonationAmountsCsr.push({
+        //       wallet_id: row.id,
+        //       amount: neededLeft,
+        //     });
+        //   }
+        // }
       }
       const initialValue = updatedDonationAmountsCsr.reduce(
         (acc: number, item: ParsedDonationAmount) => acc + item.amount,
@@ -822,6 +849,29 @@ const List = () => {
     setIsOpenAddDonation(false);
   };
 
+  const onSuccessChangePrice = () => {
+    const Toast = Swal.mixin({
+      allowOutsideClick: false,
+      toast: true,
+      position: "top",
+      customClass: {
+        popup: "toast-padding-top",
+      },
+      showConfirmButton: false,
+      timer: 5000,
+      // timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+        localStorage.removeItem("changeCouponSucceed");
+      },
+    });
+    Toast.fire({
+      icon: "success",
+      title: "Sukses merubah harga",
+    });
+  };
+
   const onSuccess = () => {
     const Toast = Swal.mixin({
       allowOutsideClick: false,
@@ -836,12 +886,12 @@ const List = () => {
       didOpen: (toast) => {
         toast.onmouseenter = Swal.stopTimer;
         toast.onmouseleave = Swal.resumeTimer;
-        localStorage.removeItem("addDonationSucceed");
+        localStorage.removeItem("topupSucceed");
       },
     });
     Toast.fire({
       icon: "success",
-      title: "Sukses menambah donasi",
+      title: "Sukses memindah dana",
     });
   };
 
@@ -858,9 +908,9 @@ const List = () => {
       },
       // icon: "success",
       title: `Anda yakin 
-      menambahkan donasi?`,
+      memindahkan dana?`,
       html: `
-        Total tambahan donasi adalah
+        Total pemindahan dana adalah
         <div style="display: flex; flex-direction: row; gap: 10px; width: 100%">
           ${
             donationAmountsCsr.length > 0
@@ -917,7 +967,7 @@ const List = () => {
       if (result.isConfirmed) {
         setIsOpenAddDonation(true);
       } else if (result.isDismissed) {
-        postCampaignPayment(
+        postCouponWalletTopup(
           searchParams.get("id"),
           parsedDonationAmounts,
           parsedDonationAmountsCsr
@@ -989,12 +1039,12 @@ const List = () => {
           <Box sx={{ display: "flex", gap: "3px" }}>
             <TextField
               disabled={
-                (theresErrorInput &&
-                  donationAmounts.find((item) => item.id === row.id)?.id !==
-                    row.id) ||
-                (theresErrorInput &&
-                  (donationAmounts.find((item) => item.id === row.id)
-                    ?.value_num || 0) <= row.balance)
+                theresErrorInput &&
+                donationAmounts.find((item) => item.id === row.id)?.id !==
+                  row.id
+                // (theresErrorInput &&
+                //   (donationAmounts.find((item) => item.id === row.id)
+                //     ?.value_num || 0) <= row.balance)
               }
               variant="standard"
               size="small"
@@ -1033,13 +1083,14 @@ const List = () => {
                 (theresErrorInput &&
                   donationAmounts.find((item) => item.id === row.id)?.id !==
                     row.id) ||
-                (theresErrorInput &&
-                  (donationAmounts.find((item) => item.id === row.id)
-                    ?.value_num || 0) <= row.balance) ||
-                row.balance === 0 ||
-                totalDonationsAgnostic + totalDonationsCsr >= needed ||
-                donationAmounts.find((item) => item.id === row.id)
-                  ?.value_num === row.balance
+                row.balance === 0
+                // (theresErrorInput &&
+                //   (donationAmounts.find((item) => item.id === row.id)
+                //     ?.value_num || 0) <= row.balance) ||
+                // row.balance === 0 ||
+                // totalDonationsAgnostic + totalDonationsCsr >= needed ||
+                // donationAmounts.find((item) => item.id === row.id)
+                //   ?.value_num === row.balance
               }
               variant="contained"
               size="small"
@@ -1075,9 +1126,10 @@ const List = () => {
                 (theresErrorInput &&
                   donationAmountsCsr.find((item) => item.id === row.id)?.id !==
                     row.id) ||
-                (theresErrorInput &&
-                  (donationAmountsCsr.find((item) => item.id === row.id)
-                    ?.value_num || 0) <= row.balance)
+                row.balance === 0
+                // (theresErrorInput &&
+                //   (donationAmountsCsr.find((item) => item.id === row.id)
+                //     ?.value_num || 0) <= row.balance)
               }
               variant="standard"
               size="small"
@@ -1117,11 +1169,12 @@ const List = () => {
                 (theresErrorInput &&
                   donationAmountsCsr.find((item) => item.id === row.id)?.id !==
                     row.id) ||
-                (theresErrorInput &&
-                  (donationAmountsCsr.find((item) => item.id === row.id)
-                    ?.value_num || 0) <= row.balance) ||
-                row.balance === 0 ||
-                totalDonationsAgnostic + totalDonationsCsr >= needed
+                row.balance === 0
+                // (theresErrorInput &&
+                //   (donationAmountsCsr.find((item) => item.id === row.id)
+                //     ?.value_num || 0) <= row.balance) ||
+                // row.balance === 0 ||
+                // totalDonationsAgnostic + totalDonationsCsr >= needed
               }
               variant="contained"
               size="small"
@@ -1239,8 +1292,14 @@ const List = () => {
                   gap: "5px",
                 }}
               >
-                Coupon Price : Rp 0
+                Coupon Price :{" "}
+                {new Intl.NumberFormat("id-ID", {
+                  style: "currency",
+                  currency: "IDR",
+                  minimumFractionDigits: 0,
+                }).format(couponWalletDetail.price_coupon || 0)}
                 <button
+                  onClick={() => setIsOpenCouponPrice(true)}
                   style={{
                     cursor: "pointer",
                     padding: 0,
@@ -1305,7 +1364,7 @@ const List = () => {
                         marginTop: -1,
                       }}
                     >
-                      0
+                      {couponWalletDetail.qouta_available}
                     </Typography>
                   </Box>
                 </Box>
@@ -1334,7 +1393,11 @@ const List = () => {
               <Typography
                 sx={{ fontWeight: "bold", fontSize: "24px", color: "#3FB648" }}
               >
-                Rp 0
+                {new Intl.NumberFormat("id-ID", {
+                  style: "currency",
+                  currency: "IDR",
+                  minimumFractionDigits: 0,
+                }).format(couponWalletDetail.balance || 0)}
               </Typography>
             </Box>
           </Box>
@@ -1428,12 +1491,12 @@ const List = () => {
           <DataTableComponent />
         </Box>
       </BaseCard>
-      <ModalPopupAddDonations
+
+      <ModalPopupCouponTopup
         open={isOpenAddDonation}
         handleClose={handleCloseAddDonation}
         campaign_name="Coupon Wallet"
-        required_donation={data.donation_target}
-        collected_donation={data.donation_collected}
+        couponWalletBalance={couponWalletDetail.balance}
         valueWalletType={valueWalletType}
         onChangeWalletType={onChangeWalletType}
         walletList={walletList}
@@ -1465,9 +1528,9 @@ const List = () => {
               onClick={() => handleAddDonation()}
               disabled={
                 theresErrorInput ||
-                (totalDonationsAgnostic == 0 && totalDonationsCsr == 0) ||
-                totalDonationsAgnostic + totalDonationsCsr >
-                  data?.donation_target - data?.donation_collected
+                (totalDonationsAgnostic == 0 && totalDonationsCsr == 0)
+                // totalDonationsAgnostic + totalDonationsCsr >
+                //   data?.donation_target - data?.donation_collected
               }
               sx={{
                 width: "15%",
@@ -1490,7 +1553,21 @@ const List = () => {
             </Button>
           </Box>
         </>
-      </ModalPopupAddDonations>
+      </ModalPopupCouponTopup>
+
+      <ModalPopupCouponPrice
+        open={isOpenCouponPrice}
+        onClick={() => (
+          setIsLoading(true),
+          setIsOpenCouponPrice(false),
+          updateCouponWalletPrice(
+            parseInt(couponPriceChanges.replace(/\./g, ""))
+          )
+        )}
+        handleClose={() => setIsOpenCouponPrice(false)}
+        value={couponPriceChanges}
+        onChange={(e: any) => onChangeChangeCouponPrice(e)}
+      />
     </>
   );
 };

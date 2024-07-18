@@ -154,6 +154,17 @@ const NavItem = ({ item, index, level, pathDirect, onClick }: ItemType) => {
                     }}
                   />
                 )}
+                {item.submenu[3]?.isShowBadge && (
+                  <IconCircleFilled
+                    size={10}
+                    style={{
+                      backgroundColor: "red",
+                      color: "transparent",
+                      borderRadius: "100%",
+                      marginRight: "27px",
+                    }}
+                  />
+                )}
                 {index === Index && open ? (
                   <IconChevronUp />
                 ) : (
