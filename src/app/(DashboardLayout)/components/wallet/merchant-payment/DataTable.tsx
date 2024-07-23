@@ -251,6 +251,7 @@ const DataTableComponent: React.FC<Props> = ({
           // valueSearchBy={searchBy}
           // onChangeSearch={handleChangeSearch}
           // onChangeSearchBy={handleChangeSearchBy}
+          download={true}
           onChange={onChangePageWalletMerchant}
           pagination={true}
           meta={merchantPaymentListMeta}

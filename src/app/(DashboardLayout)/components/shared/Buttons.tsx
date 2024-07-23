@@ -4,7 +4,7 @@ import Link from "next/link";
 import React from "react";
 
 interface StatusProps {
-  row: { status: any };
+  row: { status?: any; campaign_status?: any };
 }
 
 interface ButtonAction {
@@ -30,7 +30,7 @@ export const ButtonAction: React.FC<ButtonAction> = ({
     //   }}
     // >
     <Button
-      sx={{ backgroundColor: "#178B45" }}
+      sx={{ backgroundColor: "#3FB648", width: "auto", borderRadius: "10px" }}
       variant="contained"
       size="small"
       color="info"
@@ -75,6 +75,72 @@ export const Status: React.FC<StatusProps> = ({ row }) => {
       }}
       size="small"
       label={row.status}
+    />
+    // </Link>
+  );
+};
+
+export const ApprovalStatus: React.FC<StatusProps> = ({ row }) => {
+  return (
+    // <Link
+    //   href={{
+    //     pathname: {pathname},
+    //     query: {query},
+    //   }}
+    // >
+    <Chip
+      sx={{
+        textTransform: "capitalize",
+        width: "auto",
+        fontSize: "11px",
+        fontWeight: 600,
+        borderRadius: "10px",
+        height: "20px",
+        backgroundColor:
+          row.status === "approved"
+            ? "#1D5882"
+            : row.status === "rejected"
+            ? "#DE0606"
+            : "#000000",
+        color: "white",
+      }}
+      size="small"
+      label={row.status}
+    />
+    // </Link>
+  );
+};
+
+export const EventStatus: React.FC<StatusProps> = ({ row }) => {
+  return (
+    // <Link
+    //   href={{
+    //     pathname: {pathname},
+    //     query: {query},
+    //   }}
+    // >
+    <Chip
+      sx={{
+        textTransform: "capitalize",
+        width: "auto",
+        fontSize: "11px",
+        fontWeight: 600,
+        borderRadius: "10px",
+        height: "20px",
+        backgroundColor:
+          row.campaign_status === "FINISHED"
+            ? "#3FB648"
+            : row.campaign_status === "OPEN"
+            ? "#1D5882"
+            : row.campaign_status === "INPROGRESS"
+            ? "#FFB444"
+            : row.campaign_status === "DRAFT"
+            ? "#000000"
+            : "",
+        color: "white",
+      }}
+      size="small"
+      label={row.campaign_status}
     />
     // </Link>
   );

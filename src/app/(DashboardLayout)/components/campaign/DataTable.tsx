@@ -2,10 +2,15 @@ import { Button, Chip, SelectChangeEvent, Stack } from "@mui/material";
 import { IconEye } from "@tabler/icons-react";
 import moment from "moment";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { TableColumn } from "react-data-table-component";
 import DataTables from "../shared/DataTables";
-import { ButtonAction, Status } from "../shared/Buttons";
+import {
+  ApprovalStatus,
+  ButtonAction,
+  EventStatus,
+  Status,
+} from "../shared/Buttons";
 import { useAppContext } from "../shared/Context";
 import { getCampaign } from "../api/Campaign";
 
@@ -62,7 +67,7 @@ const DataTableComponent = () => {
       // },
     },
     {
-      name: "Detonator",
+      name: "Volunteer",
       cell: (row: any) => <div>{row.detonator?.oauth?.fullname}</div>,
       // sortable: true,
       width: "auto",
@@ -71,12 +76,6 @@ const DataTableComponent = () => {
       name: "Event Name",
       cell: (row: any) => <div>{row.event_name}</div>,
       // sortable: true,
-    },
-    {
-      name: "Event Status",
-      cell: (row: any) => <div>{row.campaign_status}</div>,
-      // sortable: true,
-      width: "auto",
     },
     {
       name: "Target",
@@ -106,18 +105,28 @@ const DataTableComponent = () => {
       // sortable: true,
       width: "auto",
     },
-    // {
-    //   name: "Submitted at",
-    //   cell: (row: any) => (
-    //     <div>{moment(row.created_at).format("DD/MM/YYYY")}</div>
-    //   ),
-    //   // sortable: true,
-    // },
     {
-      name: "Status",
-      cell: (row: any) => <Status row={row} />,
+      name: "Event Type",
+      cell: (row: any) => (
+        <div>
+          {row.event_type === "one_time" ? "Dana Mandiri" : "Dana Terbuka"}
+        </div>
+      ),
       width: "auto",
       // sortable: true,
+    },
+    {
+      name: "Approval Status",
+      cell: (row: any) => <ApprovalStatus row={row} />,
+      width: "auto",
+      // sortable: true,
+    },
+    {
+      name: "Event Status",
+      // cell: (row: any) => <div>{row.campaign_status}</div>,
+      cell: (row: any) => <EventStatus row={row} />,
+      // sortable: true,
+      width: "auto",
     },
     {
       name: "Action",
@@ -184,8 +193,7 @@ const DataTableComponent = () => {
     const timeout = setTimeout(() => {
       setIsLoading(true);
       getCampaign(setData, setMeta, page, setIsLoading);
-      // Add your logic here
-    }, 500); // Adjust the delay as needed (in milliseconds)
+    }, 500);
     setTypingTimeout(timeout);
   };
 

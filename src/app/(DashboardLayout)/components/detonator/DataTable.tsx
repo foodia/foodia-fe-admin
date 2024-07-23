@@ -3,7 +3,7 @@ import moment from "moment";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { getDetonator } from "../api/Detonator";
-import { ButtonAction } from "../shared/Buttons";
+import { ApprovalStatus, ButtonAction, Status } from "../shared/Buttons";
 import { useAppContext } from "../shared/Context";
 import DataTables from "../shared/DataTables";
 
@@ -65,32 +65,7 @@ const DataTableComponent = () => {
     },
     {
       name: "Status",
-      cell: (row: any) => (
-        <Chip
-          sx={{
-            textTransform: "capitalize",
-            width: "115px",
-            fontSize: "14px",
-            fontWeight: 600,
-            borderRadius: "8px",
-            height: "32px",
-            backgroundColor:
-              row.status === "approved"
-                ? "#E9FBF0"
-                : row.status === "rejected"
-                ? "#FFF0F1"
-                : "#FFF9EB",
-            color:
-              row.status === "approved"
-                ? "#178D46"
-                : row.status === "rejected"
-                ? "#94000D"
-                : "#AB6800",
-          }}
-          size="small"
-          label={row.status}
-        />
-      ),
+      cell: (row: any) => <Status row={row} />,
       // sortable: true,
     },
     {

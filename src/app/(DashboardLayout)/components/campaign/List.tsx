@@ -31,29 +31,191 @@ const List = () => {
     },
   ];
 
-  const volunteeroptions: any = {
+  const oneTimeCampaignOptions: any = {
     series: [
       {
-        name: "Marine Sprite",
-        data: [3, 21, 24],
+        name: "Review",
+        data: [8],
+        color: "#000000",
       },
       {
-        name: "Striking Calf",
-        data: [53, 32, 33],
+        name: "Invitation",
+        data: [20],
+        color: "#6B4EFF",
       },
       {
-        name: "Tank Picture",
-        data: [12, 17, 11],
+        name: "Rejected",
+        data: [0, 4],
+        color: "#DE0606",
       },
       {
-        name: "Bucket Slope",
-        data: [9, 7, 5],
+        name: "Fund",
+        data: [0, 0, 6],
+        color: "#1D5882",
       },
       {
-        name: "Reborn Kid",
-        data: [25, 12, 19],
+        name: "Confirmation",
+        data: [0, 0, 4],
+        color: "#ed774b",
+      },
+      {
+        name: "Process",
+        data: [0, 0, 5],
+        color: "#FFB444",
+      },
+      {
+        name: "Report",
+        data: [0, 0, 3],
+        color: "#6CB28E",
+      },
+      {
+        name: "Completed",
+        data: [0, 0, 10],
+        color: "#3FB648",
       },
     ],
+    // series: [
+    //   {
+    //     data: [
+    //       {
+    //         x: "Waiting",
+    //         y: 1,
+    //       },
+    //       {
+    //         x: "Rejected",
+    //         y: 18,
+    //       },
+    //       {
+    //         x: "Approved",
+    //         y: 13,
+    //       },
+    //     ],
+    //   },
+    // ],
+    chart: {
+      type: "bar",
+      height: "250px",
+      stacked: true,
+    },
+    plotOptions: {
+      bar: {
+        horizontal: true,
+        dataLabels: {
+          total: {
+            enabled: false,
+            offsetX: 0,
+            style: {
+              fontSize: "13px",
+              fontWeight: 900,
+            },
+          },
+        },
+      },
+    },
+    stroke: {
+      width: 1,
+      colors: ["#fff"],
+    },
+    xaxis: {
+      categories: ["Waiting", "Rejected", "Approved"],
+      // labels: {
+      //   formatter: function (val: any) {
+      //     return val + "K";
+      //   },
+      // },
+    },
+    yaxis: [
+      {
+        axisBorder: {
+          show: true,
+          color: "#FF1654",
+        },
+      },
+    ],
+    // yaxis: {
+    //   categories: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24],
+    //   // title: {
+    //   //   text: undefined,
+    //   // },
+    // },
+    // tooltip: {
+    //   y: {
+    //     formatter: function (val: any) {
+    //       return val + "K";
+    //     },
+    //   },
+    // },
+    fill: {
+      opacity: 1,
+    },
+    legend: {
+      show: false,
+      horizontalAlign: "left",
+      offsetX: 10,
+    },
+  };
+
+  const regularCampaignOptions: any = {
+    series: [
+      {
+        name: "Review",
+        data: [0],
+        color: "#000000",
+      },
+      {
+        name: "Invitation",
+        data: [20],
+        color: "#6B4EFF",
+      },
+      {
+        name: "Rejected",
+        data: [0, 4],
+        color: "#DE0606",
+      },
+      {
+        name: "Fund",
+        data: [0, 0, 6],
+        color: "#1D5882",
+      },
+      {
+        name: "Confirmation",
+        data: [0, 0, 4],
+        color: "#ed774b",
+      },
+      {
+        name: "Process",
+        data: [0, 0, 5],
+        color: "#FFB444",
+      },
+      {
+        name: "Report",
+        data: [0, 0, 3],
+        color: "#6CB28E",
+      },
+      {
+        name: "Completed",
+        data: [0, 0, 10],
+        color: "#3FB648",
+      },
+    ],
+    // series: [
+    //   {
+    //     data: [
+    //       {
+    //         x: "Waiting",
+    //         y: 1,
+    //       },
+    //       {
+    //         x: "Rejected",
+    //         y: 18,
+    //       },
+    //       {
+    //         x: "Approved",
+    //         y: 13,
+    //       },
+    //     ],
+    //   },
+    // ],
     chart: {
       type: "bar",
       height: "250px",
@@ -144,8 +306,8 @@ const List = () => {
                 Campaign Dana Terbuka
               </Typography>
               <Charts
-                options={volunteeroptions}
-                series={volunteeroptions.series as number[]}
+                options={oneTimeCampaignOptions}
+                series={oneTimeCampaignOptions.series as number[]}
                 // label="Donator"
                 width="90%"
                 type="bar"
@@ -163,8 +325,8 @@ const List = () => {
                 Campaign Dana Mandiri
               </Typography>
               <Charts
-                options={volunteeroptions}
-                series={volunteeroptions.series as number[]}
+                options={regularCampaignOptions}
+                series={regularCampaignOptions.series as number[]}
                 // label="Donator"
                 width="90%"
                 type="bar"
