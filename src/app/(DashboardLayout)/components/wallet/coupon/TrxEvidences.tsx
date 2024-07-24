@@ -72,6 +72,7 @@ const TrxEvidences: React.FC<any> = ({ data, isLoading }) => {
             >
               {data.report?.image_food?.map((items: any, index: any) => (
                 <Button
+                  key={index}
                   onClick={() => onViewImage(items.image_url)}
                   variant="contained"
                   size="small"
@@ -101,6 +102,7 @@ const TrxEvidences: React.FC<any> = ({ data, isLoading }) => {
             >
               {data.report?.image_transaction?.map((items: any, index: any) => (
                 <Button
+                  key={index}
                   onClick={() => onViewImage(items.image_url)}
                   variant="contained"
                   size="small"

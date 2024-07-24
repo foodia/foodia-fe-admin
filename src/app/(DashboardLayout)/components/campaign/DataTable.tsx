@@ -228,7 +228,7 @@ const DataTableComponent = () => {
     {
       id: 1,
       value: "detonator_name",
-      label: "Detonator",
+      label: "Volunteer",
     },
     {
       id: 2,
