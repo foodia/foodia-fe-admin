@@ -30,7 +30,7 @@ export const postCouponWalletTopup = (
     });
 };
 
-export const updateCouponWalletPrice = (price: any) => {
+export const updateCouponWalletPrice = (price: any, setIsLoading: any) => {
   axios
     .put(
       process.env.NEXT_PUBLIC_BASE + `/coupon-wallet/update`,
@@ -48,7 +48,7 @@ export const updateCouponWalletPrice = (price: any) => {
     })
     .catch((err) => {
       ErrorHandling(err);
-      // setIsLoading(false);
+      setIsLoading(false);
     });
 };
 
@@ -82,11 +82,20 @@ export const getCouponWalletSummary = (setData: any, setIsLoading: any) => {
     });
 };
 
-export const getCouponWalletTrx = (setData: any, setIsLoading: any) => {
+export const getCouponWalletTrx = (
+  setData: any,
+  setIsLoading: any,
+  start_date?: any,
+  end_date?: any
+) => {
   axios
-    .get(process.env.NEXT_PUBLIC_BASE + `/coupon-wallet/transaction`, {
-      headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
-    })
+    .get(
+      process.env.NEXT_PUBLIC_BASE +
+        `/coupon/filter?start_date=${start_date}}&end_date=${end_date}`,
+      {
+        headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
+      }
+    )
     .then((res) => {
       setData(res.data.body);
       setIsLoading(false);
@@ -97,9 +106,13 @@ export const getCouponWalletTrx = (setData: any, setIsLoading: any) => {
     });
 };
 
-export const getCouponWalletTrxDetail = (setData: any, setIsLoading: any) => {
+export const getCouponWalletTrxDetail = (
+  setData: any,
+  setIsLoading: any,
+  id: any
+) => {
   axios
-    .get(process.env.NEXT_PUBLIC_BASE + `/coupon-wallet/transaction/fetch/10`, {
+    .get(process.env.NEXT_PUBLIC_BASE + `/coupon/fetch/${id}`, {
       headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
     })
     .then((res) => {

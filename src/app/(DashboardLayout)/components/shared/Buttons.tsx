@@ -80,6 +80,41 @@ export const Status: React.FC<StatusProps> = ({ row }) => {
   );
 };
 
+export const CouponStatus: React.FC<StatusProps> = ({ row }) => {
+  return (
+    // <Link
+    //   href={{
+    //     pathname: {pathname},
+    //     query: {query},
+    //   }}
+    // >
+    <Chip
+      sx={{
+        textTransform: "capitalize",
+        width: "auto",
+        fontSize: "11px",
+        fontWeight: 600,
+        borderRadius: "10px",
+        height: "20px",
+        bgcolor:
+          row.status === "reserved"
+            ? "#1D5882"
+            : row.status === "expired"
+            ? "#DE0606"
+            : row.status === "active"
+            ? "#6B4EFF"
+            : row.status === "claimed"
+            ? "#3FB648"
+            : "",
+        color: "white",
+      }}
+      size="small"
+      label={row.status}
+    />
+    // </Link>
+  );
+};
+
 export const ApprovalStatus: React.FC<StatusProps> = ({ row }) => {
   return (
     // <Link

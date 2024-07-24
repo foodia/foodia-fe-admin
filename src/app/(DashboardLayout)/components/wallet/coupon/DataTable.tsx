@@ -4,6 +4,8 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useAppContext } from "../../shared/Context";
 import DataTables from "../../shared/DataTables";
+import { getCouponWalletTrx } from "../../api/Coupon";
+import { ButtonAction, CouponStatus, Status } from "../../shared/Buttons";
 
 interface Meta {
   page: number;
@@ -14,12 +16,13 @@ interface Meta {
 
 interface Data {
   id: number;
-  corporate_name: string;
-  description: string;
-  address: string;
+  amount: any;
+  reserved_at: string;
   status: string;
-  created_at: string;
-  oauth: { fullname: string; email: string; phone: string };
+  transaction_date: string;
+  merchant: { merchant_name: string };
+  merchant_product: { name: string; price: any };
+  beneficiary: { fullname: string };
 }
 
 interface Props {
@@ -29,7 +32,9 @@ interface Props {
 }
 
 const DataTableComponent = () => {
-  const [filterPeriode, setFilterPeriode] = useState<string>("Jun 2024");
+  const [filterPeriode, setFilterPeriode] = useState<string>(
+    moment().format("MMM YYYY")
+  );
   const [searchBy, setSearchBy] = useState<string>("fullname");
   const [searchText, setSearchText] = useState<string>("");
   const [currentPageIndex, setCurrentPageIndex] = useState(0); // State to track current page index
@@ -46,7 +51,12 @@ const DataTableComponent = () => {
     NodeJS.Timeout | undefined
   >(undefined);
 
+  const fetchCouponTrx = () => {
+    getCouponWalletTrx(setData, setIsLoading);
+  };
+
   useEffect(() => {
+    fetchCouponTrx();
     setIsLoading(false);
   }, []);
 
@@ -55,57 +65,82 @@ const DataTableComponent = () => {
       name: "No",
       selector: (_row: any, i: any) => i + 1 + currentPageIndex * meta.per_page,
       // sortable: true,
-      width: "70px",
+      width: "60px",
       // style: {
       //   paddingLeft: "30px",
       // },
     },
     {
-      name: "Fullname",
-      cell: (row: any) => <div>{row.oauth.fullname}</div>,
+      name: "Name",
+      cell: (row: any) => <div>{row.beneficiary.fullname}</div>,
       // sortable: true,
+      width: "120px",
     },
     {
-      name: "Email",
-      cell: (row: any) => <div>{row.oauth.email}</div>,
+      name: "Store",
+      cell: (row: any) => <div>{row.merchant.merchant_name}</div>,
       // sortable: true,
-      width: "270px",
+      // width: "120px",
     },
     {
-      name: "Phone number",
-      cell: (row: any) => <div>{row.oauth.phone}</div>,
+      name: "Menu",
+      cell: (row: any) => <div>{row.merchant_product.name}</div>,
       // sortable: true,
+      width: "140px",
     },
     {
-      name: "Registered at",
+      name: "Price",
       cell: (row: any) => (
-        <div>{moment(row.created_at).format("DD/MM/YYYY")}</div>
+        <div>
+          {new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+          }).format(row.amount || 0)}
+        </div>
+      ),
+      // width: "100px",
+      // sortable: true,
+    },
+    {
+      name: "Status",
+      cell: (row: any) => <CouponStatus row={row} />,
+      // sortable: true,
+      width: "110px",
+    },
+    {
+      name: "Reserved Date",
+      cell: (row: any) => (
+        <div>{moment(row.reserved_at).format("DD/MM/YYYY hh:mm")}</div>
       ),
       // sortable: true,
     },
-    // {
-    //   name: "Status",
-    //   cell: (row: any) => <Status row={row} />,
-    //   // sortable: true,
-    // },
-    // {
-    //   name: "Action",
-    //   cell: (row: any) => (
-    //     <Stack spacing={1} direction="row">
-    //       <Link
-    //         href={{
-    //           pathname: "/ui-components/pages/donator/info",
-    //           query: {
-    //             id: row.id,
-    //           },
-    //         }}
-    //       >
-    //         <ButtonAction label="View" />
-    //       </Link>
-    //     </Stack>
-    //   ),
-    // sortable: true,
-    // },
+    {
+      name: "Transaction Date",
+      cell: (row: any) => (
+        <div>{moment(row.transaction_date).format("DD/MM/YYYY hh:mm")}</div>
+      ),
+      // sortable: true,
+    },
+    {
+      name: "Action",
+      cell: (row: any) => (
+        <Stack spacing={1} direction="row">
+          <Link
+            onClick={() => setIsLoading(true)}
+            href={{
+              pathname: "/ui-components/pages/wallet/coupon/info",
+              query: {
+                id: row.id,
+              },
+            }}
+          >
+            <ButtonAction label="View" />
+          </Link>
+        </Stack>
+      ),
+      // sortable: true,
+    },
     // Add more columns as needed
   ];
 
@@ -141,22 +176,16 @@ const DataTableComponent = () => {
       value: "Jun 2024",
       label: "Jun 2024",
     },
-    // {
-    //   id: 2,
-    //   value: "rejected",
-    //   label: "Rejected",
-    // },
-    // {
-    //   id: 3,
-    //   value: "approved",
-    //   label: "Approved",
-    // },
-    // {
-    //   id: 4,
-    //   value: "all",
-    //   label: "All",
-    // },
   ];
+
+  const [month, setMonth] = useState(moment().format("YYYY-MM"));
+  const [isOpenedMonthOptions, setIsOpenedMonthOptions] = useState(false);
+
+  const onChangeMonth = (bulan: any) => {
+    setMonth(bulan);
+    // getHistory(bulan);
+    setIsOpenedMonthOptions(!isOpenedMonthOptions);
+  };
 
   return (
     <>
@@ -171,8 +200,12 @@ const DataTableComponent = () => {
         searchable={false}
         filterPeriode={true}
         onChange={handleChangePage}
-        pageItems={data.length}
-        meta={meta}
+        onChangeMonth={onChangeMonth}
+        // pageItems={data.length}
+        month={month}
+        isOpenedMonthOptions={isOpenedMonthOptions}
+        setIsOpenedMonthOptions={setIsOpenedMonthOptions}
+        meta={false}
         columns={columns}
         data={data}
         pagination={true}

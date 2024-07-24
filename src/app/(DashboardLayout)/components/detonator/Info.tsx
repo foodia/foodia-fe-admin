@@ -43,10 +43,10 @@ export const Field = ({ value, label }: any) => {
           color: "#999",
         }}
       >
-        <Typography width="130px">{label}</Typography>
+        <Typography>{label}</Typography>
         <Typography>:</Typography>
       </Box>
-      <Box sx={{ paddingLeft: "40px" }}>{value}</Box>
+      <Box sx={{ paddingX: "10px" }}>{value}</Box>
     </Box>
   );
 };

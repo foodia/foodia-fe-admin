@@ -12,7 +12,12 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { IconArrowLeft, IconArrowRight, IconSearch } from "@tabler/icons-react";
+import {
+  IconArrowLeft,
+  IconArrowRight,
+  IconChevronDown,
+  IconSearch,
+} from "@tabler/icons-react";
 import axios from "axios";
 import React, { useState } from "react";
 import DataTable from "react-data-table-component";
@@ -20,6 +25,7 @@ import * as XLSX from "xlsx";
 import { useAppContext } from "./Context";
 import CustomStylesTable from "./CustomStylesTable";
 import ReactPaginate from "react-paginate";
+import moment from "moment";
 
 interface Data {
   value?: any;
@@ -52,6 +58,10 @@ interface Data {
   valueFilterPeriode?: any;
   onChangeFilterPeriode?: any;
   filterPeriodeOption?: { id?: number; value?: string; label?: string }[];
+  isOpenedMonthOptions?: any;
+  setIsOpenedMonthOptions?: any;
+  month?: any;
+  onChangeMonth?: any;
 }
 
 const DataTables: React.FC<Data> = ({
@@ -80,8 +90,14 @@ const DataTables: React.FC<Data> = ({
   filterPeriodeOption,
   valueFilterPeriode,
   onChangeFilterPeriode,
+  isOpenedMonthOptions,
+  setIsOpenedMonthOptions,
+  month,
+  onChangeMonth,
 }) => {
   const { isLoading, setIsLoading } = useAppContext();
+
+  let metas;
 
   const startIndex = currentPageIndex * meta?.per_page + 1;
   const endIndex = Math.min(
@@ -123,9 +139,104 @@ const DataTables: React.FC<Data> = ({
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      console.error("Error fetching data:", error);
     }
   };
+
+  const styles = `
+        .pagination {
+            display: flex;
+            background-color: #F5F6FA;
+            justify-content: center;
+            align-items: center;
+            padding: 5px;
+            gap: 10px;
+            border-radius: 100px
+        }
+        .pagination li {
+            border-radius: 100%;
+            display: flex;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background-color: transparent;
+        }
+        .pagination li.previous, li.next {
+            background-color: #3FB648;
+            color: white;
+        }
+        .pagination li.previous.disabled, li.next.disabled {
+            background-color: gray;
+            color: white;
+        }
+        .pagination li.previous a {
+            color: white;
+        }
+        .pagination li.next a {
+            color: white;
+        }
+        .pagination li.active {
+            background-color: transparent;
+            border: 1px solid #3FB648;
+            color: #3FB648;
+        }
+        .pagination li.disabled {
+            cursor: default;
+        }
+        .pagination li a {
+            border-radius: 100%;
+            cursor: pointer;
+            color: black;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+        }
+        .pagination li.active a {
+            cursor: pointer;
+            color: #3FB648;
+        }
+        .pagination li.disabled a {
+            cursor: not-allowed;
+            color: white;
+        }
+        // .pagination li:hover{
+        //     background-color: #8F0D1E;
+        // }
+        // .pagination li:hover a{
+        //     background-color: #8F0D1E;
+        //     color: #fff;
+        // }
+        // .pagination li.disabled:hover{
+        //     background-color: transparent;
+        // }
+        // .pagination li.disabled:hover a{
+        //     background-color: transparent;
+        //     color: grey;
+        // }
+        `;
+
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+
+  const startIndexManual = currentPageIndex * 5 + 1;
+  const endIndexManual = Math.min((currentPageIndex + 1) * 5, data.length);
+
+  const handlePageClick = ({ selected }: any) => {
+    onChange(selected);
+    setItemsPerPage(itemsPerPage);
+  };
+
+  const offset = currentPageIndex * itemsPerPage;
+  let currentPageData = [];
+  let pageCount = 0;
+
+  if (data !== null) {
+    currentPageData = data.slice(offset, offset + itemsPerPage);
+    pageCount = Math.ceil(data.length / itemsPerPage);
+  }
 
   return (
     <>
@@ -174,7 +285,7 @@ const DataTables: React.FC<Data> = ({
                 value={value}
                 onChange={onChangeFilterText}
               >
-                {filterText?.map((data) => (
+                {filterText?.map((data: any) => (
                   <MenuItem key={data.id} value={data.value}>
                     {data.label}
                   </MenuItem>
@@ -204,6 +315,9 @@ const DataTables: React.FC<Data> = ({
               value={valueFilterPeriode}
               onChange={onChangeFilterPeriode}
             >
+              <MenuItem value={moment(month, "YYYY-MM").format("MMM YYYY")}>
+                {moment(month, "YYYY-MM").format("MMM YYYY")}
+              </MenuItem>
               {filterPeriodeOption?.map((data) => (
                 <MenuItem key={data.id} value={data.value}>
                   {data.label}
@@ -246,7 +360,7 @@ const DataTables: React.FC<Data> = ({
                 value={valueSearchBy}
                 onChange={onChangeSearchBy}
               >
-                {searchOption?.map((data) => (
+                {searchOption?.map((data: any) => (
                   <MenuItem key={data.id} value={data.value}>
                     {data.label}
                   </MenuItem>
@@ -402,11 +516,8 @@ const DataTables: React.FC<Data> = ({
               customStyles={CustomStylesTable}
               columns={columns}
               data={data}
-              // pagination
-              // paginationPerPage={1}
-              // paginationRowsPerPageOptions={}
             />
-            {pagination ? (
+            {pagination && meta ? (
               <Box
                 sx={{
                   display: "flex",
@@ -478,7 +589,69 @@ const DataTables: React.FC<Data> = ({
                 </Box>
               </Box>
             ) : (
-              ""
+              // when meta not available
+              pagination &&
+              !meta && (
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    borderRadius: "0px 0px 6px 6px",
+                    border: "1px solid #CCD1D9",
+                    paddingX: "10px",
+                    width: "100%",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      fontSize: "13px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "3px",
+                    }}
+                  >
+                    Showing{" "}
+                    <Typography fontWeight={700}>{startIndexManual}</Typography>{" "}
+                    to{" "}
+                    <Typography fontWeight={700}>{endIndexManual}</Typography>{" "}
+                    of <Typography fontWeight={700}>{data.length}</Typography>{" "}
+                    results
+                  </Box>
+                  <Box>
+                    <style>{styles}</style>
+                    <ReactPaginate
+                      previousLabel={
+                        <IconArrowLeft
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        />
+                      }
+                      nextLabel={
+                        <IconArrowRight
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        />
+                      }
+                      breakLabel={<a className="text-merah">...</a>}
+                      pageRangeDisplayed={1}
+                      marginPagesDisplayed={1}
+                      forcePage={currentPageIndex}
+                      pageCount={pageCount}
+                      onPageChange={handlePageClick}
+                      containerClassName={"pagination"}
+                      activeClassName={"active"}
+                    />
+                  </Box>
+                </Box>
+              )
             )}
           </Box>
         </>
@@ -487,6 +660,7 @@ const DataTables: React.FC<Data> = ({
   );
 };
 
+// table without header(search, filter)
 export const DataTablesManualPagination: React.FC<Data> = ({
   data,
   columns,
@@ -508,13 +682,7 @@ export const DataTablesManualPagination: React.FC<Data> = ({
   }
 
   const { isLoading, setIsLoading } = useAppContext();
-  // const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(5);
-
-  // const handleItemsPerPageChange = (event: any) => {
-  //   setItemsPerPage(event.target.value);
-  //   setCurrentPage(0);
-  // };
 
   const startIndex = currentPage * 5 + 1;
   const endIndex = Math.min((currentPage + 1) * 5, data.length);
@@ -696,7 +864,6 @@ export const DataTablesManualPagination: React.FC<Data> = ({
             justifyContent: "space-between",
             alignItems: "center",
             height: "60px",
-            // alignItems: "center",
             gap: "10px",
           }}
         >
@@ -753,9 +920,6 @@ export const DataTablesManualPagination: React.FC<Data> = ({
               defaultSortFieldId="deposit"
               defaultSortAsc={true}
               onSort={handleSort}
-              // pagination
-              // paginationPerPage={1}
-              // paginationRowsPerPageOptions={}
             />
             {pagination ? (
               <Box

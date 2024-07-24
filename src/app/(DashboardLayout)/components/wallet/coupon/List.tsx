@@ -106,7 +106,6 @@ const List = () => {
   const [isOpenCouponPrice, setIsOpenCouponPrice] = useState(false);
   const [valueWalletType, setValueWalletType] = useState("default");
   const [selectedWallet, setSelectedWallet] = useState("default");
-  const [couponPriceChanges, setCouponPriceChanges] = useState("");
   const [walletSummaryData, setWalletSummaryData] = useState<any>({});
   const [data, setData] = useState<Props>({
     id: 0,
@@ -189,10 +188,11 @@ const List = () => {
   const [sortAsc, setSortAsc] = useState(false);
   const [sortedData, setSortedData] = useState([]);
   const [couponWalletDetail, setCouponWalletDetail] = useState<any>({});
+  const [couponPriceChanges, setCouponPriceChanges] = useState("");
 
   useEffect(() => {
     getCouponWalletDetail(setCouponWalletDetail, setIsLoading);
-    // getCouponWalletSummary(setWalletSummaryData, setIsLoading);
+    getCouponWalletSummary(setWalletSummaryData, setIsLoading);
   }, []);
 
   const breadcrumbs = [
@@ -205,37 +205,41 @@ const List = () => {
     {
       id: 1,
       title: "reserved",
-      // total_amount: walletSummaryData?.status?.reserved,
+      total: walletSummaryData?.status?.reserved?.total,
+      total_amount: walletSummaryData?.status?.reserved?.total_amount,
       bgcolor: "linear-gradient(to bottom, #47CBC3, #5A689A)",
     },
     {
       id: 2,
       title: "expired",
-      // total_amount: walletSummaryData?.status?.expired,
+      total: walletSummaryData?.status?.expired?.total,
+      total_amount: walletSummaryData?.status?.expired?.total_amount,
       bgcolor: "linear-gradient(to bottom, #CB4747, #9A5A5A)",
     },
     {
       id: 3,
       title: "active",
-      // total_amount: walletSummaryData?.status?.active,
+      total: walletSummaryData?.status?.active?.total,
+      total_amount: walletSummaryData?.status?.active?.total_amount,
       bgcolor: "linear-gradient(to bottom, #B847CB, #765A9A)",
     },
     {
       id: 4,
       title: "claimed",
-      // total_amount: walletSummaryData?.status?.claimed,
+      total: walletSummaryData?.status?.claimed?.total,
+      total_amount: walletSummaryData?.status?.claimed?.total_amount,
       bgcolor: "linear-gradient(to bottom, #4ACB47, #5A9A70)",
     },
   ];
 
   const cashflowData = [
     {
-      name: "Cash In",
-      data: [255, 390, 300, 350, 390, 180, 355, 390, 300, 350, 390, 180],
+      name: "Claimed",
+      data: [255, 390, 300, 350, 390, 180, 355, 390, 300, 350, 390],
     },
     {
-      name: "Cash Out",
-      data: [100, 250, 300, 215, 250, 310, 280, 250, 325, 215, 250, 310],
+      name: "Expired",
+      data: [100, 250, 300, 215, 250, 310, 280, 250, 325, 215, 250],
     },
   ];
 
@@ -249,7 +253,7 @@ const List = () => {
     dataLabels: {
       enabled: false,
     },
-    colors: ["#FF1654", "#3FB648"],
+    colors: ["#3FB648", "#FF1654"],
     stroke: {
       width: [4, 4],
     },
@@ -273,7 +277,7 @@ const List = () => {
       {
         axisBorder: {
           show: true,
-          color: "#FF1654",
+          // color: "black",
         },
       },
     ],
@@ -1299,7 +1303,13 @@ const List = () => {
                   minimumFractionDigits: 0,
                 }).format(couponWalletDetail.price_coupon || 0)}
                 <button
-                  onClick={() => setIsOpenCouponPrice(true)}
+                  onClick={() => {
+                    setIsOpenCouponPrice(true);
+                    let value = couponWalletDetail.price_coupon.toString();
+                    value = value?.replace(/\D/g, "");
+                    value = value?.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                    setCouponPriceChanges(value);
+                  }}
                   style={{
                     cursor: "pointer",
                     padding: 0,
@@ -1454,7 +1464,13 @@ const List = () => {
                   background: items.bgcolor,
                 }}
               >
-                <Typography sx={{ fontSize: "14px", color: "white" }}>
+                <Typography
+                  sx={{
+                    fontSize: "14px",
+                    color: "white",
+                    textTransform: "capitalize",
+                  }}
+                >
                   {items.title}
                 </Typography>
                 <Box
@@ -1472,7 +1488,7 @@ const List = () => {
                       color: "white",
                     }}
                   >
-                    0
+                    {items.total || 0}
                   </Typography>
                   <Typography
                     sx={{
@@ -1482,7 +1498,11 @@ const List = () => {
                       marginTop: -1,
                     }}
                   >
-                    Rp 0
+                    {new Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                      minimumFractionDigits: 0,
+                    }).format(items.total_amount || 0)}
                   </Typography>
                 </Box>
               </Box>
@@ -1561,7 +1581,8 @@ const List = () => {
           setIsLoading(true),
           setIsOpenCouponPrice(false),
           updateCouponWalletPrice(
-            parseInt(couponPriceChanges.replace(/\./g, ""))
+            parseInt(couponPriceChanges.replace(/\./g, "")),
+            setIsLoading
           )
         )}
         handleClose={() => setIsOpenCouponPrice(false)}

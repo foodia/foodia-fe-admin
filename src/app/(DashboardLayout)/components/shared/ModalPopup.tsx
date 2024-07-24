@@ -616,16 +616,20 @@ export const ModalPopupFilesDetail = ({
           alignItems: "center",
           width: "500px",
           backgroundColor: "transparent",
-          paddingBottom: "20px",
-          // padding: "35px",
-          gap: "10px",
+          paddingBottom: "5px",
+          gap: "5px",
         }}
       >
         <Box sx={{}}>
           <ImageHandler fit src={image_url} />
         </Box>
         <Button
-          sx={{ fontWeight: "bold", color: "white" }}
+          sx={{
+            fontWeight: "bold",
+            color: "white",
+            bgcolor: "green",
+            ":hover": { bgcolor: "green" },
+          }}
           onClick={handleClose}
         >
           Close
