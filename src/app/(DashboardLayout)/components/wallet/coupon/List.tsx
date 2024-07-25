@@ -1327,7 +1327,10 @@ const List = () => {
                   width: "280px",
                   display: "flex",
                   flexDirection: "column",
-                  background: "linear-gradient(to bottom, #C1C1C1, #707070)",
+                  background:
+                    couponWalletDetail.qouta_available <= 0
+                      ? "linear-gradient(to bottom, #C1C1C1, #707070)"
+                      : "linear-gradient(to bottom, #FF4949, #FFBC5B)",
                 }}
               >
                 <Typography
