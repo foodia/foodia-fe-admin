@@ -3,7 +3,6 @@ import moment from "moment";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { getBeneficiaries } from "../api/Beneficiaries";
-import { getDetonator } from "../api/Detonator";
 import { ButtonAction, Status } from "../shared/Buttons";
 import { useAppContext } from "../shared/Context";
 import DataTables from "../shared/DataTables";
@@ -107,14 +106,14 @@ const DataTableComponent = () => {
     setSearchBy(event.target.value);
     localStorage.setItem("SearchBy", event.target.value);
     setIsLoading(true);
-    getDetonator(setData, setMeta, page, setIsLoading);
+    getBeneficiaries(setData, setMeta, page, setIsLoading);
   };
 
   const handleChangeFilterText = (event: SelectChangeEvent) => {
     setIsLoading(true);
     localStorage.setItem("FilterStatus", event.target.value);
     setFilterText(event.target.value);
-    getDetonator(setData, setMeta, 1, setIsLoading);
+    getBeneficiaries(setData, setMeta, 1, setIsLoading);
   };
 
   const handleChangeSearch = (event: SelectChangeEvent) => {
@@ -128,7 +127,7 @@ const DataTableComponent = () => {
     }
     const timeout = setTimeout(() => {
       setIsLoading(true);
-      getDetonator(setData, setMeta, page, setIsLoading);
+      getBeneficiaries(setData, setMeta, page, setIsLoading);
       // Add your logic here
     }, 500); // Adjust the delay as needed (in milliseconds)
     setTypingTimeout(timeout);
