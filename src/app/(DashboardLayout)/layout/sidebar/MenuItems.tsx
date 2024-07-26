@@ -125,6 +125,20 @@ const Menuitems = () => {
       },
       {
         id: uniqueId(),
+        title: "Beneficiaries",
+        icon: IconMoneybag,
+        submenu: [
+          {
+            id: uniqueId(),
+            href: "/ui-components/pages/beneficiaries",
+            name: "List Beneficiaries",
+            isShowBadge: notifData.beneficiaries,
+            icon: <IconUser />,
+          },
+        ],
+      },
+      {
+        id: uniqueId(),
         title: "Disbursement",
         icon: IconMoneybag,
         submenu: [
