@@ -95,7 +95,7 @@ const DataTableComponent = () => {
     setPage(value);
     setCurrentPageIndex(value - 1);
     setIsLoading(true);
-    getDetonator(setData, setMeta, value, setIsLoading);
+    getBeneficiaries(setData, setMeta, value, setIsLoading);
   };
 
   useEffect(() => {
