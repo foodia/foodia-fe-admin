@@ -731,9 +731,10 @@ export const ModalPopupCouponPrice = ({
             </Box>
             <button
               onClick={onClick}
+              disabled={!value}
               style={{
                 display: "flex",
-                backgroundColor: "#3FB648",
+                backgroundColor: !value ? "gray" : "#3FB648",
                 gap: "10px",
                 padding: "8px",
                 border: 0,
