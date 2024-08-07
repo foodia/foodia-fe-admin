@@ -185,7 +185,7 @@ const List = () => {
   const [neededLeft, setNeededLeft] = useState(0);
   const [searchText, setSearchText] = useState("");
   const [sortField, setSortField] = useState("deposit");
-  const [sortAsc, setSortAsc] = useState(false);
+  const [sortAsc, setSortAsc] = useState(true);
   const [sortedData, setSortedData] = useState([]);
   const [couponWalletDetail, setCouponWalletDetail] = useState<any>({});
   const [couponPriceChanges, setCouponPriceChanges] = useState("");
@@ -1220,44 +1220,46 @@ const List = () => {
     );
   }
 
+  console.log(sortAsc);
+
   const onSort = (column: any) => {
     if (sortField === column) {
       setSortAsc(!sortAsc);
       const sorted = walletList.sort((a: any, b: any) => {
         if (column === "name") {
-          return sortAsc
-            ? a.name.localeCompare(b.name)
-            : b.name.localeCompare(a.name);
+          return !sortAsc
+            ? b.name.localeCompare(a.name)
+            : a.name.localeCompare(b.name);
         }
         if (column === "deposit") {
-          return sortAsc ? a.balance - b.balance : b.balance - a.balance;
+          return sortAsc ? b.balance - a.balance : a.balance - b.balance;
         }
         if (column === "lastTrx") {
-          return sortAsc
-            ? new Date(a.updated_at).getTime() -
-                new Date(b.updated_at).getTime()
-            : new Date(b.updated_at).getTime() -
-                new Date(a.updated_at).getTime();
+          return !sortAsc
+            ? new Date(b.updated_at).getTime() -
+                new Date(a.updated_at).getTime()
+            : new Date(a.updated_at).getTime() -
+                new Date(b.updated_at).getTime();
         }
       });
       setSortedData(sorted);
     } else {
-      setSortAsc(sortAsc);
+      setSortAsc(!sortAsc);
       const sorted = walletList.sort((a: any, b: any) => {
         if (column === "name") {
           return !sortAsc
-            ? a.name.localeCompare(b.name)
-            : b.name.localeCompare(a.name);
+            ? b.name.localeCompare(a.name)
+            : a.name.localeCompare(b.name);
         }
         if (column === "deposit") {
-          return !sortAsc ? a.balance - b.balance : b.balance - a.balance;
+          return sortAsc ? b.balance - a.balance : a.balance - b.balance;
         }
         if (column === "lastTrx") {
           return !sortAsc
-            ? new Date(a.updated_at).getTime() -
-                new Date(b.updated_at).getTime()
-            : new Date(b.updated_at).getTime() -
-                new Date(a.updated_at).getTime();
+            ? new Date(b.updated_at).getTime() -
+                new Date(a.updated_at).getTime()
+            : new Date(a.updated_at).getTime() -
+                new Date(b.updated_at).getTime();
         }
       });
       setSortedData(sorted);

@@ -84,20 +84,23 @@ export const getCouponWalletSummary = (setData: any, setIsLoading: any) => {
 
 export const getCouponWalletTrx = (
   setData: any,
+  setMeta: any,
   setIsLoading: any,
   start_date?: any,
-  end_date?: any
+  end_date?: any,
+  page?: any
 ) => {
   axios
     .get(
       process.env.NEXT_PUBLIC_BASE +
-        `/coupon/filter?start_date=${start_date}&end_date=${end_date}`,
+        `/coupon/filter?page=${page}&per_page=10&start_date=${start_date}&end_date=${end_date}`,
       {
         headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       }
     )
     .then((res) => {
       setData(res.data.body);
+      setMeta(res.data.meta);
       setIsLoading(false);
     })
     .catch((error) => {

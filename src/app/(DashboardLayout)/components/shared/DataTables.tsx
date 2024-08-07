@@ -26,6 +26,8 @@ import { useAppContext } from "./Context";
 import CustomStylesTable from "./CustomStylesTable";
 import ReactPaginate from "react-paginate";
 import moment from "moment";
+import { DateRangePicker } from "rsuite";
+import "rsuite/dist/rsuite.min.css";
 
 interface Data {
   value?: any;
@@ -61,6 +63,7 @@ interface Data {
   isOpenedMonthOptions?: any;
   setIsOpenedMonthOptions?: any;
   month?: any;
+  setDateRange?: any;
   onChangeMonth?: any;
 }
 
@@ -87,6 +90,7 @@ const DataTables: React.FC<Data> = ({
   walletUrl,
   excelfileName,
   filterPeriode,
+  setDateRange,
   filterPeriodeOption,
   valueFilterPeriode,
   onChangeFilterPeriode,
@@ -294,37 +298,51 @@ const DataTables: React.FC<Data> = ({
             </Box>
           )}
           {filterPeriode ? (
-            <Select
-              variant="standard"
-              size="small"
-              disableUnderline
+            <Box
               sx={{
-                ".MuiSelect-select": {
-                  padding: "5px",
-                  width: "70px",
-                  fontSize: "14px",
-                  border: "1px solid gray",
-                  // background: "rgba(63, 182, 72, 0.10)",
-                  borderRadius: "5px",
-                  ":focus": {
-                    borderRadius: "5px",
-                    // background: "rgba(63, 182, 72, 0.10)",
-                  },
-                },
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "10px",
               }}
-              value={valueFilterPeriode}
-              onChange={onChangeFilterPeriode}
             >
-              <MenuItem value={moment(month, "YYYY-MM").format("MMM YYYY")}>
-                {moment(month, "YYYY-MM").format("MMM YYYY")}
-              </MenuItem>
-              {filterPeriodeOption?.map((data) => (
-                <MenuItem key={data.id} value={data.value}>
-                  {data.label}
-                </MenuItem>
-              ))}
-            </Select>
+              <Typography>Filter by Date : </Typography>
+              <DateRangePicker
+                // value={dateRange}
+                onChange={(value: any) => setDateRange(value)}
+              />
+            </Box>
           ) : (
+            // <Select
+            //   variant="standard"
+            //   size="small"
+            //   disableUnderline
+            //   sx={{
+            //     ".MuiSelect-select": {
+            //       padding: "5px",
+            //       width: "70px",
+            //       fontSize: "14px",
+            //       border: "1px solid gray",
+            //       // background: "rgba(63, 182, 72, 0.10)",
+            //       borderRadius: "5px",
+            //       ":focus": {
+            //         borderRadius: "5px",
+            //         // background: "rgba(63, 182, 72, 0.10)",
+            //       },
+            //     },
+            //   }}
+            //   value={valueFilterPeriode}
+            //   onChange={onChangeFilterPeriode}
+            // >
+            //   {/* <MenuItem value={moment(month, "YYYY-MM").format("MMM YYYY")}>
+            //     {moment(month, "YYYY-MM").format("MMM YYYY")}
+            //   </MenuItem> */}
+            //   {filterPeriodeOption?.map((data) => (
+            //     <MenuItem key={data.id} value={data.value}>
+            //       {data.label}
+            //     </MenuItem>
+            //   ))}
+            // </Select>
             ""
           )}
           {searchOption ? (
@@ -918,7 +936,7 @@ export const DataTablesManualPagination: React.FC<Data> = ({
               columns={columns}
               data={currentPageData}
               defaultSortFieldId="deposit"
-              defaultSortAsc={true}
+              defaultSortAsc={false}
               onSort={handleSort}
             />
             {pagination ? (

@@ -47,16 +47,26 @@ const DataTableComponent = () => {
   });
   const [page, setPage] = useState(1);
   const { isLoading, setIsLoading } = useAppContext();
-  const [typingTimeout, setTypingTimeout] = useState<
-    NodeJS.Timeout | undefined
-  >(undefined);
+  const [month, setMonth] = useState(moment().format("YYYY-MM"));
+  const [dateRange, setDateRange] = useState([
+    moment().startOf("year").format("YYYY-MM-DD HH:mm:ss"),
+    moment().endOf("year").format("YYYY-MM-DD HH:mm:ss"),
+  ]);
+  const [isOpenedMonthOptions, setIsOpenedMonthOptions] = useState(false);
 
-  const fetchCouponTrx = () => {
-    getCouponWalletTrx(setData, setIsLoading);
+  const fetchCouponTrx = (page: any, startDate: any, endDate: any) => {
+    getCouponWalletTrx(
+      setData,
+      setMeta,
+      setIsLoading,
+      moment(dateRange[0]).format("YYYY-MM-DD"),
+      moment(dateRange[1]).format("YYYY-MM-DD"),
+      page
+    );
   };
 
   useEffect(() => {
-    fetchCouponTrx();
+    fetchCouponTrx(page, dateRange[0], dateRange[1]);
     setIsLoading(false);
   }, []);
 
@@ -151,6 +161,7 @@ const DataTableComponent = () => {
     setPage(value);
     setCurrentPageIndex(value - 1);
     setIsLoading(true);
+    fetchCouponTrx(value, dateRange[0], dateRange[1]);
   };
 
   useEffect(() => {
@@ -170,22 +181,80 @@ const DataTableComponent = () => {
     setFilterPeriode(event.target.value);
   };
 
-  const filterPeriodeOptions = [
-    {
-      id: 1,
-      value: "Jun 2024",
-      label: "Jun 2024",
-    },
-  ];
+  // const filterPeriodeOptions = [
+  //   {
+  //     id: 12,
+  //     value: "Des 2024",
+  //     label: "Des 2024",
+  //   },
+  //   {
+  //     id: 11,
+  //     value: "Nov 2024",
+  //     label: "Nov 2024",
+  //   },
+  //   {
+  //     id: 10,
+  //     value: "Okt 2024",
+  //     label: "Okt 2024",
+  //   },
+  //   {
+  //     id: 9,
+  //     value: "Sep 2024",
+  //     label: "Sep 2024",
+  //   },
+  //   {
+  //     id: 8,
+  //     value: "Aug 2024",
+  //     label: "Aug 2024",
+  //   },
+  //   {
+  //     id: 7,
+  //     value: "Jul 2024",
+  //     label: "Jul 2024",
+  //   },
+  //   {
+  //     id: 6,
+  //     value: "Jun 2024",
+  //     label: "Jun 2024",
+  //   },
+  //   {
+  //     id: 5,
+  //     value: "Mei 2024",
+  //     label: "Mei 2024",
+  //   },
+  //   {
+  //     id: 4,
+  //     value: "Apr 2024",
+  //     label: "Apr 2024",
+  //   },
+  //   {
+  //     id: 3,
+  //     value: "Mar 2024",
+  //     label: "Mar 2024",
+  //   },
+  //   {
+  //     id: 2,
+  //     value: "Feb 2024",
+  //     label: "Feb 2024",
+  //   },
+  //   {
+  //     id: 1,
+  //     value: "Jan 2024",
+  //     label: "Jan 2024",
+  //   },
+  // ];
 
-  const [month, setMonth] = useState(moment().format("YYYY-MM"));
-  const [isOpenedMonthOptions, setIsOpenedMonthOptions] = useState(false);
+  useEffect(() => {
+    fetchCouponTrx(page, dateRange[0], dateRange[1]);
+  }, [dateRange]);
 
-  const onChangeMonth = (bulan: any) => {
-    setMonth(bulan);
-    // getHistory(bulan);
-    setIsOpenedMonthOptions(!isOpenedMonthOptions);
-  };
+  // const onChangeMonth = () => {
+  //   // setMonth(bulan);
+  //   // getHistory(bulan);
+  //   setDateRange;
+  //   console.log(dateRange);
+  //   setIsOpenedMonthOptions(!isOpenedMonthOptions);
+  // };
 
   return (
     <>
@@ -193,15 +262,16 @@ const DataTableComponent = () => {
         List Coupon Transaction
       </Typography>
       <DataTables
-        valueFilterPeriode={filterPeriode}
-        filterPeriodeOption={filterPeriodeOptions}
+        // valueFilterPeriode={filterPeriode}
+        // filterPeriodeOption={filterPeriodeOptions}
         onChangeFilterPeriode={handleChangeFilterPeriode}
         download={true}
         searchable={false}
         filterPeriode={true}
         onChange={handleChangePage}
-        onChangeMonth={onChangeMonth}
+        // onChangeMonth={onChangeMonth}
         // pageItems={data.length}
+        setDateRange={setDateRange}
         month={month}
         isOpenedMonthOptions={isOpenedMonthOptions}
         setIsOpenedMonthOptions={setIsOpenedMonthOptions}

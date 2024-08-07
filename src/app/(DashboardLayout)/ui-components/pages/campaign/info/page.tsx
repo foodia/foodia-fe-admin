@@ -1124,7 +1124,7 @@ const CampaignInfo = () => {
             : b.name.localeCompare(a.name);
         }
         if (column === "deposit") {
-          return sortAsc ? a.balance - b.balance : b.balance - a.balance;
+          return sortAsc ? b.balance - a.balance : a.balance - b.balance;
         }
         if (column === "lastTrx") {
           return sortAsc
@@ -1136,18 +1136,18 @@ const CampaignInfo = () => {
       });
       setSortedData(sorted);
     } else {
-      setSortAsc(sortAsc);
+      setSortAsc(!sortAsc);
       const sorted = walletList.sort((a: any, b: any) => {
         if (column === "name") {
-          return !sortAsc
+          return sortAsc
             ? a.name.localeCompare(b.name)
             : b.name.localeCompare(a.name);
         }
         if (column === "deposit") {
-          return !sortAsc ? a.balance - b.balance : b.balance - a.balance;
+          return sortAsc ? b.balance - a.balance : a.balance - b.balance;
         }
         if (column === "lastTrx") {
-          return !sortAsc
+          return sortAsc
             ? new Date(a.updated_at).getTime() -
                 new Date(b.updated_at).getTime()
             : new Date(b.updated_at).getTime() -
