@@ -47,6 +47,7 @@ type Props = {
   note: string;
   donation_target: any;
   donation_collected: any;
+  donation_remaining: any;
   status: string;
   campaign_status: string;
   order_status: string;
@@ -128,6 +129,7 @@ const CampaignInfo = () => {
     note: "",
     donation_target: "",
     donation_collected: "",
+    donation_remaining: "",
     status: "",
     campaign_status: "",
     order_status: "",

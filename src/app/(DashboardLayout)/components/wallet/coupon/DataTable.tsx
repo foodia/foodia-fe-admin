@@ -205,7 +205,7 @@ const DataTableComponent = () => {
         month={month}
         isOpenedMonthOptions={isOpenedMonthOptions}
         setIsOpenedMonthOptions={setIsOpenedMonthOptions}
-        meta={false}
+        meta={meta}
         columns={columns}
         data={data}
         pagination={true}

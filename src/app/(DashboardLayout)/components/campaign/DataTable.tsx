@@ -106,6 +106,20 @@ const DataTableComponent = () => {
       width: "auto",
     },
     {
+      name: "Remaining",
+      cell: (row: any) => (
+        <div>
+          {new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+          }).format(row.donation_remaining)}
+        </div>
+      ),
+      // sortable: true,
+      width: "auto",
+    },
+    {
       name: "Event Type",
       cell: (row: any) => (
         <div>

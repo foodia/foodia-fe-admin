@@ -29,7 +29,7 @@ const Attachment: React.FC<ChildProps> = ({ data }) => {
   };
   return (
     <>
-      <DetailCard title="Detonator Documents">
+      <DetailCard title="Volunteer Documents">
         <Box sx={{ display: "flex", flexDirection: "row", gap: "10px" }}>
           <Box
             sx={{

@@ -91,7 +91,7 @@ export const getCouponWalletTrx = (
   axios
     .get(
       process.env.NEXT_PUBLIC_BASE +
-        `/coupon/filter?start_date=${start_date}}&end_date=${end_date}`,
+        `/coupon/filter?start_date=${start_date}&end_date=${end_date}`,
       {
         headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       }

@@ -23,6 +23,7 @@ interface ChildProps {
     note: string;
     donation_target: any;
     donation_collected: any;
+    donation_remaining: any;
     province: string;
     city: string;
     status: string;
@@ -196,6 +197,14 @@ const Info: React.FC<ChildProps> = ({ data }) => {
               currency: "IDR",
               minimumFractionDigits: 0,
             }).format(data.donation_collected)}
+          />
+          <Field
+            label="Donation Remaining"
+            value={new Intl.NumberFormat("id-ID", {
+              style: "currency",
+              currency: "IDR",
+              minimumFractionDigits: 0,
+            }).format(data.donation_remaining)}
           />
           <Field label="Note" value={data.note} />
           <Field label="Description" value={data.description} />

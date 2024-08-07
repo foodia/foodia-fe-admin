@@ -67,10 +67,10 @@ const DetonatorInfo = () => {
       }}
       href="/ui-components/pages/detonator"
     >
-      Detonator List
+      Volunteer List
     </Button>,
     <Typography fontSize="13px" key="3" color="#999" fontWeight={400}>
-      Detonator Detail
+      Volunteer Detail
     </Typography>,
   ];
 

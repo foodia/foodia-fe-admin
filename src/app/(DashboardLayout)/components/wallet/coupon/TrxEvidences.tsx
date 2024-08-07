@@ -55,71 +55,67 @@ const TrxEvidences: React.FC<any> = ({ data, isLoading }) => {
       <Typography sx={{ fontWeight: "bold", fontSize: "20px" }}>
         Bukti Transaksi
       </Typography>
-      {isLoading ? (
-        <CircularProgress />
-      ) : (
-        <Box sx={{ justifyContent: "space-between" }}>
-          <Field label="Foto Makanan">
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                gap: "12px",
-                width: "300px",
-                flexWrap: "wrap",
-                justifyContent: "end",
-              }}
-            >
-              {data.report?.image_food?.map((items: any, index: any) => (
-                <Button
-                  key={index}
-                  onClick={() => onViewImage(items.image_url)}
-                  variant="contained"
-                  size="small"
-                  sx={{
-                    padding: 0,
-                    width: "130px",
-                    borderRadius: "10px",
-                    backgroundColor: "transparent",
-                  }}
-                >
-                  <ImageHandler src={items.image_url} />
-                </Button>
-              ))}
-            </Box>
-          </Field>
-          <hr />
-          <Field label="Bukti Transaksi">
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                gap: "12px",
-                width: "300px",
-                flexWrap: "wrap",
-                justifyContent: "end",
-              }}
-            >
-              {data.report?.image_transaction?.map((items: any, index: any) => (
-                <Button
-                  key={index}
-                  onClick={() => onViewImage(items.image_url)}
-                  variant="contained"
-                  size="small"
-                  sx={{
-                    padding: 0,
-                    width: "130px",
-                    borderRadius: "10px",
-                    backgroundColor: "transparent",
-                  }}
-                >
-                  <ImageHandler src={items.image_url} />
-                </Button>
-              ))}
-            </Box>
-          </Field>
-        </Box>
-      )}
+      <Box sx={{ justifyContent: "space-between" }}>
+        <Field label="Foto Makanan">
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              gap: "12px",
+              width: "300px",
+              flexWrap: "wrap",
+              justifyContent: "end",
+            }}
+          >
+            {data.report?.image_food?.map((items: any, index: any) => (
+              <Button
+                key={index}
+                onClick={() => onViewImage(items.image_url)}
+                variant="contained"
+                size="small"
+                sx={{
+                  padding: 0,
+                  width: "130px",
+                  borderRadius: "10px",
+                  backgroundColor: "transparent",
+                }}
+              >
+                <ImageHandler src={items.image_url} />
+              </Button>
+            ))}
+          </Box>
+        </Field>
+        <hr />
+        <Field label="Bukti Transaksi">
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              gap: "12px",
+              width: "300px",
+              flexWrap: "wrap",
+              justifyContent: "end",
+            }}
+          >
+            {data.report?.image_transaction?.map((items: any, index: any) => (
+              <Button
+                key={index}
+                onClick={() => onViewImage(items.image_url)}
+                variant="contained"
+                size="small"
+                sx={{
+                  padding: 0,
+                  width: "130px",
+                  borderRadius: "10px",
+                  backgroundColor: "transparent",
+                }}
+              >
+                <ImageHandler src={items.image_url} />
+              </Button>
+            ))}
+          </Box>
+        </Field>
+      </Box>
       <ModalPopupFilesDetail
         open={isOpen}
         image_url={file}

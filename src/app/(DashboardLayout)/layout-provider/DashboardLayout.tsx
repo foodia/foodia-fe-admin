@@ -1,8 +1,9 @@
 "use client";
 import Header from "@/app/(DashboardLayout)/layout/header/Header";
 import Sidebar from "@/app/(DashboardLayout)/layout/sidebar/Sidebar";
-import { Box, styled } from "@mui/material";
+import { Box, CircularProgress, styled } from "@mui/material";
 import React, { useState } from "react";
+import { useAppContext } from "../components/shared/Context";
 
 const MainWrapper = styled("div")(() => ({
   display: "flex",
@@ -28,7 +29,7 @@ export default function DashboardLayout({
 }) {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, setIsLoading } = useAppContext();
 
   return (
     <MainWrapper className="mainwrapper">
@@ -54,7 +55,13 @@ export default function DashboardLayout({
         {/* ------------------------------------------- */}
         {/* Page Route */}
         {/* ------------------------------------------- */}
-        <Box sx={{ height: "100%" }}>{children}</Box>
+        <Box
+          sx={{
+            height: "100%",
+          }}
+        >
+          {children}
+        </Box>
         {/* ------------------------------------------- */}
         {/* End Page */}
         {/* ------------------------------------------- */}

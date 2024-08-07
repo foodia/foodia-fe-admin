@@ -7,7 +7,7 @@ const MerchantManagement = () => {
   return (
     <PageContainer
       title="Merchant Management"
-      description="this is detonator management"
+      description="this is Merchant management"
     >
       <Grid container spacing={0}>
         <Grid item xs={12} lg={12}>

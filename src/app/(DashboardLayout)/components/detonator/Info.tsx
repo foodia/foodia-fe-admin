@@ -162,7 +162,7 @@ const Info: React.FC<ChildProps> = ({ data }) => {
   ];
 
   return (
-    <DetailCard title="Detonator Information">
+    <DetailCard title="Volunteer Information">
       <Box
         sx={{
           display: "flex",

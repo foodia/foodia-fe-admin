@@ -75,7 +75,8 @@ const Login = () => {
     const session = localStorage.getItem("Session");
     if (session === "start") {
       router.push("/ui-components/pages/donator/individuals");
-    } else if (session === "end") {
+    } else {
+      Cookies.remove("role");
       AlertError401();
     }
   }, []);

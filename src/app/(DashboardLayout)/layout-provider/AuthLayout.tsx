@@ -42,6 +42,7 @@ export default function AuthLayout({
             display: "flex",
             flexDirection: "row",
             justifyContent: "center",
+            gap: "20px",
             // alignItems: "center",
             height: "100%",
             width: "100%",
