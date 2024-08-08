@@ -781,14 +781,12 @@ const CampaignInfo = () => {
         cancelButton: "custom-cancel-button-swal",
       },
       // icon: "success",
-      title: `Anda yakin 
-      menambahkan donasi?`,
+      title: `Anda yakin menambahkan donasi?`,
       html: `
-        Total tambahan donasi adalah
-        <div style="display: flex; flex-direction: row; gap: 10px; width: 100%">
+        <div style="display: flex; flex-direction: row; gap: 10px; width: 100%; padding-top: 10px; padding-bottom: 10px">
           ${
             donationAmountsCsr.length > 0
-              ? `<div style="display: flex; flex-direction: column; width: 100%; align-items: start">
+              ? `<div style="display: flex; flex-direction: column; width: 100%; align-items: start; gap: 10px">
             <p>CSR Wallet</p>
             <div style="max-height: 300px; width: 300px; overflow-y: auto; background-color: #f9f9f9; padding: 5px; border-radius: 5px;">
             ${donationAmountsCsr
@@ -807,7 +805,7 @@ const CampaignInfo = () => {
           }
           ${
             donationAmounts.length > 0
-              ? `<div style="display: flex; flex-direction: column; width: 100%; align-items: start">
+              ? `<div style="display: flex; flex-direction: column; width: 100%; align-items: start; gap: 10px">
             <p>Agnostic Wallet</p>
             <div style="max-height: 300px; width: 300px; overflow-y: auto; background-color: #f9f9f9; padding: 5px; border-radius: 5px;">
             ${donationAmounts
@@ -825,7 +823,7 @@ const CampaignInfo = () => {
               : ``
           }
         </div>
-        Total Donasi ${new Intl.NumberFormat("id-ID", {
+        Total Tambaan Donasi ${new Intl.NumberFormat("id-ID", {
           style: "currency",
           currency: "IDR",
           minimumFractionDigits: 0,

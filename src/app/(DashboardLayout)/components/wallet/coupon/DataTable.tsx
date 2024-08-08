@@ -54,19 +54,22 @@ const DataTableComponent = () => {
   ]);
   const [isOpenedMonthOptions, setIsOpenedMonthOptions] = useState(false);
 
-  const fetchCouponTrx = (page: any, startDate: any, endDate: any) => {
+  const startDate = dateRange ? moment(dateRange[0]).format("YYYY-MM-DD") : "";
+  const endDate = dateRange ? moment(dateRange[1]).format("YYYY-MM-DD") : "";
+
+  const fetchCouponTrx = (page: any) => {
     getCouponWalletTrx(
       setData,
       setMeta,
       setIsLoading,
-      moment(dateRange[0]).format("YYYY-MM-DD"),
-      moment(dateRange[1]).format("YYYY-MM-DD"),
+      startDate,
+      endDate,
       page
     );
   };
 
   useEffect(() => {
-    fetchCouponTrx(page, dateRange[0], dateRange[1]);
+    fetchCouponTrx(page);
     setIsLoading(false);
   }, []);
 
@@ -161,7 +164,7 @@ const DataTableComponent = () => {
     setPage(value);
     setCurrentPageIndex(value - 1);
     setIsLoading(true);
-    fetchCouponTrx(value, dateRange[0], dateRange[1]);
+    fetchCouponTrx(value);
   };
 
   useEffect(() => {
@@ -245,7 +248,7 @@ const DataTableComponent = () => {
   // ];
 
   useEffect(() => {
-    fetchCouponTrx(page, dateRange[0], dateRange[1]);
+    fetchCouponTrx(page);
   }, [dateRange]);
 
   // const onChangeMonth = () => {

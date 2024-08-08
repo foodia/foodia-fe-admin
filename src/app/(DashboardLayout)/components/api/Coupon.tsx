@@ -52,6 +52,24 @@ export const updateCouponWalletPrice = (price: any, setIsLoading: any) => {
     });
 };
 
+export const getCouponWalletExpiredClaimed = (
+  setData: any,
+  setIsLoading: any
+) => {
+  axios
+    .get(process.env.NEXT_PUBLIC_BASE + `/coupon-report/claimexpired`, {
+      headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
+    })
+    .then((res) => {
+      setData(res.data.body);
+      setIsLoading(false);
+    })
+    .catch((error) => {
+      ErrorHandling(error);
+      setIsLoading(false);
+    });
+};
+
 export const getCouponWalletDetail = (setData: any, setIsLoading: any) => {
   axios
     .get(process.env.NEXT_PUBLIC_BASE + `/coupon-wallet/fetch`, {

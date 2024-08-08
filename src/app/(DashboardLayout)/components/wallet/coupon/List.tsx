@@ -25,6 +25,7 @@ import Swal from "sweetalert2";
 import { getCampaignDetail, postCampaignPayment } from "../../api/Campaign";
 import {
   getCouponWalletDetail,
+  getCouponWalletExpiredClaimed,
   getCouponWalletSummary,
   postCouponWalletTopup,
   updateCouponWalletPrice,
@@ -189,10 +190,12 @@ const List = () => {
   const [sortedData, setSortedData] = useState([]);
   const [couponWalletDetail, setCouponWalletDetail] = useState<any>({});
   const [couponPriceChanges, setCouponPriceChanges] = useState("");
+  const [expiredClaimedData, setExpiredClaimedSortedData] = useState([]);
 
   useEffect(() => {
     getCouponWalletDetail(setCouponWalletDetail, setIsLoading);
     getCouponWalletSummary(setWalletSummaryData, setIsLoading);
+    getCouponWalletExpiredClaimed(setExpiredClaimedSortedData, setIsLoading);
   }, []);
 
   const breadcrumbs = [
@@ -235,11 +238,19 @@ const List = () => {
   const cashflowData = [
     {
       name: "Claimed",
-      data: [255, 390, 300, 350, 390, 180, 355, 390, 300, 350, 390],
+      data: expiredClaimedData
+        .filter(
+          (data: any) => data.month <= parseInt(moment(new Date()).format("M"))
+        )
+        .map((data: any) => data.claimed),
     },
     {
       name: "Expired",
-      data: [100, 250, 300, 215, 250, 310, 280, 250, 325, 215, 250],
+      data: expiredClaimedData
+        .filter(
+          (data: any) => data.month <= parseInt(moment(new Date()).format("M"))
+        )
+        .map((data: any) => data.expired),
     },
   ];
 
@@ -911,14 +922,12 @@ const List = () => {
         cancelButton: "custom-cancel-button-swal",
       },
       // icon: "success",
-      title: `Anda yakin 
-      memindahkan dana?`,
+      title: `Anda yakin memindahkan dana?`,
       html: `
-        Total pemindahan dana adalah
-        <div style="display: flex; flex-direction: row; gap: 10px; width: 100%">
+         <div style="display: flex; flex-direction: row; gap: 10px; width: 100%; padding-top: 10px; padding-bottom: 10px">
           ${
             donationAmountsCsr.length > 0
-              ? `<div style="display: flex; flex-direction: column; width: 100%; align-items: start">
+              ? `<div style="display: flex; flex-direction: column; width: 100%; align-items: start; gap: 10px">
             <p>CSR Wallet</p>
             <div style="max-height: 300px; width: 300px; overflow-y: auto; background-color: #f9f9f9; padding: 5px; border-radius: 5px;">
             ${donationAmountsCsr
@@ -937,7 +946,7 @@ const List = () => {
           }
           ${
             donationAmounts.length > 0
-              ? `<div style="display: flex; flex-direction: column; width: 100%; align-items: start">
+              ? `<div style="display: flex; flex-direction: column; width: 100%; align-items: start; gap: 10px">
             <p>Agnostic Wallet</p>
             <div style="max-height: 300px; width: 300px; overflow-y: auto; background-color: #f9f9f9; padding: 5px; border-radius: 5px;">
             ${donationAmounts
@@ -955,7 +964,7 @@ const List = () => {
               : ``
           }
         </div>
-        Total Donasi ${new Intl.NumberFormat("id-ID", {
+        Total Pemindahan Dana ${new Intl.NumberFormat("id-ID", {
           style: "currency",
           currency: "IDR",
           minimumFractionDigits: 0,
@@ -1219,8 +1228,6 @@ const List = () => {
       data.name.toLowerCase().includes(searchText.toLowerCase())
     );
   }
-
-  console.log(sortAsc);
 
   const onSort = (column: any) => {
     if (sortField === column) {
