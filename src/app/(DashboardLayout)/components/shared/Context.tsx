@@ -37,8 +37,6 @@ const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     productData,
   };
 
-  console.log(isLoading);
-
   useEffect(() => {
     // Get Campaign
     // axios
