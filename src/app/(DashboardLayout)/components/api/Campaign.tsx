@@ -97,3 +97,18 @@ export const postCampaignPayment = (
       ErrorHandling(error);
     });
 };
+
+export const getCampaignSummary = (setData: any, setIsLoading: any) => {
+  axios
+    .get(process.env.NEXT_PUBLIC_BASE + `/general-report/campaign/summary`, {
+      headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
+    })
+    .then((res) => {
+      setData(res.data.body);
+      setIsLoading(false);
+    })
+    .catch((error) => {
+      ErrorHandling(error);
+      setIsLoading(false);
+    });
+};

@@ -116,3 +116,18 @@ export const ApprovalsDisbursement = (
           });
   }
 };
+
+export const getDisbursementSummary = (setData: any, setIsLoading: any) => {
+  axios
+    .get(process.env.NEXT_PUBLIC_BASE + `/disbursement/summary`, {
+      headers: { authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
+    })
+    .then((res) => {
+      setData(res.data.body);
+      setIsLoading(false);
+    })
+    .catch((error) => {
+      ErrorHandling(error);
+      setIsLoading(false);
+    });
+};

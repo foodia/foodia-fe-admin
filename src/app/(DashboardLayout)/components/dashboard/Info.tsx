@@ -1,7 +1,18 @@
 import { Box, Typography } from "@mui/material";
-import DetailCard from "../shared/DetailCard";
-import DataTableComponent from "./DataTable";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import {
+  getCampaignRevenueList,
+  getCashInList,
+  getCashOutList,
+  getCouponRevenueList,
+} from "../api/Dashboard";
+import { useAppContext } from "../shared/Context";
+import CampRevenueTableComponent from "./CampRevenueDataTable";
+import CashInDataTable from "./CashInDataTable";
+import CashOutDataTable from "./CashOutDataTable";
+import CouponRevenueDataTable from "./CouponRevenueDataTable";
+import moment from "moment";
 
 type ChildProps = {
   data: {
@@ -12,15 +23,75 @@ type ChildProps = {
     qty: string;
     note: string;
     description: string;
+    total_amount: number;
     images: [{ id: number; image_url: string }];
   };
 };
 
-const Info: React.FC<ChildProps> = ({ data }) => {
+const Info = () => {
   const searchParams = useSearchParams();
+  const { isLoading, setIsLoading } = useAppContext();
+  const [couponRevData, setCouponData] = useState([]);
+  const [couponMeta, setCouponMeta] = useState({});
+  const [totalCouponAmount, setCouponTotalAmount] = useState();
+  const [campaignMeta, setCampaignMeta] = useState({});
+  const [campaignRevData, setCampaignData] = useState([]);
+  const [totalCampaignAmount, setTotalCampaignAmount] = useState();
 
-  console.log(searchParams.get("detail"));
-  console.log(searchParams.get("month"));
+  const [cashInRevData, setCashInData] = useState([]);
+  const [cashInMeta, setCashInMeta] = useState({});
+  const [cashOutMeta, setCashOutMeta] = useState({});
+  const [cashOutRevData, setCashOutData] = useState([]);
+  const [totalCashInAmount, setCashInTotalAmount] = useState();
+  const [totalCashOutnAmount, setTotalCashOutAmount] = useState();
+
+  console.log(moment(searchParams.get("month"), "MMM").format("MM"));
+
+  useEffect(() => {
+    scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    if (searchParams.get("detail") === "cashflow") {
+      getCashInList(
+        setCashInData,
+        setIsLoading,
+        setCashInTotalAmount,
+        setCashInMeta,
+        1,
+        moment(searchParams.get("month"), "MMM").format("MM"),
+        searchParams.get("year")
+      );
+      getCashOutList(
+        setCashOutData,
+        setIsLoading,
+        setTotalCashOutAmount,
+        setCashOutMeta,
+        1,
+        moment(searchParams.get("month"), "MMM").format("MM"),
+        searchParams.get("year")
+      );
+    } else {
+      getCouponRevenueList(
+        setCouponData,
+        setIsLoading,
+        setCouponTotalAmount,
+        setCouponMeta,
+        1,
+        moment(searchParams.get("month"), "MMM").format("MM"),
+        searchParams.get("year")
+      );
+      getCampaignRevenueList(
+        setCampaignData,
+        setIsLoading,
+        setTotalCampaignAmount,
+        setCampaignMeta,
+        1,
+        moment(searchParams.get("month"), "MMM").format("MM"),
+        searchParams.get("year")
+      );
+    }
+  }, []);
 
   return (
     <>
@@ -60,11 +131,28 @@ const Info: React.FC<ChildProps> = ({ data }) => {
               {searchParams.get("month")} 2024
             </Typography>
             <Typography sx={{ fontWeight: "bold", fontSize: "20px" }}>
-              Rp 2.000.000
+              {searchParams.get("detail") === "cashflow"
+                ? new Intl.NumberFormat("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                    minimumFractionDigits: 0,
+                  }).format(totalCashInAmount || 0)
+                : new Intl.NumberFormat("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                    minimumFractionDigits: 0,
+                  }).format(totalCampaignAmount || 0)}
             </Typography>
           </Box>
         </Box>
-        <DataTableComponent />
+        {searchParams.get("detail") === "cashflow" ? (
+          <CashInDataTable data={cashInRevData} meta={cashInMeta} />
+        ) : (
+          <CampRevenueTableComponent
+            data={campaignRevData}
+            meta={campaignMeta}
+          />
+        )}
         <br />
         <Box
           sx={{
@@ -93,11 +181,25 @@ const Info: React.FC<ChildProps> = ({ data }) => {
               {searchParams.get("month")} 2024
             </Typography>
             <Typography sx={{ fontWeight: "bold", fontSize: "20px" }}>
-              Rp 2.000.000
+              {searchParams.get("detail") === "cashflow"
+                ? new Intl.NumberFormat("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                    minimumFractionDigits: 0,
+                  }).format(totalCashOutnAmount || 0)
+                : new Intl.NumberFormat("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                    minimumFractionDigits: 0,
+                  }).format(totalCouponAmount || 0)}
             </Typography>
           </Box>
         </Box>
-        <DataTableComponent />
+        {searchParams.get("detail") === "cashflow" ? (
+          <CashOutDataTable data={cashOutRevData} meta={cashOutMeta} />
+        ) : (
+          <CouponRevenueDataTable data={couponRevData} meta={couponMeta} />
+        )}
       </Box>
       {/* <DetailCard title="Revenue"></DetailCard> */}
     </>

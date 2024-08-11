@@ -1,17 +1,23 @@
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { getCampaign } from "../api/Campaign";
+import { getCampaign, getCampaignSummary } from "../api/Campaign";
 import { useAppContext } from "../shared/Context";
 import BaseCard from "../shared/DashboardCard";
 import DataTableComponent from "./DataTable";
 import Charts from "./Chart";
 
 const List = () => {
+  const { isLoading, setIsLoading } = useAppContext();
+  const [data, setData] = useState<any>([]);
   const breadcrumbs = [
     <Typography fontSize="13px" key="3" color="#999" fontWeight={400}>
       Campaign List
     </Typography>,
   ];
+
+  useEffect(() => {
+    getCampaignSummary(setData, setIsLoading);
+  }, []);
 
   const volunteerData = [
     {
@@ -35,42 +41,42 @@ const List = () => {
     series: [
       {
         name: "Review",
-        data: [8],
+        data: [data.dana_mandiri?.review || 0],
         color: "#000000",
       },
       {
         name: "Invitation",
-        data: [20],
+        data: [data.dana_mandiri?.review || 0],
         color: "#6B4EFF",
       },
       {
         name: "Rejected",
-        data: [0, 4],
+        data: [0, data.dana_mandiri?.canceled || 0],
         color: "#DE0606",
       },
       {
         name: "Fund",
-        data: [0, 0, 6],
+        data: [0, 0, data.dana_mandiri?.fund || 0],
         color: "#1D5882",
       },
       {
         name: "Confirmation",
-        data: [0, 0, 4],
+        data: [0, 0, data.dana_mandiri?.confirmation || 0],
         color: "#ed774b",
       },
       {
         name: "Process",
-        data: [0, 0, 5],
+        data: [0, 0, data.dana_mandiri?.process || 0],
         color: "#FFB444",
       },
       {
         name: "Report",
-        data: [0, 0, 3],
+        data: [0, 0, data.dana_mandiri?.report || 0],
         color: "#6CB28E",
       },
       {
         name: "Completed",
-        data: [0, 0, 10],
+        data: [0, 0, data.dana_mandiri?.completed || 0],
         color: "#3FB648",
       },
     ],
@@ -159,42 +165,42 @@ const List = () => {
     series: [
       {
         name: "Review",
-        data: [0],
+        data: [data.dana_terbuka?.review || 0],
         color: "#000000",
       },
       {
         name: "Invitation",
-        data: [20],
+        data: [data.dana_terbuka?.invitation || 0],
         color: "#6B4EFF",
       },
       {
         name: "Rejected",
-        data: [0, 4],
+        data: [0, data.dana_terbuka?.canceled || 0],
         color: "#DE0606",
       },
       {
         name: "Fund",
-        data: [0, 0, 6],
+        data: [0, 0, data.dana_terbuka?.fund || 0],
         color: "#1D5882",
       },
       {
         name: "Confirmation",
-        data: [0, 0, 4],
+        data: [0, 0, data.dana_terbuka?.confirmation || 0],
         color: "#ed774b",
       },
       {
         name: "Process",
-        data: [0, 0, 5],
+        data: [0, 0, data.dana_terbuka?.process || 0],
         color: "#FFB444",
       },
       {
         name: "Report",
-        data: [0, 0, 3],
+        data: [0, 0, data.dana_terbuka?.report || 0],
         color: "#6CB28E",
       },
       {
         name: "Completed",
-        data: [0, 0, 10],
+        data: [0, 0, data.dana_terbuka?.completed || 0],
         color: "#3FB648",
       },
     ],
@@ -306,8 +312,8 @@ const List = () => {
                 Campaign Dana Terbuka
               </Typography>
               <Charts
-                options={oneTimeCampaignOptions}
-                series={oneTimeCampaignOptions.series as number[]}
+                options={regularCampaignOptions}
+                series={regularCampaignOptions.series as number[]}
                 // label="Donator"
                 width="90%"
                 type="bar"
@@ -325,8 +331,8 @@ const List = () => {
                 Campaign Dana Mandiri
               </Typography>
               <Charts
-                options={regularCampaignOptions}
-                series={regularCampaignOptions.series as number[]}
+                options={oneTimeCampaignOptions}
+                series={oneTimeCampaignOptions.series as number[]}
                 // label="Donator"
                 width="90%"
                 type="bar"

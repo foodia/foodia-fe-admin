@@ -237,8 +237,8 @@ const DataTables: React.FC<Data> = ({
   let currentPageData = [];
   let pageCount = 0;
 
-  if (data !== null) {
-    currentPageData = data.slice(offset, offset + itemsPerPage);
+  if (data) {
+    currentPageData = data?.slice(offset, offset + itemsPerPage);
     pageCount = Math.ceil(data.length / itemsPerPage);
   }
 

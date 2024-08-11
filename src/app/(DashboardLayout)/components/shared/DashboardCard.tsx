@@ -17,6 +17,9 @@ type Props = {
   currentBalance?: any;
   breadcrumb?: any;
   lastUpdate?: any;
+  filterYear?: any;
+  onChangeFilterYear?: any;
+  filterYearValue?: any;
 };
 
 interface CustomStepIconProps extends StepIconProps {
@@ -37,6 +40,9 @@ const DashboardCard = ({
   currentBalance,
   breadcrumb,
   lastUpdate,
+  filterYear,
+  filterYearValue,
+  onChangeFilterYear,
 }: Props) => {
   const steps = ["Waiting", "Rejected", "Approved"];
   const activeStep = () => {
@@ -146,6 +152,9 @@ const DashboardCard = ({
         breadcrumb={breadcrumb}
         currentBalance={currentBalance}
         lastUpdate={lastUpdate}
+        filterYear={filterYear}
+        filterYearValue={filterYearValue}
+        onChangeFilterYear={onChangeFilterYear}
       />
       <Box sx={{ paddingX: "24px", paddingY: "12px" }}>{children}</Box>
     </Card>

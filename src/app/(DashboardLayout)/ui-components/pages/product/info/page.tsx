@@ -71,8 +71,6 @@ const ProductInfo = () => {
     getProductDetail(searchParams.get("id"), setData, setIsLoading);
   }, []);
 
-  console.log(status);
-
   const breadcrumbs = [
     <Button
       key={0}

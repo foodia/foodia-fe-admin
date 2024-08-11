@@ -2,6 +2,8 @@ import {
   AppBar,
   Box,
   Breadcrumbs,
+  MenuItem,
+  Select,
   Toolbar,
   Typography,
   styled,
@@ -17,6 +19,9 @@ interface ItemType {
   breadcrumb?: any;
   currentBalance?: any;
   lastUpdate?: any;
+  filterYear?: any;
+  filterYearValue?: any;
+  onChangeFilterYear?: any;
 }
 
 const PageHeader: React.FC<ItemType> = ({
@@ -24,6 +29,9 @@ const PageHeader: React.FC<ItemType> = ({
   breadcrumb,
   currentBalance,
   lastUpdate,
+  filterYear,
+  filterYearValue,
+  onChangeFilterYear,
 }) => {
   const AppBarStyled = styled(AppBar)(({ theme }) => ({
     background: "#FFF",
@@ -111,6 +119,41 @@ const PageHeader: React.FC<ItemType> = ({
                 </Typography>
               </Box>
             </>
+          ) : (
+            ""
+          )}
+          {filterYear ? (
+            <Select
+              variant="standard"
+              disableUnderline
+              sx={{
+                width: "80px",
+                ".MuiSelect-select": {
+                  padding: "5px",
+                  border: "1px solid black",
+                  borderRadius: "8px",
+                  background: "transparent",
+                  color: "#333",
+                  ":focus": {
+                    borderRadius: "8px",
+                    background: "transparent",
+                  },
+                },
+              }}
+              value={filterYearValue}
+              onChange={onChangeFilterYear}
+            >
+              {/* {filterText?.map((data: any) => ( */}
+              <MenuItem value={moment(new Date()).format("YYYY")}>
+                {moment(new Date()).format("YYYY")}
+              </MenuItem>
+              <MenuItem
+                value={moment(new Date()).add(1, "year").format("YYYY")}
+              >
+                {moment(new Date()).add(1, "year").format("YYYY")}
+              </MenuItem>
+              {/* // ))} */}
+            </Select>
           ) : (
             ""
           )}

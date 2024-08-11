@@ -1,31 +1,41 @@
 import { Box, Typography } from "@mui/material";
 import DashboardCard from "../shared/DashboardCard";
 import DataTableComponent from "./DataTable";
+import { useEffect, useState } from "react";
+import { getDisbursementSummary } from "../api/Disbursement";
+import { useAppContext } from "../shared/Context";
 
 const List = () => {
+  const [data, setData] = useState<any>([]);
+  const { isLoading, setIsLoading } = useAppContext();
+
   const breadcrumbs = [
     <Typography fontSize="13px" key="3" color="#999" fontWeight={400}>
       Dashboard
     </Typography>,
   ];
 
+  useEffect(() => {
+    getDisbursementSummary(setData, setIsLoading);
+  }, []);
+
   const cards = [
     {
       id: 1,
       title: "Waiting",
-      amount: "Rp 20.455.000",
+      amount: data.waiting || 0,
       borderColor: "#FFB444",
     },
     {
       id: 2,
       title: "Rejected",
-      amount: "Rp 3.500.000",
+      amount: data.rejected || 0,
       borderColor: "#DE0606",
     },
     {
       id: 3,
       title: "Approved",
-      amount: "Rp 2.000.000",
+      amount: data.approved || 0,
       borderColor: "#3FB648",
     },
   ];
@@ -60,7 +70,11 @@ const List = () => {
                 Merchant Balance
               </Typography>
               <Typography sx={{ fontWeight: "bold", fontSize: "20px" }}>
-                Rp 584.955.000
+                {new Intl.NumberFormat("id-ID", {
+                  style: "currency",
+                  currency: "IDR",
+                  minimumFractionDigits: 0,
+                }).format(data.merchant_balance || 0)}
               </Typography>
             </Box>
           </Box>
@@ -100,7 +114,11 @@ const List = () => {
                     color: items.borderColor,
                   }}
                 >
-                  {items.amount}
+                  {new Intl.NumberFormat("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                    minimumFractionDigits: 0,
+                  }).format(items.amount) || 0}
                 </Typography>
               </Box>
             ))}

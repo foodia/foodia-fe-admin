@@ -1,11 +1,24 @@
-import { Box, Typography, colors } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  SelectChangeEvent,
+  Typography,
+  colors,
+} from "@mui/material";
 import BaseCard from "../shared/DashboardCard";
 import Charts from "./Chart";
 import { useRouter } from "next/navigation";
 import { useAppContext } from "../shared/Context";
+import { useEffect, useState } from "react";
+import { getGeneralReports } from "../api/Dashboard";
+import moment from "moment";
 
 const List = () => {
   const router = useRouter();
+  const [data, setData] = useState<any>([]);
+  const [filterYear, setFilterYear] = useState(
+    moment(new Date()).format("YYYY")
+  );
   const { isLoading, setIsLoading } = useAppContext();
   const breadcrumbs = [
     <Typography fontSize="13px" key="3" color="#999" fontWeight={400}>
@@ -13,29 +26,39 @@ const List = () => {
     </Typography>,
   ];
 
+  const onChangeFilterYear = (event: SelectChangeEvent) => {
+    setFilterYear(event.target.value);
+    getGeneralReports(setData, setIsLoading, event.target.value);
+  };
+
+  useEffect(() => {
+    getGeneralReports(setData, setIsLoading, filterYear);
+    // getProduct(setData, setMeta, page, setIsLoading, filterText);
+  }, []);
+
   const cards = [
     {
       id: 1,
       title: "Revenue Balance",
-      amount: "Rp 20.455.000",
+      amount: data.wallets?.revenue_balance,
       bgcolor: "linear-gradient(to bottom, #4ACB47, #5A9A70)",
     },
     {
       id: 2,
       title: "Agnostic Balance",
-      amount: "Rp 3.500.000",
+      amount: data.wallets?.agnostic_balance,
       bgcolor: "linear-gradient(to bottom, #47CBC3, #5A689A)",
     },
     {
       id: 3,
       title: "Coupon Balance",
-      amount: "Rp 2.000.000",
+      amount: data.wallets?.coupon_balance,
       bgcolor: "linear-gradient(to bottom, #FF4949, #FFBC5B)",
     },
     {
       id: 4,
       title: "Merchant Balance",
-      amount: "Rp 562.000.000",
+      amount: data.wallets?.merchant_balance,
       bgcolor: "linear-gradient(to bottom, #CB4747, #9A5A5A)",
     },
   ];
@@ -43,34 +66,34 @@ const List = () => {
   const usersData = [
     {
       label: "Active Users",
-      value: 719,
+      value: data.users?.donator?.active_user || 0,
       color: "#3FB648",
     },
     {
       label: "New Users",
-      value: 883,
+      value: data.users?.donator?.new_user || 0,
       color: "#000",
     },
   ];
 
   const usersoptions: any = {
-    series: usersData.map((item) => item.value), // Use the values for the series data
-    labels: usersData.map((item) => item.label),
+    series: usersData?.map((item) => item?.value), // Ensure series data exists
+    labels: usersData?.map((item) => item?.label),
     chart: {
       type: "donut",
       stacked: false,
     },
-    colors: usersData.map((item) => item.color),
+    colors: usersData?.map((item) => item?.color),
     dataLabels: {
       enabled: true,
       formatter: function (val: any, opts: any) {
-        const data = usersData[opts.seriesIndex];
-        return `${data.value} ${data.label}`; // Use Unicode for newline
+        const data = usersData[opts?.seriesIndex];
+        return `${data?.value || 0} ${data?.label || ""}`;
       },
       style: {
         fontSize: "12px",
         fontWeight: "bold",
-        colors: ["black"], // This will apply to all data labels
+        colors: ["black"],
       },
       dropShadow: {
         enabled: false,
@@ -90,8 +113,8 @@ const List = () => {
           size: "60px",
         },
         dataLabels: {
-          offset: 45, // Move labels further outside the slices
-          minAngleToShowLabel: 10, // Only show labels for slices that have an angle larger than this value
+          offset: 45,
+          minAngleToShowLabel: 10,
         },
       },
     },
@@ -99,18 +122,18 @@ const List = () => {
 
   const volunteerData = [
     {
-      label: "Inactive Users",
-      value: 326,
+      label: "Rejected Users",
+      value: data.users?.detonator?.rejected || 0,
       color: "#6B4EFF",
     },
     {
       label: "Active Users",
-      value: 450,
+      value: data.users?.detonator?.approved || 0,
       color: "#3FB648",
     },
     {
-      label: "",
-      value: 212,
+      label: "Waiting Users",
+      value: data.users?.detonator?.waiting || 0,
       color: "#000",
     },
   ];
@@ -163,18 +186,18 @@ const List = () => {
 
   const merchantData = [
     {
-      label: "Inactive Users",
-      value: 326,
+      label: "Rejected Users",
+      value: data.users?.merchant?.rejected || 0,
       color: "#6B4EFF",
     },
     {
       label: "Active Users",
-      value: 450,
+      value: data.users?.merchant?.approved || 0,
       color: "#3FB648",
     },
     {
-      label: "",
-      value: 212,
+      label: "Waiting Users",
+      value: data.users?.merchant?.waiting || 0,
       color: "#000",
     },
   ];
@@ -217,7 +240,70 @@ const List = () => {
           size: "60px",
         },
         dataLabels: {
-          offset: 45, // Move labels further outside the slices
+          offset: 35, // Move labels further outside the slices
+          minAngleToShowLabel: 10, // Only show labels for slices that have an angle larger than this value
+        },
+      },
+    },
+  };
+
+  const beneficiariesData = [
+    {
+      label: "Rejected Users",
+      value: data.users?.beneficiaries?.rejected || 0,
+      color: "#6B4EFF",
+    },
+    {
+      label: "Active Users",
+      value: data.users?.beneficiaries?.approved || 0,
+      color: "#3FB648",
+    },
+    {
+      label: "Waiting Users",
+      value: data.users?.beneficiaries?.waiting || 0,
+      color: "#000",
+    },
+  ];
+
+  const beneficiariesoptions: any = {
+    series: beneficiariesData.map((item) => item.value), // Use the values for the series data
+    labels: beneficiariesData.map((item) => item.label),
+    chart: {
+      type: "donut",
+      stacked: false,
+    },
+    colors: beneficiariesData.map((item) => item.color),
+    dataLabels: {
+      enabled: true,
+      formatter: function (val: any, opts: any) {
+        const data = beneficiariesData[opts.seriesIndex];
+        return `${data.value} ${data.label}`;
+      },
+      style: {
+        fontSize: "12px",
+        fontWeight: "bold",
+        colors: ["black"], // This will apply to all data labels
+      },
+      dropShadow: {
+        enabled: false,
+      },
+    },
+    legend: {
+      show: false,
+      horizontalAlign: "left",
+      offsetX: 10,
+    },
+    plotOptions: {
+      pie: {
+        customScale: 0.8,
+        donut: {
+          labels: {
+            show: false,
+          },
+          size: "60px",
+        },
+        dataLabels: {
+          offset: 55, // Move labels further outside the slices
           minAngleToShowLabel: 10, // Only show labels for slices that have an angle larger than this value
         },
       },
@@ -229,7 +315,11 @@ const List = () => {
   const revenueData = [
     {
       name: "Foods",
-      data: [100, 250, 300, 215, 250, 310, 280, 250, 325, 215, 250, 310],
+      data: data.revenue
+        ?.filter(
+          (data: any) => data.month <= parseInt(moment(new Date()).format("M"))
+        )
+        .map((data: any) => data.total_revenue),
     },
   ];
 
@@ -248,14 +338,14 @@ const List = () => {
           chartContext: any,
           { dataPointIndex, w }: any
         ) {
-          const category = w?.globals?.categoryLabels[dataPointIndex];
-          setIsLoading(true);
+          const category = w.globals?.categoryLabels[dataPointIndex];
           router.push(
-            `/ui-components/pages/dashboard/info?detail=revenue&month=${category}`
+            `/ui-components/pages/dashboard/info?detail=revenue&month=${category}&year=${filterYear}`
           );
         },
       },
     },
+
     dataLabels: {
       enabled: false,
     },
@@ -282,31 +372,13 @@ const List = () => {
     },
     yaxis: [
       {
-        // axisTicks: {
-        //   show: true,
-        // },
         axisBorder: {
           show: true,
           color: "#3FB648",
         },
-        // labels: {
-        //   style: {
-        //     colors: "#FF1654",
-        //   },
-        // },
-        // title: {
-        //   style: {
-        //     color: "#FF1654",
-        //   },
-        // },
       },
     ],
     markers: {
-      onClick: function (e: any) {
-        setIsLoading(true);
-        router.push("/ui-components/pages/dashboard/info?detail=revenue");
-        // do something on marker click
-      },
       size: 5,
     },
     tooltip: {
@@ -326,11 +398,19 @@ const List = () => {
   const cashflowData = [
     {
       name: "Cash In",
-      data: [255, 390, 300, 350, 390, 180, 355, 390, 300, 350, 390, 180],
+      data: data?.cash_flow
+        ?.filter(
+          (data: any) => data.month <= parseInt(moment(new Date()).format("M"))
+        )
+        .map((data: any) => data.total_cashin),
     },
     {
       name: "Cash Out",
-      data: [100, 250, 300, 215, 250, 310, 280, 250, 325, 215, 250, 310],
+      data: data?.cash_flow
+        ?.filter(
+          (data: any) => data.month <= parseInt(moment(new Date()).format("M"))
+        )
+        .map((data: any) => data.total_cashout),
     },
   ];
 
@@ -349,16 +429,9 @@ const List = () => {
           chartContext: any,
           { dataPointIndex, w }: any
         ) {
-          // Get the category based on the dataPointIndex
-          const category = w?.globals?.categoryLabels[dataPointIndex];
-
-          // Log the category to the console
-          console.log("Clicked category:", category);
-
-          // You can also use this category in your router or any other action
-          setIsLoading(true);
+          const category = w.globals?.categoryLabels[dataPointIndex];
           router.push(
-            `/ui-components/pages/dashboard/info?detail=cashflow&month=${category}`
+            `/ui-components/pages/dashboard/info?detail=cashflow&month=${category}&year=${filterYear}`
           );
         },
       },
@@ -366,7 +439,7 @@ const List = () => {
     dataLabels: {
       enabled: false,
     },
-    colors: ["#FF1654", "#3FB648"],
+    colors: ["#3FB648", "#FF1654"],
     stroke: {
       width: [4, 4],
     },
@@ -395,23 +468,6 @@ const List = () => {
       },
     ],
     markers: {
-      // onClick: function (
-      //   e: any,
-      //   chartContext: any,
-      //   { dataPointIndex, w }: any
-      // ) {
-      //   // Get the category based on the dataPointIndex
-      //   const category = w.globals.labels[dataPointIndex];
-
-      //   // Log the category to the console
-      //   console.log("Clicked category:", category);
-
-      //   // You can also use this category in your router or any other action
-      //   setIsLoading(true);
-      //   router.push(
-      //     `/ui-components/pages/dashboard/info?detail=cashflow&month=${category}`
-      //   );
-      // },
       size: 5,
     },
     tooltip: {
@@ -430,7 +486,13 @@ const List = () => {
 
   return (
     <>
-      <BaseCard title="Dashboard" breadcrumb={breadcrumbs}>
+      <BaseCard
+        title="Dashboard"
+        breadcrumb={breadcrumbs}
+        filterYear={true}
+        filterYearValue={filterYear}
+        onChangeFilterYear={onChangeFilterYear}
+      >
         <Box sx={{ paddingX: "10px" }}>
           <Box
             sx={{
@@ -452,7 +514,11 @@ const List = () => {
             >
               <Typography sx={{ fontSize: "14px" }}>Total Balance</Typography>
               <Typography sx={{ fontWeight: "bold", fontSize: "20px" }}>
-                Rp 584.955.000
+                {new Intl.NumberFormat("id-ID", {
+                  style: "currency",
+                  currency: "IDR",
+                  minimumFractionDigits: 0,
+                }).format(data.wallets?.total_balance || 0)}
               </Typography>
             </Box>
           </Box>
@@ -484,109 +550,123 @@ const List = () => {
                 <Typography
                   sx={{ fontSize: "22px", fontWeight: "bold", color: "white" }}
                 >
-                  {items.amount}
+                  {new Intl.NumberFormat("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                    minimumFractionDigits: 0,
+                  }).format(items.amount || 0)}
                 </Typography>
               </Box>
             ))}
           </Box>
-          <Charts
-            options={revenueoptions}
-            series={revenueoptions.series}
-            label="Revenue"
-            type="area"
-          />
-          <Charts
-            options={cashflowoptions}
-            series={cashflowoptions.series}
-            label="Cash Flow"
-            type="line"
-          />
-          <hr />
-          <Typography
-            sx={{ fontWeight: "bold", paddingTop: "15px", fontSize: "20px" }}
-          >
-            Users
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              paddingTop: "25px",
-            }}
-          >
-            <Box>
+          {isLoading || !data ? (
+            <CircularProgress />
+          ) : (
+            <>
+              <Charts
+                options={revenueoptions}
+                series={revenueoptions.series}
+                label="Revenue"
+                type="area"
+              />
+              <Charts
+                options={cashflowoptions}
+                series={cashflowoptions.series}
+                label="Cash Flow"
+                type="line"
+              />
+              <hr />
               <Typography
                 sx={{
-                  fontStyle: "italic",
-                  fontSize: "15px",
-                  paddingLeft: "30px",
+                  fontWeight: "bold",
+                  paddingTop: "15px",
+                  fontSize: "20px",
                 }}
               >
-                Donator
+                Users
               </Typography>
-              <Charts
-                options={usersoptions}
-                series={usersoptions.series as number[]}
-                // label="Donator"
-                width="90%"
-                type="donut"
-              />
-            </Box>
-            <Box>
-              <Typography
+              <Box
                 sx={{
-                  fontStyle: "italic",
-                  fontSize: "15px",
-                  paddingLeft: "30px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                  paddingTop: "25px",
                 }}
               >
-                Volunteer
-              </Typography>
-              <Charts
-                options={volunteeroptions}
-                series={volunteeroptions.series as number[]}
-                // label="Donator"
-                width="90%"
-                type="donut"
-              />
-            </Box>
-            <Box>
-              <Typography
-                sx={{
-                  fontStyle: "italic",
-                  fontSize: "15px",
-                  paddingLeft: "30px",
-                }}
-              >
-                Merchant
-              </Typography>
-              <Charts
-                options={merchantoptions}
-                series={merchantoptions.series as number[]}
-                // label="Donator"
-                width="90%"
-                type="donut"
-              />
-            </Box>
-            <Box>
-              <Typography
-                sx={{
-                  fontStyle: "italic",
-                  fontSize: "15px",
-                  paddingLeft: "30px",
-                }}
-              >
-                Beneficiaries
-              </Typography>
-              <Charts
-                options={volunteeroptions}
-                series={volunteeroptions.series as number[]}
-                // label="Donator"
-                width="90%"
-                type="donut"
-              />
-            </Box>
-          </Box>
+                <Box>
+                  <Typography
+                    sx={{
+                      fontStyle: "italic",
+                      fontSize: "15px",
+                      paddingLeft: "30px",
+                    }}
+                  >
+                    Donator
+                  </Typography>
+                  <Charts
+                    options={usersoptions}
+                    series={usersoptions.series}
+                    width="90%"
+                    type="donut"
+                  />
+                </Box>
+                <Box>
+                  <Typography
+                    sx={{
+                      fontStyle: "italic",
+                      fontSize: "15px",
+                      paddingLeft: "30px",
+                    }}
+                  >
+                    Volunteer
+                  </Typography>
+                  <Charts
+                    options={volunteeroptions}
+                    series={volunteeroptions.series}
+                    // label="Donator"
+                    width="90%"
+                    type="donut"
+                  />
+                </Box>
+                <Box>
+                  <Typography
+                    sx={{
+                      fontStyle: "italic",
+                      fontSize: "15px",
+                      paddingLeft: "30px",
+                    }}
+                  >
+                    Merchant
+                  </Typography>
+                  <Charts
+                    options={merchantoptions}
+                    series={merchantoptions.series}
+                    // label="Donator"
+                    width="90%"
+                    type="donut"
+                  />
+                </Box>
+                <Box>
+                  <Typography
+                    sx={{
+                      fontStyle: "italic",
+                      fontSize: "15px",
+                      paddingLeft: "30px",
+                    }}
+                  >
+                    Beneficiaries
+                  </Typography>
+                  <Charts
+                    options={beneficiariesoptions}
+                    series={beneficiariesoptions.series}
+                    // label="Donator"
+                    width="90%"
+                    type="donut"
+                  />
+                </Box>
+              </Box>
+            </>
+          )}
         </Box>
       </BaseCard>
     </>
