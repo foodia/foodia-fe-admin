@@ -4,6 +4,7 @@ import DataTableComponent from "./DataTable";
 import { useEffect, useState } from "react";
 import { getDisbursementSummary } from "../api/Disbursement";
 import { useAppContext } from "../shared/Context";
+import moment from "moment";
 
 const List = () => {
   const [data, setData] = useState<any>([]);
@@ -45,7 +46,7 @@ const List = () => {
       <DashboardCard
         title="Dashboard"
         breadcrumb={breadcrumbs}
-        lastUpdate={"2024-03-14T16:56:04+07:00"}
+        lastUpdate={moment(new Date()).format("YYYY-MM-DD hh:mm:ss") || ""}
       >
         <Box sx={{ paddingX: "30px" }}>
           <Box
