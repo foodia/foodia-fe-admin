@@ -28,7 +28,7 @@ type ChildProps = {
   };
 };
 
-const Info = () => {
+const Info: React.FC<any> = ({ filterYearValue }) => {
   const searchParams = useSearchParams();
   const { isLoading, setIsLoading } = useAppContext();
   const [couponRevData, setCouponData] = useState([]);
@@ -45,8 +45,6 @@ const Info = () => {
   const [totalCashInAmount, setCashInTotalAmount] = useState();
   const [totalCashOutnAmount, setTotalCashOutAmount] = useState();
 
-  console.log(moment(searchParams.get("month"), "MMM").format("MM"));
-
   useEffect(() => {
     scrollTo(0, 0);
   }, []);
@@ -60,7 +58,7 @@ const Info = () => {
         setCashInMeta,
         1,
         moment(searchParams.get("month"), "MMM").format("MM"),
-        searchParams.get("year")
+        filterYearValue
       );
       getCashOutList(
         setCashOutData,
@@ -69,7 +67,7 @@ const Info = () => {
         setCashOutMeta,
         1,
         moment(searchParams.get("month"), "MMM").format("MM"),
-        searchParams.get("year")
+        filterYearValue
       );
     } else {
       getCouponRevenueList(
@@ -79,7 +77,7 @@ const Info = () => {
         setCouponMeta,
         1,
         moment(searchParams.get("month"), "MMM").format("MM"),
-        searchParams.get("year")
+        filterYearValue
       );
       getCampaignRevenueList(
         setCampaignData,
@@ -88,10 +86,10 @@ const Info = () => {
         setCampaignMeta,
         1,
         moment(searchParams.get("month"), "MMM").format("MM"),
-        searchParams.get("year")
+        filterYearValue
       );
     }
-  }, []);
+  }, [filterYearValue]);
 
   return (
     <>
@@ -118,7 +116,7 @@ const Info = () => {
             {searchParams.get("detail") === "revenue"
               ? "Campaign Revenue"
               : "Cash In"}{" "}
-            ({searchParams.get("month")} 2024)
+            ({searchParams.get("month")} {filterYearValue})
           </Typography>
           <Box
             sx={{ display: "flex", flexDirection: "column", alignItems: "end" }}
@@ -128,7 +126,7 @@ const Info = () => {
               {searchParams.get("detail") === "revenue"
                 ? "Campaign Revenue"
                 : "Cash In"}{" "}
-              {searchParams.get("month")} 2024
+              {searchParams.get("month")} {filterYearValue}
             </Typography>
             <Typography sx={{ fontWeight: "bold", fontSize: "20px" }}>
               {searchParams.get("detail") === "cashflow"
@@ -168,7 +166,7 @@ const Info = () => {
             {searchParams.get("detail") === "revenue"
               ? "Coupon Revenue"
               : "Cash Out"}{" "}
-            ({searchParams.get("month")} 2024)
+            ({searchParams.get("month")} {filterYearValue})
           </Typography>
           <Box
             sx={{ display: "flex", flexDirection: "column", alignItems: "end" }}
@@ -178,7 +176,7 @@ const Info = () => {
               {searchParams.get("detail") === "revenue"
                 ? "Coupon Revenue"
                 : "Cash Out"}{" "}
-              {searchParams.get("month")} 2024
+              {searchParams.get("month")} {filterYearValue}
             </Typography>
             <Typography sx={{ fontWeight: "bold", fontSize: "20px" }}>
               {searchParams.get("detail") === "cashflow"

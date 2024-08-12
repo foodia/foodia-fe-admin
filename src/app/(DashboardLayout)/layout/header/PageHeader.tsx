@@ -8,7 +8,7 @@ import {
   Typography,
   styled,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 
 // components
 import { KeyboardArrowRight } from "@mui/icons-material";
@@ -49,6 +49,16 @@ const PageHeader: React.FC<ItemType> = ({
     height: "100px",
     color: theme.palette.text.secondary,
   }));
+
+  const date: any = [];
+  let i = "2023";
+
+  while (i != moment(new Date()).format("YYYY")) {
+    date.push(i);
+    i = moment(i, "YYYY").add(1, "year").format("YYYY");
+  }
+
+  date.push(i);
 
   return (
     <AppBarStyled position="sticky" color="default">
@@ -143,16 +153,9 @@ const PageHeader: React.FC<ItemType> = ({
               value={filterYearValue}
               onChange={onChangeFilterYear}
             >
-              {/* {filterText?.map((data: any) => ( */}
-              <MenuItem value={moment(new Date()).format("YYYY")}>
-                {moment(new Date()).format("YYYY")}
-              </MenuItem>
-              <MenuItem
-                value={moment(new Date()).add(1, "year").format("YYYY")}
-              >
-                {moment(new Date()).add(1, "year").format("YYYY")}
-              </MenuItem>
-              {/* // ))} */}
+              {date.map((data: any) => (
+                <MenuItem value={data}>{data}</MenuItem>
+              ))}
             </Select>
           ) : (
             ""

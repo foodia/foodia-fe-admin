@@ -314,7 +314,7 @@ const List = () => {
 
   const revenueData = [
     {
-      name: "Foods",
+      name: "",
       data: data.revenue
         ?.filter(
           (data: any) => data.month <= parseInt(moment(new Date()).format("M"))
@@ -370,16 +370,23 @@ const List = () => {
         "Dec",
       ],
     },
-    yaxis: [
-      {
-        axisBorder: {
-          show: true,
-          color: "#3FB648",
+    yaxis: {
+      labels: {
+        formatter: function (value: number) {
+          return new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+          }).format(value);
         },
       },
-    ],
+      axisBorder: {
+        show: true,
+        color: "#3FB648",
+      },
+    },
     markers: {
-      size: 5,
+      size: 8,
     },
     tooltip: {
       shared: false,
@@ -459,16 +466,23 @@ const List = () => {
         "Dec",
       ],
     },
-    yaxis: [
-      {
-        axisBorder: {
-          show: true,
-          color: "#FF1654",
+    yaxis: {
+      labels: {
+        formatter: function (value: number) {
+          return new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+          }).format(value);
         },
       },
-    ],
+      axisBorder: {
+        show: true,
+        color: "#3FB648",
+      },
+    },
     markers: {
-      size: 5,
+      size: 8,
     },
     tooltip: {
       shared: false,

@@ -4,7 +4,7 @@ import { useAppContext } from "@/app/(DashboardLayout)/components/shared/Context
 import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
 import { Button, SelectChangeEvent, Typography } from "@mui/material";
 import moment from "moment";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 type Props = {
@@ -28,13 +28,18 @@ type Props = {
 
 const DashboardInfo = () => {
   const searchParams = useSearchParams();
-  const [filterYear, setFilterYear] = useState(
-    moment(new Date()).format("YYYY")
-  );
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const [filterYear, setFilterYear] = useState(searchParams.get("year"));
 
   const onChangeFilterYear = (event: SelectChangeEvent) => {
     setFilterYear(event.target.value);
-    // getGeneralReports(setData, setIsLoading, event.target.value);
+    router.push(
+      `${pathname}?detail=${searchParams.get(
+        "detail"
+      )}&month=${searchParams.get("month")}&year=${event.target.value}`
+    );
   };
 
   const breadcrumbs = [
@@ -67,7 +72,10 @@ const DashboardInfo = () => {
         filterYearValue={filterYear}
         onChangeFilterYear={onChangeFilterYear}
       >
-        <Info />
+        <Info
+          filterYearValue={filterYear}
+          onChangeFilterYear={onChangeFilterYear}
+        />
       </DashboardCard>
     </>
   );
