@@ -92,7 +92,7 @@ const PageHeader: React.FC<ItemType> = ({
           </Box>
           {lastUpdate ? (
             <Typography sx={{ fontSize: "14px" }}>
-              Last Updated {moment(lastUpdate).format("DD-MM-yyyy hh:mm:ss")}
+              Last Updated {lastUpdate}
             </Typography>
           ) : (
             ""
@@ -153,8 +153,10 @@ const PageHeader: React.FC<ItemType> = ({
               value={filterYearValue}
               onChange={onChangeFilterYear}
             >
-              {date.map((data: any) => (
-                <MenuItem value={data}>{data}</MenuItem>
+              {date.map((data: any, i: any) => (
+                <MenuItem key={i} value={data}>
+                  {data}
+                </MenuItem>
               ))}
             </Select>
           ) : (

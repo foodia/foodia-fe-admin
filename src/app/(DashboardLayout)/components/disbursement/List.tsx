@@ -46,7 +46,7 @@ const List = () => {
       <DashboardCard
         title="Dashboard"
         breadcrumb={breadcrumbs}
-        lastUpdate={moment(new Date()).format("YYYY-MM-DD hh:mm:ss") || ""}
+        lastUpdate={moment(new Date()).format("YYYY-MM-DD hh:mm:ss") || 0}
       >
         <Box sx={{ paddingX: "30px" }}>
           <Box
