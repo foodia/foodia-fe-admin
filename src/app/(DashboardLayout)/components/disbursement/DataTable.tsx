@@ -75,7 +75,7 @@ const DataTableComponent = () => {
       width: "auto",
     },
     {
-      name: "Bank",
+      name: "Payment Method",
       cell: (row: any) => <div>{row.bank}</div>,
       // sortable: true,
     },
