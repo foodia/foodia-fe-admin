@@ -10,6 +10,7 @@ import { IconBan, IconCircleCheck, IconClock } from "@tabler/icons-react";
 import DetailCard from "../shared/DetailCard";
 import { uniqueId } from "lodash";
 import { Padding } from "@mui/icons-material";
+import moment from "moment";
 
 interface ChildProps {
   data: {
@@ -28,6 +29,8 @@ interface ChildProps {
     };
     payment_method: any;
     status: string;
+    created_at: string;
+    updated_at: string;
     note: any;
   };
 }
@@ -195,8 +198,20 @@ const Info: React.FC<ChildProps> = ({ data }) => {
         <Field label="Recipient Name" value={data.recipient_name} />
         <Field label="User Name" value={data.merchant.oauth.fullname} />
         <Field label="Email" value={data.merchant.oauth.email} />
-        <Field label="Bank" value={data.bank} />
-        <Field label="Rekening" value={data.rekening} />
+        <Field
+          label="Payment Method"
+          value={data.payment_method === "BANK" ? "Bank" : "E-Wallet"}
+        />
+        <Field
+          label={data.payment_method === "BANK" ? "Bank Name" : "E-Wallet Name"}
+          value={data.bank}
+        />
+        <Field
+          label={
+            data.payment_method === "BANK" ? "Rekening" : "E-Wallet Number"
+          }
+          value={data.rekening}
+        />
         <Field
           label="Amount"
           value={new Intl.NumberFormat("id-ID", {
@@ -213,7 +228,14 @@ const Info: React.FC<ChildProps> = ({ data }) => {
             minimumFractionDigits: 0,
           }).format(data.admin_fee)}
         />
-        <Field label="Payment Method" value={data.payment_method} />
+        <Field
+          label="Created At"
+          value={moment(data.created_at).format("MM/DD/YYYY")}
+        />
+        <Field
+          label="Updated At"
+          value={moment(data.updated_at).format("MM/DD/YYYY")}
+        />
         <Field label="Note" value={data.note} />
       </Box>
       <Box>{status}</Box>

@@ -5,6 +5,7 @@ import { ButtonAction, Status } from "../shared/Buttons";
 import { useAppContext } from "../shared/Context";
 import DataTables from "../shared/DataTables";
 import { getDisbursement } from "../api/Disbursement";
+import moment from "moment";
 
 interface Meta {
   page: number;
@@ -79,14 +80,14 @@ const DataTableComponent = () => {
       // sortable: true,
     },
     {
-      name: "Amount",
+      name: "Total Amount",
       cell: (row: any) => (
         <div>
           {new Intl.NumberFormat("id-ID", {
             style: "currency",
             currency: "IDR",
             minimumFractionDigits: 0,
-          }).format(row.amount - row.admin_fee)}
+          }).format(row.amount)}
         </div>
       ),
       // sortable: true,
@@ -94,6 +95,13 @@ const DataTableComponent = () => {
     {
       name: "Status",
       cell: (row: any) => <Status row={row} />,
+      // sortable: true,
+    },
+    {
+      name: "Created At",
+      cell: (row: any) => (
+        <div>{moment(row.created_at).format("DD/MM/DD hh:mm")}</div>
+      ),
       // sortable: true,
     },
     {
