@@ -30,6 +30,8 @@ type Props = {
   };
   payment_method: any;
   status: string;
+  created_at: string;
+  updated_at: string;
   note: any;
 };
 
@@ -55,6 +57,8 @@ const DisbursementInfo = () => {
     },
     payment_method: "",
     status: "",
+    created_at: "",
+    updated_at: "",
     note: "",
   });
 
